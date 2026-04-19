@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model role {
+  id    Int    @id @default(autoincrement())
+  name  String
+
+  users user[]
+}
+
+model user {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  dni       String  @unique
+  password  String
+  age       Int?
+  suspended Boolean @default(false)
+
+  roleId Int?
+  role   role? @relation(fields: [roleId], references: [id])
+
+  creditCard      creditCard?
+  userAppointments userAppointment[]
+}
+
+model creditCard {
+  id            Int    @id @default(autoincrement())
+  cardNumber    String
+  securityCode  String
+  cardHolder    String
+  expireDate    DateTime
+
+  userId Int? @unique
+  user   user? @relation(fields: [userId], references: [id])
+}
+
+model activity {
+  id             Int     @id @default(autoincrement())
+  name           String
+  slotsAvailable Int?
+  price          Decimal?
+
+  appointments appointment[]
+}
+
+model appointment {
+  id             Int      @id @default(autoincrement())
+  initialDate    DateTime
+  endDate        DateTime
+  currentSlots   Int?
+  slotsAvailable Int?
+
+  activityId Int?
+  activity   activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  userAppointments userAppointment[]
+}
+
+model userAppointment {
+  id               Int      @id @default(autoincrement())
+  type             String?
+  attended         Boolean  @default(false)
+  reservationDate  DateTime @default(now())
+  rejected         Boolean  @default(false)
+  amount           Decimal?
+
+  userId        Int
+  appointmentId Int
+
+  user        user        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointment appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+
+  qr QR?
+}
+
+model QR {
+  id                   Int     @id @default(autoincrement())
+  used                 Boolean @default(false)
+
+  userAppointmentId Int  @unique
+  userAppointment   userAppointment @relation(fields: [userAppointmentId], references: [id], onDelete: Cascade)
+}
