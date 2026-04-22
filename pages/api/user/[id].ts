@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) { 
   const { id } = req.query; 
-  console.log( JSON.stringify(req, null, 2)) 
   if (req.method === "GET") { 
     try { 
         const user = await prisma.user.findUnique({ 
