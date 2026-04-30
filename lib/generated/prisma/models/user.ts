@@ -29,13 +29,11 @@ export type AggregateUser = {
 export type UserAvgAggregateOutputType = {
   id: number | null
   age: number | null
-  roleId: number | null
 }
 
 export type UserSumAggregateOutputType = {
   id: number | null
   age: number | null
-  roleId: number | null
 }
 
 export type UserMinAggregateOutputType = {
@@ -45,7 +43,7 @@ export type UserMinAggregateOutputType = {
   password: string | null
   age: number | null
   suspended: boolean | null
-  roleId: number | null
+  active: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -55,7 +53,7 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   age: number | null
   suspended: boolean | null
-  roleId: number | null
+  active: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -65,7 +63,7 @@ export type UserCountAggregateOutputType = {
   password: number
   age: number
   suspended: number
-  roleId: number
+  active: number
   _all: number
 }
 
@@ -73,13 +71,11 @@ export type UserCountAggregateOutputType = {
 export type UserAvgAggregateInputType = {
   id?: true
   age?: true
-  roleId?: true
 }
 
 export type UserSumAggregateInputType = {
   id?: true
   age?: true
-  roleId?: true
 }
 
 export type UserMinAggregateInputType = {
@@ -89,7 +85,7 @@ export type UserMinAggregateInputType = {
   password?: true
   age?: true
   suspended?: true
-  roleId?: true
+  active?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -99,7 +95,7 @@ export type UserMaxAggregateInputType = {
   password?: true
   age?: true
   suspended?: true
-  roleId?: true
+  active?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -109,7 +105,7 @@ export type UserCountAggregateInputType = {
   password?: true
   age?: true
   suspended?: true
-  roleId?: true
+  active?: true
   _all?: true
 }
 
@@ -206,7 +202,7 @@ export type UserGroupByOutputType = {
   password: string
   age: number | null
   suspended: boolean
-  roleId: number | null
+  active: boolean
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -239,8 +235,7 @@ export type userWhereInput = {
   password?: Prisma.StringFilter<"user"> | string
   age?: Prisma.IntNullableFilter<"user"> | number | null
   suspended?: Prisma.BoolFilter<"user"> | boolean
-  roleId?: Prisma.IntNullableFilter<"user"> | number | null
-  role?: Prisma.XOR<Prisma.RoleNullableScalarRelationFilter, Prisma.roleWhereInput> | null
+  active?: Prisma.BoolFilter<"user"> | boolean
   creditCard?: Prisma.XOR<Prisma.CreditCardNullableScalarRelationFilter, Prisma.creditCardWhereInput> | null
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }
@@ -252,8 +247,7 @@ export type userOrderByWithRelationInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrderInput | Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  roleId?: Prisma.SortOrderInput | Prisma.SortOrder
-  role?: Prisma.roleOrderByWithRelationInput
+  active?: Prisma.SortOrder
   creditCard?: Prisma.creditCardOrderByWithRelationInput
   userAppointments?: Prisma.userAppointmentOrderByRelationAggregateInput
 }
@@ -268,8 +262,7 @@ export type userWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringFilter<"user"> | string
   age?: Prisma.IntNullableFilter<"user"> | number | null
   suspended?: Prisma.BoolFilter<"user"> | boolean
-  roleId?: Prisma.IntNullableFilter<"user"> | number | null
-  role?: Prisma.XOR<Prisma.RoleNullableScalarRelationFilter, Prisma.roleWhereInput> | null
+  active?: Prisma.BoolFilter<"user"> | boolean
   creditCard?: Prisma.XOR<Prisma.CreditCardNullableScalarRelationFilter, Prisma.creditCardWhereInput> | null
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }, "id" | "email" | "dni">
@@ -281,7 +274,7 @@ export type userOrderByWithAggregationInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrderInput | Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  roleId?: Prisma.SortOrderInput | Prisma.SortOrder
+  active?: Prisma.SortOrder
   _count?: Prisma.userCountOrderByAggregateInput
   _avg?: Prisma.userAvgOrderByAggregateInput
   _max?: Prisma.userMaxOrderByAggregateInput
@@ -299,7 +292,7 @@ export type userScalarWhereWithAggregatesInput = {
   password?: Prisma.StringWithAggregatesFilter<"user"> | string
   age?: Prisma.IntNullableWithAggregatesFilter<"user"> | number | null
   suspended?: Prisma.BoolWithAggregatesFilter<"user"> | boolean
-  roleId?: Prisma.IntNullableWithAggregatesFilter<"user"> | number | null
+  active?: Prisma.BoolWithAggregatesFilter<"user"> | boolean
 }
 
 export type userCreateInput = {
@@ -308,7 +301,7 @@ export type userCreateInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  role?: Prisma.roleCreateNestedOneWithoutUsersInput
+  active?: boolean
   creditCard?: Prisma.creditCardCreateNestedOneWithoutUserInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutUserInput
 }
@@ -320,7 +313,7 @@ export type userUncheckedCreateInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  roleId?: number | null
+  active?: boolean
   creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutUserInput
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutUserInput
 }
@@ -331,7 +324,7 @@ export type userUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.roleUpdateOneWithoutUsersNestedInput
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   creditCard?: Prisma.creditCardUpdateOneWithoutUserNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutUserNestedInput
 }
@@ -343,7 +336,7 @@ export type userUncheckedUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  roleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutUserNestedInput
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -355,7 +348,7 @@ export type userCreateManyInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  roleId?: number | null
+  active?: boolean
 }
 
 export type userUpdateManyMutationInput = {
@@ -364,6 +357,7 @@ export type userUpdateManyMutationInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type userUncheckedUpdateManyInput = {
@@ -373,17 +367,7 @@ export type userUncheckedUpdateManyInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  roleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-}
-
-export type UserListRelationFilter = {
-  every?: Prisma.userWhereInput
-  some?: Prisma.userWhereInput
-  none?: Prisma.userWhereInput
-}
-
-export type userOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type userCountOrderByAggregateInput = {
@@ -393,13 +377,12 @@ export type userCountOrderByAggregateInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
+  active?: Prisma.SortOrder
 }
 
 export type userAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   age?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
 }
 
 export type userMaxOrderByAggregateInput = {
@@ -409,7 +392,7 @@ export type userMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
+  active?: Prisma.SortOrder
 }
 
 export type userMinOrderByAggregateInput = {
@@ -419,13 +402,12 @@ export type userMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
+  active?: Prisma.SortOrder
 }
 
 export type userSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   age?: Prisma.SortOrder
-  roleId?: Prisma.SortOrder
 }
 
 export type UserNullableScalarRelationFilter = {
@@ -436,48 +418,6 @@ export type UserNullableScalarRelationFilter = {
 export type UserScalarRelationFilter = {
   is?: Prisma.userWhereInput
   isNot?: Prisma.userWhereInput
-}
-
-export type userCreateNestedManyWithoutRoleInput = {
-  create?: Prisma.XOR<Prisma.userCreateWithoutRoleInput, Prisma.userUncheckedCreateWithoutRoleInput> | Prisma.userCreateWithoutRoleInput[] | Prisma.userUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.userCreateOrConnectWithoutRoleInput | Prisma.userCreateOrConnectWithoutRoleInput[]
-  createMany?: Prisma.userCreateManyRoleInputEnvelope
-  connect?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-}
-
-export type userUncheckedCreateNestedManyWithoutRoleInput = {
-  create?: Prisma.XOR<Prisma.userCreateWithoutRoleInput, Prisma.userUncheckedCreateWithoutRoleInput> | Prisma.userCreateWithoutRoleInput[] | Prisma.userUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.userCreateOrConnectWithoutRoleInput | Prisma.userCreateOrConnectWithoutRoleInput[]
-  createMany?: Prisma.userCreateManyRoleInputEnvelope
-  connect?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-}
-
-export type userUpdateManyWithoutRoleNestedInput = {
-  create?: Prisma.XOR<Prisma.userCreateWithoutRoleInput, Prisma.userUncheckedCreateWithoutRoleInput> | Prisma.userCreateWithoutRoleInput[] | Prisma.userUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.userCreateOrConnectWithoutRoleInput | Prisma.userCreateOrConnectWithoutRoleInput[]
-  upsert?: Prisma.userUpsertWithWhereUniqueWithoutRoleInput | Prisma.userUpsertWithWhereUniqueWithoutRoleInput[]
-  createMany?: Prisma.userCreateManyRoleInputEnvelope
-  set?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-  disconnect?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-  delete?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-  connect?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-  update?: Prisma.userUpdateWithWhereUniqueWithoutRoleInput | Prisma.userUpdateWithWhereUniqueWithoutRoleInput[]
-  updateMany?: Prisma.userUpdateManyWithWhereWithoutRoleInput | Prisma.userUpdateManyWithWhereWithoutRoleInput[]
-  deleteMany?: Prisma.userScalarWhereInput | Prisma.userScalarWhereInput[]
-}
-
-export type userUncheckedUpdateManyWithoutRoleNestedInput = {
-  create?: Prisma.XOR<Prisma.userCreateWithoutRoleInput, Prisma.userUncheckedCreateWithoutRoleInput> | Prisma.userCreateWithoutRoleInput[] | Prisma.userUncheckedCreateWithoutRoleInput[]
-  connectOrCreate?: Prisma.userCreateOrConnectWithoutRoleInput | Prisma.userCreateOrConnectWithoutRoleInput[]
-  upsert?: Prisma.userUpsertWithWhereUniqueWithoutRoleInput | Prisma.userUpsertWithWhereUniqueWithoutRoleInput[]
-  createMany?: Prisma.userCreateManyRoleInputEnvelope
-  set?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-  disconnect?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-  delete?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-  connect?: Prisma.userWhereUniqueInput | Prisma.userWhereUniqueInput[]
-  update?: Prisma.userUpdateWithWhereUniqueWithoutRoleInput | Prisma.userUpdateWithWhereUniqueWithoutRoleInput[]
-  updateMany?: Prisma.userUpdateManyWithWhereWithoutRoleInput | Prisma.userUpdateManyWithWhereWithoutRoleInput[]
-  deleteMany?: Prisma.userScalarWhereInput | Prisma.userScalarWhereInput[]
 }
 
 export type NullableIntFieldUpdateOperationsInput = {
@@ -522,73 +462,13 @@ export type userUpdateOneRequiredWithoutUserAppointmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.userUpdateToOneWithWhereWithoutUserAppointmentsInput, Prisma.userUpdateWithoutUserAppointmentsInput>, Prisma.userUncheckedUpdateWithoutUserAppointmentsInput>
 }
 
-export type userCreateWithoutRoleInput = {
-  email: string
-  dni: string
-  password: string
-  age?: number | null
-  suspended?: boolean
-  creditCard?: Prisma.creditCardCreateNestedOneWithoutUserInput
-  userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutUserInput
-}
-
-export type userUncheckedCreateWithoutRoleInput = {
-  id?: number
-  email: string
-  dni: string
-  password: string
-  age?: number | null
-  suspended?: boolean
-  creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutUserInput
-  userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutUserInput
-}
-
-export type userCreateOrConnectWithoutRoleInput = {
-  where: Prisma.userWhereUniqueInput
-  create: Prisma.XOR<Prisma.userCreateWithoutRoleInput, Prisma.userUncheckedCreateWithoutRoleInput>
-}
-
-export type userCreateManyRoleInputEnvelope = {
-  data: Prisma.userCreateManyRoleInput | Prisma.userCreateManyRoleInput[]
-  skipDuplicates?: boolean
-}
-
-export type userUpsertWithWhereUniqueWithoutRoleInput = {
-  where: Prisma.userWhereUniqueInput
-  update: Prisma.XOR<Prisma.userUpdateWithoutRoleInput, Prisma.userUncheckedUpdateWithoutRoleInput>
-  create: Prisma.XOR<Prisma.userCreateWithoutRoleInput, Prisma.userUncheckedCreateWithoutRoleInput>
-}
-
-export type userUpdateWithWhereUniqueWithoutRoleInput = {
-  where: Prisma.userWhereUniqueInput
-  data: Prisma.XOR<Prisma.userUpdateWithoutRoleInput, Prisma.userUncheckedUpdateWithoutRoleInput>
-}
-
-export type userUpdateManyWithWhereWithoutRoleInput = {
-  where: Prisma.userScalarWhereInput
-  data: Prisma.XOR<Prisma.userUpdateManyMutationInput, Prisma.userUncheckedUpdateManyWithoutRoleInput>
-}
-
-export type userScalarWhereInput = {
-  AND?: Prisma.userScalarWhereInput | Prisma.userScalarWhereInput[]
-  OR?: Prisma.userScalarWhereInput[]
-  NOT?: Prisma.userScalarWhereInput | Prisma.userScalarWhereInput[]
-  id?: Prisma.IntFilter<"user"> | number
-  email?: Prisma.StringFilter<"user"> | string
-  dni?: Prisma.StringFilter<"user"> | string
-  password?: Prisma.StringFilter<"user"> | string
-  age?: Prisma.IntNullableFilter<"user"> | number | null
-  suspended?: Prisma.BoolFilter<"user"> | boolean
-  roleId?: Prisma.IntNullableFilter<"user"> | number | null
-}
-
 export type userCreateWithoutCreditCardInput = {
   email: string
   dni: string
   password: string
   age?: number | null
   suspended?: boolean
-  role?: Prisma.roleCreateNestedOneWithoutUsersInput
+  active?: boolean
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutUserInput
 }
 
@@ -599,7 +479,7 @@ export type userUncheckedCreateWithoutCreditCardInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  roleId?: number | null
+  active?: boolean
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -625,7 +505,7 @@ export type userUpdateWithoutCreditCardInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.roleUpdateOneWithoutUsersNestedInput
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutUserNestedInput
 }
 
@@ -636,7 +516,7 @@ export type userUncheckedUpdateWithoutCreditCardInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  roleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -646,7 +526,7 @@ export type userCreateWithoutUserAppointmentsInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  role?: Prisma.roleCreateNestedOneWithoutUsersInput
+  active?: boolean
   creditCard?: Prisma.creditCardCreateNestedOneWithoutUserInput
 }
 
@@ -657,7 +537,7 @@ export type userUncheckedCreateWithoutUserAppointmentsInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  roleId?: number | null
+  active?: boolean
   creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutUserInput
 }
 
@@ -683,7 +563,7 @@ export type userUpdateWithoutUserAppointmentsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  role?: Prisma.roleUpdateOneWithoutUsersNestedInput
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   creditCard?: Prisma.creditCardUpdateOneWithoutUserNestedInput
 }
 
@@ -694,47 +574,8 @@ export type userUncheckedUpdateWithoutUserAppointmentsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  roleId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutUserNestedInput
-}
-
-export type userCreateManyRoleInput = {
-  id?: number
-  email: string
-  dni: string
-  password: string
-  age?: number | null
-  suspended?: boolean
-}
-
-export type userUpdateWithoutRoleInput = {
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  dni?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  creditCard?: Prisma.creditCardUpdateOneWithoutUserNestedInput
-  userAppointments?: Prisma.userAppointmentUpdateManyWithoutUserNestedInput
-}
-
-export type userUncheckedUpdateWithoutRoleInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  dni?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutUserNestedInput
-  userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type userUncheckedUpdateManyWithoutRoleInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  dni?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -775,8 +616,7 @@ export type userSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   password?: boolean
   age?: boolean
   suspended?: boolean
-  roleId?: boolean
-  role?: boolean | Prisma.user$roleArgs<ExtArgs>
+  active?: boolean
   creditCard?: boolean | Prisma.user$creditCardArgs<ExtArgs>
   userAppointments?: boolean | Prisma.user$userAppointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -789,8 +629,7 @@ export type userSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   age?: boolean
   suspended?: boolean
-  roleId?: boolean
-  role?: boolean | Prisma.user$roleArgs<ExtArgs>
+  active?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type userSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -800,8 +639,7 @@ export type userSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   age?: boolean
   suspended?: boolean
-  roleId?: boolean
-  role?: boolean | Prisma.user$roleArgs<ExtArgs>
+  active?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type userSelectScalar = {
@@ -811,27 +649,21 @@ export type userSelectScalar = {
   password?: boolean
   age?: boolean
   suspended?: boolean
-  roleId?: boolean
+  active?: boolean
 }
 
-export type userOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "dni" | "password" | "age" | "suspended" | "roleId", ExtArgs["result"]["user"]>
+export type userOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "dni" | "password" | "age" | "suspended" | "active", ExtArgs["result"]["user"]>
 export type userInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  role?: boolean | Prisma.user$roleArgs<ExtArgs>
   creditCard?: boolean | Prisma.user$creditCardArgs<ExtArgs>
   userAppointments?: boolean | Prisma.user$userAppointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type userIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  role?: boolean | Prisma.user$roleArgs<ExtArgs>
-}
-export type userIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  role?: boolean | Prisma.user$roleArgs<ExtArgs>
-}
+export type userIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type userIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $userPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "user"
   objects: {
-    role: Prisma.$rolePayload<ExtArgs> | null
     creditCard: Prisma.$creditCardPayload<ExtArgs> | null
     userAppointments: Prisma.$userAppointmentPayload<ExtArgs>[]
   }
@@ -842,7 +674,7 @@ export type $userPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     password: string
     age: number | null
     suspended: boolean
-    roleId: number | null
+    active: boolean
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1237,7 +1069,6 @@ readonly fields: userFieldRefs;
  */
 export interface Prisma__userClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  role<T extends Prisma.user$roleArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.user$roleArgs<ExtArgs>>): Prisma.Prisma__roleClient<runtime.Types.Result.GetResult<Prisma.$rolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   creditCard<T extends Prisma.user$creditCardArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.user$creditCardArgs<ExtArgs>>): Prisma.Prisma__creditCardClient<runtime.Types.Result.GetResult<Prisma.$creditCardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   userAppointments<T extends Prisma.user$userAppointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.user$userAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1275,7 +1106,7 @@ export interface userFieldRefs {
   readonly password: Prisma.FieldRef<"user", 'String'>
   readonly age: Prisma.FieldRef<"user", 'Int'>
   readonly suspended: Prisma.FieldRef<"user", 'Boolean'>
-  readonly roleId: Prisma.FieldRef<"user", 'Int'>
+  readonly active: Prisma.FieldRef<"user", 'Boolean'>
 }
     
 
@@ -1530,10 +1361,6 @@ export type userCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.userCreateManyInput | Prisma.userCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.userIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1604,10 +1431,6 @@ export type userUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many users to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.userIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1674,25 +1497,6 @@ export type userDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many users to delete.
    */
   limit?: number
-}
-
-/**
- * user.role
- */
-export type user$roleArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the role
-   */
-  select?: Prisma.roleSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the role
-   */
-  omit?: Prisma.roleOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.roleInclude<ExtArgs> | null
-  where?: Prisma.roleWhereInput
 }
 
 /**

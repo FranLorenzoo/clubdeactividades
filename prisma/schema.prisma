@@ -16,7 +16,7 @@ model role {
   id    Int    @id @default(autoincrement())
   name  String
 
-  users user[]
+  employees employee[]
 }
 
 model user {
@@ -26,9 +26,7 @@ model user {
   password  String
   age       Int?
   suspended Boolean @default(false)
-
-  roleId Int?
-  role   role? @relation(fields: [roleId], references: [id])
+  active Boolean @default(true)
 
   creditCard      creditCard?
   userAppointments userAppointment[]
@@ -43,6 +41,31 @@ model creditCard {
 
   userId Int? @unique
   user   user? @relation(fields: [userId], references: [id])
+}
+
+model employee {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  dni       String  @unique
+  password  String
+  age       Int?
+  suspended Boolean @default(false)
+
+  roleId Int?
+  role   role? @relation(fields: [roleId], references: [id])
+
+  payments payment[]
+}
+
+model payment {
+  id               Int @id @default(autoincrement())
+  userAppointmentId  Int?
+  amount           Decimal?
+  paymentMethod    String
+  paymentDate      DateTime
+  employeeId Int?
+
+  employee employee? @relation(fields: [employeeId], references: [id])
 }
 
 model activity {
@@ -73,7 +96,6 @@ model userAppointment {
   attended         Boolean  @default(false)
   reservationDate  DateTime @default(now())
   rejected         Boolean  @default(false)
-  amount           Decimal?
 
   userId        Int
   appointmentId Int

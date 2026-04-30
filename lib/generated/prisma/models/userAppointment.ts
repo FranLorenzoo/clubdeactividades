@@ -28,14 +28,12 @@ export type AggregateUserAppointment = {
 
 export type UserAppointmentAvgAggregateOutputType = {
   id: number | null
-  amount: runtime.Decimal | null
   userId: number | null
   appointmentId: number | null
 }
 
 export type UserAppointmentSumAggregateOutputType = {
   id: number | null
-  amount: runtime.Decimal | null
   userId: number | null
   appointmentId: number | null
 }
@@ -46,7 +44,6 @@ export type UserAppointmentMinAggregateOutputType = {
   attended: boolean | null
   reservationDate: Date | null
   rejected: boolean | null
-  amount: runtime.Decimal | null
   userId: number | null
   appointmentId: number | null
 }
@@ -57,7 +54,6 @@ export type UserAppointmentMaxAggregateOutputType = {
   attended: boolean | null
   reservationDate: Date | null
   rejected: boolean | null
-  amount: runtime.Decimal | null
   userId: number | null
   appointmentId: number | null
 }
@@ -68,7 +64,6 @@ export type UserAppointmentCountAggregateOutputType = {
   attended: number
   reservationDate: number
   rejected: number
-  amount: number
   userId: number
   appointmentId: number
   _all: number
@@ -77,14 +72,12 @@ export type UserAppointmentCountAggregateOutputType = {
 
 export type UserAppointmentAvgAggregateInputType = {
   id?: true
-  amount?: true
   userId?: true
   appointmentId?: true
 }
 
 export type UserAppointmentSumAggregateInputType = {
   id?: true
-  amount?: true
   userId?: true
   appointmentId?: true
 }
@@ -95,7 +88,6 @@ export type UserAppointmentMinAggregateInputType = {
   attended?: true
   reservationDate?: true
   rejected?: true
-  amount?: true
   userId?: true
   appointmentId?: true
 }
@@ -106,7 +98,6 @@ export type UserAppointmentMaxAggregateInputType = {
   attended?: true
   reservationDate?: true
   rejected?: true
-  amount?: true
   userId?: true
   appointmentId?: true
 }
@@ -117,7 +108,6 @@ export type UserAppointmentCountAggregateInputType = {
   attended?: true
   reservationDate?: true
   rejected?: true
-  amount?: true
   userId?: true
   appointmentId?: true
   _all?: true
@@ -215,7 +205,6 @@ export type UserAppointmentGroupByOutputType = {
   attended: boolean
   reservationDate: Date
   rejected: boolean
-  amount: runtime.Decimal | null
   userId: number
   appointmentId: number
   _count: UserAppointmentCountAggregateOutputType | null
@@ -249,7 +238,6 @@ export type userAppointmentWhereInput = {
   attended?: Prisma.BoolFilter<"userAppointment"> | boolean
   reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
   rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
-  amount?: Prisma.DecimalNullableFilter<"userAppointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntFilter<"userAppointment"> | number
   appointmentId?: Prisma.IntFilter<"userAppointment"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.userWhereInput>
@@ -263,7 +251,6 @@ export type userAppointmentOrderByWithRelationInput = {
   attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
-  amount?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   user?: Prisma.userOrderByWithRelationInput
@@ -280,7 +267,6 @@ export type userAppointmentWhereUniqueInput = Prisma.AtLeast<{
   attended?: Prisma.BoolFilter<"userAppointment"> | boolean
   reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
   rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
-  amount?: Prisma.DecimalNullableFilter<"userAppointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntFilter<"userAppointment"> | number
   appointmentId?: Prisma.IntFilter<"userAppointment"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.userWhereInput>
@@ -294,7 +280,6 @@ export type userAppointmentOrderByWithAggregationInput = {
   attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
-  amount?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   _count?: Prisma.userAppointmentCountOrderByAggregateInput
@@ -313,7 +298,6 @@ export type userAppointmentScalarWhereWithAggregatesInput = {
   attended?: Prisma.BoolWithAggregatesFilter<"userAppointment"> | boolean
   reservationDate?: Prisma.DateTimeWithAggregatesFilter<"userAppointment"> | Date | string
   rejected?: Prisma.BoolWithAggregatesFilter<"userAppointment"> | boolean
-  amount?: Prisma.DecimalNullableWithAggregatesFilter<"userAppointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntWithAggregatesFilter<"userAppointment"> | number
   appointmentId?: Prisma.IntWithAggregatesFilter<"userAppointment"> | number
 }
@@ -323,7 +307,6 @@ export type userAppointmentCreateInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   user: Prisma.userCreateNestedOneWithoutUserAppointmentsInput
   appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
   qr?: Prisma.QRCreateNestedOneWithoutUserAppointmentInput
@@ -335,7 +318,6 @@ export type userAppointmentUncheckedCreateInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: number
   appointmentId: number
   qr?: Prisma.QRUncheckedCreateNestedOneWithoutUserAppointmentInput
@@ -346,7 +328,6 @@ export type userAppointmentUpdateInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   user?: Prisma.userUpdateOneRequiredWithoutUserAppointmentsNestedInput
   appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
   qr?: Prisma.QRUpdateOneWithoutUserAppointmentNestedInput
@@ -358,7 +339,6 @@ export type userAppointmentUncheckedUpdateInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   qr?: Prisma.QRUncheckedUpdateOneWithoutUserAppointmentNestedInput
@@ -370,7 +350,6 @@ export type userAppointmentCreateManyInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: number
   appointmentId: number
 }
@@ -380,7 +359,6 @@ export type userAppointmentUpdateManyMutationInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
 }
 
 export type userAppointmentUncheckedUpdateManyInput = {
@@ -389,7 +367,6 @@ export type userAppointmentUncheckedUpdateManyInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -410,14 +387,12 @@ export type userAppointmentCountOrderByAggregateInput = {
   attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
 }
 
 export type userAppointmentAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
 }
@@ -428,7 +403,6 @@ export type userAppointmentMaxOrderByAggregateInput = {
   attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
 }
@@ -439,14 +413,12 @@ export type userAppointmentMinOrderByAggregateInput = {
   attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
 }
 
 export type userAppointmentSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  amount?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
 }
@@ -563,7 +535,6 @@ export type userAppointmentCreateWithoutUserInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
   qr?: Prisma.QRCreateNestedOneWithoutUserAppointmentInput
 }
@@ -574,7 +545,6 @@ export type userAppointmentUncheckedCreateWithoutUserInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointmentId: number
   qr?: Prisma.QRUncheckedCreateNestedOneWithoutUserAppointmentInput
 }
@@ -614,7 +584,6 @@ export type userAppointmentScalarWhereInput = {
   attended?: Prisma.BoolFilter<"userAppointment"> | boolean
   reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
   rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
-  amount?: Prisma.DecimalNullableFilter<"userAppointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntFilter<"userAppointment"> | number
   appointmentId?: Prisma.IntFilter<"userAppointment"> | number
 }
@@ -624,7 +593,6 @@ export type userAppointmentCreateWithoutAppointmentInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   user: Prisma.userCreateNestedOneWithoutUserAppointmentsInput
   qr?: Prisma.QRCreateNestedOneWithoutUserAppointmentInput
 }
@@ -635,7 +603,6 @@ export type userAppointmentUncheckedCreateWithoutAppointmentInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: number
   qr?: Prisma.QRUncheckedCreateNestedOneWithoutUserAppointmentInput
 }
@@ -671,7 +638,6 @@ export type userAppointmentCreateWithoutQrInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   user: Prisma.userCreateNestedOneWithoutUserAppointmentsInput
   appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
 }
@@ -682,7 +648,6 @@ export type userAppointmentUncheckedCreateWithoutQrInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: number
   appointmentId: number
 }
@@ -708,7 +673,6 @@ export type userAppointmentUpdateWithoutQrInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   user?: Prisma.userUpdateOneRequiredWithoutUserAppointmentsNestedInput
   appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
 }
@@ -719,7 +683,6 @@ export type userAppointmentUncheckedUpdateWithoutQrInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -730,7 +693,6 @@ export type userAppointmentCreateManyUserInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointmentId: number
 }
 
@@ -739,7 +701,6 @@ export type userAppointmentUpdateWithoutUserInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
   qr?: Prisma.QRUpdateOneWithoutUserAppointmentNestedInput
 }
@@ -750,7 +711,6 @@ export type userAppointmentUncheckedUpdateWithoutUserInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   qr?: Prisma.QRUncheckedUpdateOneWithoutUserAppointmentNestedInput
 }
@@ -761,7 +721,6 @@ export type userAppointmentUncheckedUpdateManyWithoutUserInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -771,7 +730,6 @@ export type userAppointmentCreateManyAppointmentInput = {
   attended?: boolean
   reservationDate?: Date | string
   rejected?: boolean
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId: number
 }
 
@@ -780,7 +738,6 @@ export type userAppointmentUpdateWithoutAppointmentInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   user?: Prisma.userUpdateOneRequiredWithoutUserAppointmentsNestedInput
   qr?: Prisma.QRUpdateOneWithoutUserAppointmentNestedInput
 }
@@ -791,7 +748,6 @@ export type userAppointmentUncheckedUpdateWithoutAppointmentInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   qr?: Prisma.QRUncheckedUpdateOneWithoutUserAppointmentNestedInput
 }
@@ -802,7 +758,6 @@ export type userAppointmentUncheckedUpdateManyWithoutAppointmentInput = {
   attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   userId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -814,7 +769,6 @@ export type userAppointmentSelect<ExtArgs extends runtime.Types.Extensions.Inter
   attended?: boolean
   reservationDate?: boolean
   rejected?: boolean
-  amount?: boolean
   userId?: boolean
   appointmentId?: boolean
   user?: boolean | Prisma.userDefaultArgs<ExtArgs>
@@ -828,7 +782,6 @@ export type userAppointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   attended?: boolean
   reservationDate?: boolean
   rejected?: boolean
-  amount?: boolean
   userId?: boolean
   appointmentId?: boolean
   user?: boolean | Prisma.userDefaultArgs<ExtArgs>
@@ -841,7 +794,6 @@ export type userAppointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   attended?: boolean
   reservationDate?: boolean
   rejected?: boolean
-  amount?: boolean
   userId?: boolean
   appointmentId?: boolean
   user?: boolean | Prisma.userDefaultArgs<ExtArgs>
@@ -854,12 +806,11 @@ export type userAppointmentSelectScalar = {
   attended?: boolean
   reservationDate?: boolean
   rejected?: boolean
-  amount?: boolean
   userId?: boolean
   appointmentId?: boolean
 }
 
-export type userAppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "attended" | "reservationDate" | "rejected" | "amount" | "userId" | "appointmentId", ExtArgs["result"]["userAppointment"]>
+export type userAppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "attended" | "reservationDate" | "rejected" | "userId" | "appointmentId", ExtArgs["result"]["userAppointment"]>
 export type userAppointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.userDefaultArgs<ExtArgs>
   appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
@@ -887,7 +838,6 @@ export type $userAppointmentPayload<ExtArgs extends runtime.Types.Extensions.Int
     attended: boolean
     reservationDate: Date
     rejected: boolean
-    amount: runtime.Decimal | null
     userId: number
     appointmentId: number
   }, ExtArgs["result"]["userAppointment"]>
@@ -1321,7 +1271,6 @@ export interface userAppointmentFieldRefs {
   readonly attended: Prisma.FieldRef<"userAppointment", 'Boolean'>
   readonly reservationDate: Prisma.FieldRef<"userAppointment", 'DateTime'>
   readonly rejected: Prisma.FieldRef<"userAppointment", 'Boolean'>
-  readonly amount: Prisma.FieldRef<"userAppointment", 'Decimal'>
   readonly userId: Prisma.FieldRef<"userAppointment", 'Int'>
   readonly appointmentId: Prisma.FieldRef<"userAppointment", 'Int'>
 }

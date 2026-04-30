@@ -11,6 +11,8 @@
 export type * from './models/role'
 export type * from './models/user'
 export type * from './models/creditCard'
+export type * from './models/employee'
+export type * from './models/payment'
 export type * from './models/activity'
 export type * from './models/appointment'
 export type * from './models/userAppointment'
