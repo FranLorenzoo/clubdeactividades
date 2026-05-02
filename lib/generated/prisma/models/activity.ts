@@ -327,7 +327,6 @@ export type ActivityScalarRelationFilter = {
   isNot?: Prisma.ActivityWhereInput
 }
 
-<<<<<<< HEAD
 export type DecimalFieldUpdateOperationsInput = {
   set?: runtime.Decimal | runtime.DecimalJsLike | number | string
   increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -340,12 +339,6 @@ export type ActivityCreateNestedOneWithoutEmployeesInput = {
   create?: Prisma.XOR<Prisma.ActivityCreateWithoutEmployeesInput, Prisma.ActivityUncheckedCreateWithoutEmployeesInput>
   connectOrCreate?: Prisma.ActivityCreateOrConnectWithoutEmployeesInput
   connect?: Prisma.ActivityWhereUniqueInput
-=======
-export type activityCreateNestedOneWithoutAppointmentsInput = {
-  create?: Prisma.XOR<Prisma.activityCreateWithoutAppointmentsInput, Prisma.activityUncheckedCreateWithoutAppointmentsInput>
-  connectOrCreate?: Prisma.activityCreateOrConnectWithoutAppointmentsInput
-  connect?: Prisma.activityWhereUniqueInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type ActivityUpdateOneRequiredWithoutEmployeesNestedInput = {

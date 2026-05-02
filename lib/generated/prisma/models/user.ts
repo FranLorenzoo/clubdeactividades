@@ -43,7 +43,6 @@ export type UserMinAggregateOutputType = {
   password: string | null
   age: number | null
   suspended: boolean | null
-  active: boolean | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -53,7 +52,6 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   age: number | null
   suspended: boolean | null
-  active: boolean | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -63,7 +61,6 @@ export type UserCountAggregateOutputType = {
   password: number
   age: number
   suspended: number
-  active: number
   _all: number
 }
 
@@ -85,7 +82,6 @@ export type UserMinAggregateInputType = {
   password?: true
   age?: true
   suspended?: true
-  active?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -95,7 +91,6 @@ export type UserMaxAggregateInputType = {
   password?: true
   age?: true
   suspended?: true
-  active?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -105,7 +100,6 @@ export type UserCountAggregateInputType = {
   password?: true
   age?: true
   suspended?: true
-  active?: true
   _all?: true
 }
 
@@ -202,7 +196,6 @@ export type UserGroupByOutputType = {
   password: string
   age: number | null
   suspended: boolean
-  active: boolean
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
   _sum: UserSumAggregateOutputType | null
@@ -225,7 +218,6 @@ type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
 
 
 
-<<<<<<< HEAD
 export type UserWhereInput = {
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
@@ -236,22 +228,7 @@ export type UserWhereInput = {
   password?: Prisma.StringFilter<"User"> | string
   age?: Prisma.IntNullableFilter<"User"> | number | null
   suspended?: Prisma.BoolFilter<"User"> | boolean
-  active?: Prisma.BoolFilter<"User"> | boolean
   creditCard?: Prisma.XOR<Prisma.CreditCardNullableScalarRelationFilter, Prisma.CreditCardWhereInput> | null
-=======
-export type userWhereInput = {
-  AND?: Prisma.userWhereInput | Prisma.userWhereInput[]
-  OR?: Prisma.userWhereInput[]
-  NOT?: Prisma.userWhereInput | Prisma.userWhereInput[]
-  id?: Prisma.IntFilter<"user"> | number
-  email?: Prisma.StringFilter<"user"> | string
-  dni?: Prisma.StringFilter<"user"> | string
-  password?: Prisma.StringFilter<"user"> | string
-  age?: Prisma.IntNullableFilter<"user"> | number | null
-  suspended?: Prisma.BoolFilter<"user"> | boolean
-  active?: Prisma.BoolFilter<"user"> | boolean
-  creditCard?: Prisma.XOR<Prisma.CreditCardNullableScalarRelationFilter, Prisma.creditCardWhereInput> | null
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }
 
@@ -262,39 +239,21 @@ export type UserOrderByWithRelationInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrderInput | Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  active?: Prisma.SortOrder
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardOrderByWithRelationInput
   userAppointments?: Prisma.UserAppointmentOrderByRelationAggregateInput
-=======
-  creditCard?: Prisma.creditCardOrderByWithRelationInput
-  userAppointments?: Prisma.userAppointmentOrderByRelationAggregateInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   email?: string
   dni?: string
-<<<<<<< HEAD
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   password?: Prisma.StringFilter<"User"> | string
   age?: Prisma.IntNullableFilter<"User"> | number | null
   suspended?: Prisma.BoolFilter<"User"> | boolean
-  active?: Prisma.BoolFilter<"User"> | boolean
   creditCard?: Prisma.XOR<Prisma.CreditCardNullableScalarRelationFilter, Prisma.CreditCardWhereInput> | null
-=======
-  AND?: Prisma.userWhereInput | Prisma.userWhereInput[]
-  OR?: Prisma.userWhereInput[]
-  NOT?: Prisma.userWhereInput | Prisma.userWhereInput[]
-  password?: Prisma.StringFilter<"user"> | string
-  age?: Prisma.IntNullableFilter<"user"> | number | null
-  suspended?: Prisma.BoolFilter<"user"> | boolean
-  active?: Prisma.BoolFilter<"user"> | boolean
-  creditCard?: Prisma.XOR<Prisma.CreditCardNullableScalarRelationFilter, Prisma.creditCardWhereInput> | null
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }, "id" | "email" | "dni">
 
@@ -305,8 +264,6 @@ export type UserOrderByWithAggregationInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrderInput | Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  active?: Prisma.SortOrder
-<<<<<<< HEAD
   _count?: Prisma.UserCountOrderByAggregateInput
   _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -324,27 +281,6 @@ export type UserScalarWhereWithAggregatesInput = {
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   age?: Prisma.IntNullableWithAggregatesFilter<"User"> | number | null
   suspended?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-  active?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
-=======
-  _count?: Prisma.userCountOrderByAggregateInput
-  _avg?: Prisma.userAvgOrderByAggregateInput
-  _max?: Prisma.userMaxOrderByAggregateInput
-  _min?: Prisma.userMinOrderByAggregateInput
-  _sum?: Prisma.userSumOrderByAggregateInput
-}
-
-export type userScalarWhereWithAggregatesInput = {
-  AND?: Prisma.userScalarWhereWithAggregatesInput | Prisma.userScalarWhereWithAggregatesInput[]
-  OR?: Prisma.userScalarWhereWithAggregatesInput[]
-  NOT?: Prisma.userScalarWhereWithAggregatesInput | Prisma.userScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"user"> | number
-  email?: Prisma.StringWithAggregatesFilter<"user"> | string
-  dni?: Prisma.StringWithAggregatesFilter<"user"> | string
-  password?: Prisma.StringWithAggregatesFilter<"user"> | string
-  age?: Prisma.IntNullableWithAggregatesFilter<"user"> | number | null
-  suspended?: Prisma.BoolWithAggregatesFilter<"user"> | boolean
-  active?: Prisma.BoolWithAggregatesFilter<"user"> | boolean
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type UserCreateInput = {
@@ -353,14 +289,8 @@ export type UserCreateInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  active?: boolean
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardCreateNestedOneWithoutUserInput
   userAppointments?: Prisma.UserAppointmentCreateNestedManyWithoutUserInput
-=======
-  creditCard?: Prisma.creditCardCreateNestedOneWithoutUserInput
-  userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutUserInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type UserUncheckedCreateInput = {
@@ -370,14 +300,8 @@ export type UserUncheckedCreateInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  active?: boolean
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardUncheckedCreateNestedOneWithoutUserInput
   userAppointments?: Prisma.UserAppointmentUncheckedCreateNestedManyWithoutUserInput
-=======
-  creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutUserInput
-  userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutUserInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type UserUpdateInput = {
@@ -386,14 +310,8 @@ export type UserUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardUpdateOneWithoutUserNestedInput
   userAppointments?: Prisma.UserAppointmentUpdateManyWithoutUserNestedInput
-=======
-  creditCard?: Prisma.creditCardUpdateOneWithoutUserNestedInput
-  userAppointments?: Prisma.userAppointmentUpdateManyWithoutUserNestedInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type UserUncheckedUpdateInput = {
@@ -403,14 +321,8 @@ export type UserUncheckedUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardUncheckedUpdateOneWithoutUserNestedInput
   userAppointments?: Prisma.UserAppointmentUncheckedUpdateManyWithoutUserNestedInput
-=======
-  creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutUserNestedInput
-  userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutUserNestedInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type UserCreateManyInput = {
@@ -420,7 +332,6 @@ export type UserCreateManyInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  active?: boolean
 }
 
 export type UserUpdateManyMutationInput = {
@@ -429,7 +340,6 @@ export type UserUpdateManyMutationInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type UserUncheckedUpdateManyInput = {
@@ -439,21 +349,15 @@ export type UserUncheckedUpdateManyInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
-<<<<<<< HEAD
 export type UserCountOrderByAggregateInput = {
-=======
-export type userCountOrderByAggregateInput = {
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   dni?: Prisma.SortOrder
   password?: Prisma.SortOrder
   age?: Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  active?: Prisma.SortOrder
 }
 
 export type UserAvgOrderByAggregateInput = {
@@ -468,7 +372,6 @@ export type UserMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  active?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -478,30 +381,16 @@ export type UserMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   age?: Prisma.SortOrder
   suspended?: Prisma.SortOrder
-  active?: Prisma.SortOrder
 }
 
 export type UserSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   age?: Prisma.SortOrder
-<<<<<<< HEAD
 }
 
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
-=======
-}
-
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.userWhereInput | null
-  isNot?: Prisma.userWhereInput | null
-}
-
-export type UserScalarRelationFilter = {
-  is?: Prisma.userWhereInput
-  isNot?: Prisma.userWhereInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type NullableIntFieldUpdateOperationsInput = {
@@ -544,14 +433,12 @@ export type UserUpdateOneRequiredWithoutUserAppointmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUserAppointmentsInput, Prisma.UserUpdateWithoutUserAppointmentsInput>, Prisma.UserUncheckedUpdateWithoutUserAppointmentsInput>
 }
 
-<<<<<<< HEAD
 export type UserCreateWithoutCreditCardInput = {
   email: string
   dni: string
   password: string
   age?: number | null
   suspended?: boolean
-  active?: boolean
   userAppointments?: Prisma.UserAppointmentCreateNestedManyWithoutUserInput
 }
 
@@ -562,7 +449,6 @@ export type UserUncheckedCreateWithoutCreditCardInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  active?: boolean
   userAppointments?: Prisma.UserAppointmentUncheckedCreateNestedManyWithoutUserInput
 }
 
@@ -588,7 +474,6 @@ export type UserUpdateWithoutCreditCardInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAppointments?: Prisma.UserAppointmentUpdateManyWithoutUserNestedInput
 }
 
@@ -599,25 +484,16 @@ export type UserUncheckedUpdateWithoutCreditCardInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAppointments?: Prisma.UserAppointmentUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUserAppointmentsInput = {
-=======
-export type userCreateWithoutCreditCardInput = {
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   email: string
   dni: string
   password: string
   age?: number | null
   suspended?: boolean
-  active?: boolean
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardCreateNestedOneWithoutUserInput
-=======
-  userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutUserInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type UserUncheckedCreateWithoutUserAppointmentsInput = {
@@ -627,12 +503,7 @@ export type UserUncheckedCreateWithoutUserAppointmentsInput = {
   password: string
   age?: number | null
   suspended?: boolean
-  active?: boolean
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardUncheckedCreateNestedOneWithoutUserInput
-=======
-  userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutUserInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 export type UserCreateOrConnectWithoutUserAppointmentsInput = {
@@ -657,88 +528,17 @@ export type UserUpdateWithoutUserAppointmentsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserAppointmentsInput = {
-=======
-  userAppointments?: Prisma.userAppointmentUpdateManyWithoutUserNestedInput
-}
-
-export type userUncheckedUpdateWithoutCreditCardInput = {
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
   dni?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-<<<<<<< HEAD
   creditCard?: Prisma.CreditCardUncheckedUpdateOneWithoutUserNestedInput
-=======
-  userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutUserNestedInput
-}
-
-export type userCreateWithoutUserAppointmentsInput = {
-  email: string
-  dni: string
-  password: string
-  age?: number | null
-  suspended?: boolean
-  active?: boolean
-  creditCard?: Prisma.creditCardCreateNestedOneWithoutUserInput
-}
-
-export type userUncheckedCreateWithoutUserAppointmentsInput = {
-  id?: number
-  email: string
-  dni: string
-  password: string
-  age?: number | null
-  suspended?: boolean
-  active?: boolean
-  creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutUserInput
-}
-
-export type userCreateOrConnectWithoutUserAppointmentsInput = {
-  where: Prisma.userWhereUniqueInput
-  create: Prisma.XOR<Prisma.userCreateWithoutUserAppointmentsInput, Prisma.userUncheckedCreateWithoutUserAppointmentsInput>
-}
-
-export type userUpsertWithoutUserAppointmentsInput = {
-  update: Prisma.XOR<Prisma.userUpdateWithoutUserAppointmentsInput, Prisma.userUncheckedUpdateWithoutUserAppointmentsInput>
-  create: Prisma.XOR<Prisma.userCreateWithoutUserAppointmentsInput, Prisma.userUncheckedCreateWithoutUserAppointmentsInput>
-  where?: Prisma.userWhereInput
-}
-
-export type userUpdateToOneWithWhereWithoutUserAppointmentsInput = {
-  where?: Prisma.userWhereInput
-  data: Prisma.XOR<Prisma.userUpdateWithoutUserAppointmentsInput, Prisma.userUncheckedUpdateWithoutUserAppointmentsInput>
-}
-
-export type userUpdateWithoutUserAppointmentsInput = {
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  dni?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  creditCard?: Prisma.creditCardUpdateOneWithoutUserNestedInput
-}
-
-export type userUncheckedUpdateWithoutUserAppointmentsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  dni?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutUserNestedInput
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 
@@ -779,14 +579,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   password?: boolean
   age?: boolean
   suspended?: boolean
-  active?: boolean
-<<<<<<< HEAD
   creditCard?: boolean | Prisma.User$creditCardArgs<ExtArgs>
   userAppointments?: boolean | Prisma.User$userAppointmentsArgs<ExtArgs>
-=======
-  creditCard?: boolean | Prisma.user$creditCardArgs<ExtArgs>
-  userAppointments?: boolean | Prisma.user$userAppointmentsArgs<ExtArgs>
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -797,7 +591,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   age?: boolean
   suspended?: boolean
-  active?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -807,7 +600,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   age?: boolean
   suspended?: boolean
-  active?: boolean
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -817,11 +609,9 @@ export type UserSelectScalar = {
   password?: boolean
   age?: boolean
   suspended?: boolean
-  active?: boolean
 }
 
-<<<<<<< HEAD
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "dni" | "password" | "age" | "suspended" | "active", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "dni" | "password" | "age" | "suspended", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   creditCard?: boolean | Prisma.User$creditCardArgs<ExtArgs>
   userAppointments?: boolean | Prisma.User$userAppointmentsArgs<ExtArgs>
@@ -829,27 +619,12 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-=======
-export type userOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "dni" | "password" | "age" | "suspended" | "active", ExtArgs["result"]["user"]>
-export type userInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  creditCard?: boolean | Prisma.user$creditCardArgs<ExtArgs>
-  userAppointments?: boolean | Prisma.user$userAppointmentsArgs<ExtArgs>
-  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
-}
-export type userIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type userIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
-<<<<<<< HEAD
     creditCard: Prisma.$CreditCardPayload<ExtArgs> | null
     userAppointments: Prisma.$UserAppointmentPayload<ExtArgs>[]
-=======
-    creditCard: Prisma.$creditCardPayload<ExtArgs> | null
-    userAppointments: Prisma.$userAppointmentPayload<ExtArgs>[]
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -858,7 +633,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     password: string
     age: number | null
     suspended: boolean
-    active: boolean
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1253,13 +1027,8 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-<<<<<<< HEAD
   creditCard<T extends Prisma.User$creditCardArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$creditCardArgs<ExtArgs>>): Prisma.Prisma__CreditCardClient<runtime.Types.Result.GetResult<Prisma.$CreditCardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   userAppointments<T extends Prisma.User$userAppointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-=======
-  creditCard<T extends Prisma.user$creditCardArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.user$creditCardArgs<ExtArgs>>): Prisma.Prisma__creditCardClient<runtime.Types.Result.GetResult<Prisma.$creditCardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  userAppointments<T extends Prisma.user$userAppointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.user$userAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1288,7 +1057,6 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
 /**
  * Fields of the User model
  */
-<<<<<<< HEAD
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'Int'>
   readonly email: Prisma.FieldRef<"User", 'String'>
@@ -1296,17 +1064,6 @@ export interface UserFieldRefs {
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly age: Prisma.FieldRef<"User", 'Int'>
   readonly suspended: Prisma.FieldRef<"User", 'Boolean'>
-  readonly active: Prisma.FieldRef<"User", 'Boolean'>
-=======
-export interface userFieldRefs {
-  readonly id: Prisma.FieldRef<"user", 'Int'>
-  readonly email: Prisma.FieldRef<"user", 'String'>
-  readonly dni: Prisma.FieldRef<"user", 'String'>
-  readonly password: Prisma.FieldRef<"user", 'String'>
-  readonly age: Prisma.FieldRef<"user", 'Int'>
-  readonly suspended: Prisma.FieldRef<"user", 'Boolean'>
-  readonly active: Prisma.FieldRef<"user", 'Boolean'>
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
     
 
@@ -1628,83 +1385,12 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   where?: Prisma.UserWhereInput
   /**
-<<<<<<< HEAD
    * Limit how many Users to update.
-=======
-   * Limit how many users to update.
    */
   limit?: number
 }
 
 /**
- * user upsert
- */
-export type userUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the user
-   */
-  select?: Prisma.userSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the user
-   */
-  omit?: Prisma.userOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.userInclude<ExtArgs> | null
-  /**
-   * The filter to search for the user to update in case it exists.
-   */
-  where: Prisma.userWhereUniqueInput
-  /**
-   * In case the user found by the `where` argument doesn't exist, create a new user with this data.
-   */
-  create: Prisma.XOR<Prisma.userCreateInput, Prisma.userUncheckedCreateInput>
-  /**
-   * In case the user was found with the provided `where` argument, update it with this data.
-   */
-  update: Prisma.XOR<Prisma.userUpdateInput, Prisma.userUncheckedUpdateInput>
-}
-
-/**
- * user delete
- */
-export type userDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the user
-   */
-  select?: Prisma.userSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the user
-   */
-  omit?: Prisma.userOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.userInclude<ExtArgs> | null
-  /**
-   * Filter which user to delete.
-   */
-  where: Prisma.userWhereUniqueInput
-}
-
-/**
- * user deleteMany
- */
-export type userDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Filter which users to delete
-   */
-  where?: Prisma.userWhereInput
-  /**
-   * Limit how many users to delete.
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
-   */
-  limit?: number
-}
-
-/**
-<<<<<<< HEAD
  * User upsert
  */
 export type UserUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1736,9 +1422,6 @@ export type UserUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
 
 /**
  * User delete
-=======
- * user.creditCard
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
  */
 export type UserDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**

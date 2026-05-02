@@ -384,7 +384,6 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-<<<<<<< HEAD
   Role: 'Role',
   User: 'User',
   CreditCard: 'CreditCard',
@@ -393,16 +392,6 @@ export const ModelName = {
   Appointment: 'Appointment',
   UserAppointment: 'UserAppointment',
   Payment: 'Payment',
-=======
-  role: 'role',
-  user: 'user',
-  creditCard: 'creditCard',
-  employee: 'employee',
-  payment: 'payment',
-  activity: 'activity',
-  appointment: 'appointment',
-  userAppointment: 'userAppointment',
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   QR: 'QR'
 } as const
 
@@ -419,11 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-<<<<<<< HEAD
     modelProps: "role" | "user" | "creditCard" | "activity" | "employee" | "appointment" | "userAppointment" | "payment" | "qR"
-=======
-    modelProps: "role" | "user" | "creditCard" | "employee" | "payment" | "activity" | "appointment" | "userAppointment" | "qR"
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -649,163 +634,9 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-<<<<<<< HEAD
     Activity: {
       payload: Prisma.$ActivityPayload<ExtArgs>
       fields: Prisma.ActivityFieldRefs
-=======
-    employee: {
-      payload: Prisma.$employeePayload<ExtArgs>
-      fields: Prisma.employeeFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.employeeFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.employeeFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>
-        }
-        findFirst: {
-          args: Prisma.employeeFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.employeeFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>
-        }
-        findMany: {
-          args: Prisma.employeeFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>[]
-        }
-        create: {
-          args: Prisma.employeeCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>
-        }
-        createMany: {
-          args: Prisma.employeeCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.employeeCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>[]
-        }
-        delete: {
-          args: Prisma.employeeDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>
-        }
-        update: {
-          args: Prisma.employeeUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>
-        }
-        deleteMany: {
-          args: Prisma.employeeDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.employeeUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.employeeUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>[]
-        }
-        upsert: {
-          args: Prisma.employeeUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$employeePayload>
-        }
-        aggregate: {
-          args: Prisma.EmployeeAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployee>
-        }
-        groupBy: {
-          args: Prisma.employeeGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.EmployeeGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.employeeCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.EmployeeCountAggregateOutputType> | number
-        }
-      }
-    }
-    payment: {
-      payload: Prisma.$paymentPayload<ExtArgs>
-      fields: Prisma.paymentFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.paymentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.paymentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
-        }
-        findFirst: {
-          args: Prisma.paymentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.paymentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
-        }
-        findMany: {
-          args: Prisma.paymentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
-        }
-        create: {
-          args: Prisma.paymentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
-        }
-        createMany: {
-          args: Prisma.paymentCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.paymentCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
-        }
-        delete: {
-          args: Prisma.paymentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
-        }
-        update: {
-          args: Prisma.paymentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
-        }
-        deleteMany: {
-          args: Prisma.paymentDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.paymentUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.paymentUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
-        }
-        upsert: {
-          args: Prisma.paymentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
-        }
-        aggregate: {
-          args: Prisma.PaymentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePayment>
-        }
-        groupBy: {
-          args: Prisma.paymentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.paymentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
-        }
-      }
-    }
-    activity: {
-      payload: Prisma.$activityPayload<ExtArgs>
-      fields: Prisma.activityFieldRefs
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
       operations: {
         findUnique: {
           args: Prisma.ActivityFindUniqueArgs<ExtArgs>
@@ -1300,8 +1131,7 @@ export const UserScalarFieldEnum = {
   dni: 'dni',
   password: 'password',
   age: 'age',
-  suspended: 'suspended',
-  active: 'active'
+  suspended: 'suspended'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1317,31 +1147,6 @@ export const CreditCardScalarFieldEnum = {
 } as const
 
 export type CreditCardScalarFieldEnum = (typeof CreditCardScalarFieldEnum)[keyof typeof CreditCardScalarFieldEnum]
-
-
-export const EmployeeScalarFieldEnum = {
-  id: 'id',
-  email: 'email',
-  dni: 'dni',
-  password: 'password',
-  age: 'age',
-  suspended: 'suspended',
-  roleId: 'roleId'
-} as const
-
-export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
-
-
-export const PaymentScalarFieldEnum = {
-  id: 'id',
-  userAppointmentId: 'userAppointmentId',
-  amount: 'amount',
-  paymentMethod: 'paymentMethod',
-  paymentDate: 'paymentDate',
-  employeeId: 'employeeId'
-} as const
-
-export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const ActivityScalarFieldEnum = {
@@ -1630,7 +1435,6 @@ export type PrismaClientOptions = ({
   comments?: runtime.SqlCommenterPlugin[]
 }
 export type GlobalOmitConfig = {
-<<<<<<< HEAD
   role?: Prisma.RoleOmit
   user?: Prisma.UserOmit
   creditCard?: Prisma.CreditCardOmit
@@ -1639,16 +1443,6 @@ export type GlobalOmitConfig = {
   appointment?: Prisma.AppointmentOmit
   userAppointment?: Prisma.UserAppointmentOmit
   payment?: Prisma.PaymentOmit
-=======
-  role?: Prisma.roleOmit
-  user?: Prisma.userOmit
-  creditCard?: Prisma.creditCardOmit
-  employee?: Prisma.employeeOmit
-  payment?: Prisma.paymentOmit
-  activity?: Prisma.activityOmit
-  appointment?: Prisma.appointmentOmit
-  userAppointment?: Prisma.userAppointmentOmit
->>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   qR?: Prisma.QROmit
 }
 
