@@ -57,7 +57,21 @@ export type User = Prisma.UserModel
  */
 export type CreditCard = Prisma.CreditCardModel
 /**
+<<<<<<< HEAD
  * Model Activity
+=======
+ * Model employee
+ * 
+ */
+export type employee = Prisma.employeeModel
+/**
+ * Model payment
+ * 
+ */
+export type payment = Prisma.paymentModel
+/**
+ * Model activity
+>>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
  * 
  */
 export type Activity = Prisma.ActivityModel

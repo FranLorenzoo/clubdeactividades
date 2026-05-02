@@ -16,7 +16,11 @@ model Role {
   id   Int    @id @default(autoincrement())
   name String
 
+<<<<<<< HEAD
   employees Employee[]
+=======
+  employees employee[]
+>>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 }
 
 model User {
@@ -59,9 +63,13 @@ model Employee {
   password  String
   age       Int?
   suspended Boolean @default(false)
+<<<<<<< HEAD
 
   roleId Int?
   role   Role? @relation(fields: [roleId], references: [id])
+=======
+  active Boolean @default(true)
+>>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 
   activityId Int
   activity   Activity @relation(fields: [activityId], references: [id])
@@ -70,7 +78,56 @@ model Employee {
   appointments Appointment[] // turnos que dicta
 }
 
+<<<<<<< HEAD
 model Appointment {
+=======
+model creditCard {
+  id            Int    @id @default(autoincrement())
+  cardNumber    String
+  securityCode  String
+  cardHolder    String
+  expireDate    DateTime
+
+  userId Int? @unique
+  user   user? @relation(fields: [userId], references: [id])
+}
+
+model employee {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  dni       String  @unique
+  password  String
+  age       Int?
+  suspended Boolean @default(false)
+
+  roleId Int?
+  role   role? @relation(fields: [roleId], references: [id])
+
+  payments payment[]
+}
+
+model payment {
+  id               Int @id @default(autoincrement())
+  userAppointmentId  Int?
+  amount           Decimal?
+  paymentMethod    String
+  paymentDate      DateTime
+  employeeId Int?
+
+  employee employee? @relation(fields: [employeeId], references: [id])
+}
+
+model activity {
+  id             Int     @id @default(autoincrement())
+  name           String
+  slotsAvailable Int?
+  price          Decimal?
+
+  appointments appointment[]
+}
+
+model appointment {
+>>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   id             Int      @id @default(autoincrement())
   initialDate    DateTime
   endDate        DateTime
@@ -88,12 +145,21 @@ model Appointment {
   userAppointments UserAppointment[]
 }
 
+<<<<<<< HEAD
 model UserAppointment {
   id              Int      @id @default(autoincrement())
   type            String?
   attended        Boolean  @default(false)
   reservationDate DateTime @default(now())
   rejected        Boolean  @default(false)
+=======
+model userAppointment {
+  id               Int      @id @default(autoincrement())
+  type             String?
+  attended         Boolean  @default(false)
+  reservationDate  DateTime @default(now())
+  rejected         Boolean  @default(false)
+>>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
 
   userId        Int
   appointmentId Int

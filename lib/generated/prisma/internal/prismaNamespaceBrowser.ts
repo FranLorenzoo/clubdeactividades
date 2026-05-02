@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+<<<<<<< HEAD
   Role: 'Role',
   User: 'User',
   CreditCard: 'CreditCard',
@@ -59,6 +60,16 @@ export const ModelName = {
   Appointment: 'Appointment',
   UserAppointment: 'UserAppointment',
   Payment: 'Payment',
+=======
+  role: 'role',
+  user: 'user',
+  creditCard: 'creditCard',
+  employee: 'employee',
+  payment: 'payment',
+  activity: 'activity',
+  appointment: 'appointment',
+  userAppointment: 'userAppointment',
+>>>>>>> c5fad0fc955ec1e5336ab72458d890e3eb68841b
   QR: 'QR'
 } as const
 
@@ -109,6 +120,31 @@ export const CreditCardScalarFieldEnum = {
 } as const
 
 export type CreditCardScalarFieldEnum = (typeof CreditCardScalarFieldEnum)[keyof typeof CreditCardScalarFieldEnum]
+
+
+export const EmployeeScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  dni: 'dni',
+  password: 'password',
+  age: 'age',
+  suspended: 'suspended',
+  roleId: 'roleId'
+} as const
+
+export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  userAppointmentId: 'userAppointmentId',
+  amount: 'amount',
+  paymentMethod: 'paymentMethod',
+  paymentDate: 'paymentDate',
+  employeeId: 'employeeId'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const ActivityScalarFieldEnum = {
