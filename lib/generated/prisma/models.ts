@@ -8,11 +8,13 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/role'
-export type * from './models/user'
-export type * from './models/creditCard'
-export type * from './models/activity'
-export type * from './models/appointment'
-export type * from './models/userAppointment'
+export type * from './models/Role'
+export type * from './models/User'
+export type * from './models/CreditCard'
+export type * from './models/Activity'
+export type * from './models/Employee'
+export type * from './models/Appointment'
+export type * from './models/UserAppointment'
+export type * from './models/Payment'
 export type * from './models/QR'
 export type * from './commonInputTypes'

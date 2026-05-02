@@ -51,12 +51,14 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  role: 'role',
-  user: 'user',
-  creditCard: 'creditCard',
-  activity: 'activity',
-  appointment: 'appointment',
-  userAppointment: 'userAppointment',
+  Role: 'Role',
+  User: 'User',
+  CreditCard: 'CreditCard',
+  Activity: 'Activity',
+  Employee: 'Employee',
+  Appointment: 'Appointment',
+  UserAppointment: 'UserAppointment',
+  Payment: 'Payment',
   QR: 'QR'
 } as const
 
@@ -91,7 +93,7 @@ export const UserScalarFieldEnum = {
   password: 'password',
   age: 'age',
   suspended: 'suspended',
-  roleId: 'roleId'
+  active: 'active'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -112,11 +114,24 @@ export type CreditCardScalarFieldEnum = (typeof CreditCardScalarFieldEnum)[keyof
 export const ActivityScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  slotsAvailable: 'slotsAvailable',
   price: 'price'
 } as const
 
 export type ActivityScalarFieldEnum = (typeof ActivityScalarFieldEnum)[keyof typeof ActivityScalarFieldEnum]
+
+
+export const EmployeeScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  dni: 'dni',
+  password: 'password',
+  age: 'age',
+  suspended: 'suspended',
+  roleId: 'roleId',
+  activityId: 'activityId'
+} as const
+
+export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
 
 
 export const AppointmentScalarFieldEnum = {
@@ -125,7 +140,9 @@ export const AppointmentScalarFieldEnum = {
   endDate: 'endDate',
   currentSlots: 'currentSlots',
   slotsAvailable: 'slotsAvailable',
-  activityId: 'activityId'
+  price: 'price',
+  activityId: 'activityId',
+  professorId: 'professorId'
 } as const
 
 export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
@@ -137,12 +154,23 @@ export const UserAppointmentScalarFieldEnum = {
   attended: 'attended',
   reservationDate: 'reservationDate',
   rejected: 'rejected',
-  amount: 'amount',
   userId: 'userId',
   appointmentId: 'appointmentId'
 } as const
 
 export type UserAppointmentScalarFieldEnum = (typeof UserAppointmentScalarFieldEnum)[keyof typeof UserAppointmentScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  userAppointmentId: 'userAppointmentId',
+  amount: 'amount',
+  paymentMethod: 'paymentMethod',
+  paymentDate: 'paymentDate',
+  employeeId: 'employeeId'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
 
 
 export const QRScalarFieldEnum = {

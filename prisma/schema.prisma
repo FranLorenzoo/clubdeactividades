@@ -12,14 +12,47 @@ datasource db {
   provider = "postgresql"
 }
 
-model role {
-  id    Int    @id @default(autoincrement())
-  name  String
+model Role {
+  id   Int    @id @default(autoincrement())
+  name String
 
-  users user[]
+  employees Employee[]
 }
 
-model user {
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  dni       String  @unique
+  password  String
+  age       Int?
+  suspended Boolean @default(false)
+  active    Boolean @default(true)
+
+  creditCard       CreditCard?
+  userAppointments UserAppointment[]
+}
+
+model CreditCard {
+  id           Int      @id @default(autoincrement())
+  cardNumber   String
+  securityCode String
+  cardHolder   String
+  expireDate   DateTime
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Activity {
+  id    Int     @id @default(autoincrement())
+  name  String
+  price Decimal
+
+  appointments Appointment[]
+  employees    Employee[]
+}
+
+model Employee {
   id        Int     @id @default(autoincrement())
   email     String  @unique
   dni       String  @unique
@@ -28,66 +61,74 @@ model user {
   suspended Boolean @default(false)
 
   roleId Int?
-  role   role? @relation(fields: [roleId], references: [id])
+  role   Role? @relation(fields: [roleId], references: [id])
 
-  creditCard      creditCard?
-  userAppointments userAppointment[]
+  activityId Int
+  activity   Activity @relation(fields: [activityId], references: [id])
+
+  payments     Payment[]
+  appointments Appointment[] // turnos que dicta
 }
 
-model creditCard {
-  id            Int    @id @default(autoincrement())
-  cardNumber    String
-  securityCode  String
-  cardHolder    String
-  expireDate    DateTime
-
-  userId Int? @unique
-  user   user? @relation(fields: [userId], references: [id])
-}
-
-model activity {
-  id             Int     @id @default(autoincrement())
-  name           String
-  slotsAvailable Int?
-  price          Decimal?
-
-  appointments appointment[]
-}
-
-model appointment {
+model Appointment {
   id             Int      @id @default(autoincrement())
   initialDate    DateTime
   endDate        DateTime
   currentSlots   Int?
   slotsAvailable Int?
 
-  activityId Int?
-  activity   activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  price Decimal
 
-  userAppointments userAppointment[]
+  activityId Int
+  activity   Activity @relation(fields: [activityId], references: [id])
+
+  professorId Int
+  professor   Employee @relation(fields: [professorId], references: [id])
+
+  userAppointments UserAppointment[]
 }
 
-model userAppointment {
-  id               Int      @id @default(autoincrement())
-  type             String?
-  attended         Boolean  @default(false)
-  reservationDate  DateTime @default(now())
-  rejected         Boolean  @default(false)
-  amount           Decimal?
+model UserAppointment {
+  id              Int      @id @default(autoincrement())
+  type            String?
+  attended        Boolean  @default(false)
+  reservationDate DateTime @default(now())
+  rejected        Boolean  @default(false)
 
   userId        Int
   appointmentId Int
 
-  user        user        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  appointment appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
 
-  qr QR?
+  qr       QR?
+  payments Payment[]
+
+  @@unique([userId, appointmentId])
+}
+
+model Payment {
+  id                Int      @id @default(autoincrement())
+  userAppointmentId Int
+  amount            Decimal
+  paymentMethod     PaymentMethod
+  paymentDate       DateTime
+
+  employeeId Int?
+
+  employee        Employee?        @relation(fields: [employeeId], references: [id])
+  userAppointment UserAppointment @relation(fields: [userAppointmentId], references: [id])
 }
 
 model QR {
-  id                   Int     @id @default(autoincrement())
-  used                 Boolean @default(false)
+  id                Int     @id @default(autoincrement())
+  used              Boolean @default(false)
 
   userAppointmentId Int  @unique
-  userAppointment   userAppointment @relation(fields: [userAppointmentId], references: [id], onDelete: Cascade)
+  userAppointment   UserAppointment @relation(fields: [userAppointmentId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
 }

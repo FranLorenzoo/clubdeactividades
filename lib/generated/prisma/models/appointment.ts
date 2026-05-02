@@ -4,7 +4,7 @@
 // biome-ignore-all lint: generated file
 // @ts-nocheck 
 /*
- * This file exports the `appointment` model and its related types.
+ * This file exports the `Appointment` model and its related types.
  *
  * 🟢 You can import this file directly.
  */
@@ -13,10 +13,10 @@ import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
 /**
- * Model appointment
+ * Model Appointment
  * 
  */
-export type appointmentModel = runtime.Types.Result.DefaultSelection<Prisma.$appointmentPayload>
+export type AppointmentModel = runtime.Types.Result.DefaultSelection<Prisma.$AppointmentPayload>
 
 export type AggregateAppointment = {
   _count: AppointmentCountAggregateOutputType | null
@@ -30,14 +30,18 @@ export type AppointmentAvgAggregateOutputType = {
   id: number | null
   currentSlots: number | null
   slotsAvailable: number | null
+  price: runtime.Decimal | null
   activityId: number | null
+  professorId: number | null
 }
 
 export type AppointmentSumAggregateOutputType = {
   id: number | null
   currentSlots: number | null
   slotsAvailable: number | null
+  price: runtime.Decimal | null
   activityId: number | null
+  professorId: number | null
 }
 
 export type AppointmentMinAggregateOutputType = {
@@ -46,7 +50,9 @@ export type AppointmentMinAggregateOutputType = {
   endDate: Date | null
   currentSlots: number | null
   slotsAvailable: number | null
+  price: runtime.Decimal | null
   activityId: number | null
+  professorId: number | null
 }
 
 export type AppointmentMaxAggregateOutputType = {
@@ -55,7 +61,9 @@ export type AppointmentMaxAggregateOutputType = {
   endDate: Date | null
   currentSlots: number | null
   slotsAvailable: number | null
+  price: runtime.Decimal | null
   activityId: number | null
+  professorId: number | null
 }
 
 export type AppointmentCountAggregateOutputType = {
@@ -64,7 +72,9 @@ export type AppointmentCountAggregateOutputType = {
   endDate: number
   currentSlots: number
   slotsAvailable: number
+  price: number
   activityId: number
+  professorId: number
   _all: number
 }
 
@@ -73,14 +83,18 @@ export type AppointmentAvgAggregateInputType = {
   id?: true
   currentSlots?: true
   slotsAvailable?: true
+  price?: true
   activityId?: true
+  professorId?: true
 }
 
 export type AppointmentSumAggregateInputType = {
   id?: true
   currentSlots?: true
   slotsAvailable?: true
+  price?: true
   activityId?: true
+  professorId?: true
 }
 
 export type AppointmentMinAggregateInputType = {
@@ -89,7 +103,9 @@ export type AppointmentMinAggregateInputType = {
   endDate?: true
   currentSlots?: true
   slotsAvailable?: true
+  price?: true
   activityId?: true
+  professorId?: true
 }
 
 export type AppointmentMaxAggregateInputType = {
@@ -98,7 +114,9 @@ export type AppointmentMaxAggregateInputType = {
   endDate?: true
   currentSlots?: true
   slotsAvailable?: true
+  price?: true
   activityId?: true
+  professorId?: true
 }
 
 export type AppointmentCountAggregateInputType = {
@@ -107,43 +125,45 @@ export type AppointmentCountAggregateInputType = {
   endDate?: true
   currentSlots?: true
   slotsAvailable?: true
+  price?: true
   activityId?: true
+  professorId?: true
   _all?: true
 }
 
 export type AppointmentAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which appointment to aggregate.
+   * Filter which Appointment to aggregate.
    */
-  where?: Prisma.appointmentWhereInput
+  where?: Prisma.AppointmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of appointments to fetch.
+   * Determine the order of Appointments to fetch.
    */
-  orderBy?: Prisma.appointmentOrderByWithRelationInput | Prisma.appointmentOrderByWithRelationInput[]
+  orderBy?: Prisma.AppointmentOrderByWithRelationInput | Prisma.AppointmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
    * Sets the start position
    */
-  cursor?: Prisma.appointmentWhereUniqueInput
+  cursor?: Prisma.AppointmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` appointments from the position of the cursor.
+   * Take `±n` Appointments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` appointments.
+   * Skip the first `n` Appointments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Count returned appointments
+   * Count returned Appointments
   **/
   _count?: true | AppointmentCountAggregateInputType
   /**
@@ -183,11 +203,11 @@ export type GetAppointmentAggregateType<T extends AppointmentAggregateArgs> = {
 
 
 
-export type appointmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.appointmentWhereInput
-  orderBy?: Prisma.appointmentOrderByWithAggregationInput | Prisma.appointmentOrderByWithAggregationInput[]
+export type AppointmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AppointmentWhereInput
+  orderBy?: Prisma.AppointmentOrderByWithAggregationInput | Prisma.AppointmentOrderByWithAggregationInput[]
   by: Prisma.AppointmentScalarFieldEnum[] | Prisma.AppointmentScalarFieldEnum
-  having?: Prisma.appointmentScalarWhereWithAggregatesInput
+  having?: Prisma.AppointmentScalarWhereWithAggregatesInput
   take?: number
   skip?: number
   _count?: AppointmentCountAggregateInputType | true
@@ -203,7 +223,9 @@ export type AppointmentGroupByOutputType = {
   endDate: Date
   currentSlots: number | null
   slotsAvailable: number | null
-  activityId: number | null
+  price: runtime.Decimal
+  activityId: number
+  professorId: number
   _count: AppointmentCountAggregateOutputType | null
   _avg: AppointmentAvgAggregateOutputType | null
   _sum: AppointmentSumAggregateOutputType | null
@@ -211,7 +233,7 @@ export type AppointmentGroupByOutputType = {
   _max: AppointmentMaxAggregateOutputType | null
 }
 
-type GetAppointmentGroupByPayload<T extends appointmentGroupByArgs> = Prisma.PrismaPromise<
+type GetAppointmentGroupByPayload<T extends AppointmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<AppointmentGroupByOutputType, T['by']> &
       {
@@ -226,382 +248,570 @@ type GetAppointmentGroupByPayload<T extends appointmentGroupByArgs> = Prisma.Pri
 
 
 
-export type appointmentWhereInput = {
-  AND?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
-  OR?: Prisma.appointmentWhereInput[]
-  NOT?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
-  id?: Prisma.IntFilter<"appointment"> | number
-  initialDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  endDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  currentSlots?: Prisma.IntNullableFilter<"appointment"> | number | null
-  slotsAvailable?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activityId?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activity?: Prisma.XOR<Prisma.ActivityNullableScalarRelationFilter, Prisma.activityWhereInput> | null
+export type AppointmentWhereInput = {
+  AND?: Prisma.AppointmentWhereInput | Prisma.AppointmentWhereInput[]
+  OR?: Prisma.AppointmentWhereInput[]
+  NOT?: Prisma.AppointmentWhereInput | Prisma.AppointmentWhereInput[]
+  id?: Prisma.IntFilter<"Appointment"> | number
+  initialDate?: Prisma.DateTimeFilter<"Appointment"> | Date | string
+  endDate?: Prisma.DateTimeFilter<"Appointment"> | Date | string
+  currentSlots?: Prisma.IntNullableFilter<"Appointment"> | number | null
+  slotsAvailable?: Prisma.IntNullableFilter<"Appointment"> | number | null
+  price?: Prisma.DecimalFilter<"Appointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntFilter<"Appointment"> | number
+  professorId?: Prisma.IntFilter<"Appointment"> | number
+  activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.ActivityWhereInput>
+  professor?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }
 
-export type appointmentOrderByWithRelationInput = {
+export type AppointmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrderInput | Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
-  activity?: Prisma.activityOrderByWithRelationInput
-  userAppointments?: Prisma.userAppointmentOrderByRelationAggregateInput
+  price?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
+  activity?: Prisma.ActivityOrderByWithRelationInput
+  professor?: Prisma.EmployeeOrderByWithRelationInput
+  userAppointments?: Prisma.UserAppointmentOrderByRelationAggregateInput
 }
 
-export type appointmentWhereUniqueInput = Prisma.AtLeast<{
+export type AppointmentWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  AND?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
-  OR?: Prisma.appointmentWhereInput[]
-  NOT?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
-  initialDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  endDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  currentSlots?: Prisma.IntNullableFilter<"appointment"> | number | null
-  slotsAvailable?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activityId?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activity?: Prisma.XOR<Prisma.ActivityNullableScalarRelationFilter, Prisma.activityWhereInput> | null
+  AND?: Prisma.AppointmentWhereInput | Prisma.AppointmentWhereInput[]
+  OR?: Prisma.AppointmentWhereInput[]
+  NOT?: Prisma.AppointmentWhereInput | Prisma.AppointmentWhereInput[]
+  initialDate?: Prisma.DateTimeFilter<"Appointment"> | Date | string
+  endDate?: Prisma.DateTimeFilter<"Appointment"> | Date | string
+  currentSlots?: Prisma.IntNullableFilter<"Appointment"> | number | null
+  slotsAvailable?: Prisma.IntNullableFilter<"Appointment"> | number | null
+  price?: Prisma.DecimalFilter<"Appointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntFilter<"Appointment"> | number
+  professorId?: Prisma.IntFilter<"Appointment"> | number
+  activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.ActivityWhereInput>
+  professor?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }, "id">
 
-export type appointmentOrderByWithAggregationInput = {
+export type AppointmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrderInput | Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
-  _count?: Prisma.appointmentCountOrderByAggregateInput
-  _avg?: Prisma.appointmentAvgOrderByAggregateInput
-  _max?: Prisma.appointmentMaxOrderByAggregateInput
-  _min?: Prisma.appointmentMinOrderByAggregateInput
-  _sum?: Prisma.appointmentSumOrderByAggregateInput
+  price?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
+  _count?: Prisma.AppointmentCountOrderByAggregateInput
+  _avg?: Prisma.AppointmentAvgOrderByAggregateInput
+  _max?: Prisma.AppointmentMaxOrderByAggregateInput
+  _min?: Prisma.AppointmentMinOrderByAggregateInput
+  _sum?: Prisma.AppointmentSumOrderByAggregateInput
 }
 
-export type appointmentScalarWhereWithAggregatesInput = {
-  AND?: Prisma.appointmentScalarWhereWithAggregatesInput | Prisma.appointmentScalarWhereWithAggregatesInput[]
-  OR?: Prisma.appointmentScalarWhereWithAggregatesInput[]
-  NOT?: Prisma.appointmentScalarWhereWithAggregatesInput | Prisma.appointmentScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"appointment"> | number
-  initialDate?: Prisma.DateTimeWithAggregatesFilter<"appointment"> | Date | string
-  endDate?: Prisma.DateTimeWithAggregatesFilter<"appointment"> | Date | string
-  currentSlots?: Prisma.IntNullableWithAggregatesFilter<"appointment"> | number | null
-  slotsAvailable?: Prisma.IntNullableWithAggregatesFilter<"appointment"> | number | null
-  activityId?: Prisma.IntNullableWithAggregatesFilter<"appointment"> | number | null
+export type AppointmentScalarWhereWithAggregatesInput = {
+  AND?: Prisma.AppointmentScalarWhereWithAggregatesInput | Prisma.AppointmentScalarWhereWithAggregatesInput[]
+  OR?: Prisma.AppointmentScalarWhereWithAggregatesInput[]
+  NOT?: Prisma.AppointmentScalarWhereWithAggregatesInput | Prisma.AppointmentScalarWhereWithAggregatesInput[]
+  id?: Prisma.IntWithAggregatesFilter<"Appointment"> | number
+  initialDate?: Prisma.DateTimeWithAggregatesFilter<"Appointment"> | Date | string
+  endDate?: Prisma.DateTimeWithAggregatesFilter<"Appointment"> | Date | string
+  currentSlots?: Prisma.IntNullableWithAggregatesFilter<"Appointment"> | number | null
+  slotsAvailable?: Prisma.IntNullableWithAggregatesFilter<"Appointment"> | number | null
+  price?: Prisma.DecimalWithAggregatesFilter<"Appointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntWithAggregatesFilter<"Appointment"> | number
+  professorId?: Prisma.IntWithAggregatesFilter<"Appointment"> | number
 }
 
-export type appointmentCreateInput = {
+export type AppointmentCreateInput = {
   initialDate: Date | string
   endDate: Date | string
   currentSlots?: number | null
   slotsAvailable?: number | null
-  activity?: Prisma.activityCreateNestedOneWithoutAppointmentsInput
-  userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutAppointmentInput
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activity: Prisma.ActivityCreateNestedOneWithoutAppointmentsInput
+  professor: Prisma.EmployeeCreateNestedOneWithoutAppointmentsInput
+  userAppointments?: Prisma.UserAppointmentCreateNestedManyWithoutAppointmentInput
 }
 
-export type appointmentUncheckedCreateInput = {
+export type AppointmentUncheckedCreateInput = {
   id?: number
   initialDate: Date | string
   endDate: Date | string
   currentSlots?: number | null
   slotsAvailable?: number | null
-  activityId?: number | null
-  userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId: number
+  professorId: number
+  userAppointments?: Prisma.UserAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
-export type appointmentUpdateInput = {
+export type AppointmentUpdateInput = {
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activity?: Prisma.activityUpdateOneWithoutAppointmentsNestedInput
-  userAppointments?: Prisma.userAppointmentUpdateManyWithoutAppointmentNestedInput
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activity?: Prisma.ActivityUpdateOneRequiredWithoutAppointmentsNestedInput
+  professor?: Prisma.EmployeeUpdateOneRequiredWithoutAppointmentsNestedInput
+  userAppointments?: Prisma.UserAppointmentUpdateManyWithoutAppointmentNestedInput
 }
 
-export type appointmentUncheckedUpdateInput = {
+export type AppointmentUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activityId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
+  userAppointments?: Prisma.UserAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
 }
 
-export type appointmentCreateManyInput = {
+export type AppointmentCreateManyInput = {
   id?: number
   initialDate: Date | string
   endDate: Date | string
   currentSlots?: number | null
   slotsAvailable?: number | null
-  activityId?: number | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId: number
+  professorId: number
 }
 
-export type appointmentUpdateManyMutationInput = {
+export type AppointmentUpdateManyMutationInput = {
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
-export type appointmentUncheckedUpdateManyInput = {
+export type AppointmentUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activityId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type AppointmentListRelationFilter = {
-  every?: Prisma.appointmentWhereInput
-  some?: Prisma.appointmentWhereInput
-  none?: Prisma.appointmentWhereInput
+  every?: Prisma.AppointmentWhereInput
+  some?: Prisma.AppointmentWhereInput
+  none?: Prisma.AppointmentWhereInput
 }
 
-export type appointmentOrderByRelationAggregateInput = {
+export type AppointmentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type appointmentCountOrderByAggregateInput = {
+export type AppointmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
 }
 
-export type appointmentAvgOrderByAggregateInput = {
+export type AppointmentAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
 }
 
-export type appointmentMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  initialDate?: Prisma.SortOrder
-  endDate?: Prisma.SortOrder
-  currentSlots?: Prisma.SortOrder
-  slotsAvailable?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
-}
-
-export type appointmentMinOrderByAggregateInput = {
+export type AppointmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
 }
 
-export type appointmentSumOrderByAggregateInput = {
+export type AppointmentMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  initialDate?: Prisma.SortOrder
+  endDate?: Prisma.SortOrder
+  currentSlots?: Prisma.SortOrder
+  slotsAvailable?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
+}
+
+export type AppointmentSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  price?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
 }
 
 export type AppointmentScalarRelationFilter = {
-  is?: Prisma.appointmentWhereInput
-  isNot?: Prisma.appointmentWhereInput
+  is?: Prisma.AppointmentWhereInput
+  isNot?: Prisma.AppointmentWhereInput
 }
 
-export type appointmentCreateNestedManyWithoutActivityInput = {
-  create?: Prisma.XOR<Prisma.appointmentCreateWithoutActivityInput, Prisma.appointmentUncheckedCreateWithoutActivityInput> | Prisma.appointmentCreateWithoutActivityInput[] | Prisma.appointmentUncheckedCreateWithoutActivityInput[]
-  connectOrCreate?: Prisma.appointmentCreateOrConnectWithoutActivityInput | Prisma.appointmentCreateOrConnectWithoutActivityInput[]
-  createMany?: Prisma.appointmentCreateManyActivityInputEnvelope
-  connect?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
+export type AppointmentCreateNestedManyWithoutActivityInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutActivityInput, Prisma.AppointmentUncheckedCreateWithoutActivityInput> | Prisma.AppointmentCreateWithoutActivityInput[] | Prisma.AppointmentUncheckedCreateWithoutActivityInput[]
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutActivityInput | Prisma.AppointmentCreateOrConnectWithoutActivityInput[]
+  createMany?: Prisma.AppointmentCreateManyActivityInputEnvelope
+  connect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
 }
 
-export type appointmentUncheckedCreateNestedManyWithoutActivityInput = {
-  create?: Prisma.XOR<Prisma.appointmentCreateWithoutActivityInput, Prisma.appointmentUncheckedCreateWithoutActivityInput> | Prisma.appointmentCreateWithoutActivityInput[] | Prisma.appointmentUncheckedCreateWithoutActivityInput[]
-  connectOrCreate?: Prisma.appointmentCreateOrConnectWithoutActivityInput | Prisma.appointmentCreateOrConnectWithoutActivityInput[]
-  createMany?: Prisma.appointmentCreateManyActivityInputEnvelope
-  connect?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
+export type AppointmentUncheckedCreateNestedManyWithoutActivityInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutActivityInput, Prisma.AppointmentUncheckedCreateWithoutActivityInput> | Prisma.AppointmentCreateWithoutActivityInput[] | Prisma.AppointmentUncheckedCreateWithoutActivityInput[]
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutActivityInput | Prisma.AppointmentCreateOrConnectWithoutActivityInput[]
+  createMany?: Prisma.AppointmentCreateManyActivityInputEnvelope
+  connect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
 }
 
-export type appointmentUpdateManyWithoutActivityNestedInput = {
-  create?: Prisma.XOR<Prisma.appointmentCreateWithoutActivityInput, Prisma.appointmentUncheckedCreateWithoutActivityInput> | Prisma.appointmentCreateWithoutActivityInput[] | Prisma.appointmentUncheckedCreateWithoutActivityInput[]
-  connectOrCreate?: Prisma.appointmentCreateOrConnectWithoutActivityInput | Prisma.appointmentCreateOrConnectWithoutActivityInput[]
-  upsert?: Prisma.appointmentUpsertWithWhereUniqueWithoutActivityInput | Prisma.appointmentUpsertWithWhereUniqueWithoutActivityInput[]
-  createMany?: Prisma.appointmentCreateManyActivityInputEnvelope
-  set?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
-  disconnect?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
-  delete?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
-  connect?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
-  update?: Prisma.appointmentUpdateWithWhereUniqueWithoutActivityInput | Prisma.appointmentUpdateWithWhereUniqueWithoutActivityInput[]
-  updateMany?: Prisma.appointmentUpdateManyWithWhereWithoutActivityInput | Prisma.appointmentUpdateManyWithWhereWithoutActivityInput[]
-  deleteMany?: Prisma.appointmentScalarWhereInput | Prisma.appointmentScalarWhereInput[]
+export type AppointmentUpdateManyWithoutActivityNestedInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutActivityInput, Prisma.AppointmentUncheckedCreateWithoutActivityInput> | Prisma.AppointmentCreateWithoutActivityInput[] | Prisma.AppointmentUncheckedCreateWithoutActivityInput[]
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutActivityInput | Prisma.AppointmentCreateOrConnectWithoutActivityInput[]
+  upsert?: Prisma.AppointmentUpsertWithWhereUniqueWithoutActivityInput | Prisma.AppointmentUpsertWithWhereUniqueWithoutActivityInput[]
+  createMany?: Prisma.AppointmentCreateManyActivityInputEnvelope
+  set?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  disconnect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  delete?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  connect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  update?: Prisma.AppointmentUpdateWithWhereUniqueWithoutActivityInput | Prisma.AppointmentUpdateWithWhereUniqueWithoutActivityInput[]
+  updateMany?: Prisma.AppointmentUpdateManyWithWhereWithoutActivityInput | Prisma.AppointmentUpdateManyWithWhereWithoutActivityInput[]
+  deleteMany?: Prisma.AppointmentScalarWhereInput | Prisma.AppointmentScalarWhereInput[]
 }
 
-export type appointmentUncheckedUpdateManyWithoutActivityNestedInput = {
-  create?: Prisma.XOR<Prisma.appointmentCreateWithoutActivityInput, Prisma.appointmentUncheckedCreateWithoutActivityInput> | Prisma.appointmentCreateWithoutActivityInput[] | Prisma.appointmentUncheckedCreateWithoutActivityInput[]
-  connectOrCreate?: Prisma.appointmentCreateOrConnectWithoutActivityInput | Prisma.appointmentCreateOrConnectWithoutActivityInput[]
-  upsert?: Prisma.appointmentUpsertWithWhereUniqueWithoutActivityInput | Prisma.appointmentUpsertWithWhereUniqueWithoutActivityInput[]
-  createMany?: Prisma.appointmentCreateManyActivityInputEnvelope
-  set?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
-  disconnect?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
-  delete?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
-  connect?: Prisma.appointmentWhereUniqueInput | Prisma.appointmentWhereUniqueInput[]
-  update?: Prisma.appointmentUpdateWithWhereUniqueWithoutActivityInput | Prisma.appointmentUpdateWithWhereUniqueWithoutActivityInput[]
-  updateMany?: Prisma.appointmentUpdateManyWithWhereWithoutActivityInput | Prisma.appointmentUpdateManyWithWhereWithoutActivityInput[]
-  deleteMany?: Prisma.appointmentScalarWhereInput | Prisma.appointmentScalarWhereInput[]
+export type AppointmentUncheckedUpdateManyWithoutActivityNestedInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutActivityInput, Prisma.AppointmentUncheckedCreateWithoutActivityInput> | Prisma.AppointmentCreateWithoutActivityInput[] | Prisma.AppointmentUncheckedCreateWithoutActivityInput[]
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutActivityInput | Prisma.AppointmentCreateOrConnectWithoutActivityInput[]
+  upsert?: Prisma.AppointmentUpsertWithWhereUniqueWithoutActivityInput | Prisma.AppointmentUpsertWithWhereUniqueWithoutActivityInput[]
+  createMany?: Prisma.AppointmentCreateManyActivityInputEnvelope
+  set?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  disconnect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  delete?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  connect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  update?: Prisma.AppointmentUpdateWithWhereUniqueWithoutActivityInput | Prisma.AppointmentUpdateWithWhereUniqueWithoutActivityInput[]
+  updateMany?: Prisma.AppointmentUpdateManyWithWhereWithoutActivityInput | Prisma.AppointmentUpdateManyWithWhereWithoutActivityInput[]
+  deleteMany?: Prisma.AppointmentScalarWhereInput | Prisma.AppointmentScalarWhereInput[]
 }
 
-export type appointmentCreateNestedOneWithoutUserAppointmentsInput = {
-  create?: Prisma.XOR<Prisma.appointmentCreateWithoutUserAppointmentsInput, Prisma.appointmentUncheckedCreateWithoutUserAppointmentsInput>
-  connectOrCreate?: Prisma.appointmentCreateOrConnectWithoutUserAppointmentsInput
-  connect?: Prisma.appointmentWhereUniqueInput
+export type AppointmentCreateNestedManyWithoutProfessorInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutProfessorInput, Prisma.AppointmentUncheckedCreateWithoutProfessorInput> | Prisma.AppointmentCreateWithoutProfessorInput[] | Prisma.AppointmentUncheckedCreateWithoutProfessorInput[]
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutProfessorInput | Prisma.AppointmentCreateOrConnectWithoutProfessorInput[]
+  createMany?: Prisma.AppointmentCreateManyProfessorInputEnvelope
+  connect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
 }
 
-export type appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput = {
-  create?: Prisma.XOR<Prisma.appointmentCreateWithoutUserAppointmentsInput, Prisma.appointmentUncheckedCreateWithoutUserAppointmentsInput>
-  connectOrCreate?: Prisma.appointmentCreateOrConnectWithoutUserAppointmentsInput
-  upsert?: Prisma.appointmentUpsertWithoutUserAppointmentsInput
-  connect?: Prisma.appointmentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.appointmentUpdateToOneWithWhereWithoutUserAppointmentsInput, Prisma.appointmentUpdateWithoutUserAppointmentsInput>, Prisma.appointmentUncheckedUpdateWithoutUserAppointmentsInput>
+export type AppointmentUncheckedCreateNestedManyWithoutProfessorInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutProfessorInput, Prisma.AppointmentUncheckedCreateWithoutProfessorInput> | Prisma.AppointmentCreateWithoutProfessorInput[] | Prisma.AppointmentUncheckedCreateWithoutProfessorInput[]
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutProfessorInput | Prisma.AppointmentCreateOrConnectWithoutProfessorInput[]
+  createMany?: Prisma.AppointmentCreateManyProfessorInputEnvelope
+  connect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
 }
 
-export type appointmentCreateWithoutActivityInput = {
+export type AppointmentUpdateManyWithoutProfessorNestedInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutProfessorInput, Prisma.AppointmentUncheckedCreateWithoutProfessorInput> | Prisma.AppointmentCreateWithoutProfessorInput[] | Prisma.AppointmentUncheckedCreateWithoutProfessorInput[]
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutProfessorInput | Prisma.AppointmentCreateOrConnectWithoutProfessorInput[]
+  upsert?: Prisma.AppointmentUpsertWithWhereUniqueWithoutProfessorInput | Prisma.AppointmentUpsertWithWhereUniqueWithoutProfessorInput[]
+  createMany?: Prisma.AppointmentCreateManyProfessorInputEnvelope
+  set?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  disconnect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  delete?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  connect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  update?: Prisma.AppointmentUpdateWithWhereUniqueWithoutProfessorInput | Prisma.AppointmentUpdateWithWhereUniqueWithoutProfessorInput[]
+  updateMany?: Prisma.AppointmentUpdateManyWithWhereWithoutProfessorInput | Prisma.AppointmentUpdateManyWithWhereWithoutProfessorInput[]
+  deleteMany?: Prisma.AppointmentScalarWhereInput | Prisma.AppointmentScalarWhereInput[]
+}
+
+export type AppointmentUncheckedUpdateManyWithoutProfessorNestedInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutProfessorInput, Prisma.AppointmentUncheckedCreateWithoutProfessorInput> | Prisma.AppointmentCreateWithoutProfessorInput[] | Prisma.AppointmentUncheckedCreateWithoutProfessorInput[]
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutProfessorInput | Prisma.AppointmentCreateOrConnectWithoutProfessorInput[]
+  upsert?: Prisma.AppointmentUpsertWithWhereUniqueWithoutProfessorInput | Prisma.AppointmentUpsertWithWhereUniqueWithoutProfessorInput[]
+  createMany?: Prisma.AppointmentCreateManyProfessorInputEnvelope
+  set?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  disconnect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  delete?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  connect?: Prisma.AppointmentWhereUniqueInput | Prisma.AppointmentWhereUniqueInput[]
+  update?: Prisma.AppointmentUpdateWithWhereUniqueWithoutProfessorInput | Prisma.AppointmentUpdateWithWhereUniqueWithoutProfessorInput[]
+  updateMany?: Prisma.AppointmentUpdateManyWithWhereWithoutProfessorInput | Prisma.AppointmentUpdateManyWithWhereWithoutProfessorInput[]
+  deleteMany?: Prisma.AppointmentScalarWhereInput | Prisma.AppointmentScalarWhereInput[]
+}
+
+export type AppointmentCreateNestedOneWithoutUserAppointmentsInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutUserAppointmentsInput, Prisma.AppointmentUncheckedCreateWithoutUserAppointmentsInput>
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutUserAppointmentsInput
+  connect?: Prisma.AppointmentWhereUniqueInput
+}
+
+export type AppointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.AppointmentCreateWithoutUserAppointmentsInput, Prisma.AppointmentUncheckedCreateWithoutUserAppointmentsInput>
+  connectOrCreate?: Prisma.AppointmentCreateOrConnectWithoutUserAppointmentsInput
+  upsert?: Prisma.AppointmentUpsertWithoutUserAppointmentsInput
+  connect?: Prisma.AppointmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AppointmentUpdateToOneWithWhereWithoutUserAppointmentsInput, Prisma.AppointmentUpdateWithoutUserAppointmentsInput>, Prisma.AppointmentUncheckedUpdateWithoutUserAppointmentsInput>
+}
+
+export type AppointmentCreateWithoutActivityInput = {
   initialDate: Date | string
   endDate: Date | string
   currentSlots?: number | null
   slotsAvailable?: number | null
-  userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutAppointmentInput
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  professor: Prisma.EmployeeCreateNestedOneWithoutAppointmentsInput
+  userAppointments?: Prisma.UserAppointmentCreateNestedManyWithoutAppointmentInput
 }
 
-export type appointmentUncheckedCreateWithoutActivityInput = {
+export type AppointmentUncheckedCreateWithoutActivityInput = {
   id?: number
   initialDate: Date | string
   endDate: Date | string
   currentSlots?: number | null
   slotsAvailable?: number | null
-  userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  professorId: number
+  userAppointments?: Prisma.UserAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
-export type appointmentCreateOrConnectWithoutActivityInput = {
-  where: Prisma.appointmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.appointmentCreateWithoutActivityInput, Prisma.appointmentUncheckedCreateWithoutActivityInput>
+export type AppointmentCreateOrConnectWithoutActivityInput = {
+  where: Prisma.AppointmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AppointmentCreateWithoutActivityInput, Prisma.AppointmentUncheckedCreateWithoutActivityInput>
 }
 
-export type appointmentCreateManyActivityInputEnvelope = {
-  data: Prisma.appointmentCreateManyActivityInput | Prisma.appointmentCreateManyActivityInput[]
+export type AppointmentCreateManyActivityInputEnvelope = {
+  data: Prisma.AppointmentCreateManyActivityInput | Prisma.AppointmentCreateManyActivityInput[]
   skipDuplicates?: boolean
 }
 
-export type appointmentUpsertWithWhereUniqueWithoutActivityInput = {
-  where: Prisma.appointmentWhereUniqueInput
-  update: Prisma.XOR<Prisma.appointmentUpdateWithoutActivityInput, Prisma.appointmentUncheckedUpdateWithoutActivityInput>
-  create: Prisma.XOR<Prisma.appointmentCreateWithoutActivityInput, Prisma.appointmentUncheckedCreateWithoutActivityInput>
+export type AppointmentUpsertWithWhereUniqueWithoutActivityInput = {
+  where: Prisma.AppointmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.AppointmentUpdateWithoutActivityInput, Prisma.AppointmentUncheckedUpdateWithoutActivityInput>
+  create: Prisma.XOR<Prisma.AppointmentCreateWithoutActivityInput, Prisma.AppointmentUncheckedCreateWithoutActivityInput>
 }
 
-export type appointmentUpdateWithWhereUniqueWithoutActivityInput = {
-  where: Prisma.appointmentWhereUniqueInput
-  data: Prisma.XOR<Prisma.appointmentUpdateWithoutActivityInput, Prisma.appointmentUncheckedUpdateWithoutActivityInput>
+export type AppointmentUpdateWithWhereUniqueWithoutActivityInput = {
+  where: Prisma.AppointmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.AppointmentUpdateWithoutActivityInput, Prisma.AppointmentUncheckedUpdateWithoutActivityInput>
 }
 
-export type appointmentUpdateManyWithWhereWithoutActivityInput = {
-  where: Prisma.appointmentScalarWhereInput
-  data: Prisma.XOR<Prisma.appointmentUpdateManyMutationInput, Prisma.appointmentUncheckedUpdateManyWithoutActivityInput>
+export type AppointmentUpdateManyWithWhereWithoutActivityInput = {
+  where: Prisma.AppointmentScalarWhereInput
+  data: Prisma.XOR<Prisma.AppointmentUpdateManyMutationInput, Prisma.AppointmentUncheckedUpdateManyWithoutActivityInput>
 }
 
-export type appointmentScalarWhereInput = {
-  AND?: Prisma.appointmentScalarWhereInput | Prisma.appointmentScalarWhereInput[]
-  OR?: Prisma.appointmentScalarWhereInput[]
-  NOT?: Prisma.appointmentScalarWhereInput | Prisma.appointmentScalarWhereInput[]
-  id?: Prisma.IntFilter<"appointment"> | number
-  initialDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  endDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  currentSlots?: Prisma.IntNullableFilter<"appointment"> | number | null
-  slotsAvailable?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activityId?: Prisma.IntNullableFilter<"appointment"> | number | null
+export type AppointmentScalarWhereInput = {
+  AND?: Prisma.AppointmentScalarWhereInput | Prisma.AppointmentScalarWhereInput[]
+  OR?: Prisma.AppointmentScalarWhereInput[]
+  NOT?: Prisma.AppointmentScalarWhereInput | Prisma.AppointmentScalarWhereInput[]
+  id?: Prisma.IntFilter<"Appointment"> | number
+  initialDate?: Prisma.DateTimeFilter<"Appointment"> | Date | string
+  endDate?: Prisma.DateTimeFilter<"Appointment"> | Date | string
+  currentSlots?: Prisma.IntNullableFilter<"Appointment"> | number | null
+  slotsAvailable?: Prisma.IntNullableFilter<"Appointment"> | number | null
+  price?: Prisma.DecimalFilter<"Appointment"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntFilter<"Appointment"> | number
+  professorId?: Prisma.IntFilter<"Appointment"> | number
 }
 
-export type appointmentCreateWithoutUserAppointmentsInput = {
+export type AppointmentCreateWithoutProfessorInput = {
   initialDate: Date | string
   endDate: Date | string
   currentSlots?: number | null
   slotsAvailable?: number | null
-  activity?: Prisma.activityCreateNestedOneWithoutAppointmentsInput
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activity: Prisma.ActivityCreateNestedOneWithoutAppointmentsInput
+  userAppointments?: Prisma.UserAppointmentCreateNestedManyWithoutAppointmentInput
 }
 
-export type appointmentUncheckedCreateWithoutUserAppointmentsInput = {
+export type AppointmentUncheckedCreateWithoutProfessorInput = {
   id?: number
   initialDate: Date | string
   endDate: Date | string
   currentSlots?: number | null
   slotsAvailable?: number | null
-  activityId?: number | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId: number
+  userAppointments?: Prisma.UserAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
-export type appointmentCreateOrConnectWithoutUserAppointmentsInput = {
-  where: Prisma.appointmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.appointmentCreateWithoutUserAppointmentsInput, Prisma.appointmentUncheckedCreateWithoutUserAppointmentsInput>
+export type AppointmentCreateOrConnectWithoutProfessorInput = {
+  where: Prisma.AppointmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AppointmentCreateWithoutProfessorInput, Prisma.AppointmentUncheckedCreateWithoutProfessorInput>
 }
 
-export type appointmentUpsertWithoutUserAppointmentsInput = {
-  update: Prisma.XOR<Prisma.appointmentUpdateWithoutUserAppointmentsInput, Prisma.appointmentUncheckedUpdateWithoutUserAppointmentsInput>
-  create: Prisma.XOR<Prisma.appointmentCreateWithoutUserAppointmentsInput, Prisma.appointmentUncheckedCreateWithoutUserAppointmentsInput>
-  where?: Prisma.appointmentWhereInput
+export type AppointmentCreateManyProfessorInputEnvelope = {
+  data: Prisma.AppointmentCreateManyProfessorInput | Prisma.AppointmentCreateManyProfessorInput[]
+  skipDuplicates?: boolean
 }
 
-export type appointmentUpdateToOneWithWhereWithoutUserAppointmentsInput = {
-  where?: Prisma.appointmentWhereInput
-  data: Prisma.XOR<Prisma.appointmentUpdateWithoutUserAppointmentsInput, Prisma.appointmentUncheckedUpdateWithoutUserAppointmentsInput>
+export type AppointmentUpsertWithWhereUniqueWithoutProfessorInput = {
+  where: Prisma.AppointmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.AppointmentUpdateWithoutProfessorInput, Prisma.AppointmentUncheckedUpdateWithoutProfessorInput>
+  create: Prisma.XOR<Prisma.AppointmentCreateWithoutProfessorInput, Prisma.AppointmentUncheckedCreateWithoutProfessorInput>
 }
 
-export type appointmentUpdateWithoutUserAppointmentsInput = {
-  initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activity?: Prisma.activityUpdateOneWithoutAppointmentsNestedInput
+export type AppointmentUpdateWithWhereUniqueWithoutProfessorInput = {
+  where: Prisma.AppointmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.AppointmentUpdateWithoutProfessorInput, Prisma.AppointmentUncheckedUpdateWithoutProfessorInput>
 }
 
-export type appointmentUncheckedUpdateWithoutUserAppointmentsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activityId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+export type AppointmentUpdateManyWithWhereWithoutProfessorInput = {
+  where: Prisma.AppointmentScalarWhereInput
+  data: Prisma.XOR<Prisma.AppointmentUpdateManyMutationInput, Prisma.AppointmentUncheckedUpdateManyWithoutProfessorInput>
 }
 
-export type appointmentCreateManyActivityInput = {
+export type AppointmentCreateWithoutUserAppointmentsInput = {
+  initialDate: Date | string
+  endDate: Date | string
+  currentSlots?: number | null
+  slotsAvailable?: number | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activity: Prisma.ActivityCreateNestedOneWithoutAppointmentsInput
+  professor: Prisma.EmployeeCreateNestedOneWithoutAppointmentsInput
+}
+
+export type AppointmentUncheckedCreateWithoutUserAppointmentsInput = {
   id?: number
   initialDate: Date | string
   endDate: Date | string
   currentSlots?: number | null
   slotsAvailable?: number | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId: number
+  professorId: number
 }
 
-export type appointmentUpdateWithoutActivityInput = {
+export type AppointmentCreateOrConnectWithoutUserAppointmentsInput = {
+  where: Prisma.AppointmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AppointmentCreateWithoutUserAppointmentsInput, Prisma.AppointmentUncheckedCreateWithoutUserAppointmentsInput>
+}
+
+export type AppointmentUpsertWithoutUserAppointmentsInput = {
+  update: Prisma.XOR<Prisma.AppointmentUpdateWithoutUserAppointmentsInput, Prisma.AppointmentUncheckedUpdateWithoutUserAppointmentsInput>
+  create: Prisma.XOR<Prisma.AppointmentCreateWithoutUserAppointmentsInput, Prisma.AppointmentUncheckedCreateWithoutUserAppointmentsInput>
+  where?: Prisma.AppointmentWhereInput
+}
+
+export type AppointmentUpdateToOneWithWhereWithoutUserAppointmentsInput = {
+  where?: Prisma.AppointmentWhereInput
+  data: Prisma.XOR<Prisma.AppointmentUpdateWithoutUserAppointmentsInput, Prisma.AppointmentUncheckedUpdateWithoutUserAppointmentsInput>
+}
+
+export type AppointmentUpdateWithoutUserAppointmentsInput = {
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  userAppointments?: Prisma.userAppointmentUpdateManyWithoutAppointmentNestedInput
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activity?: Prisma.ActivityUpdateOneRequiredWithoutAppointmentsNestedInput
+  professor?: Prisma.EmployeeUpdateOneRequiredWithoutAppointmentsNestedInput
 }
 
-export type appointmentUncheckedUpdateWithoutActivityInput = {
+export type AppointmentUncheckedUpdateWithoutUserAppointmentsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type appointmentUncheckedUpdateManyWithoutActivityInput = {
+export type AppointmentCreateManyActivityInput = {
+  id?: number
+  initialDate: Date | string
+  endDate: Date | string
+  currentSlots?: number | null
+  slotsAvailable?: number | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  professorId: number
+}
+
+export type AppointmentUpdateWithoutActivityInput = {
+  initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  professor?: Prisma.EmployeeUpdateOneRequiredWithoutAppointmentsNestedInput
+  userAppointments?: Prisma.UserAppointmentUpdateManyWithoutAppointmentNestedInput
+}
+
+export type AppointmentUncheckedUpdateWithoutActivityInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
+  userAppointments?: Prisma.UserAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
+}
+
+export type AppointmentUncheckedUpdateManyWithoutActivityInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type AppointmentCreateManyProfessorInput = {
+  id?: number
+  initialDate: Date | string
+  endDate: Date | string
+  currentSlots?: number | null
+  slotsAvailable?: number | null
+  price: runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId: number
+}
+
+export type AppointmentUpdateWithoutProfessorInput = {
+  initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activity?: Prisma.ActivityUpdateOneRequiredWithoutAppointmentsNestedInput
+  userAppointments?: Prisma.UserAppointmentUpdateManyWithoutAppointmentNestedInput
+}
+
+export type AppointmentUncheckedUpdateWithoutProfessorInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
+  userAppointments?: Prisma.UserAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
+}
+
+export type AppointmentUncheckedUpdateManyWithoutProfessorInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -631,69 +841,84 @@ export type AppointmentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.
  * AppointmentCountOutputType without action
  */
 export type AppointmentCountOutputTypeCountUserAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.userAppointmentWhereInput
+  where?: Prisma.UserAppointmentWhereInput
 }
 
 
-export type appointmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type AppointmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   initialDate?: boolean
   endDate?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
+  price?: boolean
   activityId?: boolean
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
-  userAppointments?: boolean | Prisma.appointment$userAppointmentsArgs<ExtArgs>
+  professorId?: boolean
+  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  userAppointments?: boolean | Prisma.Appointment$userAppointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.AppointmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointment"]>
 
-export type appointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type AppointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   initialDate?: boolean
   endDate?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
+  price?: boolean
   activityId?: boolean
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
+  professorId?: boolean
+  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointment"]>
 
-export type appointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type AppointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   initialDate?: boolean
   endDate?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
+  price?: boolean
   activityId?: boolean
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
+  professorId?: boolean
+  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointment"]>
 
-export type appointmentSelectScalar = {
+export type AppointmentSelectScalar = {
   id?: boolean
   initialDate?: boolean
   endDate?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
+  price?: boolean
   activityId?: boolean
+  professorId?: boolean
 }
 
-export type appointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "initialDate" | "endDate" | "currentSlots" | "slotsAvailable" | "activityId", ExtArgs["result"]["appointment"]>
-export type appointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
-  userAppointments?: boolean | Prisma.appointment$userAppointmentsArgs<ExtArgs>
+export type AppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "initialDate" | "endDate" | "currentSlots" | "slotsAvailable" | "price" | "activityId" | "professorId", ExtArgs["result"]["appointment"]>
+export type AppointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  userAppointments?: boolean | Prisma.Appointment$userAppointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.AppointmentCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type appointmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
+export type AppointmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }
-export type appointmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
+export type AppointmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
 }
 
-export type $appointmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  name: "appointment"
+export type $AppointmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  name: "Appointment"
   objects: {
-    activity: Prisma.$activityPayload<ExtArgs> | null
-    userAppointments: Prisma.$userAppointmentPayload<ExtArgs>[]
+    activity: Prisma.$ActivityPayload<ExtArgs>
+    professor: Prisma.$EmployeePayload<ExtArgs>
+    userAppointments: Prisma.$UserAppointmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -701,23 +926,25 @@ export type $appointmentPayload<ExtArgs extends runtime.Types.Extensions.Interna
     endDate: Date
     currentSlots: number | null
     slotsAvailable: number | null
-    activityId: number | null
+    price: runtime.Decimal
+    activityId: number
+    professorId: number
   }, ExtArgs["result"]["appointment"]>
   composites: {}
 }
 
-export type appointmentGetPayload<S extends boolean | null | undefined | appointmentDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$appointmentPayload, S>
+export type AppointmentGetPayload<S extends boolean | null | undefined | AppointmentDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$AppointmentPayload, S>
 
-export type appointmentCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<appointmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+export type AppointmentCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+  Omit<AppointmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: AppointmentCountAggregateInputType | true
   }
 
-export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['appointment'], meta: { name: 'appointment' } }
+export interface AppointmentDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Appointment'], meta: { name: 'Appointment' } }
   /**
    * Find zero or one Appointment that matches the filter.
-   * @param {appointmentFindUniqueArgs} args - Arguments to find a Appointment
+   * @param {AppointmentFindUniqueArgs} args - Arguments to find a Appointment
    * @example
    * // Get one Appointment
    * const appointment = await prisma.appointment.findUnique({
@@ -726,12 +953,12 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    *   }
    * })
    */
-  findUnique<T extends appointmentFindUniqueArgs>(args: Prisma.SelectSubset<T, appointmentFindUniqueArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findUnique<T extends AppointmentFindUniqueArgs>(args: Prisma.SelectSubset<T, AppointmentFindUniqueArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find one Appointment that matches the filter or throw an error with `error.code='P2025'`
    * if no matches were found.
-   * @param {appointmentFindUniqueOrThrowArgs} args - Arguments to find a Appointment
+   * @param {AppointmentFindUniqueOrThrowArgs} args - Arguments to find a Appointment
    * @example
    * // Get one Appointment
    * const appointment = await prisma.appointment.findUniqueOrThrow({
@@ -740,13 +967,13 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    *   }
    * })
    */
-  findUniqueOrThrow<T extends appointmentFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, appointmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findUniqueOrThrow<T extends AppointmentFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, AppointmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find the first Appointment that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {appointmentFindFirstArgs} args - Arguments to find a Appointment
+   * @param {AppointmentFindFirstArgs} args - Arguments to find a Appointment
    * @example
    * // Get one Appointment
    * const appointment = await prisma.appointment.findFirst({
@@ -755,14 +982,14 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    *   }
    * })
    */
-  findFirst<T extends appointmentFindFirstArgs>(args?: Prisma.SelectSubset<T, appointmentFindFirstArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findFirst<T extends AppointmentFindFirstArgs>(args?: Prisma.SelectSubset<T, AppointmentFindFirstArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find the first Appointment that matches the filter or
    * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {appointmentFindFirstOrThrowArgs} args - Arguments to find a Appointment
+   * @param {AppointmentFindFirstOrThrowArgs} args - Arguments to find a Appointment
    * @example
    * // Get one Appointment
    * const appointment = await prisma.appointment.findFirstOrThrow({
@@ -771,13 +998,13 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    *   }
    * })
    */
-  findFirstOrThrow<T extends appointmentFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, appointmentFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findFirstOrThrow<T extends AppointmentFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, AppointmentFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find zero or more Appointments that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {appointmentFindManyArgs} args - Arguments to filter and select certain fields only.
+   * @param {AppointmentFindManyArgs} args - Arguments to filter and select certain fields only.
    * @example
    * // Get all Appointments
    * const appointments = await prisma.appointment.findMany()
@@ -789,11 +1016,11 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * const appointmentWithIdOnly = await prisma.appointment.findMany({ select: { id: true } })
    * 
    */
-  findMany<T extends appointmentFindManyArgs>(args?: Prisma.SelectSubset<T, appointmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+  findMany<T extends AppointmentFindManyArgs>(args?: Prisma.SelectSubset<T, AppointmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
   /**
    * Create a Appointment.
-   * @param {appointmentCreateArgs} args - Arguments to create a Appointment.
+   * @param {AppointmentCreateArgs} args - Arguments to create a Appointment.
    * @example
    * // Create one Appointment
    * const Appointment = await prisma.appointment.create({
@@ -803,11 +1030,11 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * })
    * 
    */
-  create<T extends appointmentCreateArgs>(args: Prisma.SelectSubset<T, appointmentCreateArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  create<T extends AppointmentCreateArgs>(args: Prisma.SelectSubset<T, AppointmentCreateArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Create many Appointments.
-   * @param {appointmentCreateManyArgs} args - Arguments to create many Appointments.
+   * @param {AppointmentCreateManyArgs} args - Arguments to create many Appointments.
    * @example
    * // Create many Appointments
    * const appointment = await prisma.appointment.createMany({
@@ -817,11 +1044,11 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * })
    *     
    */
-  createMany<T extends appointmentCreateManyArgs>(args?: Prisma.SelectSubset<T, appointmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  createMany<T extends AppointmentCreateManyArgs>(args?: Prisma.SelectSubset<T, AppointmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Create many Appointments and returns the data saved in the database.
-   * @param {appointmentCreateManyAndReturnArgs} args - Arguments to create many Appointments.
+   * @param {AppointmentCreateManyAndReturnArgs} args - Arguments to create many Appointments.
    * @example
    * // Create many Appointments
    * const appointment = await prisma.appointment.createManyAndReturn({
@@ -841,11 +1068,11 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * Read more here: https://pris.ly/d/null-undefined
    * 
    */
-  createManyAndReturn<T extends appointmentCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, appointmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+  createManyAndReturn<T extends AppointmentCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, AppointmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Delete a Appointment.
-   * @param {appointmentDeleteArgs} args - Arguments to delete one Appointment.
+   * @param {AppointmentDeleteArgs} args - Arguments to delete one Appointment.
    * @example
    * // Delete one Appointment
    * const Appointment = await prisma.appointment.delete({
@@ -855,11 +1082,11 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * })
    * 
    */
-  delete<T extends appointmentDeleteArgs>(args: Prisma.SelectSubset<T, appointmentDeleteArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  delete<T extends AppointmentDeleteArgs>(args: Prisma.SelectSubset<T, AppointmentDeleteArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Update one Appointment.
-   * @param {appointmentUpdateArgs} args - Arguments to update one Appointment.
+   * @param {AppointmentUpdateArgs} args - Arguments to update one Appointment.
    * @example
    * // Update one Appointment
    * const appointment = await prisma.appointment.update({
@@ -872,11 +1099,11 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * })
    * 
    */
-  update<T extends appointmentUpdateArgs>(args: Prisma.SelectSubset<T, appointmentUpdateArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  update<T extends AppointmentUpdateArgs>(args: Prisma.SelectSubset<T, AppointmentUpdateArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Delete zero or more Appointments.
-   * @param {appointmentDeleteManyArgs} args - Arguments to filter Appointments to delete.
+   * @param {AppointmentDeleteManyArgs} args - Arguments to filter Appointments to delete.
    * @example
    * // Delete a few Appointments
    * const { count } = await prisma.appointment.deleteMany({
@@ -886,13 +1113,13 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * })
    * 
    */
-  deleteMany<T extends appointmentDeleteManyArgs>(args?: Prisma.SelectSubset<T, appointmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  deleteMany<T extends AppointmentDeleteManyArgs>(args?: Prisma.SelectSubset<T, AppointmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Update zero or more Appointments.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {appointmentUpdateManyArgs} args - Arguments to update one or more rows.
+   * @param {AppointmentUpdateManyArgs} args - Arguments to update one or more rows.
    * @example
    * // Update many Appointments
    * const appointment = await prisma.appointment.updateMany({
@@ -905,11 +1132,11 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * })
    * 
    */
-  updateMany<T extends appointmentUpdateManyArgs>(args: Prisma.SelectSubset<T, appointmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  updateMany<T extends AppointmentUpdateManyArgs>(args: Prisma.SelectSubset<T, AppointmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Update zero or more Appointments and returns the data updated in the database.
-   * @param {appointmentUpdateManyAndReturnArgs} args - Arguments to update many Appointments.
+   * @param {AppointmentUpdateManyAndReturnArgs} args - Arguments to update many Appointments.
    * @example
    * // Update many Appointments
    * const appointment = await prisma.appointment.updateManyAndReturn({
@@ -935,11 +1162,11 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * Read more here: https://pris.ly/d/null-undefined
    * 
    */
-  updateManyAndReturn<T extends appointmentUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, appointmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+  updateManyAndReturn<T extends AppointmentUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, AppointmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one Appointment.
-   * @param {appointmentUpsertArgs} args - Arguments to update or create a Appointment.
+   * @param {AppointmentUpsertArgs} args - Arguments to update or create a Appointment.
    * @example
    * // Update or create a Appointment
    * const appointment = await prisma.appointment.upsert({
@@ -954,14 +1181,14 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    *   }
    * })
    */
-  upsert<T extends appointmentUpsertArgs>(args: Prisma.SelectSubset<T, appointmentUpsertArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  upsert<T extends AppointmentUpsertArgs>(args: Prisma.SelectSubset<T, AppointmentUpsertArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
   /**
    * Count the number of Appointments.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {appointmentCountArgs} args - Arguments to filter Appointments to count.
+   * @param {AppointmentCountArgs} args - Arguments to filter Appointments to count.
    * @example
    * // Count the number of Appointments
    * const count = await prisma.appointment.count({
@@ -970,8 +1197,8 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    *   }
    * })
   **/
-  count<T extends appointmentCountArgs>(
-    args?: Prisma.Subset<T, appointmentCountArgs>,
+  count<T extends AppointmentCountArgs>(
+    args?: Prisma.Subset<T, AppointmentCountArgs>,
   ): Prisma.PrismaPromise<
     T extends runtime.Types.Utils.Record<'select', any>
       ? T['select'] extends true
@@ -1010,7 +1237,7 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * Group by Appointment.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {appointmentGroupByArgs} args - Group by arguments.
+   * @param {AppointmentGroupByArgs} args - Group by arguments.
    * @example
    * // Group by city, order by createdAt, get count
    * const result = await prisma.user.groupBy({
@@ -1025,14 +1252,14 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
    * 
   **/
   groupBy<
-    T extends appointmentGroupByArgs,
+    T extends AppointmentGroupByArgs,
     HasSelectOrTake extends Prisma.Or<
       Prisma.Extends<'skip', Prisma.Keys<T>>,
       Prisma.Extends<'take', Prisma.Keys<T>>
     >,
     OrderByArg extends Prisma.True extends HasSelectOrTake
-      ? { orderBy: appointmentGroupByArgs['orderBy'] }
-      : { orderBy?: appointmentGroupByArgs['orderBy'] },
+      ? { orderBy: AppointmentGroupByArgs['orderBy'] }
+      : { orderBy?: AppointmentGroupByArgs['orderBy'] },
     OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>,
     ByFields extends Prisma.MaybeTupleToUnion<T['by']>,
     ByValid extends Prisma.Has<ByFields, OrderFields>,
@@ -1081,23 +1308,24 @@ export interface appointmentDelegate<ExtArgs extends runtime.Types.Extensions.In
           ? never
           : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
       }[OrderFields]
-  >(args: Prisma.SubsetIntersection<T, appointmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAppointmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  >(args: Prisma.SubsetIntersection<T, AppointmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAppointmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
 /**
- * Fields of the appointment model
+ * Fields of the Appointment model
  */
-readonly fields: appointmentFieldRefs;
+readonly fields: AppointmentFieldRefs;
 }
 
 /**
- * The delegate class that acts as a "Promise-like" for appointment.
+ * The delegate class that acts as a "Promise-like" for Appointment.
  * Why is this prefixed with `Prisma__`?
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-export interface Prisma__appointmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__AppointmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  activity<T extends Prisma.appointment$activityArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.appointment$activityArgs<ExtArgs>>): Prisma.Prisma__activityClient<runtime.Types.Result.GetResult<Prisma.$activityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  userAppointments<T extends Prisma.appointment$userAppointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.appointment$userAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  activity<T extends Prisma.ActivityDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ActivityDefaultArgs<ExtArgs>>): Prisma.Prisma__ActivityClient<runtime.Types.Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  professor<T extends Prisma.EmployeeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeDefaultArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  userAppointments<T extends Prisma.Appointment$userAppointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Appointment$userAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1124,472 +1352,455 @@ export interface Prisma__appointmentClient<T, Null = never, ExtArgs extends runt
 
 
 /**
- * Fields of the appointment model
+ * Fields of the Appointment model
  */
-export interface appointmentFieldRefs {
-  readonly id: Prisma.FieldRef<"appointment", 'Int'>
-  readonly initialDate: Prisma.FieldRef<"appointment", 'DateTime'>
-  readonly endDate: Prisma.FieldRef<"appointment", 'DateTime'>
-  readonly currentSlots: Prisma.FieldRef<"appointment", 'Int'>
-  readonly slotsAvailable: Prisma.FieldRef<"appointment", 'Int'>
-  readonly activityId: Prisma.FieldRef<"appointment", 'Int'>
+export interface AppointmentFieldRefs {
+  readonly id: Prisma.FieldRef<"Appointment", 'Int'>
+  readonly initialDate: Prisma.FieldRef<"Appointment", 'DateTime'>
+  readonly endDate: Prisma.FieldRef<"Appointment", 'DateTime'>
+  readonly currentSlots: Prisma.FieldRef<"Appointment", 'Int'>
+  readonly slotsAvailable: Prisma.FieldRef<"Appointment", 'Int'>
+  readonly price: Prisma.FieldRef<"Appointment", 'Decimal'>
+  readonly activityId: Prisma.FieldRef<"Appointment", 'Int'>
+  readonly professorId: Prisma.FieldRef<"Appointment", 'Int'>
 }
     
 
 // Custom InputTypes
 /**
- * appointment findUnique
+ * Appointment findUnique
  */
-export type appointmentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which appointment to fetch.
+   * Filter, which Appointment to fetch.
    */
-  where: Prisma.appointmentWhereUniqueInput
+  where: Prisma.AppointmentWhereUniqueInput
 }
 
 /**
- * appointment findUniqueOrThrow
+ * Appointment findUniqueOrThrow
  */
-export type appointmentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which appointment to fetch.
+   * Filter, which Appointment to fetch.
    */
-  where: Prisma.appointmentWhereUniqueInput
+  where: Prisma.AppointmentWhereUniqueInput
 }
 
 /**
- * appointment findFirst
+ * Appointment findFirst
  */
-export type appointmentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which appointment to fetch.
+   * Filter, which Appointment to fetch.
    */
-  where?: Prisma.appointmentWhereInput
+  where?: Prisma.AppointmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of appointments to fetch.
+   * Determine the order of Appointments to fetch.
    */
-  orderBy?: Prisma.appointmentOrderByWithRelationInput | Prisma.appointmentOrderByWithRelationInput[]
+  orderBy?: Prisma.AppointmentOrderByWithRelationInput | Prisma.AppointmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for appointments.
+   * Sets the position for searching for Appointments.
    */
-  cursor?: Prisma.appointmentWhereUniqueInput
+  cursor?: Prisma.AppointmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` appointments from the position of the cursor.
+   * Take `±n` Appointments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` appointments.
+   * Skip the first `n` Appointments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of appointments.
+   * Filter by unique combinations of Appointments.
    */
   distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
 }
 
 /**
- * appointment findFirstOrThrow
+ * Appointment findFirstOrThrow
  */
-export type appointmentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which appointment to fetch.
+   * Filter, which Appointment to fetch.
    */
-  where?: Prisma.appointmentWhereInput
+  where?: Prisma.AppointmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of appointments to fetch.
+   * Determine the order of Appointments to fetch.
    */
-  orderBy?: Prisma.appointmentOrderByWithRelationInput | Prisma.appointmentOrderByWithRelationInput[]
+  orderBy?: Prisma.AppointmentOrderByWithRelationInput | Prisma.AppointmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for appointments.
+   * Sets the position for searching for Appointments.
    */
-  cursor?: Prisma.appointmentWhereUniqueInput
+  cursor?: Prisma.AppointmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` appointments from the position of the cursor.
+   * Take `±n` Appointments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` appointments.
+   * Skip the first `n` Appointments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of appointments.
+   * Filter by unique combinations of Appointments.
    */
   distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
 }
 
 /**
- * appointment findMany
+ * Appointment findMany
  */
-export type appointmentFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which appointments to fetch.
+   * Filter, which Appointments to fetch.
    */
-  where?: Prisma.appointmentWhereInput
+  where?: Prisma.AppointmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of appointments to fetch.
+   * Determine the order of Appointments to fetch.
    */
-  orderBy?: Prisma.appointmentOrderByWithRelationInput | Prisma.appointmentOrderByWithRelationInput[]
+  orderBy?: Prisma.AppointmentOrderByWithRelationInput | Prisma.AppointmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for listing appointments.
+   * Sets the position for listing Appointments.
    */
-  cursor?: Prisma.appointmentWhereUniqueInput
+  cursor?: Prisma.AppointmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` appointments from the position of the cursor.
+   * Take `±n` Appointments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` appointments.
+   * Skip the first `n` Appointments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of appointments.
+   * Filter by unique combinations of Appointments.
    */
   distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
 }
 
 /**
- * appointment create
+ * Appointment create
  */
-export type appointmentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * The data needed to create a appointment.
+   * The data needed to create a Appointment.
    */
-  data: Prisma.XOR<Prisma.appointmentCreateInput, Prisma.appointmentUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.AppointmentCreateInput, Prisma.AppointmentUncheckedCreateInput>
 }
 
 /**
- * appointment createMany
+ * Appointment createMany
  */
-export type appointmentCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to create many appointments.
+   * The data used to create many Appointments.
    */
-  data: Prisma.appointmentCreateManyInput | Prisma.appointmentCreateManyInput[]
+  data: Prisma.AppointmentCreateManyInput | Prisma.AppointmentCreateManyInput[]
   skipDuplicates?: boolean
 }
 
 /**
- * appointment createManyAndReturn
+ * Appointment createManyAndReturn
  */
-export type appointmentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelectCreateManyAndReturn<ExtArgs> | null
+  select?: Prisma.AppointmentSelectCreateManyAndReturn<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
-   * The data used to create many appointments.
+   * The data used to create many Appointments.
    */
-  data: Prisma.appointmentCreateManyInput | Prisma.appointmentCreateManyInput[]
+  data: Prisma.AppointmentCreateManyInput | Prisma.AppointmentCreateManyInput[]
   skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentIncludeCreateManyAndReturn<ExtArgs> | null
+  include?: Prisma.AppointmentIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
- * appointment update
+ * Appointment update
  */
-export type appointmentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * The data needed to update a appointment.
+   * The data needed to update a Appointment.
    */
-  data: Prisma.XOR<Prisma.appointmentUpdateInput, Prisma.appointmentUncheckedUpdateInput>
+  data: Prisma.XOR<Prisma.AppointmentUpdateInput, Prisma.AppointmentUncheckedUpdateInput>
   /**
-   * Choose, which appointment to update.
+   * Choose, which Appointment to update.
    */
-  where: Prisma.appointmentWhereUniqueInput
+  where: Prisma.AppointmentWhereUniqueInput
 }
 
 /**
- * appointment updateMany
+ * Appointment updateMany
  */
-export type appointmentUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to update appointments.
+   * The data used to update Appointments.
    */
-  data: Prisma.XOR<Prisma.appointmentUpdateManyMutationInput, Prisma.appointmentUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.AppointmentUpdateManyMutationInput, Prisma.AppointmentUncheckedUpdateManyInput>
   /**
-   * Filter which appointments to update
+   * Filter which Appointments to update
    */
-  where?: Prisma.appointmentWhereInput
+  where?: Prisma.AppointmentWhereInput
   /**
-   * Limit how many appointments to update.
+   * Limit how many Appointments to update.
    */
   limit?: number
 }
 
 /**
- * appointment updateManyAndReturn
+ * Appointment updateManyAndReturn
  */
-export type appointmentUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelectUpdateManyAndReturn<ExtArgs> | null
+  select?: Prisma.AppointmentSelectUpdateManyAndReturn<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
-   * The data used to update appointments.
+   * The data used to update Appointments.
    */
-  data: Prisma.XOR<Prisma.appointmentUpdateManyMutationInput, Prisma.appointmentUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.AppointmentUpdateManyMutationInput, Prisma.AppointmentUncheckedUpdateManyInput>
   /**
-   * Filter which appointments to update
+   * Filter which Appointments to update
    */
-  where?: Prisma.appointmentWhereInput
+  where?: Prisma.AppointmentWhereInput
   /**
-   * Limit how many appointments to update.
+   * Limit how many Appointments to update.
    */
   limit?: number
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  include?: Prisma.AppointmentIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
- * appointment upsert
+ * Appointment upsert
  */
-export type appointmentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * The filter to search for the appointment to update in case it exists.
+   * The filter to search for the Appointment to update in case it exists.
    */
-  where: Prisma.appointmentWhereUniqueInput
+  where: Prisma.AppointmentWhereUniqueInput
   /**
-   * In case the appointment found by the `where` argument doesn't exist, create a new appointment with this data.
+   * In case the Appointment found by the `where` argument doesn't exist, create a new Appointment with this data.
    */
-  create: Prisma.XOR<Prisma.appointmentCreateInput, Prisma.appointmentUncheckedCreateInput>
+  create: Prisma.XOR<Prisma.AppointmentCreateInput, Prisma.AppointmentUncheckedCreateInput>
   /**
-   * In case the appointment was found with the provided `where` argument, update it with this data.
+   * In case the Appointment was found with the provided `where` argument, update it with this data.
    */
-  update: Prisma.XOR<Prisma.appointmentUpdateInput, Prisma.appointmentUncheckedUpdateInput>
+  update: Prisma.XOR<Prisma.AppointmentUpdateInput, Prisma.AppointmentUncheckedUpdateInput>
 }
 
 /**
- * appointment delete
+ * Appointment delete
  */
-export type appointmentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
   /**
-   * Filter which appointment to delete.
+   * Filter which Appointment to delete.
    */
-  where: Prisma.appointmentWhereUniqueInput
+  where: Prisma.AppointmentWhereUniqueInput
 }
 
 /**
- * appointment deleteMany
+ * Appointment deleteMany
  */
-export type appointmentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which appointments to delete
+   * Filter which Appointments to delete
    */
-  where?: Prisma.appointmentWhereInput
+  where?: Prisma.AppointmentWhereInput
   /**
-   * Limit how many appointments to delete.
+   * Limit how many Appointments to delete.
    */
   limit?: number
 }
 
 /**
- * appointment.activity
+ * Appointment.userAppointments
  */
-export type appointment$activityArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Appointment$userAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the activity
+   * Select specific fields to fetch from the UserAppointment
    */
-  select?: Prisma.activitySelect<ExtArgs> | null
+  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the activity
+   * Omit specific fields from the UserAppointment
    */
-  omit?: Prisma.activityOmit<ExtArgs> | null
+  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.activityInclude<ExtArgs> | null
-  where?: Prisma.activityWhereInput
-}
-
-/**
- * appointment.userAppointments
- */
-export type appointment$userAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the userAppointment
-   */
-  select?: Prisma.userAppointmentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the userAppointment
-   */
-  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.userAppointmentInclude<ExtArgs> | null
-  where?: Prisma.userAppointmentWhereInput
-  orderBy?: Prisma.userAppointmentOrderByWithRelationInput | Prisma.userAppointmentOrderByWithRelationInput[]
-  cursor?: Prisma.userAppointmentWhereUniqueInput
+  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  where?: Prisma.UserAppointmentWhereInput
+  orderBy?: Prisma.UserAppointmentOrderByWithRelationInput | Prisma.UserAppointmentOrderByWithRelationInput[]
+  cursor?: Prisma.UserAppointmentWhereUniqueInput
   take?: number
   skip?: number
   distinct?: Prisma.UserAppointmentScalarFieldEnum | Prisma.UserAppointmentScalarFieldEnum[]
 }
 
 /**
- * appointment without action
+ * Appointment without action
  */
-export type appointmentDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type AppointmentDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the appointment
+   * Select specific fields to fetch from the Appointment
    */
-  select?: Prisma.appointmentSelect<ExtArgs> | null
+  select?: Prisma.AppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the appointment
+   * Omit specific fields from the Appointment
    */
-  omit?: Prisma.appointmentOmit<ExtArgs> | null
+  omit?: Prisma.AppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.appointmentInclude<ExtArgs> | null
+  include?: Prisma.AppointmentInclude<ExtArgs> | null
 }
