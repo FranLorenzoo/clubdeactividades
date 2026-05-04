@@ -1157,7 +1157,8 @@ export const EmployeeScalarFieldEnum = {
   password: 'password',
   age: 'age',
   suspended: 'suspended',
-  roleId: 'roleId'
+  roleId: 'roleId',
+  activityId: 'activityId'
 } as const
 
 export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
@@ -1191,6 +1192,7 @@ export const AppointmentScalarFieldEnum = {
   endDate: 'endDate',
   currentSlots: 'currentSlots',
   slotsAvailable: 'slotsAvailable',
+  professorId: 'professorId',
   activityId: 'activityId'
 } as const
 
@@ -1309,6 +1311,34 @@ export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'Decimal[]'
  */
 export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'paymentMethod'
+ */
+export type EnumpaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'paymentMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'paymentMethod[]'
+ */
+export type ListEnumpaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'paymentMethod[]'>
+    
+
+
+/**
+ * Reference to a field of type 'subscriptionType'
+ */
+export type EnumsubscriptionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'subscriptionType'>
+    
+
+
+/**
+ * Reference to a field of type 'subscriptionType[]'
+ */
+export type ListEnumsubscriptionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'subscriptionType[]'>
     
 
 

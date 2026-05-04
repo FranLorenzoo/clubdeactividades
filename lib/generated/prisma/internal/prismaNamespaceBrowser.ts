@@ -118,7 +118,8 @@ export const EmployeeScalarFieldEnum = {
   password: 'password',
   age: 'age',
   suspended: 'suspended',
-  roleId: 'roleId'
+  roleId: 'roleId',
+  activityId: 'activityId'
 } as const
 
 export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
@@ -152,6 +153,7 @@ export const AppointmentScalarFieldEnum = {
   endDate: 'endDate',
   currentSlots: 'currentSlots',
   slotsAvailable: 'slotsAvailable',
+  professorId: 'professorId',
   activityId: 'activityId'
 } as const
 

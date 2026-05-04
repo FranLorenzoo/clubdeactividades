@@ -50,18 +50,20 @@ model employee {
   password  String
   age       Int?
   suspended Boolean @default(false)
-
   roleId Int?
   role   role? @relation(fields: [roleId], references: [id])
+  activityId Int
+  activity   activity @relation(fields: [activityId], references: [id])
 
   payments payment[]
+  appointments appointment[]
 }
 
 model payment {
   id               Int @id @default(autoincrement())
   userAppointmentId  Int?
   amount           Decimal?
-  paymentMethod    String
+  paymentMethod    paymentMethod
   paymentDate      DateTime
   employeeId Int?
 
@@ -73,7 +75,7 @@ model activity {
   name           String
   slotsAvailable Int?
   price          Decimal?
-
+  professors employee[]
   appointments appointment[]
 }
 
@@ -83,16 +85,17 @@ model appointment {
   endDate        DateTime
   currentSlots   Int?
   slotsAvailable Int?
-
+  professorId Int?
   activityId Int?
-  activity   activity? @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activity   activity? @relation(fields: [activityId], references: [id])
 
+  professor employee? @relation(fields: [professorId], references: [id])
   userAppointments userAppointment[]
 }
 
 model userAppointment {
   id               Int      @id @default(autoincrement())
-  type             String?
+  type             subscriptionType
   attended         Boolean  @default(false)
   reservationDate  DateTime @default(now())
   rejected         Boolean  @default(false)
@@ -112,4 +115,14 @@ model QR {
 
   userAppointmentId Int  @unique
   userAppointment   userAppointment @relation(fields: [userAppointmentId], references: [id], onDelete: Cascade)
+}
+
+enum paymentMethod {
+  CASH
+  CARD
+}
+
+enum subscriptionType{
+  ABONADO
+  NOABONADO
 }
