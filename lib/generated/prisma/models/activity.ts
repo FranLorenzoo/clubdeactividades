@@ -216,6 +216,7 @@ export type activityWhereInput = {
   name?: Prisma.StringFilter<"activity"> | string
   slotsAvailable?: Prisma.IntNullableFilter<"activity"> | number | null
   price?: Prisma.DecimalNullableFilter<"activity"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.EmployeeListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
 }
 
@@ -224,6 +225,7 @@ export type activityOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrderInput | Prisma.SortOrder
   price?: Prisma.SortOrderInput | Prisma.SortOrder
+  professors?: Prisma.employeeOrderByRelationAggregateInput
   appointments?: Prisma.appointmentOrderByRelationAggregateInput
 }
 
@@ -235,6 +237,7 @@ export type activityWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"activity"> | string
   slotsAvailable?: Prisma.IntNullableFilter<"activity"> | number | null
   price?: Prisma.DecimalNullableFilter<"activity"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.EmployeeListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
 }, "id">
 
@@ -264,6 +267,7 @@ export type activityCreateInput = {
   name: string
   slotsAvailable?: number | null
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.employeeCreateNestedManyWithoutActivityInput
   appointments?: Prisma.appointmentCreateNestedManyWithoutActivityInput
 }
 
@@ -272,6 +276,7 @@ export type activityUncheckedCreateInput = {
   name: string
   slotsAvailable?: number | null
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.employeeUncheckedCreateNestedManyWithoutActivityInput
   appointments?: Prisma.appointmentUncheckedCreateNestedManyWithoutActivityInput
 }
 
@@ -279,6 +284,7 @@ export type activityUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.employeeUpdateManyWithoutActivityNestedInput
   appointments?: Prisma.appointmentUpdateManyWithoutActivityNestedInput
 }
 
@@ -287,6 +293,7 @@ export type activityUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.employeeUncheckedUpdateManyWithoutActivityNestedInput
   appointments?: Prisma.appointmentUncheckedUpdateManyWithoutActivityNestedInput
 }
 
@@ -308,6 +315,11 @@ export type activityUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+}
+
+export type ActivityScalarRelationFilter = {
+  is?: Prisma.activityWhereInput
+  isNot?: Prisma.activityWhereInput
 }
 
 export type activityCountOrderByAggregateInput = {
@@ -348,6 +360,20 @@ export type ActivityNullableScalarRelationFilter = {
   isNot?: Prisma.activityWhereInput | null
 }
 
+export type activityCreateNestedOneWithoutProfessorsInput = {
+  create?: Prisma.XOR<Prisma.activityCreateWithoutProfessorsInput, Prisma.activityUncheckedCreateWithoutProfessorsInput>
+  connectOrCreate?: Prisma.activityCreateOrConnectWithoutProfessorsInput
+  connect?: Prisma.activityWhereUniqueInput
+}
+
+export type activityUpdateOneRequiredWithoutProfessorsNestedInput = {
+  create?: Prisma.XOR<Prisma.activityCreateWithoutProfessorsInput, Prisma.activityUncheckedCreateWithoutProfessorsInput>
+  connectOrCreate?: Prisma.activityCreateOrConnectWithoutProfessorsInput
+  upsert?: Prisma.activityUpsertWithoutProfessorsInput
+  connect?: Prisma.activityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.activityUpdateToOneWithWhereWithoutProfessorsInput, Prisma.activityUpdateWithoutProfessorsInput>, Prisma.activityUncheckedUpdateWithoutProfessorsInput>
+}
+
 export type activityCreateNestedOneWithoutAppointmentsInput = {
   create?: Prisma.XOR<Prisma.activityCreateWithoutAppointmentsInput, Prisma.activityUncheckedCreateWithoutAppointmentsInput>
   connectOrCreate?: Prisma.activityCreateOrConnectWithoutAppointmentsInput
@@ -364,10 +390,57 @@ export type activityUpdateOneWithoutAppointmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.activityUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.activityUpdateWithoutAppointmentsInput>, Prisma.activityUncheckedUpdateWithoutAppointmentsInput>
 }
 
+export type activityCreateWithoutProfessorsInput = {
+  name: string
+  slotsAvailable?: number | null
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  appointments?: Prisma.appointmentCreateNestedManyWithoutActivityInput
+}
+
+export type activityUncheckedCreateWithoutProfessorsInput = {
+  id?: number
+  name: string
+  slotsAvailable?: number | null
+  price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  appointments?: Prisma.appointmentUncheckedCreateNestedManyWithoutActivityInput
+}
+
+export type activityCreateOrConnectWithoutProfessorsInput = {
+  where: Prisma.activityWhereUniqueInput
+  create: Prisma.XOR<Prisma.activityCreateWithoutProfessorsInput, Prisma.activityUncheckedCreateWithoutProfessorsInput>
+}
+
+export type activityUpsertWithoutProfessorsInput = {
+  update: Prisma.XOR<Prisma.activityUpdateWithoutProfessorsInput, Prisma.activityUncheckedUpdateWithoutProfessorsInput>
+  create: Prisma.XOR<Prisma.activityCreateWithoutProfessorsInput, Prisma.activityUncheckedCreateWithoutProfessorsInput>
+  where?: Prisma.activityWhereInput
+}
+
+export type activityUpdateToOneWithWhereWithoutProfessorsInput = {
+  where?: Prisma.activityWhereInput
+  data: Prisma.XOR<Prisma.activityUpdateWithoutProfessorsInput, Prisma.activityUncheckedUpdateWithoutProfessorsInput>
+}
+
+export type activityUpdateWithoutProfessorsInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  appointments?: Prisma.appointmentUpdateManyWithoutActivityNestedInput
+}
+
+export type activityUncheckedUpdateWithoutProfessorsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  appointments?: Prisma.appointmentUncheckedUpdateManyWithoutActivityNestedInput
+}
+
 export type activityCreateWithoutAppointmentsInput = {
   name: string
   slotsAvailable?: number | null
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.employeeCreateNestedManyWithoutActivityInput
 }
 
 export type activityUncheckedCreateWithoutAppointmentsInput = {
@@ -375,6 +448,7 @@ export type activityUncheckedCreateWithoutAppointmentsInput = {
   name: string
   slotsAvailable?: number | null
   price?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.employeeUncheckedCreateNestedManyWithoutActivityInput
 }
 
 export type activityCreateOrConnectWithoutAppointmentsInput = {
@@ -397,6 +471,7 @@ export type activityUpdateWithoutAppointmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.employeeUpdateManyWithoutActivityNestedInput
 }
 
 export type activityUncheckedUpdateWithoutAppointmentsInput = {
@@ -404,6 +479,7 @@ export type activityUncheckedUpdateWithoutAppointmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   price?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  professors?: Prisma.employeeUncheckedUpdateManyWithoutActivityNestedInput
 }
 
 
@@ -412,10 +488,12 @@ export type activityUncheckedUpdateWithoutAppointmentsInput = {
  */
 
 export type ActivityCountOutputType = {
+  professors: number
   appointments: number
 }
 
 export type ActivityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  professors?: boolean | ActivityCountOutputTypeCountProfessorsArgs
   appointments?: boolean | ActivityCountOutputTypeCountAppointmentsArgs
 }
 
@@ -432,6 +510,13 @@ export type ActivityCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
 /**
  * ActivityCountOutputType without action
  */
+export type ActivityCountOutputTypeCountProfessorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.employeeWhereInput
+}
+
+/**
+ * ActivityCountOutputType without action
+ */
 export type ActivityCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.appointmentWhereInput
 }
@@ -442,6 +527,7 @@ export type activitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name?: boolean
   slotsAvailable?: boolean
   price?: boolean
+  professors?: boolean | Prisma.activity$professorsArgs<ExtArgs>
   appointments?: boolean | Prisma.activity$appointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ActivityCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["activity"]>
@@ -469,6 +555,7 @@ export type activitySelectScalar = {
 
 export type activityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slotsAvailable" | "price", ExtArgs["result"]["activity"]>
 export type activityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  professors?: boolean | Prisma.activity$professorsArgs<ExtArgs>
   appointments?: boolean | Prisma.activity$appointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ActivityCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -478,6 +565,7 @@ export type activityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $activityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "activity"
   objects: {
+    professors: Prisma.$employeePayload<ExtArgs>[]
     appointments: Prisma.$appointmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -879,6 +967,7 @@ readonly fields: activityFieldRefs;
  */
 export interface Prisma__activityClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  professors<T extends Prisma.activity$professorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.activity$professorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$employeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   appointments<T extends Prisma.activity$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.activity$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1303,6 +1392,30 @@ export type activityDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many activities to delete.
    */
   limit?: number
+}
+
+/**
+ * activity.professors
+ */
+export type activity$professorsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the employee
+   */
+  select?: Prisma.employeeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the employee
+   */
+  omit?: Prisma.employeeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.employeeInclude<ExtArgs> | null
+  where?: Prisma.employeeWhereInput
+  orderBy?: Prisma.employeeOrderByWithRelationInput | Prisma.employeeOrderByWithRelationInput[]
+  cursor?: Prisma.employeeWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.EmployeeScalarFieldEnum | Prisma.EmployeeScalarFieldEnum[]
 }
 
 /**
