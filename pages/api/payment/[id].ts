@@ -1,4 +1,4 @@
-import { getUserById, updateUser, deleteUser } from "@/lib/sql/user";
+import { getPaymentById, updatePayment, deletePayment } from "@/lib/sql/payment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -6,25 +6,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === "GET") {
     try {
-      const user = await getUserById(id);
-      if (!user) return res.status(404).json({ message: "User not found" });
-      res.status(200).json(user);
+      const payment = await getPaymentById(id);
+      if (!payment) return res.status(404).json({ message: "Payment not found" });
+      res.status(200).json(payment);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
   } else if (req.method === "PUT") {
     try {
-      const user = await updateUser(id, req.body);
-      res.status(200).json(user);
+      const payment = await updatePayment(id, req.body);
+      res.status(200).json(payment);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
   } else if (req.method === "DELETE") {
     try {
-      const user = await deleteUser(id);
-      res.status(200).json(user);
+      const payment = await deletePayment(id);
+      res.status(200).json(payment);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
