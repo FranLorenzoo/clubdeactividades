@@ -1,6 +1,6 @@
 import { CreateAppointmentDto } from "@/lib/dto/appointment";
 import { createAppointment, getAllAppointments } from "@/lib/sql/appointment";
-import { parseFields } from "@/lib/validators/apichecks";
+import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) { 

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { deleteAppointment, getAppointmentById, updateAppointment } from "@/lib/sql/appointment";
-import { parseFields, parseId } from "@/lib/validators/apichecks";
+import { parseFields, parseId } from "@/lib/validators/api";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { CreateAppointmentDto } from "@/lib/dto/appointment";
 
