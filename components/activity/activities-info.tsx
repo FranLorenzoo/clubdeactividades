@@ -1,4 +1,4 @@
-export default function ActividadInfo() {
+export default function ActivityInfo() {
   return (
     <section className="border-t border-zinc-800">
       <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-3 gap-6">

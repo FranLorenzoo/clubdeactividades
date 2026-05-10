@@ -1,14 +1,25 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
-const actividades = [
+const activityImage = [
   { id: 1, nombre: "Fútbol", imagen: "/futbol.jpg" },
   { id: 2, nombre: "Vóley", imagen: "/voley.jpg" },
   { id: 3, nombre: "Pádel", imagen: "/padel.jpg" },
   { id: 4, nombre: "Básquet", imagen: "/basquet.jpg" },
 ];
 
-export default function Actividades() {
+export default function Activities() {
+  const [activities, setActivities] = useState<any[]>();
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const res = await fetch("/api/activity");
+      const data = await res.json();
+      setActivities(data);
+      console.log(data);
+    };
+    fetchActivities();
+  }, []);
   return (
     <section
       id="actividades"
@@ -20,14 +31,14 @@ export default function Actividades() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-        {actividades.map((actividad) => (
+        {activities?.map((activity) => (
           <div
-            key={actividad.id}
+            key={activity.id}
             className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-green-500 transition"
           >
             <Image
-              src={actividad.imagen}
-              alt={actividad.nombre}
+              src={activityImage[activity.id as number - 1].imagen}
+              alt={activity.name}
               width={500}
               height={300}
               className="w-full h-52 object-cover"
@@ -35,11 +46,11 @@ export default function Actividades() {
 
             <div className="p-5">
               <h3 className="text-2xl font-bold mb-4">
-                {actividad.nombre}
+                {activity.name}
               </h3>
 
               <Link
-                href={`/actividad/${actividad.id}`}
+                href={`/actividad/${activity.id}`}
                 className="block text-center bg-green-600 py-3 rounded-xl hover:bg-green-700 transition"
               >
                 Reservar
