@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-export default function ActividadDias({ actividad, id }: any) {
+export default function ActivityDays({ activity, id }: any) {
+  if (!activity) return null;
   return (
     <section className="max-w-7xl mx-auto px-6 py-20">
 
@@ -20,10 +21,10 @@ export default function ActividadDias({ actividad, id }: any) {
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        {actividad.dias.map((dia: string, index: number) => (
+        {activity.days.map((day: string, index: number) => (
           <Link
             key={index}
-            href={`/actividad/${id}/${dia}`}
+            href={`/actividad/${id}/${day}`}
             className="group bg-zinc-900 border border-zinc-800 rounded-3xl p-8 hover:border-green-500 hover:-translate-y-1 transition"
           >
             <p className="text-zinc-500 text-sm mb-3">
@@ -31,7 +32,7 @@ export default function ActividadDias({ actividad, id }: any) {
             </p>
 
             <h3 className="text-3xl font-bold capitalize mb-6 group-hover:text-green-400 transition">
-              {dia}
+              {day}
             </h3>
 
             <span className="inline-block bg-green-600 px-5 py-3 rounded-xl font-semibold group-hover:bg-green-500 transition">
