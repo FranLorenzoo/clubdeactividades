@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { log } from "console";
 
 export default function Login() {
   const router = useRouter();
@@ -27,8 +28,9 @@ export default function Login() {
       alert("Credenciales incorrectas");
       return;
     }
+    const logInSuccess = await logInAttempt.json();
 
-    localStorage.setItem("logueado", "true");
+    localStorage.setItem("userId", logInSuccess.id);
     router.push("/");
   };
 
