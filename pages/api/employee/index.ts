@@ -1,19 +1,19 @@
-import { getAllUsers, createUser } from "@/lib/sql/user";
+import { getAllEmployees, createEmployee } from "@/lib/sql/employee";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
-      const users = await getAllUsers();
-      res.status(200).json(users);
+      const employees = await getAllEmployees();
+      res.status(200).json(employees);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
   } else if (req.method === "POST") {
     try {
-      const user = await createUser(req.body);
-      res.status(201).json(user);
+      const employee = await createEmployee(req.body);
+      res.status(201).json(employee);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
