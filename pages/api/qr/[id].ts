@@ -1,4 +1,4 @@
-import { getUserById, updateUser, deleteUser } from "@/lib/sql/user";
+import { getQRById, updateQR, deleteQR } from "@/lib/sql/qr";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -6,25 +6,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === "GET") {
     try {
-      const user = await getUserById(id);
-      if (!user) return res.status(404).json({ message: "User not found" });
-      res.status(200).json(user);
+      const qr = await getQRById(id);
+      if (!qr) return res.status(404).json({ message: "QR not found" });
+      res.status(200).json(qr);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
   } else if (req.method === "PUT") {
     try {
-      const user = await updateUser(id, req.body);
-      res.status(200).json(user);
+      const qr = await updateQR(id, req.body);
+      res.status(200).json(qr);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
   } else if (req.method === "DELETE") {
     try {
-      const user = await deleteUser(id);
-      res.status(200).json(user);
+      const qr = await deleteQR(id);
+      res.status(200).json(qr);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });

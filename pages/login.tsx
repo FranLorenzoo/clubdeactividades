@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { log } from "console";
 
 export default function Login() {
   const router = useRouter();
@@ -8,15 +9,28 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
       alert("Completá los campos");
       return;
     }
+    const logInAttempt = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-    localStorage.setItem("logueado", "true");
+    if (!logInAttempt.ok) {
+      alert("Credenciales incorrectas");
+      return;
+    }
+    const logInSuccess = await logInAttempt.json();
+
+    localStorage.setItem("userId", logInSuccess.id);
     router.push("/");
   };
 
