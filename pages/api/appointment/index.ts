@@ -1,24 +1,51 @@
-import { getAllAppointments, createAppointment } from "@/lib/sql/appointment";
+import { CreateAppointmentDto } from "@/lib/dto/appointment";
+import { createAppointment, getAllAppointments } from "@/lib/sql/appointment";
+import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === "GET") {
-    try {
-      const appointments = await getAllAppointments();
-      res.status(200).json(appointments);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  } else if (req.method === "POST") {
-    try {
-      const appointment = await createAppointment(req.body);
-      res.status(201).json(appointment);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  } else {
-    res.status(405).json({ message: "Method not allowed" });
+export default async function handler(req: NextApiRequest, res: NextApiResponse) { 
+
+  switch(req.method) {
+    case "GET":
+      return getAllAppointmentsHandler(res);
+    case "POST":
+      return createAppointmentHandler(req.body, res);
+    default:
+      res.status(405).json({ message: "Method not allowed" });
+  }
+
+}
+
+async function getAllAppointmentsHandler(res: NextApiResponse) {
+  try {
+    const appointments = await getAllAppointments();
+    res.status(200).json(appointments);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function createAppointmentHandler(body: Record<string, unknown>, res: NextApiResponse) {
+
+  const { ok, values, error } = parseFields(
+    {
+      initialDate: "date",
+      endDate: "date",
+      currentSlots: "number",
+      slotsAvailable: "number"
+    },
+    body
+  );
+
+  if(!ok) return res.status(400).json({ message: "Bad request " + error });
+
+  const dto = values as CreateAppointmentDto;
+  
+  try {
+    const appointment = await createAppointment(dto);
+    return res.status(200).json(appointment);
+    
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error " + error });
   }
 }
