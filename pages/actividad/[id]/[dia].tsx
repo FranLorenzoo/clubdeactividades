@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import Navbar from "@/components/Navbar";
 
-import DiaHeader from "@/components/actividad/DiaHeader";
-import TurnosList from "@/components/actividad/TurnosList";
+import DiaHeader from "@/components/activity/day-header";
+import TurnosList from "@/components/activity/appointment-list";
 
 const turnos = [
   { hora: "08:00", profesor: "Juan Pérez", cupos: 4 },

@@ -1,4 +1,4 @@
-import TurnoCard from "./TurnoCard";
+import TurnoCard from "./appointment-card";
 
 export default function TurnosList({ turnos }: any) {
   return (

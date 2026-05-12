@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Hero() {
+  const [userId, setUserId] = useState<string | null>(null);
+  
+    useEffect(() => {
+      setUserId(localStorage.getItem("userId"));
+    }, []);
   return (
     <section className="max-w-7xl mx-auto px-6 py-20 text-center">
     
@@ -14,19 +20,14 @@ export default function Hero() {
             </p>
     
             <div className="flex justify-center gap-4">
+              {!userId && (
               <Link
                 href="/register"
                 className="bg-green-600 px-8 py-4 rounded-2xl font-semibold hover:bg-green-700 transition"
               >
                 Empezar ahora
               </Link>
-    
-              <Link
-                href="#actividades"
-                className="border border-zinc-700 px-8 py-4 rounded-2xl hover:bg-zinc-800 transition"
-              >
-                Ver actividades
-              </Link>
+              )}
             </div>
           </section>
     
