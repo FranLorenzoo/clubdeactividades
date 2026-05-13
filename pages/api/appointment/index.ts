@@ -40,6 +40,10 @@ async function createAppointmentHandler(body: Record<string, unknown>, res: Next
   if(!ok) return res.status(400).json({ message: "Bad request " + error });
 
   const dto = values as CreateAppointmentDto;
+
+  const { professorId, activityId } = body;
+  if(professorId) dto.professorId = Number(professorId);
+  if(activityId) dto.activityId = Number(activityId);
   
   try {
     const appointment = await createAppointment(dto);
