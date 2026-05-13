@@ -71,10 +71,8 @@ export default function EmployeesPage() {
         </Link>
       </div>
       <section className="flex justify-center flex-col border max-w-prose mx-auto border-gray-300 bg-white rounded-lg p-5 ">
-          <h1 className="flex text-3xl font-bold mb-4 justify-center">Asignar rol</h1>
-          <p className="flex justify-center mb-4 text-[#115d8b]">Revisa los datos de la persona seleccionada y elige el rol que se le asignará.</p>
+          <h1 className="flex text-3xl font-bold mb-4 justify-center">Datos del Cliente</h1>
           <section className="border border-gray-300 rounded-lg p-5 mt-5">
-            <h2 className="text-xl font-semibold mb-3">Datos del usuario</h2>
             <div className="grid gap-2.5 mt-3">
               <div className="font-medium">
                 <strong>Nombre:</strong> {user?.nombre}
@@ -83,75 +81,18 @@ export default function EmployeesPage() {
                 <strong>Apellido:</strong> {user?.apellido}
               </div>
               <div className="font-medium">
-                <strong>Email:</strong> {user?.email}
+                <strong>DNI:</strong> {user?.dni}
               </div>
               <div className="font-medium">
-                <strong>Rol actual:</strong> {rolSeleccionado || "Sin rol asignado"}
+                <strong>Edad:</strong> {user?.age}
+              </div>
+              <div className="font-medium">
+                <strong>Email:</strong> {user?.email}
               </div>
             </div>
-
             <div className="mt-6">
-              <p className="mb-2">Selecciona un rol:</p>
-              <div className="flex gap-3 flex-col">
-                <button
-                  type="button"
-                  onClick={() => asignarRol("empleado")}
-                  className={`px-4 py-3 rounded-md border border-blue-500 transition ${
-                    rolSeleccionado === "empleado"
-                      ? "bg-[#316788] text-white"
-                      : "bg-white text-[#316788]"
-                  } cursor-pointer`}
-                >
-                  <p className="text-lg font-semibold">
-                    Asignar rol de Empleado
-                  </p>
-                </button>
-
-                <button 
-                  type="button"
-                  onClick={() => asignarRol("profesor")}
-                  className={`px-4 py-3 rounded-md border border-blue-500 transition ${
-                    rolSeleccionado === "profesor"
-                      ? "bg-[#316788] text-white"
-                      : "bg-white text-[#316788]"
-                  } cursor-pointer`}
-                >
-
-                  <p className="text-lg font-semibold">
-                    Asignar rol de Profesor
-                  </p>
-                </button>
-
-                <button 
-                  type="button"
-                  onClick= {() => asignarRol("Cliente")}
-                  className={`px-4 py-3 rounded-md border border-blue-500 transition ${
-                    rolSeleccionado === "Cliente"
-                      ? "bg-[#316788] text-white"
-                      : "bg-white text-[#316788]"
-                  } cursor-pointer`}
-                >
-
-                  <p className="text-lg font-semibold">
-                    Quitar Rol
-                  </p>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={saveRole}
-                  disabled={!rolSeleccionado}
-                  className={`px-4 py-3 rounded-md border border-blue-500 ${
-                    rolSeleccionado
-                      ? "bg-[#316788] text-white cursor-pointer"
-                      : "bg-gray-300 text-white"
-                  }`}
-                >
-                  <p className="text-lg font-semibold">
-                    Guardar
-                  </p>
-                </button>
-              </div>
+              <h2 className="mb-2">Lista de Reservas:</h2>
+              
             </div>
           </section>
       </section>
