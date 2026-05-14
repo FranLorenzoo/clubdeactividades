@@ -105,9 +105,7 @@ export default function CreateProfessorPage() {
   return (
 
     <div className="min-h-screen bg-zinc-950 text-white">
-
       <header className="border-b border-zinc-800">
-
         <div className="max-w-5xl mx-auto px-6 py-5 flex items-center">
 
           <p className="text-2xl font-bold tracking-wide">
@@ -119,7 +117,6 @@ export default function CreateProfessorPage() {
           </h1>
 
         </div>
-
       </header>
 
       <div className="max-w-2xl mx-auto px-6 py-10">

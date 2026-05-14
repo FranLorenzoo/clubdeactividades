@@ -58,19 +58,21 @@ export default function EmployeesPage() {
   };
   
   return (
-    <main className="min-h-screen font-sans mx-auto bg-[#373F4B] ">
-      <div className="text-2xl justify-center flex mb-4 font-bold flex-col  ">
-        <h1 className=" mb-6 my-4 py-2 leading-tight tracking-wide border-b border-zinc-800 font-bold ">
-          Club<span className="text-[#5A8949]">360</span>
-        </h1>
-        <Link
-          href="/"
-          className="text-lg font-semibold flex justify-left"
-        >
-          Volver atrás
-        </Link>
-      </div>
-      <section className="flex justify-center flex-col border max-w-prose mx-auto border-gray-300 bg-white rounded-lg p-5 ">
+    <main className="min-h-screen bg-zinc-950 text-white">
+
+      <header className="border-b border-zinc-800 mb-6">
+
+        <div className="max-w-5xl mx-auto px-6 py-5 flex items-center">
+
+          <h1 className="text-2xl font-bold tracking-wide">
+            Club<span className="text-[#5A8949]">360</span>
+          </h1>
+
+        </div>
+
+      </header>
+
+      <section className="flex justify-center flex-col border max-w-prose mx-auto border-gray-300 bg-white rounded-lg p-5 text-black">
           <h1 className="flex text-3xl font-bold mb-4 justify-center">Datos del Cliente</h1>
           <section className="border border-gray-300 rounded-lg p-5 mt-5">
             <div className="grid gap-2.5 mt-3">
