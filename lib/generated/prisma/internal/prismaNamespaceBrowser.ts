@@ -88,6 +88,8 @@ export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof Role
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  lastName: 'lastName',
   email: 'email',
   dni: 'dni',
   password: 'password',
@@ -113,6 +115,8 @@ export type CreditCardScalarFieldEnum = (typeof CreditCardScalarFieldEnum)[keyof
 
 export const EmployeeScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  lastName: 'lastName',
   email: 'email',
   dni: 'dni',
   password: 'password',

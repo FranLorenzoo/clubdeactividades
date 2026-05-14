@@ -21,6 +21,8 @@ model role {
 
 model user {
   id        Int     @id @default(autoincrement())
+  name      String?
+  lastName  String?
   email     String  @unique
   dni       String  @unique
   password  String
@@ -45,6 +47,8 @@ model creditCard {
 
 model employee {
   id        Int     @id @default(autoincrement())
+  name      String?
+  lastName  String?
   email     String  @unique
   dni       String  @unique
   password  String

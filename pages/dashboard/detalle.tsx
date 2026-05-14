@@ -58,9 +58,9 @@ export default function EmployeesPage() {
   };
   
   return (
-    <main className=" p-6 font-sans max-w-wl min-h-screen bg-[#373F4B] ">
-      <div className="text-2xl justify-left flex mb-4 font-bold flex-col ">
-        <h1 className=" mb-6 leading-tight tracking-wide border-b border-zinc-800 max-w-wl ">
+    <main className="min-h-screen font-sans mx-auto bg-[#373F4B] ">
+      <div className="text-2xl justify-center flex mb-4 font-bold flex-col  ">
+        <h1 className=" mb-6 my-4 py-2 leading-tight tracking-wide border-b border-zinc-800 font-bold ">
           Club<span className="text-[#5A8949]">360</span>
         </h1>
         <Link
