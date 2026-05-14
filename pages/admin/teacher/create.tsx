@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import crypto from "crypto";
 
 type Activity = {
@@ -10,7 +10,6 @@ const generateRandomPassword = () => {
 };
 
 export default function CreateProfessorPage() {
-
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,10 +22,18 @@ export default function CreateProfessorPage() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const createProfessor = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-
+  useEffect(() => {
+      fetch('/api/activity')
+        .then(res => res.json())
+        .then(actData => {
+          setActivities(actData)
+        })
+        .catch(error => {
+          console.error(error)
+        });
+    }, [])
+    
+  const createProfessor = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setError("");
@@ -224,10 +231,10 @@ export default function CreateProfessorPage() {
               <select
                 name="activityId"
                 value={activityId}
+                className="w-full bg-zinc-800 border border-zinc-700 rounded-xl p-4 outline-none focus:border-[#5A8949]"
                 onChange={(e) =>
                   setActivityId(e.target.value)
                 }
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-xl p-4 outline-none focus:border-[#5A8949]"
               >
                 <option value="" disabled>
                   Seleccione una actividad
