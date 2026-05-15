@@ -3,22 +3,22 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllCreditCards() {
   return prisma.creditCard.findMany({
-    include: { user: true },
+    include: { client: true },
   });
 }
 
 export async function getCreditCardById(id: number) {
   return prisma.creditCard.findUnique({
     where: { id },
-    include: { user: true },
+    include: { client: true },
   });
 }
 
-export async function createCreditCard(data: Prisma.creditCardCreateInput) {
+export async function createCreditCard(data: Prisma.CreditCardCreateInput) {
   return prisma.creditCard.create({ data });
 }
 
-export async function updateCreditCard(id: number, data: Prisma.creditCardUpdateInput) {
+export async function updateCreditCard(id: number, data: Prisma.CreditCardUpdateInput) {
   return prisma.creditCard.update({ where: { id }, data });
 }
 

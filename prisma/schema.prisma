@@ -23,6 +23,8 @@ model Role {
   name  String
 
   users User[]
+
+  @@map("role")
 }
 
 model User {
@@ -40,6 +42,8 @@ model User {
   client    Client?
   employee  Employee?
   professor Professor?
+
+  @@map("user")
 }
 
 model Client {
@@ -52,6 +56,8 @@ model Client {
 
   creditCard CreditCard?
   userAppointments UserAppointment[]
+
+  @@map("client")
 }
 
 model CreditCard {
@@ -63,6 +69,8 @@ model CreditCard {
 
   clientId      Int    @unique
   client        Client @relation(fields: [clientId], references: [id])
+
+  @@map("creditcard")
 }
 
 model Employee {
@@ -72,6 +80,8 @@ model Employee {
   user      User   @relation(fields: [userId], references: [id])
 
   payments  Payment[]
+
+  @@map("employee")
 }
 
 model Professor {
@@ -84,6 +94,8 @@ model Professor {
   activity      Activity     @relation(fields: [activityId], references: [id])
 
   appointments  Appointment[]
+
+  @@map("professor")
 }
 
 model Activity {
@@ -92,6 +104,8 @@ model Activity {
 
   professors    Professor[]
   appointments  Appointment[]
+
+  @@map("activity")
 }
 
 model Appointment {
@@ -112,6 +126,8 @@ model Appointment {
   slotsAvailable  Int
 
   userAppointments UserAppointment[]
+
+  @@map("appointment")
 }
 
 model UserAppointment {
@@ -134,6 +150,7 @@ model UserAppointment {
   qr               QR?
 
   @@unique([appointmentId, clientId])
+  @@map("userappointment")
 }
 
 model Payment {
@@ -150,6 +167,8 @@ model Payment {
 
   employeeId         Int
   employee           Employee         @relation(fields: [employeeId], references: [id])
+
+  @@map("payment")
 }
 
 model QR {
@@ -162,4 +181,6 @@ model QR {
 
   qrImage            String
   url                String
+
+  @@map("qr")
 }

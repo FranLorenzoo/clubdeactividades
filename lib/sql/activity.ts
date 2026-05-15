@@ -14,11 +14,11 @@ export async function getActivityById(id: number) {
   });
 }
 
-export async function createActivity(data: Prisma.activityCreateInput) {
+export async function createActivity(data: Prisma.ActivityCreateInput) {
   return prisma.activity.create({ data });
 }
 
-export async function updateActivity(id: number, data: Prisma.activityUpdateInput) {
+export async function updateActivity(id: number, data: Prisma.ActivityUpdateInput) {
   return prisma.activity.update({ where: { id }, data });
 }
 

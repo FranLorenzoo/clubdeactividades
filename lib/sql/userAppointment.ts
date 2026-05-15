@@ -3,22 +3,22 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllUserAppointments() {
   return prisma.userAppointment.findMany({
-    include: { user: true, appointment: true, qr: true },
+    include: { client: true, appointment: true, payments: true, qr: true },
   });
 }
 
 export async function getUserAppointmentById(id: number) {
   return prisma.userAppointment.findUnique({
     where: { id },
-    include: { user: true, appointment: true, qr: true },
+    include: { client: true, appointment: true, payments: true, qr: true },
   });
 }
 
-export async function createUserAppointment(data: Prisma.userAppointmentCreateInput) {
+export async function createUserAppointment(data: Prisma.UserAppointmentCreateInput) {
   return prisma.userAppointment.create({ data });
 }
 
-export async function updateUserAppointment(id: number, data: Prisma.userAppointmentUpdateInput) {
+export async function updateUserAppointment(id: number, data: Prisma.UserAppointmentUpdateInput) {
   return prisma.userAppointment.update({ where: { id }, data });
 }
 

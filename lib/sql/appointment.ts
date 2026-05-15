@@ -14,11 +14,11 @@ export async function getAppointmentById(id: number) {
   });
 }
 
-export async function createAppointment(data: Prisma.appointmentCreateInput) {
+export async function createAppointment(data: Prisma.AppointmentCreateInput) {
   return prisma.appointment.create({ data });
 }
 
-export async function updateAppointment(id: number, data: Prisma.appointmentUpdateInput) {
+export async function updateAppointment(id: number, data: Prisma.AppointmentUpdateInput) {
   return prisma.appointment.update({ where: { id }, data });
 }
 

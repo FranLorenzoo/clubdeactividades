@@ -3,22 +3,22 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllRoles() {
   return prisma.role.findMany({
-    include: { employees: true },
+    include: { users: true },
   });
 }
 
 export async function getRoleById(id: number) {
   return prisma.role.findUnique({
     where: { id },
-    include: { employees: true },
+    include: { users: true },
   });
 }
 
-export async function createRole(data: Prisma.roleCreateInput) {
+export async function createRole(data: Prisma.RoleCreateInput) {
   return prisma.role.create({ data });
 }
 
-export async function updateRole(id: number, data: Prisma.roleUpdateInput) {
+export async function updateRole(id: number, data: Prisma.RoleUpdateInput) {
   return prisma.role.update({ where: { id }, data });
 }
 
