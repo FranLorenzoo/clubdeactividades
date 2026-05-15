@@ -51,16 +51,16 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Role: 'Role',
-  User: 'User',
-  Client: 'Client',
-  CreditCard: 'CreditCard',
-  Employee: 'Employee',
-  Professor: 'Professor',
-  Activity: 'Activity',
-  Appointment: 'Appointment',
-  UserAppointment: 'UserAppointment',
-  Payment: 'Payment',
+  role: 'role',
+  user: 'user',
+  client: 'client',
+  creditCard: 'creditCard',
+  employee: 'employee',
+  professor: 'professor',
+  activity: 'activity',
+  appointment: 'appointment',
+  userAppointment: 'userAppointment',
+  payment: 'payment',
   QR: 'QR'
 } as const
 

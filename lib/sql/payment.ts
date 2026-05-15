@@ -3,14 +3,14 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllPayments() {
   return prisma.payment.findMany({
-    include: { employee: true },
+    include: { userAppointment: true, employee: true },
   });
 }
 
 export async function getPaymentById(id: number) {
   return prisma.payment.findUnique({
     where: { id },
-    include: { employee: true },
+    include: { userAppointment: true, employee: true },
   });
 }
 

@@ -4,7 +4,7 @@
 // biome-ignore-all lint: generated file
 // @ts-nocheck 
 /*
- * This file exports the `UserAppointment` model and its related types.
+ * This file exports the `userAppointment` model and its related types.
  *
  * 🟢 You can import this file directly.
  */
@@ -13,10 +13,10 @@ import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
 /**
- * Model UserAppointment
+ * Model userAppointment
  * 
  */
-export type UserAppointmentModel = runtime.Types.Result.DefaultSelection<Prisma.$UserAppointmentPayload>
+export type userAppointmentModel = runtime.Types.Result.DefaultSelection<Prisma.$userAppointmentPayload>
 
 export type AggregateUserAppointment = {
   _count: UserAppointmentCountAggregateOutputType | null
@@ -44,7 +44,7 @@ export type UserAppointmentMinAggregateOutputType = {
   clientId: number | null
   rejected: boolean | null
   reservationDate: Date | null
-  state: $Enums.UserAppointmentState | null
+  state: $Enums.userAppointmentState | null
 }
 
 export type UserAppointmentMaxAggregateOutputType = {
@@ -53,7 +53,7 @@ export type UserAppointmentMaxAggregateOutputType = {
   clientId: number | null
   rejected: boolean | null
   reservationDate: Date | null
-  state: $Enums.UserAppointmentState | null
+  state: $Enums.userAppointmentState | null
 }
 
 export type UserAppointmentCountAggregateOutputType = {
@@ -109,37 +109,37 @@ export type UserAppointmentCountAggregateInputType = {
 
 export type UserAppointmentAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which UserAppointment to aggregate.
+   * Filter which userAppointment to aggregate.
    */
-  where?: Prisma.UserAppointmentWhereInput
+  where?: Prisma.userAppointmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of UserAppointments to fetch.
+   * Determine the order of userAppointments to fetch.
    */
-  orderBy?: Prisma.UserAppointmentOrderByWithRelationInput | Prisma.UserAppointmentOrderByWithRelationInput[]
+  orderBy?: Prisma.userAppointmentOrderByWithRelationInput | Prisma.userAppointmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
    * Sets the start position
    */
-  cursor?: Prisma.UserAppointmentWhereUniqueInput
+  cursor?: Prisma.userAppointmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` UserAppointments from the position of the cursor.
+   * Take `±n` userAppointments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` UserAppointments.
+   * Skip the first `n` userAppointments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Count returned UserAppointments
+   * Count returned userAppointments
   **/
   _count?: true | UserAppointmentCountAggregateInputType
   /**
@@ -179,11 +179,11 @@ export type GetUserAppointmentAggregateType<T extends UserAppointmentAggregateAr
 
 
 
-export type UserAppointmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.UserAppointmentWhereInput
-  orderBy?: Prisma.UserAppointmentOrderByWithAggregationInput | Prisma.UserAppointmentOrderByWithAggregationInput[]
+export type userAppointmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.userAppointmentWhereInput
+  orderBy?: Prisma.userAppointmentOrderByWithAggregationInput | Prisma.userAppointmentOrderByWithAggregationInput[]
   by: Prisma.UserAppointmentScalarFieldEnum[] | Prisma.UserAppointmentScalarFieldEnum
-  having?: Prisma.UserAppointmentScalarWhereWithAggregatesInput
+  having?: Prisma.userAppointmentScalarWhereWithAggregatesInput
   take?: number
   skip?: number
   _count?: UserAppointmentCountAggregateInputType | true
@@ -199,7 +199,7 @@ export type UserAppointmentGroupByOutputType = {
   clientId: number
   rejected: boolean
   reservationDate: Date
-  state: $Enums.UserAppointmentState
+  state: $Enums.userAppointmentState
   _count: UserAppointmentCountAggregateOutputType | null
   _avg: UserAppointmentAvgAggregateOutputType | null
   _sum: UserAppointmentSumAggregateOutputType | null
@@ -207,7 +207,7 @@ export type UserAppointmentGroupByOutputType = {
   _max: UserAppointmentMaxAggregateOutputType | null
 }
 
-type GetUserAppointmentGroupByPayload<T extends UserAppointmentGroupByArgs> = Prisma.PrismaPromise<
+type GetUserAppointmentGroupByPayload<T extends userAppointmentGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<UserAppointmentGroupByOutputType, T['by']> &
       {
@@ -222,160 +222,160 @@ type GetUserAppointmentGroupByPayload<T extends UserAppointmentGroupByArgs> = Pr
 
 
 
-export type UserAppointmentWhereInput = {
-  AND?: Prisma.UserAppointmentWhereInput | Prisma.UserAppointmentWhereInput[]
-  OR?: Prisma.UserAppointmentWhereInput[]
-  NOT?: Prisma.UserAppointmentWhereInput | Prisma.UserAppointmentWhereInput[]
-  id?: Prisma.IntFilter<"UserAppointment"> | number
-  appointmentId?: Prisma.IntFilter<"UserAppointment"> | number
-  clientId?: Prisma.IntFilter<"UserAppointment"> | number
-  rejected?: Prisma.BoolFilter<"UserAppointment"> | boolean
-  reservationDate?: Prisma.DateTimeFilter<"UserAppointment"> | Date | string
-  state?: Prisma.EnumUserAppointmentStateFilter<"UserAppointment"> | $Enums.UserAppointmentState
-  appointment?: Prisma.XOR<Prisma.AppointmentScalarRelationFilter, Prisma.AppointmentWhereInput>
-  client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
+export type userAppointmentWhereInput = {
+  AND?: Prisma.userAppointmentWhereInput | Prisma.userAppointmentWhereInput[]
+  OR?: Prisma.userAppointmentWhereInput[]
+  NOT?: Prisma.userAppointmentWhereInput | Prisma.userAppointmentWhereInput[]
+  id?: Prisma.IntFilter<"userAppointment"> | number
+  appointmentId?: Prisma.IntFilter<"userAppointment"> | number
+  clientId?: Prisma.IntFilter<"userAppointment"> | number
+  rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
+  reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
+  state?: Prisma.EnumuserAppointmentStateFilter<"userAppointment"> | $Enums.userAppointmentState
+  appointment?: Prisma.XOR<Prisma.AppointmentScalarRelationFilter, Prisma.appointmentWhereInput>
+  client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.clientWhereInput>
   payments?: Prisma.PaymentListRelationFilter
   qr?: Prisma.XOR<Prisma.QRNullableScalarRelationFilter, Prisma.QRWhereInput> | null
 }
 
-export type UserAppointmentOrderByWithRelationInput = {
+export type userAppointmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   state?: Prisma.SortOrder
-  appointment?: Prisma.AppointmentOrderByWithRelationInput
-  client?: Prisma.ClientOrderByWithRelationInput
-  payments?: Prisma.PaymentOrderByRelationAggregateInput
+  appointment?: Prisma.appointmentOrderByWithRelationInput
+  client?: Prisma.clientOrderByWithRelationInput
+  payments?: Prisma.paymentOrderByRelationAggregateInput
   qr?: Prisma.QROrderByWithRelationInput
 }
 
-export type UserAppointmentWhereUniqueInput = Prisma.AtLeast<{
+export type userAppointmentWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  appointmentId_clientId?: Prisma.UserAppointmentAppointmentIdClientIdCompoundUniqueInput
-  AND?: Prisma.UserAppointmentWhereInput | Prisma.UserAppointmentWhereInput[]
-  OR?: Prisma.UserAppointmentWhereInput[]
-  NOT?: Prisma.UserAppointmentWhereInput | Prisma.UserAppointmentWhereInput[]
-  appointmentId?: Prisma.IntFilter<"UserAppointment"> | number
-  clientId?: Prisma.IntFilter<"UserAppointment"> | number
-  rejected?: Prisma.BoolFilter<"UserAppointment"> | boolean
-  reservationDate?: Prisma.DateTimeFilter<"UserAppointment"> | Date | string
-  state?: Prisma.EnumUserAppointmentStateFilter<"UserAppointment"> | $Enums.UserAppointmentState
-  appointment?: Prisma.XOR<Prisma.AppointmentScalarRelationFilter, Prisma.AppointmentWhereInput>
-  client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.ClientWhereInput>
+  appointmentId_clientId?: Prisma.userAppointmentAppointmentIdClientIdCompoundUniqueInput
+  AND?: Prisma.userAppointmentWhereInput | Prisma.userAppointmentWhereInput[]
+  OR?: Prisma.userAppointmentWhereInput[]
+  NOT?: Prisma.userAppointmentWhereInput | Prisma.userAppointmentWhereInput[]
+  appointmentId?: Prisma.IntFilter<"userAppointment"> | number
+  clientId?: Prisma.IntFilter<"userAppointment"> | number
+  rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
+  reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
+  state?: Prisma.EnumuserAppointmentStateFilter<"userAppointment"> | $Enums.userAppointmentState
+  appointment?: Prisma.XOR<Prisma.AppointmentScalarRelationFilter, Prisma.appointmentWhereInput>
+  client?: Prisma.XOR<Prisma.ClientScalarRelationFilter, Prisma.clientWhereInput>
   payments?: Prisma.PaymentListRelationFilter
   qr?: Prisma.XOR<Prisma.QRNullableScalarRelationFilter, Prisma.QRWhereInput> | null
 }, "id" | "appointmentId_clientId">
 
-export type UserAppointmentOrderByWithAggregationInput = {
+export type userAppointmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   state?: Prisma.SortOrder
-  _count?: Prisma.UserAppointmentCountOrderByAggregateInput
-  _avg?: Prisma.UserAppointmentAvgOrderByAggregateInput
-  _max?: Prisma.UserAppointmentMaxOrderByAggregateInput
-  _min?: Prisma.UserAppointmentMinOrderByAggregateInput
-  _sum?: Prisma.UserAppointmentSumOrderByAggregateInput
+  _count?: Prisma.userAppointmentCountOrderByAggregateInput
+  _avg?: Prisma.userAppointmentAvgOrderByAggregateInput
+  _max?: Prisma.userAppointmentMaxOrderByAggregateInput
+  _min?: Prisma.userAppointmentMinOrderByAggregateInput
+  _sum?: Prisma.userAppointmentSumOrderByAggregateInput
 }
 
-export type UserAppointmentScalarWhereWithAggregatesInput = {
-  AND?: Prisma.UserAppointmentScalarWhereWithAggregatesInput | Prisma.UserAppointmentScalarWhereWithAggregatesInput[]
-  OR?: Prisma.UserAppointmentScalarWhereWithAggregatesInput[]
-  NOT?: Prisma.UserAppointmentScalarWhereWithAggregatesInput | Prisma.UserAppointmentScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"UserAppointment"> | number
-  appointmentId?: Prisma.IntWithAggregatesFilter<"UserAppointment"> | number
-  clientId?: Prisma.IntWithAggregatesFilter<"UserAppointment"> | number
-  rejected?: Prisma.BoolWithAggregatesFilter<"UserAppointment"> | boolean
-  reservationDate?: Prisma.DateTimeWithAggregatesFilter<"UserAppointment"> | Date | string
-  state?: Prisma.EnumUserAppointmentStateWithAggregatesFilter<"UserAppointment"> | $Enums.UserAppointmentState
+export type userAppointmentScalarWhereWithAggregatesInput = {
+  AND?: Prisma.userAppointmentScalarWhereWithAggregatesInput | Prisma.userAppointmentScalarWhereWithAggregatesInput[]
+  OR?: Prisma.userAppointmentScalarWhereWithAggregatesInput[]
+  NOT?: Prisma.userAppointmentScalarWhereWithAggregatesInput | Prisma.userAppointmentScalarWhereWithAggregatesInput[]
+  id?: Prisma.IntWithAggregatesFilter<"userAppointment"> | number
+  appointmentId?: Prisma.IntWithAggregatesFilter<"userAppointment"> | number
+  clientId?: Prisma.IntWithAggregatesFilter<"userAppointment"> | number
+  rejected?: Prisma.BoolWithAggregatesFilter<"userAppointment"> | boolean
+  reservationDate?: Prisma.DateTimeWithAggregatesFilter<"userAppointment"> | Date | string
+  state?: Prisma.EnumuserAppointmentStateWithAggregatesFilter<"userAppointment"> | $Enums.userAppointmentState
 }
 
-export type UserAppointmentCreateInput = {
+export type userAppointmentCreateInput = {
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  appointment: Prisma.AppointmentCreateNestedOneWithoutUserAppointmentsInput
-  client: Prisma.ClientCreateNestedOneWithoutUserAppointmentsInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserAppointmentInput
+  state: $Enums.userAppointmentState
+  appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
+  client: Prisma.clientCreateNestedOneWithoutUserAppointmentsInput
+  payments?: Prisma.paymentCreateNestedManyWithoutUserAppointmentInput
   qr?: Prisma.QRCreateNestedOneWithoutUserAppointmentInput
 }
 
-export type UserAppointmentUncheckedCreateInput = {
+export type userAppointmentUncheckedCreateInput = {
   id?: number
   appointmentId: number
   clientId: number
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserAppointmentInput
+  state: $Enums.userAppointmentState
+  payments?: Prisma.paymentUncheckedCreateNestedManyWithoutUserAppointmentInput
   qr?: Prisma.QRUncheckedCreateNestedOneWithoutUserAppointmentInput
 }
 
-export type UserAppointmentUpdateInput = {
+export type userAppointmentUpdateInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  appointment?: Prisma.AppointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
-  client?: Prisma.ClientUpdateOneRequiredWithoutUserAppointmentsNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserAppointmentNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
+  client?: Prisma.clientUpdateOneRequiredWithoutUserAppointmentsNestedInput
+  payments?: Prisma.paymentUpdateManyWithoutUserAppointmentNestedInput
   qr?: Prisma.QRUpdateOneWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentUncheckedUpdateInput = {
+export type userAppointmentUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  payments?: Prisma.paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
   qr?: Prisma.QRUncheckedUpdateOneWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentCreateManyInput = {
+export type userAppointmentCreateManyInput = {
   id?: number
   appointmentId: number
   clientId: number
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
+  state: $Enums.userAppointmentState
 }
 
-export type UserAppointmentUpdateManyMutationInput = {
+export type userAppointmentUpdateManyMutationInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
 }
 
-export type UserAppointmentUncheckedUpdateManyInput = {
+export type userAppointmentUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
 }
 
 export type UserAppointmentListRelationFilter = {
-  every?: Prisma.UserAppointmentWhereInput
-  some?: Prisma.UserAppointmentWhereInput
-  none?: Prisma.UserAppointmentWhereInput
+  every?: Prisma.userAppointmentWhereInput
+  some?: Prisma.userAppointmentWhereInput
+  none?: Prisma.userAppointmentWhereInput
 }
 
-export type UserAppointmentOrderByRelationAggregateInput = {
+export type userAppointmentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type UserAppointmentAppointmentIdClientIdCompoundUniqueInput = {
+export type userAppointmentAppointmentIdClientIdCompoundUniqueInput = {
   appointmentId: number
   clientId: number
 }
 
-export type UserAppointmentCountOrderByAggregateInput = {
+export type userAppointmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
@@ -384,22 +384,13 @@ export type UserAppointmentCountOrderByAggregateInput = {
   state?: Prisma.SortOrder
 }
 
-export type UserAppointmentAvgOrderByAggregateInput = {
+export type userAppointmentAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
 }
 
-export type UserAppointmentMaxOrderByAggregateInput = {
-  id?: Prisma.SortOrder
-  appointmentId?: Prisma.SortOrder
-  clientId?: Prisma.SortOrder
-  rejected?: Prisma.SortOrder
-  reservationDate?: Prisma.SortOrder
-  state?: Prisma.SortOrder
-}
-
-export type UserAppointmentMinOrderByAggregateInput = {
+export type userAppointmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
@@ -408,411 +399,420 @@ export type UserAppointmentMinOrderByAggregateInput = {
   state?: Prisma.SortOrder
 }
 
-export type UserAppointmentSumOrderByAggregateInput = {
+export type userAppointmentMinOrderByAggregateInput = {
+  id?: Prisma.SortOrder
+  appointmentId?: Prisma.SortOrder
+  clientId?: Prisma.SortOrder
+  rejected?: Prisma.SortOrder
+  reservationDate?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+}
+
+export type userAppointmentSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
 }
 
 export type UserAppointmentScalarRelationFilter = {
-  is?: Prisma.UserAppointmentWhereInput
-  isNot?: Prisma.UserAppointmentWhereInput
+  is?: Prisma.userAppointmentWhereInput
+  isNot?: Prisma.userAppointmentWhereInput
 }
 
-export type UserAppointmentCreateNestedManyWithoutClientInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutClientInput, Prisma.UserAppointmentUncheckedCreateWithoutClientInput> | Prisma.UserAppointmentCreateWithoutClientInput[] | Prisma.UserAppointmentUncheckedCreateWithoutClientInput[]
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutClientInput | Prisma.UserAppointmentCreateOrConnectWithoutClientInput[]
-  createMany?: Prisma.UserAppointmentCreateManyClientInputEnvelope
-  connect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
+export type userAppointmentCreateNestedManyWithoutClientInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutClientInput, Prisma.userAppointmentUncheckedCreateWithoutClientInput> | Prisma.userAppointmentCreateWithoutClientInput[] | Prisma.userAppointmentUncheckedCreateWithoutClientInput[]
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutClientInput | Prisma.userAppointmentCreateOrConnectWithoutClientInput[]
+  createMany?: Prisma.userAppointmentCreateManyClientInputEnvelope
+  connect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
 }
 
-export type UserAppointmentUncheckedCreateNestedManyWithoutClientInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutClientInput, Prisma.UserAppointmentUncheckedCreateWithoutClientInput> | Prisma.UserAppointmentCreateWithoutClientInput[] | Prisma.UserAppointmentUncheckedCreateWithoutClientInput[]
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutClientInput | Prisma.UserAppointmentCreateOrConnectWithoutClientInput[]
-  createMany?: Prisma.UserAppointmentCreateManyClientInputEnvelope
-  connect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
+export type userAppointmentUncheckedCreateNestedManyWithoutClientInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutClientInput, Prisma.userAppointmentUncheckedCreateWithoutClientInput> | Prisma.userAppointmentCreateWithoutClientInput[] | Prisma.userAppointmentUncheckedCreateWithoutClientInput[]
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutClientInput | Prisma.userAppointmentCreateOrConnectWithoutClientInput[]
+  createMany?: Prisma.userAppointmentCreateManyClientInputEnvelope
+  connect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
 }
 
-export type UserAppointmentUpdateManyWithoutClientNestedInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutClientInput, Prisma.UserAppointmentUncheckedCreateWithoutClientInput> | Prisma.UserAppointmentCreateWithoutClientInput[] | Prisma.UserAppointmentUncheckedCreateWithoutClientInput[]
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutClientInput | Prisma.UserAppointmentCreateOrConnectWithoutClientInput[]
-  upsert?: Prisma.UserAppointmentUpsertWithWhereUniqueWithoutClientInput | Prisma.UserAppointmentUpsertWithWhereUniqueWithoutClientInput[]
-  createMany?: Prisma.UserAppointmentCreateManyClientInputEnvelope
-  set?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  disconnect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  delete?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  connect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  update?: Prisma.UserAppointmentUpdateWithWhereUniqueWithoutClientInput | Prisma.UserAppointmentUpdateWithWhereUniqueWithoutClientInput[]
-  updateMany?: Prisma.UserAppointmentUpdateManyWithWhereWithoutClientInput | Prisma.UserAppointmentUpdateManyWithWhereWithoutClientInput[]
-  deleteMany?: Prisma.UserAppointmentScalarWhereInput | Prisma.UserAppointmentScalarWhereInput[]
+export type userAppointmentUpdateManyWithoutClientNestedInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutClientInput, Prisma.userAppointmentUncheckedCreateWithoutClientInput> | Prisma.userAppointmentCreateWithoutClientInput[] | Prisma.userAppointmentUncheckedCreateWithoutClientInput[]
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutClientInput | Prisma.userAppointmentCreateOrConnectWithoutClientInput[]
+  upsert?: Prisma.userAppointmentUpsertWithWhereUniqueWithoutClientInput | Prisma.userAppointmentUpsertWithWhereUniqueWithoutClientInput[]
+  createMany?: Prisma.userAppointmentCreateManyClientInputEnvelope
+  set?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  disconnect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  delete?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  connect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  update?: Prisma.userAppointmentUpdateWithWhereUniqueWithoutClientInput | Prisma.userAppointmentUpdateWithWhereUniqueWithoutClientInput[]
+  updateMany?: Prisma.userAppointmentUpdateManyWithWhereWithoutClientInput | Prisma.userAppointmentUpdateManyWithWhereWithoutClientInput[]
+  deleteMany?: Prisma.userAppointmentScalarWhereInput | Prisma.userAppointmentScalarWhereInput[]
 }
 
-export type UserAppointmentUncheckedUpdateManyWithoutClientNestedInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutClientInput, Prisma.UserAppointmentUncheckedCreateWithoutClientInput> | Prisma.UserAppointmentCreateWithoutClientInput[] | Prisma.UserAppointmentUncheckedCreateWithoutClientInput[]
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutClientInput | Prisma.UserAppointmentCreateOrConnectWithoutClientInput[]
-  upsert?: Prisma.UserAppointmentUpsertWithWhereUniqueWithoutClientInput | Prisma.UserAppointmentUpsertWithWhereUniqueWithoutClientInput[]
-  createMany?: Prisma.UserAppointmentCreateManyClientInputEnvelope
-  set?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  disconnect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  delete?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  connect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  update?: Prisma.UserAppointmentUpdateWithWhereUniqueWithoutClientInput | Prisma.UserAppointmentUpdateWithWhereUniqueWithoutClientInput[]
-  updateMany?: Prisma.UserAppointmentUpdateManyWithWhereWithoutClientInput | Prisma.UserAppointmentUpdateManyWithWhereWithoutClientInput[]
-  deleteMany?: Prisma.UserAppointmentScalarWhereInput | Prisma.UserAppointmentScalarWhereInput[]
+export type userAppointmentUncheckedUpdateManyWithoutClientNestedInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutClientInput, Prisma.userAppointmentUncheckedCreateWithoutClientInput> | Prisma.userAppointmentCreateWithoutClientInput[] | Prisma.userAppointmentUncheckedCreateWithoutClientInput[]
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutClientInput | Prisma.userAppointmentCreateOrConnectWithoutClientInput[]
+  upsert?: Prisma.userAppointmentUpsertWithWhereUniqueWithoutClientInput | Prisma.userAppointmentUpsertWithWhereUniqueWithoutClientInput[]
+  createMany?: Prisma.userAppointmentCreateManyClientInputEnvelope
+  set?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  disconnect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  delete?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  connect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  update?: Prisma.userAppointmentUpdateWithWhereUniqueWithoutClientInput | Prisma.userAppointmentUpdateWithWhereUniqueWithoutClientInput[]
+  updateMany?: Prisma.userAppointmentUpdateManyWithWhereWithoutClientInput | Prisma.userAppointmentUpdateManyWithWhereWithoutClientInput[]
+  deleteMany?: Prisma.userAppointmentScalarWhereInput | Prisma.userAppointmentScalarWhereInput[]
 }
 
-export type UserAppointmentCreateNestedManyWithoutAppointmentInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutAppointmentInput, Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput> | Prisma.UserAppointmentCreateWithoutAppointmentInput[] | Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput[]
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutAppointmentInput | Prisma.UserAppointmentCreateOrConnectWithoutAppointmentInput[]
-  createMany?: Prisma.UserAppointmentCreateManyAppointmentInputEnvelope
-  connect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
+export type userAppointmentCreateNestedManyWithoutAppointmentInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutAppointmentInput, Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput> | Prisma.userAppointmentCreateWithoutAppointmentInput[] | Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput[]
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutAppointmentInput | Prisma.userAppointmentCreateOrConnectWithoutAppointmentInput[]
+  createMany?: Prisma.userAppointmentCreateManyAppointmentInputEnvelope
+  connect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
 }
 
-export type UserAppointmentUncheckedCreateNestedManyWithoutAppointmentInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutAppointmentInput, Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput> | Prisma.UserAppointmentCreateWithoutAppointmentInput[] | Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput[]
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutAppointmentInput | Prisma.UserAppointmentCreateOrConnectWithoutAppointmentInput[]
-  createMany?: Prisma.UserAppointmentCreateManyAppointmentInputEnvelope
-  connect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
+export type userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutAppointmentInput, Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput> | Prisma.userAppointmentCreateWithoutAppointmentInput[] | Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput[]
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutAppointmentInput | Prisma.userAppointmentCreateOrConnectWithoutAppointmentInput[]
+  createMany?: Prisma.userAppointmentCreateManyAppointmentInputEnvelope
+  connect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
 }
 
-export type UserAppointmentUpdateManyWithoutAppointmentNestedInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutAppointmentInput, Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput> | Prisma.UserAppointmentCreateWithoutAppointmentInput[] | Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput[]
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutAppointmentInput | Prisma.UserAppointmentCreateOrConnectWithoutAppointmentInput[]
-  upsert?: Prisma.UserAppointmentUpsertWithWhereUniqueWithoutAppointmentInput | Prisma.UserAppointmentUpsertWithWhereUniqueWithoutAppointmentInput[]
-  createMany?: Prisma.UserAppointmentCreateManyAppointmentInputEnvelope
-  set?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  disconnect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  delete?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  connect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  update?: Prisma.UserAppointmentUpdateWithWhereUniqueWithoutAppointmentInput | Prisma.UserAppointmentUpdateWithWhereUniqueWithoutAppointmentInput[]
-  updateMany?: Prisma.UserAppointmentUpdateManyWithWhereWithoutAppointmentInput | Prisma.UserAppointmentUpdateManyWithWhereWithoutAppointmentInput[]
-  deleteMany?: Prisma.UserAppointmentScalarWhereInput | Prisma.UserAppointmentScalarWhereInput[]
+export type userAppointmentUpdateManyWithoutAppointmentNestedInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutAppointmentInput, Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput> | Prisma.userAppointmentCreateWithoutAppointmentInput[] | Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput[]
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutAppointmentInput | Prisma.userAppointmentCreateOrConnectWithoutAppointmentInput[]
+  upsert?: Prisma.userAppointmentUpsertWithWhereUniqueWithoutAppointmentInput | Prisma.userAppointmentUpsertWithWhereUniqueWithoutAppointmentInput[]
+  createMany?: Prisma.userAppointmentCreateManyAppointmentInputEnvelope
+  set?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  disconnect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  delete?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  connect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  update?: Prisma.userAppointmentUpdateWithWhereUniqueWithoutAppointmentInput | Prisma.userAppointmentUpdateWithWhereUniqueWithoutAppointmentInput[]
+  updateMany?: Prisma.userAppointmentUpdateManyWithWhereWithoutAppointmentInput | Prisma.userAppointmentUpdateManyWithWhereWithoutAppointmentInput[]
+  deleteMany?: Prisma.userAppointmentScalarWhereInput | Prisma.userAppointmentScalarWhereInput[]
 }
 
-export type UserAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutAppointmentInput, Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput> | Prisma.UserAppointmentCreateWithoutAppointmentInput[] | Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput[]
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutAppointmentInput | Prisma.UserAppointmentCreateOrConnectWithoutAppointmentInput[]
-  upsert?: Prisma.UserAppointmentUpsertWithWhereUniqueWithoutAppointmentInput | Prisma.UserAppointmentUpsertWithWhereUniqueWithoutAppointmentInput[]
-  createMany?: Prisma.UserAppointmentCreateManyAppointmentInputEnvelope
-  set?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  disconnect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  delete?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  connect?: Prisma.UserAppointmentWhereUniqueInput | Prisma.UserAppointmentWhereUniqueInput[]
-  update?: Prisma.UserAppointmentUpdateWithWhereUniqueWithoutAppointmentInput | Prisma.UserAppointmentUpdateWithWhereUniqueWithoutAppointmentInput[]
-  updateMany?: Prisma.UserAppointmentUpdateManyWithWhereWithoutAppointmentInput | Prisma.UserAppointmentUpdateManyWithWhereWithoutAppointmentInput[]
-  deleteMany?: Prisma.UserAppointmentScalarWhereInput | Prisma.UserAppointmentScalarWhereInput[]
+export type userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutAppointmentInput, Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput> | Prisma.userAppointmentCreateWithoutAppointmentInput[] | Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput[]
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutAppointmentInput | Prisma.userAppointmentCreateOrConnectWithoutAppointmentInput[]
+  upsert?: Prisma.userAppointmentUpsertWithWhereUniqueWithoutAppointmentInput | Prisma.userAppointmentUpsertWithWhereUniqueWithoutAppointmentInput[]
+  createMany?: Prisma.userAppointmentCreateManyAppointmentInputEnvelope
+  set?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  disconnect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  delete?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  connect?: Prisma.userAppointmentWhereUniqueInput | Prisma.userAppointmentWhereUniqueInput[]
+  update?: Prisma.userAppointmentUpdateWithWhereUniqueWithoutAppointmentInput | Prisma.userAppointmentUpdateWithWhereUniqueWithoutAppointmentInput[]
+  updateMany?: Prisma.userAppointmentUpdateManyWithWhereWithoutAppointmentInput | Prisma.userAppointmentUpdateManyWithWhereWithoutAppointmentInput[]
+  deleteMany?: Prisma.userAppointmentScalarWhereInput | Prisma.userAppointmentScalarWhereInput[]
 }
 
-export type EnumUserAppointmentStateFieldUpdateOperationsInput = {
-  set?: $Enums.UserAppointmentState
+export type EnumuserAppointmentStateFieldUpdateOperationsInput = {
+  set?: $Enums.userAppointmentState
 }
 
-export type UserAppointmentCreateNestedOneWithoutPaymentsInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutPaymentsInput, Prisma.UserAppointmentUncheckedCreateWithoutPaymentsInput>
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutPaymentsInput
-  connect?: Prisma.UserAppointmentWhereUniqueInput
+export type userAppointmentCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutPaymentsInput, Prisma.userAppointmentUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.userAppointmentWhereUniqueInput
 }
 
-export type UserAppointmentUpdateOneRequiredWithoutPaymentsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutPaymentsInput, Prisma.UserAppointmentUncheckedCreateWithoutPaymentsInput>
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutPaymentsInput
-  upsert?: Prisma.UserAppointmentUpsertWithoutPaymentsInput
-  connect?: Prisma.UserAppointmentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserAppointmentUpdateToOneWithWhereWithoutPaymentsInput, Prisma.UserAppointmentUpdateWithoutPaymentsInput>, Prisma.UserAppointmentUncheckedUpdateWithoutPaymentsInput>
+export type userAppointmentUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutPaymentsInput, Prisma.userAppointmentUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.userAppointmentUpsertWithoutPaymentsInput
+  connect?: Prisma.userAppointmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.userAppointmentUpdateToOneWithWhereWithoutPaymentsInput, Prisma.userAppointmentUpdateWithoutPaymentsInput>, Prisma.userAppointmentUncheckedUpdateWithoutPaymentsInput>
 }
 
-export type UserAppointmentCreateNestedOneWithoutQrInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutQrInput, Prisma.UserAppointmentUncheckedCreateWithoutQrInput>
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutQrInput
-  connect?: Prisma.UserAppointmentWhereUniqueInput
+export type userAppointmentCreateNestedOneWithoutQrInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutQrInput, Prisma.userAppointmentUncheckedCreateWithoutQrInput>
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutQrInput
+  connect?: Prisma.userAppointmentWhereUniqueInput
 }
 
-export type UserAppointmentUpdateOneRequiredWithoutQrNestedInput = {
-  create?: Prisma.XOR<Prisma.UserAppointmentCreateWithoutQrInput, Prisma.UserAppointmentUncheckedCreateWithoutQrInput>
-  connectOrCreate?: Prisma.UserAppointmentCreateOrConnectWithoutQrInput
-  upsert?: Prisma.UserAppointmentUpsertWithoutQrInput
-  connect?: Prisma.UserAppointmentWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserAppointmentUpdateToOneWithWhereWithoutQrInput, Prisma.UserAppointmentUpdateWithoutQrInput>, Prisma.UserAppointmentUncheckedUpdateWithoutQrInput>
+export type userAppointmentUpdateOneRequiredWithoutQrNestedInput = {
+  create?: Prisma.XOR<Prisma.userAppointmentCreateWithoutQrInput, Prisma.userAppointmentUncheckedCreateWithoutQrInput>
+  connectOrCreate?: Prisma.userAppointmentCreateOrConnectWithoutQrInput
+  upsert?: Prisma.userAppointmentUpsertWithoutQrInput
+  connect?: Prisma.userAppointmentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.userAppointmentUpdateToOneWithWhereWithoutQrInput, Prisma.userAppointmentUpdateWithoutQrInput>, Prisma.userAppointmentUncheckedUpdateWithoutQrInput>
 }
 
-export type UserAppointmentCreateWithoutClientInput = {
+export type userAppointmentCreateWithoutClientInput = {
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  appointment: Prisma.AppointmentCreateNestedOneWithoutUserAppointmentsInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserAppointmentInput
+  state: $Enums.userAppointmentState
+  appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
+  payments?: Prisma.paymentCreateNestedManyWithoutUserAppointmentInput
   qr?: Prisma.QRCreateNestedOneWithoutUserAppointmentInput
 }
 
-export type UserAppointmentUncheckedCreateWithoutClientInput = {
+export type userAppointmentUncheckedCreateWithoutClientInput = {
   id?: number
   appointmentId: number
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserAppointmentInput
+  state: $Enums.userAppointmentState
+  payments?: Prisma.paymentUncheckedCreateNestedManyWithoutUserAppointmentInput
   qr?: Prisma.QRUncheckedCreateNestedOneWithoutUserAppointmentInput
 }
 
-export type UserAppointmentCreateOrConnectWithoutClientInput = {
-  where: Prisma.UserAppointmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserAppointmentCreateWithoutClientInput, Prisma.UserAppointmentUncheckedCreateWithoutClientInput>
+export type userAppointmentCreateOrConnectWithoutClientInput = {
+  where: Prisma.userAppointmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.userAppointmentCreateWithoutClientInput, Prisma.userAppointmentUncheckedCreateWithoutClientInput>
 }
 
-export type UserAppointmentCreateManyClientInputEnvelope = {
-  data: Prisma.UserAppointmentCreateManyClientInput | Prisma.UserAppointmentCreateManyClientInput[]
+export type userAppointmentCreateManyClientInputEnvelope = {
+  data: Prisma.userAppointmentCreateManyClientInput | Prisma.userAppointmentCreateManyClientInput[]
   skipDuplicates?: boolean
 }
 
-export type UserAppointmentUpsertWithWhereUniqueWithoutClientInput = {
-  where: Prisma.UserAppointmentWhereUniqueInput
-  update: Prisma.XOR<Prisma.UserAppointmentUpdateWithoutClientInput, Prisma.UserAppointmentUncheckedUpdateWithoutClientInput>
-  create: Prisma.XOR<Prisma.UserAppointmentCreateWithoutClientInput, Prisma.UserAppointmentUncheckedCreateWithoutClientInput>
+export type userAppointmentUpsertWithWhereUniqueWithoutClientInput = {
+  where: Prisma.userAppointmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.userAppointmentUpdateWithoutClientInput, Prisma.userAppointmentUncheckedUpdateWithoutClientInput>
+  create: Prisma.XOR<Prisma.userAppointmentCreateWithoutClientInput, Prisma.userAppointmentUncheckedCreateWithoutClientInput>
 }
 
-export type UserAppointmentUpdateWithWhereUniqueWithoutClientInput = {
-  where: Prisma.UserAppointmentWhereUniqueInput
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateWithoutClientInput, Prisma.UserAppointmentUncheckedUpdateWithoutClientInput>
+export type userAppointmentUpdateWithWhereUniqueWithoutClientInput = {
+  where: Prisma.userAppointmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.userAppointmentUpdateWithoutClientInput, Prisma.userAppointmentUncheckedUpdateWithoutClientInput>
 }
 
-export type UserAppointmentUpdateManyWithWhereWithoutClientInput = {
-  where: Prisma.UserAppointmentScalarWhereInput
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateManyMutationInput, Prisma.UserAppointmentUncheckedUpdateManyWithoutClientInput>
+export type userAppointmentUpdateManyWithWhereWithoutClientInput = {
+  where: Prisma.userAppointmentScalarWhereInput
+  data: Prisma.XOR<Prisma.userAppointmentUpdateManyMutationInput, Prisma.userAppointmentUncheckedUpdateManyWithoutClientInput>
 }
 
-export type UserAppointmentScalarWhereInput = {
-  AND?: Prisma.UserAppointmentScalarWhereInput | Prisma.UserAppointmentScalarWhereInput[]
-  OR?: Prisma.UserAppointmentScalarWhereInput[]
-  NOT?: Prisma.UserAppointmentScalarWhereInput | Prisma.UserAppointmentScalarWhereInput[]
-  id?: Prisma.IntFilter<"UserAppointment"> | number
-  appointmentId?: Prisma.IntFilter<"UserAppointment"> | number
-  clientId?: Prisma.IntFilter<"UserAppointment"> | number
-  rejected?: Prisma.BoolFilter<"UserAppointment"> | boolean
-  reservationDate?: Prisma.DateTimeFilter<"UserAppointment"> | Date | string
-  state?: Prisma.EnumUserAppointmentStateFilter<"UserAppointment"> | $Enums.UserAppointmentState
+export type userAppointmentScalarWhereInput = {
+  AND?: Prisma.userAppointmentScalarWhereInput | Prisma.userAppointmentScalarWhereInput[]
+  OR?: Prisma.userAppointmentScalarWhereInput[]
+  NOT?: Prisma.userAppointmentScalarWhereInput | Prisma.userAppointmentScalarWhereInput[]
+  id?: Prisma.IntFilter<"userAppointment"> | number
+  appointmentId?: Prisma.IntFilter<"userAppointment"> | number
+  clientId?: Prisma.IntFilter<"userAppointment"> | number
+  rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
+  reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
+  state?: Prisma.EnumuserAppointmentStateFilter<"userAppointment"> | $Enums.userAppointmentState
 }
 
-export type UserAppointmentCreateWithoutAppointmentInput = {
+export type userAppointmentCreateWithoutAppointmentInput = {
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  client: Prisma.ClientCreateNestedOneWithoutUserAppointmentsInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserAppointmentInput
+  state: $Enums.userAppointmentState
+  client: Prisma.clientCreateNestedOneWithoutUserAppointmentsInput
+  payments?: Prisma.paymentCreateNestedManyWithoutUserAppointmentInput
   qr?: Prisma.QRCreateNestedOneWithoutUserAppointmentInput
 }
 
-export type UserAppointmentUncheckedCreateWithoutAppointmentInput = {
+export type userAppointmentUncheckedCreateWithoutAppointmentInput = {
   id?: number
   clientId: number
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserAppointmentInput
+  state: $Enums.userAppointmentState
+  payments?: Prisma.paymentUncheckedCreateNestedManyWithoutUserAppointmentInput
   qr?: Prisma.QRUncheckedCreateNestedOneWithoutUserAppointmentInput
 }
 
-export type UserAppointmentCreateOrConnectWithoutAppointmentInput = {
-  where: Prisma.UserAppointmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserAppointmentCreateWithoutAppointmentInput, Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput>
+export type userAppointmentCreateOrConnectWithoutAppointmentInput = {
+  where: Prisma.userAppointmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.userAppointmentCreateWithoutAppointmentInput, Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput>
 }
 
-export type UserAppointmentCreateManyAppointmentInputEnvelope = {
-  data: Prisma.UserAppointmentCreateManyAppointmentInput | Prisma.UserAppointmentCreateManyAppointmentInput[]
+export type userAppointmentCreateManyAppointmentInputEnvelope = {
+  data: Prisma.userAppointmentCreateManyAppointmentInput | Prisma.userAppointmentCreateManyAppointmentInput[]
   skipDuplicates?: boolean
 }
 
-export type UserAppointmentUpsertWithWhereUniqueWithoutAppointmentInput = {
-  where: Prisma.UserAppointmentWhereUniqueInput
-  update: Prisma.XOR<Prisma.UserAppointmentUpdateWithoutAppointmentInput, Prisma.UserAppointmentUncheckedUpdateWithoutAppointmentInput>
-  create: Prisma.XOR<Prisma.UserAppointmentCreateWithoutAppointmentInput, Prisma.UserAppointmentUncheckedCreateWithoutAppointmentInput>
+export type userAppointmentUpsertWithWhereUniqueWithoutAppointmentInput = {
+  where: Prisma.userAppointmentWhereUniqueInput
+  update: Prisma.XOR<Prisma.userAppointmentUpdateWithoutAppointmentInput, Prisma.userAppointmentUncheckedUpdateWithoutAppointmentInput>
+  create: Prisma.XOR<Prisma.userAppointmentCreateWithoutAppointmentInput, Prisma.userAppointmentUncheckedCreateWithoutAppointmentInput>
 }
 
-export type UserAppointmentUpdateWithWhereUniqueWithoutAppointmentInput = {
-  where: Prisma.UserAppointmentWhereUniqueInput
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateWithoutAppointmentInput, Prisma.UserAppointmentUncheckedUpdateWithoutAppointmentInput>
+export type userAppointmentUpdateWithWhereUniqueWithoutAppointmentInput = {
+  where: Prisma.userAppointmentWhereUniqueInput
+  data: Prisma.XOR<Prisma.userAppointmentUpdateWithoutAppointmentInput, Prisma.userAppointmentUncheckedUpdateWithoutAppointmentInput>
 }
 
-export type UserAppointmentUpdateManyWithWhereWithoutAppointmentInput = {
-  where: Prisma.UserAppointmentScalarWhereInput
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateManyMutationInput, Prisma.UserAppointmentUncheckedUpdateManyWithoutAppointmentInput>
+export type userAppointmentUpdateManyWithWhereWithoutAppointmentInput = {
+  where: Prisma.userAppointmentScalarWhereInput
+  data: Prisma.XOR<Prisma.userAppointmentUpdateManyMutationInput, Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentInput>
 }
 
-export type UserAppointmentCreateWithoutPaymentsInput = {
+export type userAppointmentCreateWithoutPaymentsInput = {
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  appointment: Prisma.AppointmentCreateNestedOneWithoutUserAppointmentsInput
-  client: Prisma.ClientCreateNestedOneWithoutUserAppointmentsInput
+  state: $Enums.userAppointmentState
+  appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
+  client: Prisma.clientCreateNestedOneWithoutUserAppointmentsInput
   qr?: Prisma.QRCreateNestedOneWithoutUserAppointmentInput
 }
 
-export type UserAppointmentUncheckedCreateWithoutPaymentsInput = {
+export type userAppointmentUncheckedCreateWithoutPaymentsInput = {
   id?: number
   appointmentId: number
   clientId: number
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
+  state: $Enums.userAppointmentState
   qr?: Prisma.QRUncheckedCreateNestedOneWithoutUserAppointmentInput
 }
 
-export type UserAppointmentCreateOrConnectWithoutPaymentsInput = {
-  where: Prisma.UserAppointmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserAppointmentCreateWithoutPaymentsInput, Prisma.UserAppointmentUncheckedCreateWithoutPaymentsInput>
+export type userAppointmentCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.userAppointmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.userAppointmentCreateWithoutPaymentsInput, Prisma.userAppointmentUncheckedCreateWithoutPaymentsInput>
 }
 
-export type UserAppointmentUpsertWithoutPaymentsInput = {
-  update: Prisma.XOR<Prisma.UserAppointmentUpdateWithoutPaymentsInput, Prisma.UserAppointmentUncheckedUpdateWithoutPaymentsInput>
-  create: Prisma.XOR<Prisma.UserAppointmentCreateWithoutPaymentsInput, Prisma.UserAppointmentUncheckedCreateWithoutPaymentsInput>
-  where?: Prisma.UserAppointmentWhereInput
+export type userAppointmentUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.userAppointmentUpdateWithoutPaymentsInput, Prisma.userAppointmentUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.userAppointmentCreateWithoutPaymentsInput, Prisma.userAppointmentUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.userAppointmentWhereInput
 }
 
-export type UserAppointmentUpdateToOneWithWhereWithoutPaymentsInput = {
-  where?: Prisma.UserAppointmentWhereInput
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateWithoutPaymentsInput, Prisma.UserAppointmentUncheckedUpdateWithoutPaymentsInput>
+export type userAppointmentUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.userAppointmentWhereInput
+  data: Prisma.XOR<Prisma.userAppointmentUpdateWithoutPaymentsInput, Prisma.userAppointmentUncheckedUpdateWithoutPaymentsInput>
 }
 
-export type UserAppointmentUpdateWithoutPaymentsInput = {
+export type userAppointmentUpdateWithoutPaymentsInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  appointment?: Prisma.AppointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
-  client?: Prisma.ClientUpdateOneRequiredWithoutUserAppointmentsNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
+  client?: Prisma.clientUpdateOneRequiredWithoutUserAppointmentsNestedInput
   qr?: Prisma.QRUpdateOneWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentUncheckedUpdateWithoutPaymentsInput = {
+export type userAppointmentUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   qr?: Prisma.QRUncheckedUpdateOneWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentCreateWithoutQrInput = {
+export type userAppointmentCreateWithoutQrInput = {
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  appointment: Prisma.AppointmentCreateNestedOneWithoutUserAppointmentsInput
-  client: Prisma.ClientCreateNestedOneWithoutUserAppointmentsInput
-  payments?: Prisma.PaymentCreateNestedManyWithoutUserAppointmentInput
+  state: $Enums.userAppointmentState
+  appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
+  client: Prisma.clientCreateNestedOneWithoutUserAppointmentsInput
+  payments?: Prisma.paymentCreateNestedManyWithoutUserAppointmentInput
 }
 
-export type UserAppointmentUncheckedCreateWithoutQrInput = {
+export type userAppointmentUncheckedCreateWithoutQrInput = {
   id?: number
   appointmentId: number
   clientId: number
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
-  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserAppointmentInput
+  state: $Enums.userAppointmentState
+  payments?: Prisma.paymentUncheckedCreateNestedManyWithoutUserAppointmentInput
 }
 
-export type UserAppointmentCreateOrConnectWithoutQrInput = {
-  where: Prisma.UserAppointmentWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserAppointmentCreateWithoutQrInput, Prisma.UserAppointmentUncheckedCreateWithoutQrInput>
+export type userAppointmentCreateOrConnectWithoutQrInput = {
+  where: Prisma.userAppointmentWhereUniqueInput
+  create: Prisma.XOR<Prisma.userAppointmentCreateWithoutQrInput, Prisma.userAppointmentUncheckedCreateWithoutQrInput>
 }
 
-export type UserAppointmentUpsertWithoutQrInput = {
-  update: Prisma.XOR<Prisma.UserAppointmentUpdateWithoutQrInput, Prisma.UserAppointmentUncheckedUpdateWithoutQrInput>
-  create: Prisma.XOR<Prisma.UserAppointmentCreateWithoutQrInput, Prisma.UserAppointmentUncheckedCreateWithoutQrInput>
-  where?: Prisma.UserAppointmentWhereInput
+export type userAppointmentUpsertWithoutQrInput = {
+  update: Prisma.XOR<Prisma.userAppointmentUpdateWithoutQrInput, Prisma.userAppointmentUncheckedUpdateWithoutQrInput>
+  create: Prisma.XOR<Prisma.userAppointmentCreateWithoutQrInput, Prisma.userAppointmentUncheckedCreateWithoutQrInput>
+  where?: Prisma.userAppointmentWhereInput
 }
 
-export type UserAppointmentUpdateToOneWithWhereWithoutQrInput = {
-  where?: Prisma.UserAppointmentWhereInput
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateWithoutQrInput, Prisma.UserAppointmentUncheckedUpdateWithoutQrInput>
+export type userAppointmentUpdateToOneWithWhereWithoutQrInput = {
+  where?: Prisma.userAppointmentWhereInput
+  data: Prisma.XOR<Prisma.userAppointmentUpdateWithoutQrInput, Prisma.userAppointmentUncheckedUpdateWithoutQrInput>
 }
 
-export type UserAppointmentUpdateWithoutQrInput = {
+export type userAppointmentUpdateWithoutQrInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  appointment?: Prisma.AppointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
-  client?: Prisma.ClientUpdateOneRequiredWithoutUserAppointmentsNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserAppointmentNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
+  client?: Prisma.clientUpdateOneRequiredWithoutUserAppointmentsNestedInput
+  payments?: Prisma.paymentUpdateManyWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentUncheckedUpdateWithoutQrInput = {
+export type userAppointmentUncheckedUpdateWithoutQrInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  payments?: Prisma.paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentCreateManyClientInput = {
+export type userAppointmentCreateManyClientInput = {
   id?: number
   appointmentId: number
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
+  state: $Enums.userAppointmentState
 }
 
-export type UserAppointmentUpdateWithoutClientInput = {
+export type userAppointmentUpdateWithoutClientInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  appointment?: Prisma.AppointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserAppointmentNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
+  payments?: Prisma.paymentUpdateManyWithoutUserAppointmentNestedInput
   qr?: Prisma.QRUpdateOneWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentUncheckedUpdateWithoutClientInput = {
+export type userAppointmentUncheckedUpdateWithoutClientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  payments?: Prisma.paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
   qr?: Prisma.QRUncheckedUpdateOneWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentUncheckedUpdateManyWithoutClientInput = {
+export type userAppointmentUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
 }
 
-export type UserAppointmentCreateManyAppointmentInput = {
+export type userAppointmentCreateManyAppointmentInput = {
   id?: number
   clientId: number
   rejected: boolean
   reservationDate: Date | string
-  state: $Enums.UserAppointmentState
+  state: $Enums.userAppointmentState
 }
 
-export type UserAppointmentUpdateWithoutAppointmentInput = {
+export type userAppointmentUpdateWithoutAppointmentInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  client?: Prisma.ClientUpdateOneRequiredWithoutUserAppointmentsNestedInput
-  payments?: Prisma.PaymentUpdateManyWithoutUserAppointmentNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  client?: Prisma.clientUpdateOneRequiredWithoutUserAppointmentsNestedInput
+  payments?: Prisma.paymentUpdateManyWithoutUserAppointmentNestedInput
   qr?: Prisma.QRUpdateOneWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentUncheckedUpdateWithoutAppointmentInput = {
+export type userAppointmentUncheckedUpdateWithoutAppointmentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
-  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
+  payments?: Prisma.paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
   qr?: Prisma.QRUncheckedUpdateOneWithoutUserAppointmentNestedInput
 }
 
-export type UserAppointmentUncheckedUpdateManyWithoutAppointmentInput = {
+export type userAppointmentUncheckedUpdateManyWithoutAppointmentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  state?: Prisma.EnumUserAppointmentStateFieldUpdateOperationsInput | $Enums.UserAppointmentState
+  state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
 }
 
 
@@ -842,47 +842,47 @@ export type UserAppointmentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Ty
  * UserAppointmentCountOutputType without action
  */
 export type UserAppointmentCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PaymentWhereInput
+  where?: Prisma.paymentWhereInput
 }
 
 
-export type UserAppointmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type userAppointmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   appointmentId?: boolean
   clientId?: boolean
   rejected?: boolean
   reservationDate?: boolean
   state?: boolean
-  appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
-  payments?: boolean | Prisma.UserAppointment$paymentsArgs<ExtArgs>
-  qr?: boolean | Prisma.UserAppointment$qrArgs<ExtArgs>
+  appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.clientDefaultArgs<ExtArgs>
+  payments?: boolean | Prisma.userAppointment$paymentsArgs<ExtArgs>
+  qr?: boolean | Prisma.userAppointment$qrArgs<ExtArgs>
   _count?: boolean | Prisma.UserAppointmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userAppointment"]>
 
-export type UserAppointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type userAppointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   appointmentId?: boolean
   clientId?: boolean
   rejected?: boolean
   reservationDate?: boolean
   state?: boolean
-  appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
+  appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.clientDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userAppointment"]>
 
-export type UserAppointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type userAppointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   appointmentId?: boolean
   clientId?: boolean
   rejected?: boolean
   reservationDate?: boolean
   state?: boolean
-  appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
+  appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.clientDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userAppointment"]>
 
-export type UserAppointmentSelectScalar = {
+export type userAppointmentSelectScalar = {
   id?: boolean
   appointmentId?: boolean
   clientId?: boolean
@@ -891,29 +891,29 @@ export type UserAppointmentSelectScalar = {
   state?: boolean
 }
 
-export type UserAppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "appointmentId" | "clientId" | "rejected" | "reservationDate" | "state", ExtArgs["result"]["userAppointment"]>
-export type UserAppointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
-  payments?: boolean | Prisma.UserAppointment$paymentsArgs<ExtArgs>
-  qr?: boolean | Prisma.UserAppointment$qrArgs<ExtArgs>
+export type userAppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "appointmentId" | "clientId" | "rejected" | "reservationDate" | "state", ExtArgs["result"]["userAppointment"]>
+export type userAppointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.clientDefaultArgs<ExtArgs>
+  payments?: boolean | Prisma.userAppointment$paymentsArgs<ExtArgs>
+  qr?: boolean | Prisma.userAppointment$qrArgs<ExtArgs>
   _count?: boolean | Prisma.UserAppointmentCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserAppointmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
+export type userAppointmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.clientDefaultArgs<ExtArgs>
 }
-export type UserAppointmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  appointment?: boolean | Prisma.AppointmentDefaultArgs<ExtArgs>
-  client?: boolean | Prisma.ClientDefaultArgs<ExtArgs>
+export type userAppointmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
+  client?: boolean | Prisma.clientDefaultArgs<ExtArgs>
 }
 
-export type $UserAppointmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  name: "UserAppointment"
+export type $userAppointmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  name: "userAppointment"
   objects: {
-    appointment: Prisma.$AppointmentPayload<ExtArgs>
-    client: Prisma.$ClientPayload<ExtArgs>
-    payments: Prisma.$PaymentPayload<ExtArgs>[]
+    appointment: Prisma.$appointmentPayload<ExtArgs>
+    client: Prisma.$clientPayload<ExtArgs>
+    payments: Prisma.$paymentPayload<ExtArgs>[]
     qr: Prisma.$QRPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -922,23 +922,23 @@ export type $UserAppointmentPayload<ExtArgs extends runtime.Types.Extensions.Int
     clientId: number
     rejected: boolean
     reservationDate: Date
-    state: $Enums.UserAppointmentState
+    state: $Enums.userAppointmentState
   }, ExtArgs["result"]["userAppointment"]>
   composites: {}
 }
 
-export type UserAppointmentGetPayload<S extends boolean | null | undefined | UserAppointmentDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload, S>
+export type userAppointmentGetPayload<S extends boolean | null | undefined | userAppointmentDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload, S>
 
-export type UserAppointmentCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<UserAppointmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+export type userAppointmentCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+  Omit<userAppointmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: UserAppointmentCountAggregateInputType | true
   }
 
-export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserAppointment'], meta: { name: 'UserAppointment' } }
+export interface userAppointmentDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['userAppointment'], meta: { name: 'userAppointment' } }
   /**
    * Find zero or one UserAppointment that matches the filter.
-   * @param {UserAppointmentFindUniqueArgs} args - Arguments to find a UserAppointment
+   * @param {userAppointmentFindUniqueArgs} args - Arguments to find a UserAppointment
    * @example
    * // Get one UserAppointment
    * const userAppointment = await prisma.userAppointment.findUnique({
@@ -947,12 +947,12 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    *   }
    * })
    */
-  findUnique<T extends UserAppointmentFindUniqueArgs>(args: Prisma.SelectSubset<T, UserAppointmentFindUniqueArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findUnique<T extends userAppointmentFindUniqueArgs>(args: Prisma.SelectSubset<T, userAppointmentFindUniqueArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find one UserAppointment that matches the filter or throw an error with `error.code='P2025'`
    * if no matches were found.
-   * @param {UserAppointmentFindUniqueOrThrowArgs} args - Arguments to find a UserAppointment
+   * @param {userAppointmentFindUniqueOrThrowArgs} args - Arguments to find a UserAppointment
    * @example
    * // Get one UserAppointment
    * const userAppointment = await prisma.userAppointment.findUniqueOrThrow({
@@ -961,13 +961,13 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    *   }
    * })
    */
-  findUniqueOrThrow<T extends UserAppointmentFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, UserAppointmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findUniqueOrThrow<T extends userAppointmentFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, userAppointmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find the first UserAppointment that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {UserAppointmentFindFirstArgs} args - Arguments to find a UserAppointment
+   * @param {userAppointmentFindFirstArgs} args - Arguments to find a UserAppointment
    * @example
    * // Get one UserAppointment
    * const userAppointment = await prisma.userAppointment.findFirst({
@@ -976,14 +976,14 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    *   }
    * })
    */
-  findFirst<T extends UserAppointmentFindFirstArgs>(args?: Prisma.SelectSubset<T, UserAppointmentFindFirstArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findFirst<T extends userAppointmentFindFirstArgs>(args?: Prisma.SelectSubset<T, userAppointmentFindFirstArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find the first UserAppointment that matches the filter or
    * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {UserAppointmentFindFirstOrThrowArgs} args - Arguments to find a UserAppointment
+   * @param {userAppointmentFindFirstOrThrowArgs} args - Arguments to find a UserAppointment
    * @example
    * // Get one UserAppointment
    * const userAppointment = await prisma.userAppointment.findFirstOrThrow({
@@ -992,13 +992,13 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    *   }
    * })
    */
-  findFirstOrThrow<T extends UserAppointmentFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, UserAppointmentFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findFirstOrThrow<T extends userAppointmentFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, userAppointmentFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find zero or more UserAppointments that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {UserAppointmentFindManyArgs} args - Arguments to filter and select certain fields only.
+   * @param {userAppointmentFindManyArgs} args - Arguments to filter and select certain fields only.
    * @example
    * // Get all UserAppointments
    * const userAppointments = await prisma.userAppointment.findMany()
@@ -1010,11 +1010,11 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * const userAppointmentWithIdOnly = await prisma.userAppointment.findMany({ select: { id: true } })
    * 
    */
-  findMany<T extends UserAppointmentFindManyArgs>(args?: Prisma.SelectSubset<T, UserAppointmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+  findMany<T extends userAppointmentFindManyArgs>(args?: Prisma.SelectSubset<T, userAppointmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
   /**
    * Create a UserAppointment.
-   * @param {UserAppointmentCreateArgs} args - Arguments to create a UserAppointment.
+   * @param {userAppointmentCreateArgs} args - Arguments to create a UserAppointment.
    * @example
    * // Create one UserAppointment
    * const UserAppointment = await prisma.userAppointment.create({
@@ -1024,11 +1024,11 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * })
    * 
    */
-  create<T extends UserAppointmentCreateArgs>(args: Prisma.SelectSubset<T, UserAppointmentCreateArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  create<T extends userAppointmentCreateArgs>(args: Prisma.SelectSubset<T, userAppointmentCreateArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Create many UserAppointments.
-   * @param {UserAppointmentCreateManyArgs} args - Arguments to create many UserAppointments.
+   * @param {userAppointmentCreateManyArgs} args - Arguments to create many UserAppointments.
    * @example
    * // Create many UserAppointments
    * const userAppointment = await prisma.userAppointment.createMany({
@@ -1038,11 +1038,11 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * })
    *     
    */
-  createMany<T extends UserAppointmentCreateManyArgs>(args?: Prisma.SelectSubset<T, UserAppointmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  createMany<T extends userAppointmentCreateManyArgs>(args?: Prisma.SelectSubset<T, userAppointmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Create many UserAppointments and returns the data saved in the database.
-   * @param {UserAppointmentCreateManyAndReturnArgs} args - Arguments to create many UserAppointments.
+   * @param {userAppointmentCreateManyAndReturnArgs} args - Arguments to create many UserAppointments.
    * @example
    * // Create many UserAppointments
    * const userAppointment = await prisma.userAppointment.createManyAndReturn({
@@ -1062,11 +1062,11 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * Read more here: https://pris.ly/d/null-undefined
    * 
    */
-  createManyAndReturn<T extends UserAppointmentCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, UserAppointmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+  createManyAndReturn<T extends userAppointmentCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, userAppointmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Delete a UserAppointment.
-   * @param {UserAppointmentDeleteArgs} args - Arguments to delete one UserAppointment.
+   * @param {userAppointmentDeleteArgs} args - Arguments to delete one UserAppointment.
    * @example
    * // Delete one UserAppointment
    * const UserAppointment = await prisma.userAppointment.delete({
@@ -1076,11 +1076,11 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * })
    * 
    */
-  delete<T extends UserAppointmentDeleteArgs>(args: Prisma.SelectSubset<T, UserAppointmentDeleteArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  delete<T extends userAppointmentDeleteArgs>(args: Prisma.SelectSubset<T, userAppointmentDeleteArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Update one UserAppointment.
-   * @param {UserAppointmentUpdateArgs} args - Arguments to update one UserAppointment.
+   * @param {userAppointmentUpdateArgs} args - Arguments to update one UserAppointment.
    * @example
    * // Update one UserAppointment
    * const userAppointment = await prisma.userAppointment.update({
@@ -1093,11 +1093,11 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * })
    * 
    */
-  update<T extends UserAppointmentUpdateArgs>(args: Prisma.SelectSubset<T, UserAppointmentUpdateArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  update<T extends userAppointmentUpdateArgs>(args: Prisma.SelectSubset<T, userAppointmentUpdateArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Delete zero or more UserAppointments.
-   * @param {UserAppointmentDeleteManyArgs} args - Arguments to filter UserAppointments to delete.
+   * @param {userAppointmentDeleteManyArgs} args - Arguments to filter UserAppointments to delete.
    * @example
    * // Delete a few UserAppointments
    * const { count } = await prisma.userAppointment.deleteMany({
@@ -1107,13 +1107,13 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * })
    * 
    */
-  deleteMany<T extends UserAppointmentDeleteManyArgs>(args?: Prisma.SelectSubset<T, UserAppointmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  deleteMany<T extends userAppointmentDeleteManyArgs>(args?: Prisma.SelectSubset<T, userAppointmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Update zero or more UserAppointments.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {UserAppointmentUpdateManyArgs} args - Arguments to update one or more rows.
+   * @param {userAppointmentUpdateManyArgs} args - Arguments to update one or more rows.
    * @example
    * // Update many UserAppointments
    * const userAppointment = await prisma.userAppointment.updateMany({
@@ -1126,11 +1126,11 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * })
    * 
    */
-  updateMany<T extends UserAppointmentUpdateManyArgs>(args: Prisma.SelectSubset<T, UserAppointmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  updateMany<T extends userAppointmentUpdateManyArgs>(args: Prisma.SelectSubset<T, userAppointmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Update zero or more UserAppointments and returns the data updated in the database.
-   * @param {UserAppointmentUpdateManyAndReturnArgs} args - Arguments to update many UserAppointments.
+   * @param {userAppointmentUpdateManyAndReturnArgs} args - Arguments to update many UserAppointments.
    * @example
    * // Update many UserAppointments
    * const userAppointment = await prisma.userAppointment.updateManyAndReturn({
@@ -1156,11 +1156,11 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * Read more here: https://pris.ly/d/null-undefined
    * 
    */
-  updateManyAndReturn<T extends UserAppointmentUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, UserAppointmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+  updateManyAndReturn<T extends userAppointmentUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, userAppointmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one UserAppointment.
-   * @param {UserAppointmentUpsertArgs} args - Arguments to update or create a UserAppointment.
+   * @param {userAppointmentUpsertArgs} args - Arguments to update or create a UserAppointment.
    * @example
    * // Update or create a UserAppointment
    * const userAppointment = await prisma.userAppointment.upsert({
@@ -1175,14 +1175,14 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    *   }
    * })
    */
-  upsert<T extends UserAppointmentUpsertArgs>(args: Prisma.SelectSubset<T, UserAppointmentUpsertArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  upsert<T extends userAppointmentUpsertArgs>(args: Prisma.SelectSubset<T, userAppointmentUpsertArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
   /**
    * Count the number of UserAppointments.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {UserAppointmentCountArgs} args - Arguments to filter UserAppointments to count.
+   * @param {userAppointmentCountArgs} args - Arguments to filter UserAppointments to count.
    * @example
    * // Count the number of UserAppointments
    * const count = await prisma.userAppointment.count({
@@ -1191,8 +1191,8 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    *   }
    * })
   **/
-  count<T extends UserAppointmentCountArgs>(
-    args?: Prisma.Subset<T, UserAppointmentCountArgs>,
+  count<T extends userAppointmentCountArgs>(
+    args?: Prisma.Subset<T, userAppointmentCountArgs>,
   ): Prisma.PrismaPromise<
     T extends runtime.Types.Utils.Record<'select', any>
       ? T['select'] extends true
@@ -1231,7 +1231,7 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * Group by UserAppointment.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {UserAppointmentGroupByArgs} args - Group by arguments.
+   * @param {userAppointmentGroupByArgs} args - Group by arguments.
    * @example
    * // Group by city, order by createdAt, get count
    * const result = await prisma.user.groupBy({
@@ -1246,14 +1246,14 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
    * 
   **/
   groupBy<
-    T extends UserAppointmentGroupByArgs,
+    T extends userAppointmentGroupByArgs,
     HasSelectOrTake extends Prisma.Or<
       Prisma.Extends<'skip', Prisma.Keys<T>>,
       Prisma.Extends<'take', Prisma.Keys<T>>
     >,
     OrderByArg extends Prisma.True extends HasSelectOrTake
-      ? { orderBy: UserAppointmentGroupByArgs['orderBy'] }
-      : { orderBy?: UserAppointmentGroupByArgs['orderBy'] },
+      ? { orderBy: userAppointmentGroupByArgs['orderBy'] }
+      : { orderBy?: userAppointmentGroupByArgs['orderBy'] },
     OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>,
     ByFields extends Prisma.MaybeTupleToUnion<T['by']>,
     ByValid extends Prisma.Has<ByFields, OrderFields>,
@@ -1302,25 +1302,25 @@ export interface UserAppointmentDelegate<ExtArgs extends runtime.Types.Extension
           ? never
           : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
       }[OrderFields]
-  >(args: Prisma.SubsetIntersection<T, UserAppointmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserAppointmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  >(args: Prisma.SubsetIntersection<T, userAppointmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserAppointmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
 /**
- * Fields of the UserAppointment model
+ * Fields of the userAppointment model
  */
-readonly fields: UserAppointmentFieldRefs;
+readonly fields: userAppointmentFieldRefs;
 }
 
 /**
- * The delegate class that acts as a "Promise-like" for UserAppointment.
+ * The delegate class that acts as a "Promise-like" for userAppointment.
  * Why is this prefixed with `Prisma__`?
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-export interface Prisma__UserAppointmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__userAppointmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  appointment<T extends Prisma.AppointmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AppointmentDefaultArgs<ExtArgs>>): Prisma.Prisma__AppointmentClient<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  client<T extends Prisma.ClientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClientDefaultArgs<ExtArgs>>): Prisma.Prisma__ClientClient<runtime.Types.Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  payments<T extends Prisma.UserAppointment$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserAppointment$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  qr<T extends Prisma.UserAppointment$qrArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserAppointment$qrArgs<ExtArgs>>): Prisma.Prisma__QRClient<runtime.Types.Result.GetResult<Prisma.$QRPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  appointment<T extends Prisma.appointmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.appointmentDefaultArgs<ExtArgs>>): Prisma.Prisma__appointmentClient<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  client<T extends Prisma.clientDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.clientDefaultArgs<ExtArgs>>): Prisma.Prisma__clientClient<runtime.Types.Result.GetResult<Prisma.$clientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  payments<T extends Prisma.userAppointment$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.userAppointment$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$paymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  qr<T extends Prisma.userAppointment$qrArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.userAppointment$qrArgs<ExtArgs>>): Prisma.Prisma__QRClient<runtime.Types.Result.GetResult<Prisma.$QRPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1347,443 +1347,443 @@ export interface Prisma__UserAppointmentClient<T, Null = never, ExtArgs extends 
 
 
 /**
- * Fields of the UserAppointment model
+ * Fields of the userAppointment model
  */
-export interface UserAppointmentFieldRefs {
-  readonly id: Prisma.FieldRef<"UserAppointment", 'Int'>
-  readonly appointmentId: Prisma.FieldRef<"UserAppointment", 'Int'>
-  readonly clientId: Prisma.FieldRef<"UserAppointment", 'Int'>
-  readonly rejected: Prisma.FieldRef<"UserAppointment", 'Boolean'>
-  readonly reservationDate: Prisma.FieldRef<"UserAppointment", 'DateTime'>
-  readonly state: Prisma.FieldRef<"UserAppointment", 'UserAppointmentState'>
+export interface userAppointmentFieldRefs {
+  readonly id: Prisma.FieldRef<"userAppointment", 'Int'>
+  readonly appointmentId: Prisma.FieldRef<"userAppointment", 'Int'>
+  readonly clientId: Prisma.FieldRef<"userAppointment", 'Int'>
+  readonly rejected: Prisma.FieldRef<"userAppointment", 'Boolean'>
+  readonly reservationDate: Prisma.FieldRef<"userAppointment", 'DateTime'>
+  readonly state: Prisma.FieldRef<"userAppointment", 'userAppointmentState'>
 }
     
 
 // Custom InputTypes
 /**
- * UserAppointment findUnique
+ * userAppointment findUnique
  */
-export type UserAppointmentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which UserAppointment to fetch.
+   * Filter, which userAppointment to fetch.
    */
-  where: Prisma.UserAppointmentWhereUniqueInput
+  where: Prisma.userAppointmentWhereUniqueInput
 }
 
 /**
- * UserAppointment findUniqueOrThrow
+ * userAppointment findUniqueOrThrow
  */
-export type UserAppointmentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which UserAppointment to fetch.
+   * Filter, which userAppointment to fetch.
    */
-  where: Prisma.UserAppointmentWhereUniqueInput
+  where: Prisma.userAppointmentWhereUniqueInput
 }
 
 /**
- * UserAppointment findFirst
+ * userAppointment findFirst
  */
-export type UserAppointmentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which UserAppointment to fetch.
+   * Filter, which userAppointment to fetch.
    */
-  where?: Prisma.UserAppointmentWhereInput
+  where?: Prisma.userAppointmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of UserAppointments to fetch.
+   * Determine the order of userAppointments to fetch.
    */
-  orderBy?: Prisma.UserAppointmentOrderByWithRelationInput | Prisma.UserAppointmentOrderByWithRelationInput[]
+  orderBy?: Prisma.userAppointmentOrderByWithRelationInput | Prisma.userAppointmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for UserAppointments.
+   * Sets the position for searching for userAppointments.
    */
-  cursor?: Prisma.UserAppointmentWhereUniqueInput
+  cursor?: Prisma.userAppointmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` UserAppointments from the position of the cursor.
+   * Take `±n` userAppointments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` UserAppointments.
+   * Skip the first `n` userAppointments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of UserAppointments.
+   * Filter by unique combinations of userAppointments.
    */
   distinct?: Prisma.UserAppointmentScalarFieldEnum | Prisma.UserAppointmentScalarFieldEnum[]
 }
 
 /**
- * UserAppointment findFirstOrThrow
+ * userAppointment findFirstOrThrow
  */
-export type UserAppointmentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which UserAppointment to fetch.
+   * Filter, which userAppointment to fetch.
    */
-  where?: Prisma.UserAppointmentWhereInput
+  where?: Prisma.userAppointmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of UserAppointments to fetch.
+   * Determine the order of userAppointments to fetch.
    */
-  orderBy?: Prisma.UserAppointmentOrderByWithRelationInput | Prisma.UserAppointmentOrderByWithRelationInput[]
+  orderBy?: Prisma.userAppointmentOrderByWithRelationInput | Prisma.userAppointmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for UserAppointments.
+   * Sets the position for searching for userAppointments.
    */
-  cursor?: Prisma.UserAppointmentWhereUniqueInput
+  cursor?: Prisma.userAppointmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` UserAppointments from the position of the cursor.
+   * Take `±n` userAppointments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` UserAppointments.
+   * Skip the first `n` userAppointments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of UserAppointments.
+   * Filter by unique combinations of userAppointments.
    */
   distinct?: Prisma.UserAppointmentScalarFieldEnum | Prisma.UserAppointmentScalarFieldEnum[]
 }
 
 /**
- * UserAppointment findMany
+ * userAppointment findMany
  */
-export type UserAppointmentFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * Filter, which UserAppointments to fetch.
+   * Filter, which userAppointments to fetch.
    */
-  where?: Prisma.UserAppointmentWhereInput
+  where?: Prisma.userAppointmentWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of UserAppointments to fetch.
+   * Determine the order of userAppointments to fetch.
    */
-  orderBy?: Prisma.UserAppointmentOrderByWithRelationInput | Prisma.UserAppointmentOrderByWithRelationInput[]
+  orderBy?: Prisma.userAppointmentOrderByWithRelationInput | Prisma.userAppointmentOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for listing UserAppointments.
+   * Sets the position for listing userAppointments.
    */
-  cursor?: Prisma.UserAppointmentWhereUniqueInput
+  cursor?: Prisma.userAppointmentWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` UserAppointments from the position of the cursor.
+   * Take `±n` userAppointments from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` UserAppointments.
+   * Skip the first `n` userAppointments.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of UserAppointments.
+   * Filter by unique combinations of userAppointments.
    */
   distinct?: Prisma.UserAppointmentScalarFieldEnum | Prisma.UserAppointmentScalarFieldEnum[]
 }
 
 /**
- * UserAppointment create
+ * userAppointment create
  */
-export type UserAppointmentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * The data needed to create a UserAppointment.
+   * The data needed to create a userAppointment.
    */
-  data: Prisma.XOR<Prisma.UserAppointmentCreateInput, Prisma.UserAppointmentUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.userAppointmentCreateInput, Prisma.userAppointmentUncheckedCreateInput>
 }
 
 /**
- * UserAppointment createMany
+ * userAppointment createMany
  */
-export type UserAppointmentCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to create many UserAppointments.
+   * The data used to create many userAppointments.
    */
-  data: Prisma.UserAppointmentCreateManyInput | Prisma.UserAppointmentCreateManyInput[]
+  data: Prisma.userAppointmentCreateManyInput | Prisma.userAppointmentCreateManyInput[]
   skipDuplicates?: boolean
 }
 
 /**
- * UserAppointment createManyAndReturn
+ * userAppointment createManyAndReturn
  */
-export type UserAppointmentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelectCreateManyAndReturn<ExtArgs> | null
+  select?: Prisma.userAppointmentSelectCreateManyAndReturn<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
-   * The data used to create many UserAppointments.
+   * The data used to create many userAppointments.
    */
-  data: Prisma.UserAppointmentCreateManyInput | Prisma.UserAppointmentCreateManyInput[]
+  data: Prisma.userAppointmentCreateManyInput | Prisma.userAppointmentCreateManyInput[]
   skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentIncludeCreateManyAndReturn<ExtArgs> | null
+  include?: Prisma.userAppointmentIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
- * UserAppointment update
+ * userAppointment update
  */
-export type UserAppointmentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * The data needed to update a UserAppointment.
+   * The data needed to update a userAppointment.
    */
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateInput, Prisma.UserAppointmentUncheckedUpdateInput>
+  data: Prisma.XOR<Prisma.userAppointmentUpdateInput, Prisma.userAppointmentUncheckedUpdateInput>
   /**
-   * Choose, which UserAppointment to update.
+   * Choose, which userAppointment to update.
    */
-  where: Prisma.UserAppointmentWhereUniqueInput
+  where: Prisma.userAppointmentWhereUniqueInput
 }
 
 /**
- * UserAppointment updateMany
+ * userAppointment updateMany
  */
-export type UserAppointmentUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to update UserAppointments.
+   * The data used to update userAppointments.
    */
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateManyMutationInput, Prisma.UserAppointmentUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.userAppointmentUpdateManyMutationInput, Prisma.userAppointmentUncheckedUpdateManyInput>
   /**
-   * Filter which UserAppointments to update
+   * Filter which userAppointments to update
    */
-  where?: Prisma.UserAppointmentWhereInput
+  where?: Prisma.userAppointmentWhereInput
   /**
-   * Limit how many UserAppointments to update.
+   * Limit how many userAppointments to update.
    */
   limit?: number
 }
 
 /**
- * UserAppointment updateManyAndReturn
+ * userAppointment updateManyAndReturn
  */
-export type UserAppointmentUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelectUpdateManyAndReturn<ExtArgs> | null
+  select?: Prisma.userAppointmentSelectUpdateManyAndReturn<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
-   * The data used to update UserAppointments.
+   * The data used to update userAppointments.
    */
-  data: Prisma.XOR<Prisma.UserAppointmentUpdateManyMutationInput, Prisma.UserAppointmentUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.userAppointmentUpdateManyMutationInput, Prisma.userAppointmentUncheckedUpdateManyInput>
   /**
-   * Filter which UserAppointments to update
+   * Filter which userAppointments to update
    */
-  where?: Prisma.UserAppointmentWhereInput
+  where?: Prisma.userAppointmentWhereInput
   /**
-   * Limit how many UserAppointments to update.
+   * Limit how many userAppointments to update.
    */
   limit?: number
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  include?: Prisma.userAppointmentIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
- * UserAppointment upsert
+ * userAppointment upsert
  */
-export type UserAppointmentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * The filter to search for the UserAppointment to update in case it exists.
+   * The filter to search for the userAppointment to update in case it exists.
    */
-  where: Prisma.UserAppointmentWhereUniqueInput
+  where: Prisma.userAppointmentWhereUniqueInput
   /**
-   * In case the UserAppointment found by the `where` argument doesn't exist, create a new UserAppointment with this data.
+   * In case the userAppointment found by the `where` argument doesn't exist, create a new userAppointment with this data.
    */
-  create: Prisma.XOR<Prisma.UserAppointmentCreateInput, Prisma.UserAppointmentUncheckedCreateInput>
+  create: Prisma.XOR<Prisma.userAppointmentCreateInput, Prisma.userAppointmentUncheckedCreateInput>
   /**
-   * In case the UserAppointment was found with the provided `where` argument, update it with this data.
+   * In case the userAppointment was found with the provided `where` argument, update it with this data.
    */
-  update: Prisma.XOR<Prisma.UserAppointmentUpdateInput, Prisma.UserAppointmentUncheckedUpdateInput>
+  update: Prisma.XOR<Prisma.userAppointmentUpdateInput, Prisma.userAppointmentUncheckedUpdateInput>
 }
 
 /**
- * UserAppointment delete
+ * userAppointment delete
  */
-export type UserAppointmentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
   /**
-   * Filter which UserAppointment to delete.
+   * Filter which userAppointment to delete.
    */
-  where: Prisma.UserAppointmentWhereUniqueInput
+  where: Prisma.userAppointmentWhereUniqueInput
 }
 
 /**
- * UserAppointment deleteMany
+ * userAppointment deleteMany
  */
-export type UserAppointmentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which UserAppointments to delete
+   * Filter which userAppointments to delete
    */
-  where?: Prisma.UserAppointmentWhereInput
+  where?: Prisma.userAppointmentWhereInput
   /**
-   * Limit how many UserAppointments to delete.
+   * Limit how many userAppointments to delete.
    */
   limit?: number
 }
 
 /**
- * UserAppointment.payments
+ * userAppointment.payments
  */
-export type UserAppointment$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointment$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Payment
+   * Select specific fields to fetch from the payment
    */
-  select?: Prisma.PaymentSelect<ExtArgs> | null
+  select?: Prisma.paymentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Payment
+   * Omit specific fields from the payment
    */
-  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  omit?: Prisma.paymentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.PaymentInclude<ExtArgs> | null
-  where?: Prisma.PaymentWhereInput
-  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
-  cursor?: Prisma.PaymentWhereUniqueInput
+  include?: Prisma.paymentInclude<ExtArgs> | null
+  where?: Prisma.paymentWhereInput
+  orderBy?: Prisma.paymentOrderByWithRelationInput | Prisma.paymentOrderByWithRelationInput[]
+  cursor?: Prisma.paymentWhereUniqueInput
   take?: number
   skip?: number
   distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**
- * UserAppointment.qr
+ * userAppointment.qr
  */
-export type UserAppointment$qrArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointment$qrArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the QR
    */
@@ -1800,19 +1800,19 @@ export type UserAppointment$qrArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * UserAppointment without action
+ * userAppointment without action
  */
-export type UserAppointmentDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type userAppointmentDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the UserAppointment
+   * Select specific fields to fetch from the userAppointment
    */
-  select?: Prisma.UserAppointmentSelect<ExtArgs> | null
+  select?: Prisma.userAppointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the UserAppointment
+   * Omit specific fields from the userAppointment
    */
-  omit?: Prisma.UserAppointmentOmit<ExtArgs> | null
+  omit?: Prisma.userAppointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserAppointmentInclude<ExtArgs> | null
+  include?: Prisma.userAppointmentInclude<ExtArgs> | null
 }

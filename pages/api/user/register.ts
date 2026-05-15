@@ -10,15 +10,23 @@ export default async function handler(
   }
 
   try {
-    const { email, dni, password } = req.body;
+      const { email, password, name, lastName, age, dni, roleId } = req.body;
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        dni,
-        password,
-      },
-    });
+      if (!email || !password || !name || !lastName || !age || !dni || !roleId) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      const user = await prisma.user.create({
+        data: {
+          email,
+          password,
+          name,
+          lastName,
+          age: Number(age),
+          dni,
+          role: { connect: { id: Number(roleId) } },
+        },
+      });
 
     res.status(201).json(user);
   } catch (error) {

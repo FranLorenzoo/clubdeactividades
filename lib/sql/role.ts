@@ -3,14 +3,14 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllRoles() {
   return prisma.role.findMany({
-    include: { employees: true },
+    include: { users: true },
   });
 }
 
 export async function getRoleById(id: number) {
   return prisma.role.findUnique({
     where: { id },
-    include: { employees: true },
+    include: { users: true },
   });
 }
 

@@ -42,55 +42,55 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model Role
+ * Model role
  * 
  */
-export type Role = Prisma.RoleModel
+export type role = Prisma.roleModel
 /**
- * Model User
+ * Model user
  * 
  */
-export type User = Prisma.UserModel
+export type user = Prisma.userModel
 /**
- * Model Client
+ * Model client
  * 
  */
-export type Client = Prisma.ClientModel
+export type client = Prisma.clientModel
 /**
- * Model CreditCard
+ * Model creditCard
  * 
  */
-export type CreditCard = Prisma.CreditCardModel
+export type creditCard = Prisma.creditCardModel
 /**
- * Model Employee
+ * Model employee
  * 
  */
-export type Employee = Prisma.EmployeeModel
+export type employee = Prisma.employeeModel
 /**
- * Model Professor
+ * Model professor
  * 
  */
-export type Professor = Prisma.ProfessorModel
+export type professor = Prisma.professorModel
 /**
- * Model Activity
+ * Model activity
  * 
  */
-export type Activity = Prisma.ActivityModel
+export type activity = Prisma.activityModel
 /**
- * Model Appointment
+ * Model appointment
  * 
  */
-export type Appointment = Prisma.AppointmentModel
+export type appointment = Prisma.appointmentModel
 /**
- * Model UserAppointment
+ * Model userAppointment
  * 
  */
-export type UserAppointment = Prisma.UserAppointmentModel
+export type userAppointment = Prisma.userAppointmentModel
 /**
- * Model Payment
+ * Model payment
  * 
  */
-export type Payment = Prisma.PaymentModel
+export type payment = Prisma.paymentModel
 /**
  * Model QR
  * 

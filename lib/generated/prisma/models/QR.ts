@@ -220,7 +220,7 @@ export type QRWhereInput = {
   userAppointmentId?: Prisma.IntFilter<"QR"> | number
   qrImage?: Prisma.StringFilter<"QR"> | string
   url?: Prisma.StringFilter<"QR"> | string
-  userAppointment?: Prisma.XOR<Prisma.UserAppointmentScalarRelationFilter, Prisma.UserAppointmentWhereInput>
+  userAppointment?: Prisma.XOR<Prisma.UserAppointmentScalarRelationFilter, Prisma.userAppointmentWhereInput>
 }
 
 export type QROrderByWithRelationInput = {
@@ -229,7 +229,7 @@ export type QROrderByWithRelationInput = {
   userAppointmentId?: Prisma.SortOrder
   qrImage?: Prisma.SortOrder
   url?: Prisma.SortOrder
-  userAppointment?: Prisma.UserAppointmentOrderByWithRelationInput
+  userAppointment?: Prisma.userAppointmentOrderByWithRelationInput
 }
 
 export type QRWhereUniqueInput = Prisma.AtLeast<{
@@ -241,7 +241,7 @@ export type QRWhereUniqueInput = Prisma.AtLeast<{
   accepted?: Prisma.BoolFilter<"QR"> | boolean
   qrImage?: Prisma.StringFilter<"QR"> | string
   url?: Prisma.StringFilter<"QR"> | string
-  userAppointment?: Prisma.XOR<Prisma.UserAppointmentScalarRelationFilter, Prisma.UserAppointmentWhereInput>
+  userAppointment?: Prisma.XOR<Prisma.UserAppointmentScalarRelationFilter, Prisma.userAppointmentWhereInput>
 }, "id" | "userAppointmentId">
 
 export type QROrderByWithAggregationInput = {
@@ -272,7 +272,7 @@ export type QRCreateInput = {
   accepted: boolean
   qrImage: string
   url: string
-  userAppointment: Prisma.UserAppointmentCreateNestedOneWithoutQrInput
+  userAppointment: Prisma.userAppointmentCreateNestedOneWithoutQrInput
 }
 
 export type QRUncheckedCreateInput = {
@@ -287,7 +287,7 @@ export type QRUpdateInput = {
   accepted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   qrImage?: Prisma.StringFieldUpdateOperationsInput | string
   url?: Prisma.StringFieldUpdateOperationsInput | string
-  userAppointment?: Prisma.UserAppointmentUpdateOneRequiredWithoutQrNestedInput
+  userAppointment?: Prisma.userAppointmentUpdateOneRequiredWithoutQrNestedInput
 }
 
 export type QRUncheckedUpdateInput = {
@@ -441,7 +441,7 @@ export type QRSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
   userAppointmentId?: boolean
   qrImage?: boolean
   url?: boolean
-  userAppointment?: boolean | Prisma.UserAppointmentDefaultArgs<ExtArgs>
+  userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["qR"]>
 
 export type QRSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -450,7 +450,7 @@ export type QRSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions
   userAppointmentId?: boolean
   qrImage?: boolean
   url?: boolean
-  userAppointment?: boolean | Prisma.UserAppointmentDefaultArgs<ExtArgs>
+  userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["qR"]>
 
 export type QRSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -459,7 +459,7 @@ export type QRSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions
   userAppointmentId?: boolean
   qrImage?: boolean
   url?: boolean
-  userAppointment?: boolean | Prisma.UserAppointmentDefaultArgs<ExtArgs>
+  userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["qR"]>
 
 export type QRSelectScalar = {
@@ -472,19 +472,19 @@ export type QRSelectScalar = {
 
 export type QROmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "accepted" | "userAppointmentId" | "qrImage" | "url", ExtArgs["result"]["qR"]>
 export type QRInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userAppointment?: boolean | Prisma.UserAppointmentDefaultArgs<ExtArgs>
+  userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
 }
 export type QRIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userAppointment?: boolean | Prisma.UserAppointmentDefaultArgs<ExtArgs>
+  userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
 }
 export type QRIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  userAppointment?: boolean | Prisma.UserAppointmentDefaultArgs<ExtArgs>
+  userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
 }
 
 export type $QRPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "QR"
   objects: {
-    userAppointment: Prisma.$UserAppointmentPayload<ExtArgs>
+    userAppointment: Prisma.$userAppointmentPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -886,7 +886,7 @@ readonly fields: QRFieldRefs;
  */
 export interface Prisma__QRClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  userAppointment<T extends Prisma.UserAppointmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserAppointmentDefaultArgs<ExtArgs>>): Prisma.Prisma__UserAppointmentClient<runtime.Types.Result.GetResult<Prisma.$UserAppointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  userAppointment<T extends Prisma.userAppointmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.userAppointmentDefaultArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

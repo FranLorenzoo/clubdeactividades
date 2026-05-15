@@ -12,20 +12,20 @@ datasource db {
   provider = "postgresql"
 }
 
-enum UserAppointmentState {
+enum userAppointmentState {
   PAGO_COMPLETO
   PAGO_PARCIAL
   IMPAGO
 }
 
-model Role {
+model role {
   id    Int    @id @default(autoincrement())
   name  String
 
-  users User[]
+  users user[]
 }
 
-model User {
+model user {
   id        Int    @id @default(autoincrement())
   email     String @unique
   password  String
@@ -35,26 +35,26 @@ model User {
   dni       String
 
   roleId    Int
-  role      Role   @relation(fields: [roleId], references: [id])
+  role      role   @relation(fields: [roleId], references: [id])
 
-  client    Client?
-  employee  Employee?
-  professor Professor?
+  client    client?
+  employee  employee?
+  professor professor?
 }
 
-model Client {
+model client {
   id         Int     @id @default(autoincrement())
   suspended  Boolean
   active     Boolean
 
   userId     Int     @unique
-  user       User    @relation(fields: [userId], references: [id])
+  user       user    @relation(fields: [userId], references: [id])
 
-  creditCard CreditCard?
-  userAppointments UserAppointment[]
+  creditCard creditCard?
+  userAppointments userAppointment[]
 }
 
-model CreditCard {
+model creditCard {
   id            Int    @id @default(autoincrement())
   cardNumber    String
   securityCode  String
@@ -62,43 +62,43 @@ model CreditCard {
   expireDate    DateTime
 
   clientId      Int    @unique
-  client        Client @relation(fields: [clientId], references: [id])
+  client        client @relation(fields: [clientId], references: [id])
 }
 
-model Employee {
+model employee {
   id        Int    @id @default(autoincrement())
 
   userId    Int    @unique
-  user      User   @relation(fields: [userId], references: [id])
+  user      user   @relation(fields: [userId], references: [id])
 
-  payments  Payment[]
+  payments  payment[]
 }
 
-model Professor {
+model professor {
   id            Int          @id @default(autoincrement())
 
   userId        Int          @unique
-  user          User         @relation(fields: [userId], references: [id])
+  user          user         @relation(fields: [userId], references: [id])
 
   activityId    Int
-  activity      Activity     @relation(fields: [activityId], references: [id])
+  activity      activity     @relation(fields: [activityId], references: [id])
 
-  appointments  Appointment[]
+  appointments  appointment[]
 }
 
-model Activity {
+model activity {
   id            Int           @id @default(autoincrement())
   name          String
 
-  professors    Professor[]
-  appointments  Appointment[]
+  professors    professor[]
+  appointments  appointment[]
 }
 
-model Appointment {
+model appointment {
   id              Int       @id @default(autoincrement())
 
   activityId      Int
-  activity        Activity  @relation(fields: [activityId], references: [id])
+  activity        activity  @relation(fields: [activityId], references: [id])
 
   initialDate     DateTime
   endDate         DateTime
@@ -106,41 +106,41 @@ model Appointment {
   price           Float
 
   professorId     Int
-  professor       Professor @relation(fields: [professorId], references: [id])
+  professor       professor @relation(fields: [professorId], references: [id])
 
   currentSlots    Int
   slotsAvailable  Int
 
-  userAppointments UserAppointment[]
+  userAppointments userAppointment[]
 }
 
-model UserAppointment {
+model userAppointment {
   id               Int                     @id @default(autoincrement())
 
   appointmentId    Int
-  appointment      Appointment             @relation(fields: [appointmentId], references: [id])
+  appointment      appointment             @relation(fields: [appointmentId], references: [id])
 
   clientId         Int
-  client           Client                  @relation(fields: [clientId], references: [id])
+  client           client                  @relation(fields: [clientId], references: [id])
 
   rejected         Boolean
 
   reservationDate  DateTime
 
-  state            UserAppointmentState
+  state            userAppointmentState
 
-  payments         Payment[]
+  payments         payment[]
 
   qr               QR?
 
   @@unique([appointmentId, clientId])
 }
 
-model Payment {
+model payment {
   id                 Int              @id @default(autoincrement())
 
   userAppointmentId  Int
-  userAppointment    UserAppointment  @relation(fields: [userAppointmentId], references: [id])
+  userAppointment    userAppointment  @relation(fields: [userAppointmentId], references: [id])
 
   paymentDate        DateTime
 
@@ -149,7 +149,7 @@ model Payment {
   paymentMethod      String
 
   employeeId         Int
-  employee           Employee         @relation(fields: [employeeId], references: [id])
+  employee           employee         @relation(fields: [employeeId], references: [id])
 }
 
 model QR {
@@ -158,7 +158,7 @@ model QR {
   accepted           Boolean
 
   userAppointmentId  Int              @unique
-  userAppointment    UserAppointment  @relation(fields: [userAppointmentId], references: [id])
+  userAppointment    userAppointment  @relation(fields: [userAppointmentId], references: [id])
 
   qrImage            String
   url                String
