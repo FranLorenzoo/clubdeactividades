@@ -6,11 +6,9 @@ export default function Searchbar() {
 
     const formData = new FormData(e.currentTarget);
     const value = (formData.get("searchValue") as string).trim();
-    
-    const query = value.includes("@") ? `email=${value}` : `dni=${value}`;
 
     try {
-      const response = await fetch(`/api/user?${query}`);
+      const response = await fetch(`/api/user?dni=${value}`);
 
       if(response.ok) {
         const user = await response.json();
@@ -37,7 +35,7 @@ export default function Searchbar() {
       <form onSubmit={handleSubmit} className="flex gap-3">
         <input
           type="text"
-          placeholder="Buscar por DNI o email"
+          placeholder="Buscar por DNI"
           name="searchValue"
           className="flex-1 border border-gray-300 rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#316788]"
         />
