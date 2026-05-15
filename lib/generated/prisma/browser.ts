@@ -18,45 +18,55 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
- * Model role
+ * Model Role
  * 
  */
-export type role = Prisma.roleModel
+export type Role = Prisma.RoleModel
 /**
- * Model user
+ * Model User
  * 
  */
-export type user = Prisma.userModel
+export type User = Prisma.UserModel
 /**
- * Model creditCard
+ * Model Client
  * 
  */
-export type creditCard = Prisma.creditCardModel
+export type Client = Prisma.ClientModel
 /**
- * Model employee
+ * Model CreditCard
  * 
  */
-export type employee = Prisma.employeeModel
+export type CreditCard = Prisma.CreditCardModel
 /**
- * Model payment
+ * Model Employee
  * 
  */
-export type payment = Prisma.paymentModel
+export type Employee = Prisma.EmployeeModel
 /**
- * Model activity
+ * Model Professor
  * 
  */
-export type activity = Prisma.activityModel
+export type Professor = Prisma.ProfessorModel
 /**
- * Model appointment
+ * Model Activity
  * 
  */
-export type appointment = Prisma.appointmentModel
+export type Activity = Prisma.ActivityModel
 /**
- * Model userAppointment
+ * Model Appointment
  * 
  */
-export type userAppointment = Prisma.userAppointmentModel
+export type Appointment = Prisma.AppointmentModel
+/**
+ * Model UserAppointment
+ * 
+ */
+export type UserAppointment = Prisma.UserAppointmentModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
 /**
  * Model QR
  * 
