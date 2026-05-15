@@ -52,6 +52,11 @@ export type role = Prisma.roleModel
  */
 export type user = Prisma.userModel
 /**
+ * Model client
+ * 
+ */
+export type client = Prisma.clientModel
+/**
  * Model creditCard
  * 
  */
@@ -62,10 +67,10 @@ export type creditCard = Prisma.creditCardModel
  */
 export type employee = Prisma.employeeModel
 /**
- * Model payment
+ * Model professor
  * 
  */
-export type payment = Prisma.paymentModel
+export type professor = Prisma.professorModel
 /**
  * Model activity
  * 
@@ -81,6 +86,11 @@ export type appointment = Prisma.appointmentModel
  * 
  */
 export type userAppointment = Prisma.userAppointmentModel
+/**
+ * Model payment
+ * 
+ */
+export type payment = Prisma.paymentModel
 /**
  * Model QR
  * 

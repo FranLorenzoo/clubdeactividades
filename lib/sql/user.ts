@@ -3,14 +3,14 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllUsers() {
   return prisma.user.findMany({
-    include: { creditCard: true, userAppointments: true },
+    include: { role: true, client: true, employee: true, professor: true },
   });
 }
 
 export async function getUserById(id: number) {
   return prisma.user.findUnique({
     where: { id },
-    include: { creditCard: true, userAppointments: true },
+    include: { role: true, client: true, employee: true, professor: true },
   });
 }
 

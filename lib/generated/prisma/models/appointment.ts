@@ -28,96 +28,106 @@ export type AggregateAppointment = {
 
 export type AppointmentAvgAggregateOutputType = {
   id: number | null
+  activityId: number | null
+  price: number | null
+  professorId: number | null
   currentSlots: number | null
   slotsAvailable: number | null
-  professorId: number | null
-  activityId: number | null
 }
 
 export type AppointmentSumAggregateOutputType = {
   id: number | null
+  activityId: number | null
+  price: number | null
+  professorId: number | null
   currentSlots: number | null
   slotsAvailable: number | null
-  professorId: number | null
-  activityId: number | null
 }
 
 export type AppointmentMinAggregateOutputType = {
   id: number | null
+  activityId: number | null
   initialDate: Date | null
   endDate: Date | null
+  price: number | null
+  professorId: number | null
   currentSlots: number | null
   slotsAvailable: number | null
-  professorId: number | null
-  activityId: number | null
 }
 
 export type AppointmentMaxAggregateOutputType = {
   id: number | null
+  activityId: number | null
   initialDate: Date | null
   endDate: Date | null
+  price: number | null
+  professorId: number | null
   currentSlots: number | null
   slotsAvailable: number | null
-  professorId: number | null
-  activityId: number | null
 }
 
 export type AppointmentCountAggregateOutputType = {
   id: number
+  activityId: number
   initialDate: number
   endDate: number
+  price: number
+  professorId: number
   currentSlots: number
   slotsAvailable: number
-  professorId: number
-  activityId: number
   _all: number
 }
 
 
 export type AppointmentAvgAggregateInputType = {
   id?: true
+  activityId?: true
+  price?: true
+  professorId?: true
   currentSlots?: true
   slotsAvailable?: true
-  professorId?: true
-  activityId?: true
 }
 
 export type AppointmentSumAggregateInputType = {
   id?: true
+  activityId?: true
+  price?: true
+  professorId?: true
   currentSlots?: true
   slotsAvailable?: true
-  professorId?: true
-  activityId?: true
 }
 
 export type AppointmentMinAggregateInputType = {
   id?: true
+  activityId?: true
   initialDate?: true
   endDate?: true
+  price?: true
+  professorId?: true
   currentSlots?: true
   slotsAvailable?: true
-  professorId?: true
-  activityId?: true
 }
 
 export type AppointmentMaxAggregateInputType = {
   id?: true
+  activityId?: true
   initialDate?: true
   endDate?: true
+  price?: true
+  professorId?: true
   currentSlots?: true
   slotsAvailable?: true
-  professorId?: true
-  activityId?: true
 }
 
 export type AppointmentCountAggregateInputType = {
   id?: true
+  activityId?: true
   initialDate?: true
   endDate?: true
+  price?: true
+  professorId?: true
   currentSlots?: true
   slotsAvailable?: true
-  professorId?: true
-  activityId?: true
   _all?: true
 }
 
@@ -209,12 +219,13 @@ export type appointmentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 
 export type AppointmentGroupByOutputType = {
   id: number
+  activityId: number
   initialDate: Date
   endDate: Date
-  currentSlots: number | null
-  slotsAvailable: number | null
-  professorId: number | null
-  activityId: number | null
+  price: number
+  professorId: number
+  currentSlots: number
+  slotsAvailable: number
   _count: AppointmentCountAggregateOutputType | null
   _avg: AppointmentAvgAggregateOutputType | null
   _sum: AppointmentSumAggregateOutputType | null
@@ -242,27 +253,29 @@ export type appointmentWhereInput = {
   OR?: Prisma.appointmentWhereInput[]
   NOT?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
   id?: Prisma.IntFilter<"appointment"> | number
+  activityId?: Prisma.IntFilter<"appointment"> | number
   initialDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
   endDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  currentSlots?: Prisma.IntNullableFilter<"appointment"> | number | null
-  slotsAvailable?: Prisma.IntNullableFilter<"appointment"> | number | null
-  professorId?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activityId?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activity?: Prisma.XOR<Prisma.ActivityNullableScalarRelationFilter, Prisma.activityWhereInput> | null
-  professor?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.employeeWhereInput> | null
+  price?: Prisma.FloatFilter<"appointment"> | number
+  professorId?: Prisma.IntFilter<"appointment"> | number
+  currentSlots?: Prisma.IntFilter<"appointment"> | number
+  slotsAvailable?: Prisma.IntFilter<"appointment"> | number
+  activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.activityWhereInput>
+  professor?: Prisma.XOR<Prisma.ProfessorScalarRelationFilter, Prisma.professorWhereInput>
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }
 
 export type appointmentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
-  currentSlots?: Prisma.SortOrderInput | Prisma.SortOrder
-  slotsAvailable?: Prisma.SortOrderInput | Prisma.SortOrder
-  professorId?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  price?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
+  currentSlots?: Prisma.SortOrder
+  slotsAvailable?: Prisma.SortOrder
   activity?: Prisma.activityOrderByWithRelationInput
-  professor?: Prisma.employeeOrderByWithRelationInput
+  professor?: Prisma.professorOrderByWithRelationInput
   userAppointments?: Prisma.userAppointmentOrderByRelationAggregateInput
 }
 
@@ -271,25 +284,27 @@ export type appointmentWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
   OR?: Prisma.appointmentWhereInput[]
   NOT?: Prisma.appointmentWhereInput | Prisma.appointmentWhereInput[]
+  activityId?: Prisma.IntFilter<"appointment"> | number
   initialDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
   endDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  currentSlots?: Prisma.IntNullableFilter<"appointment"> | number | null
-  slotsAvailable?: Prisma.IntNullableFilter<"appointment"> | number | null
-  professorId?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activityId?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activity?: Prisma.XOR<Prisma.ActivityNullableScalarRelationFilter, Prisma.activityWhereInput> | null
-  professor?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.employeeWhereInput> | null
+  price?: Prisma.FloatFilter<"appointment"> | number
+  professorId?: Prisma.IntFilter<"appointment"> | number
+  currentSlots?: Prisma.IntFilter<"appointment"> | number
+  slotsAvailable?: Prisma.IntFilter<"appointment"> | number
+  activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.activityWhereInput>
+  professor?: Prisma.XOR<Prisma.ProfessorScalarRelationFilter, Prisma.professorWhereInput>
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }, "id">
 
 export type appointmentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
-  currentSlots?: Prisma.SortOrderInput | Prisma.SortOrder
-  slotsAvailable?: Prisma.SortOrderInput | Prisma.SortOrder
-  professorId?: Prisma.SortOrderInput | Prisma.SortOrder
-  activityId?: Prisma.SortOrderInput | Prisma.SortOrder
+  price?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
+  currentSlots?: Prisma.SortOrder
+  slotsAvailable?: Prisma.SortOrder
   _count?: Prisma.appointmentCountOrderByAggregateInput
   _avg?: Prisma.appointmentAvgOrderByAggregateInput
   _max?: Prisma.appointmentMaxOrderByAggregateInput
@@ -302,81 +317,89 @@ export type appointmentScalarWhereWithAggregatesInput = {
   OR?: Prisma.appointmentScalarWhereWithAggregatesInput[]
   NOT?: Prisma.appointmentScalarWhereWithAggregatesInput | Prisma.appointmentScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"appointment"> | number
+  activityId?: Prisma.IntWithAggregatesFilter<"appointment"> | number
   initialDate?: Prisma.DateTimeWithAggregatesFilter<"appointment"> | Date | string
   endDate?: Prisma.DateTimeWithAggregatesFilter<"appointment"> | Date | string
-  currentSlots?: Prisma.IntNullableWithAggregatesFilter<"appointment"> | number | null
-  slotsAvailable?: Prisma.IntNullableWithAggregatesFilter<"appointment"> | number | null
-  professorId?: Prisma.IntNullableWithAggregatesFilter<"appointment"> | number | null
-  activityId?: Prisma.IntNullableWithAggregatesFilter<"appointment"> | number | null
+  price?: Prisma.FloatWithAggregatesFilter<"appointment"> | number
+  professorId?: Prisma.IntWithAggregatesFilter<"appointment"> | number
+  currentSlots?: Prisma.IntWithAggregatesFilter<"appointment"> | number
+  slotsAvailable?: Prisma.IntWithAggregatesFilter<"appointment"> | number
 }
 
 export type appointmentCreateInput = {
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  activity?: Prisma.activityCreateNestedOneWithoutAppointmentsInput
-  professor?: Prisma.employeeCreateNestedOneWithoutAppointmentsInput
+  price: number
+  currentSlots: number
+  slotsAvailable: number
+  activity: Prisma.activityCreateNestedOneWithoutAppointmentsInput
+  professor: Prisma.professorCreateNestedOneWithoutAppointmentsInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutAppointmentInput
 }
 
 export type appointmentUncheckedCreateInput = {
   id?: number
+  activityId: number
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  professorId?: number | null
-  activityId?: number | null
+  price: number
+  professorId: number
+  currentSlots: number
+  slotsAvailable: number
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
 export type appointmentUpdateInput = {
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activity?: Prisma.activityUpdateOneWithoutAppointmentsNestedInput
-  professor?: Prisma.employeeUpdateOneWithoutAppointmentsNestedInput
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  activity?: Prisma.activityUpdateOneRequiredWithoutAppointmentsNestedInput
+  professor?: Prisma.professorUpdateOneRequiredWithoutAppointmentsNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutAppointmentNestedInput
 }
 
 export type appointmentUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  professorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activityId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
 }
 
 export type appointmentCreateManyInput = {
   id?: number
+  activityId: number
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  professorId?: number | null
-  activityId?: number | null
+  price: number
+  professorId: number
+  currentSlots: number
+  slotsAvailable: number
 }
 
 export type appointmentUpdateManyMutationInput = {
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type appointmentUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  professorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activityId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type AppointmentListRelationFilter = {
@@ -391,48 +414,53 @@ export type appointmentOrderByRelationAggregateInput = {
 
 export type appointmentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
-  professorId?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
 }
 
 export type appointmentAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
-  professorId?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
 }
 
 export type appointmentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
-  professorId?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
 }
 
 export type appointmentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
   initialDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
-  professorId?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
 }
 
 export type appointmentSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  activityId?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
-  professorId?: Prisma.SortOrder
-  activityId?: Prisma.SortOrder
 }
 
 export type AppointmentScalarRelationFilter = {
@@ -524,6 +552,14 @@ export type appointmentUncheckedUpdateManyWithoutActivityNestedInput = {
   deleteMany?: Prisma.appointmentScalarWhereInput | Prisma.appointmentScalarWhereInput[]
 }
 
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type appointmentCreateNestedOneWithoutUserAppointmentsInput = {
   create?: Prisma.XOR<Prisma.appointmentCreateWithoutUserAppointmentsInput, Prisma.appointmentUncheckedCreateWithoutUserAppointmentsInput>
   connectOrCreate?: Prisma.appointmentCreateOrConnectWithoutUserAppointmentsInput
@@ -541,19 +577,21 @@ export type appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput = {
 export type appointmentCreateWithoutProfessorInput = {
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  activity?: Prisma.activityCreateNestedOneWithoutAppointmentsInput
+  price: number
+  currentSlots: number
+  slotsAvailable: number
+  activity: Prisma.activityCreateNestedOneWithoutAppointmentsInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutAppointmentInput
 }
 
 export type appointmentUncheckedCreateWithoutProfessorInput = {
   id?: number
+  activityId: number
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  activityId?: number | null
+  price: number
+  currentSlots: number
+  slotsAvailable: number
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
@@ -588,20 +626,22 @@ export type appointmentScalarWhereInput = {
   OR?: Prisma.appointmentScalarWhereInput[]
   NOT?: Prisma.appointmentScalarWhereInput | Prisma.appointmentScalarWhereInput[]
   id?: Prisma.IntFilter<"appointment"> | number
+  activityId?: Prisma.IntFilter<"appointment"> | number
   initialDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
   endDate?: Prisma.DateTimeFilter<"appointment"> | Date | string
-  currentSlots?: Prisma.IntNullableFilter<"appointment"> | number | null
-  slotsAvailable?: Prisma.IntNullableFilter<"appointment"> | number | null
-  professorId?: Prisma.IntNullableFilter<"appointment"> | number | null
-  activityId?: Prisma.IntNullableFilter<"appointment"> | number | null
+  price?: Prisma.FloatFilter<"appointment"> | number
+  professorId?: Prisma.IntFilter<"appointment"> | number
+  currentSlots?: Prisma.IntFilter<"appointment"> | number
+  slotsAvailable?: Prisma.IntFilter<"appointment"> | number
 }
 
 export type appointmentCreateWithoutActivityInput = {
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  professor?: Prisma.employeeCreateNestedOneWithoutAppointmentsInput
+  price: number
+  currentSlots: number
+  slotsAvailable: number
+  professor: Prisma.professorCreateNestedOneWithoutAppointmentsInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutAppointmentInput
 }
 
@@ -609,9 +649,10 @@ export type appointmentUncheckedCreateWithoutActivityInput = {
   id?: number
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  professorId?: number | null
+  price: number
+  professorId: number
+  currentSlots: number
+  slotsAvailable: number
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
@@ -644,20 +685,22 @@ export type appointmentUpdateManyWithWhereWithoutActivityInput = {
 export type appointmentCreateWithoutUserAppointmentsInput = {
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  activity?: Prisma.activityCreateNestedOneWithoutAppointmentsInput
-  professor?: Prisma.employeeCreateNestedOneWithoutAppointmentsInput
+  price: number
+  currentSlots: number
+  slotsAvailable: number
+  activity: Prisma.activityCreateNestedOneWithoutAppointmentsInput
+  professor: Prisma.professorCreateNestedOneWithoutAppointmentsInput
 }
 
 export type appointmentUncheckedCreateWithoutUserAppointmentsInput = {
   id?: number
+  activityId: number
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  professorId?: number | null
-  activityId?: number | null
+  price: number
+  professorId: number
+  currentSlots: number
+  slotsAvailable: number
 }
 
 export type appointmentCreateOrConnectWithoutUserAppointmentsInput = {
@@ -679,74 +722,82 @@ export type appointmentUpdateToOneWithWhereWithoutUserAppointmentsInput = {
 export type appointmentUpdateWithoutUserAppointmentsInput = {
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activity?: Prisma.activityUpdateOneWithoutAppointmentsNestedInput
-  professor?: Prisma.employeeUpdateOneWithoutAppointmentsNestedInput
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  activity?: Prisma.activityUpdateOneRequiredWithoutAppointmentsNestedInput
+  professor?: Prisma.professorUpdateOneRequiredWithoutAppointmentsNestedInput
 }
 
 export type appointmentUncheckedUpdateWithoutUserAppointmentsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  professorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activityId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type appointmentCreateManyProfessorInput = {
   id?: number
+  activityId: number
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  activityId?: number | null
+  price: number
+  currentSlots: number
+  slotsAvailable: number
 }
 
 export type appointmentUpdateWithoutProfessorInput = {
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activity?: Prisma.activityUpdateOneWithoutAppointmentsNestedInput
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  activity?: Prisma.activityUpdateOneRequiredWithoutAppointmentsNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutAppointmentNestedInput
 }
 
 export type appointmentUncheckedUpdateWithoutProfessorInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activityId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
 }
 
 export type appointmentUncheckedUpdateManyWithoutProfessorInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  activityId?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  activityId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type appointmentCreateManyActivityInput = {
   id?: number
   initialDate: Date | string
   endDate: Date | string
-  currentSlots?: number | null
-  slotsAvailable?: number | null
-  professorId?: number | null
+  price: number
+  professorId: number
+  currentSlots: number
+  slotsAvailable: number
 }
 
 export type appointmentUpdateWithoutActivityInput = {
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  professor?: Prisma.employeeUpdateOneWithoutAppointmentsNestedInput
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  professor?: Prisma.professorUpdateOneRequiredWithoutAppointmentsNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutAppointmentNestedInput
 }
 
@@ -754,9 +805,10 @@ export type appointmentUncheckedUpdateWithoutActivityInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  professorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
 }
 
@@ -764,9 +816,10 @@ export type appointmentUncheckedUpdateManyWithoutActivityInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   initialDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  currentSlots?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  slotsAvailable?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  professorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  price?: Prisma.FloatFieldUpdateOperationsInput | number
+  professorId?: Prisma.IntFieldUpdateOperationsInput | number
+  currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
+  slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -802,83 +855,88 @@ export type AppointmentCountOutputTypeCountUserAppointmentsArgs<ExtArgs extends 
 
 export type appointmentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  activityId?: boolean
   initialDate?: boolean
   endDate?: boolean
+  price?: boolean
+  professorId?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
-  professorId?: boolean
-  activityId?: boolean
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
-  professor?: boolean | Prisma.appointment$professorArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
   userAppointments?: boolean | Prisma.appointment$userAppointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.AppointmentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointment"]>
 
 export type appointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  activityId?: boolean
   initialDate?: boolean
   endDate?: boolean
+  price?: boolean
+  professorId?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
-  professorId?: boolean
-  activityId?: boolean
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
-  professor?: boolean | Prisma.appointment$professorArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointment"]>
 
 export type appointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  activityId?: boolean
   initialDate?: boolean
   endDate?: boolean
+  price?: boolean
+  professorId?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
-  professorId?: boolean
-  activityId?: boolean
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
-  professor?: boolean | Prisma.appointment$professorArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointment"]>
 
 export type appointmentSelectScalar = {
   id?: boolean
+  activityId?: boolean
   initialDate?: boolean
   endDate?: boolean
+  price?: boolean
+  professorId?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
-  professorId?: boolean
-  activityId?: boolean
 }
 
-export type appointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "initialDate" | "endDate" | "currentSlots" | "slotsAvailable" | "professorId" | "activityId", ExtArgs["result"]["appointment"]>
+export type appointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "activityId" | "initialDate" | "endDate" | "price" | "professorId" | "currentSlots" | "slotsAvailable", ExtArgs["result"]["appointment"]>
 export type appointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
-  professor?: boolean | Prisma.appointment$professorArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
   userAppointments?: boolean | Prisma.appointment$userAppointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.AppointmentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type appointmentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
-  professor?: boolean | Prisma.appointment$professorArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
 }
 export type appointmentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  activity?: boolean | Prisma.appointment$activityArgs<ExtArgs>
-  professor?: boolean | Prisma.appointment$professorArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
+  professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
 }
 
 export type $appointmentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "appointment"
   objects: {
-    activity: Prisma.$activityPayload<ExtArgs> | null
-    professor: Prisma.$employeePayload<ExtArgs> | null
+    activity: Prisma.$activityPayload<ExtArgs>
+    professor: Prisma.$professorPayload<ExtArgs>
     userAppointments: Prisma.$userAppointmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
+    activityId: number
     initialDate: Date
     endDate: Date
-    currentSlots: number | null
-    slotsAvailable: number | null
-    professorId: number | null
-    activityId: number | null
+    price: number
+    professorId: number
+    currentSlots: number
+    slotsAvailable: number
   }, ExtArgs["result"]["appointment"]>
   composites: {}
 }
@@ -1273,8 +1331,8 @@ readonly fields: appointmentFieldRefs;
  */
 export interface Prisma__appointmentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  activity<T extends Prisma.appointment$activityArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.appointment$activityArgs<ExtArgs>>): Prisma.Prisma__activityClient<runtime.Types.Result.GetResult<Prisma.$activityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  professor<T extends Prisma.appointment$professorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.appointment$professorArgs<ExtArgs>>): Prisma.Prisma__employeeClient<runtime.Types.Result.GetResult<Prisma.$employeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  activity<T extends Prisma.activityDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.activityDefaultArgs<ExtArgs>>): Prisma.Prisma__activityClient<runtime.Types.Result.GetResult<Prisma.$activityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  professor<T extends Prisma.professorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.professorDefaultArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   userAppointments<T extends Prisma.appointment$userAppointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.appointment$userAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1306,12 +1364,13 @@ export interface Prisma__appointmentClient<T, Null = never, ExtArgs extends runt
  */
 export interface appointmentFieldRefs {
   readonly id: Prisma.FieldRef<"appointment", 'Int'>
+  readonly activityId: Prisma.FieldRef<"appointment", 'Int'>
   readonly initialDate: Prisma.FieldRef<"appointment", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"appointment", 'DateTime'>
+  readonly price: Prisma.FieldRef<"appointment", 'Float'>
+  readonly professorId: Prisma.FieldRef<"appointment", 'Int'>
   readonly currentSlots: Prisma.FieldRef<"appointment", 'Int'>
   readonly slotsAvailable: Prisma.FieldRef<"appointment", 'Int'>
-  readonly professorId: Prisma.FieldRef<"appointment", 'Int'>
-  readonly activityId: Prisma.FieldRef<"appointment", 'Int'>
 }
     
 
@@ -1710,44 +1769,6 @@ export type appointmentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many appointments to delete.
    */
   limit?: number
-}
-
-/**
- * appointment.activity
- */
-export type appointment$activityArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the activity
-   */
-  select?: Prisma.activitySelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the activity
-   */
-  omit?: Prisma.activityOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.activityInclude<ExtArgs> | null
-  where?: Prisma.activityWhereInput
-}
-
-/**
- * appointment.professor
- */
-export type appointment$professorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the employee
-   */
-  select?: Prisma.employeeSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the employee
-   */
-  omit?: Prisma.employeeOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.employeeInclude<ExtArgs> | null
-  where?: Prisma.employeeWhereInput
 }
 
 /**
