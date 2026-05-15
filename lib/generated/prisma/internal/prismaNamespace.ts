@@ -386,12 +386,14 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   role: 'role',
   user: 'user',
+  client: 'client',
   creditCard: 'creditCard',
   employee: 'employee',
-  payment: 'payment',
+  professor: 'professor',
   activity: 'activity',
   appointment: 'appointment',
   userAppointment: 'userAppointment',
+  payment: 'payment',
   QR: 'QR'
 } as const
 
@@ -408,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "user" | "creditCard" | "employee" | "payment" | "activity" | "appointment" | "userAppointment" | "qR"
+    modelProps: "role" | "user" | "client" | "creditCard" | "employee" | "professor" | "activity" | "appointment" | "userAppointment" | "payment" | "qR"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -560,6 +562,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    client: {
+      payload: Prisma.$clientPayload<ExtArgs>
+      fields: Prisma.clientFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.clientFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.clientFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>
+        }
+        findFirst: {
+          args: Prisma.clientFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.clientFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>
+        }
+        findMany: {
+          args: Prisma.clientFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>[]
+        }
+        create: {
+          args: Prisma.clientCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>
+        }
+        createMany: {
+          args: Prisma.clientCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.clientCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>[]
+        }
+        delete: {
+          args: Prisma.clientDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>
+        }
+        update: {
+          args: Prisma.clientUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>
+        }
+        deleteMany: {
+          args: Prisma.clientDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.clientUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.clientUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>[]
+        }
+        upsert: {
+          args: Prisma.clientUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$clientPayload>
+        }
+        aggregate: {
+          args: Prisma.ClientAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClient>
+        }
+        groupBy: {
+          args: Prisma.clientGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClientGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.clientCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClientCountAggregateOutputType> | number
+        }
+      }
+    }
     creditCard: {
       payload: Prisma.$creditCardPayload<ExtArgs>
       fields: Prisma.creditCardFieldRefs
@@ -708,77 +784,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    payment: {
-      payload: Prisma.$paymentPayload<ExtArgs>
-      fields: Prisma.paymentFieldRefs
+    professor: {
+      payload: Prisma.$professorPayload<ExtArgs>
+      fields: Prisma.professorFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.paymentFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload> | null
+          args: Prisma.professorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.paymentFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+          args: Prisma.professorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>
         }
         findFirst: {
-          args: Prisma.paymentFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload> | null
+          args: Prisma.professorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.paymentFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+          args: Prisma.professorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>
         }
         findMany: {
-          args: Prisma.paymentFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
+          args: Prisma.professorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>[]
         }
         create: {
-          args: Prisma.paymentCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+          args: Prisma.professorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>
         }
         createMany: {
-          args: Prisma.paymentCreateManyArgs<ExtArgs>
+          args: Prisma.professorCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.paymentCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
+          args: Prisma.professorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>[]
         }
         delete: {
-          args: Prisma.paymentDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+          args: Prisma.professorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>
         }
         update: {
-          args: Prisma.paymentUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+          args: Prisma.professorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>
         }
         deleteMany: {
-          args: Prisma.paymentDeleteManyArgs<ExtArgs>
+          args: Prisma.professorDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.paymentUpdateManyArgs<ExtArgs>
+          args: Prisma.professorUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.paymentUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
+          args: Prisma.professorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>[]
         }
         upsert: {
-          args: Prisma.paymentUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+          args: Prisma.professorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$professorPayload>
         }
         aggregate: {
-          args: Prisma.PaymentAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregatePayment>
+          args: Prisma.ProfessorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProfessor>
         }
         groupBy: {
-          args: Prisma.paymentGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentGroupByOutputType>[]
+          args: Prisma.professorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfessorGroupByOutputType>[]
         }
         count: {
-          args: Prisma.paymentCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
+          args: Prisma.professorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfessorCountAggregateOutputType> | number
         }
       }
     }
@@ -1004,6 +1080,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    payment: {
+      payload: Prisma.$paymentPayload<ExtArgs>
+      fields: Prisma.paymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.paymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.paymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+        }
+        findFirst: {
+          args: Prisma.paymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.paymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+        }
+        findMany: {
+          args: Prisma.paymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
+        }
+        create: {
+          args: Prisma.paymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+        }
+        createMany: {
+          args: Prisma.paymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.paymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
+        }
+        delete: {
+          args: Prisma.paymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+        }
+        update: {
+          args: Prisma.paymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.paymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.paymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.paymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.paymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$paymentPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePayment>
+        }
+        groupBy: {
+          args: Prisma.paymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.paymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
+        }
+      }
+    }
     QR: {
       payload: Prisma.$QRPayload<ExtArgs>
       fields: Prisma.QRFieldRefs
@@ -1128,14 +1278,25 @@ export type RoleScalarFieldEnum = (typeof RoleScalarFieldEnum)[keyof typeof Role
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  dni: 'dni',
   password: 'password',
+  name: 'name',
+  lastName: 'lastName',
   age: 'age',
-  suspended: 'suspended',
-  active: 'active'
+  dni: 'dni',
+  roleId: 'roleId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const ClientScalarFieldEnum = {
+  id: 'id',
+  suspended: 'suspended',
+  active: 'active',
+  userId: 'userId'
+} as const
+
+export type ClientScalarFieldEnum = (typeof ClientScalarFieldEnum)[keyof typeof ClientScalarFieldEnum]
 
 
 export const CreditCardScalarFieldEnum = {
@@ -1144,7 +1305,7 @@ export const CreditCardScalarFieldEnum = {
   securityCode: 'securityCode',
   cardHolder: 'cardHolder',
   expireDate: 'expireDate',
-  userId: 'userId'
+  clientId: 'clientId'
 } as const
 
 export type CreditCardScalarFieldEnum = (typeof CreditCardScalarFieldEnum)[keyof typeof CreditCardScalarFieldEnum]
@@ -1152,35 +1313,24 @@ export type CreditCardScalarFieldEnum = (typeof CreditCardScalarFieldEnum)[keyof
 
 export const EmployeeScalarFieldEnum = {
   id: 'id',
-  email: 'email',
-  dni: 'dni',
-  password: 'password',
-  age: 'age',
-  suspended: 'suspended',
-  roleId: 'roleId',
-  activityId: 'activityId'
+  userId: 'userId'
 } as const
 
 export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
 
 
-export const PaymentScalarFieldEnum = {
+export const ProfessorScalarFieldEnum = {
   id: 'id',
-  userAppointmentId: 'userAppointmentId',
-  amount: 'amount',
-  paymentMethod: 'paymentMethod',
-  paymentDate: 'paymentDate',
-  employeeId: 'employeeId'
+  userId: 'userId',
+  activityId: 'activityId'
 } as const
 
-export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+export type ProfessorScalarFieldEnum = (typeof ProfessorScalarFieldEnum)[keyof typeof ProfessorScalarFieldEnum]
 
 
 export const ActivityScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  slotsAvailable: 'slotsAvailable',
-  price: 'price'
+  name: 'name'
 } as const
 
 export type ActivityScalarFieldEnum = (typeof ActivityScalarFieldEnum)[keyof typeof ActivityScalarFieldEnum]
@@ -1188,12 +1338,13 @@ export type ActivityScalarFieldEnum = (typeof ActivityScalarFieldEnum)[keyof typ
 
 export const AppointmentScalarFieldEnum = {
   id: 'id',
+  activityId: 'activityId',
   initialDate: 'initialDate',
   endDate: 'endDate',
-  currentSlots: 'currentSlots',
-  slotsAvailable: 'slotsAvailable',
+  price: 'price',
   professorId: 'professorId',
-  activityId: 'activityId'
+  currentSlots: 'currentSlots',
+  slotsAvailable: 'slotsAvailable'
 } as const
 
 export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[keyof typeof AppointmentScalarFieldEnum]
@@ -1201,21 +1352,34 @@ export type AppointmentScalarFieldEnum = (typeof AppointmentScalarFieldEnum)[key
 
 export const UserAppointmentScalarFieldEnum = {
   id: 'id',
-  type: 'type',
-  attended: 'attended',
-  reservationDate: 'reservationDate',
+  appointmentId: 'appointmentId',
+  clientId: 'clientId',
   rejected: 'rejected',
-  userId: 'userId',
-  appointmentId: 'appointmentId'
+  reservationDate: 'reservationDate',
+  state: 'state'
 } as const
 
 export type UserAppointmentScalarFieldEnum = (typeof UserAppointmentScalarFieldEnum)[keyof typeof UserAppointmentScalarFieldEnum]
 
 
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  userAppointmentId: 'userAppointmentId',
+  paymentDate: 'paymentDate',
+  amount: 'amount',
+  paymentMethod: 'paymentMethod',
+  employeeId: 'employeeId'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
 export const QRScalarFieldEnum = {
   id: 'id',
-  used: 'used',
-  userAppointmentId: 'userAppointmentId'
+  accepted: 'accepted',
+  userAppointmentId: 'userAppointmentId',
+  qrImage: 'qrImage',
+  url: 'url'
 } as const
 
 export type QRScalarFieldEnum = (typeof QRScalarFieldEnum)[keyof typeof QRScalarFieldEnum]
@@ -1235,14 +1399,6 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -1301,48 +1457,6 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-/**
- * Reference to a field of type 'paymentMethod'
- */
-export type EnumpaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'paymentMethod'>
-    
-
-
-/**
- * Reference to a field of type 'paymentMethod[]'
- */
-export type ListEnumpaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'paymentMethod[]'>
-    
-
-
-/**
- * Reference to a field of type 'subscriptionType'
- */
-export type EnumsubscriptionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'subscriptionType'>
-    
-
-
-/**
- * Reference to a field of type 'subscriptionType[]'
- */
-export type ListEnumsubscriptionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'subscriptionType[]'>
-    
-
-
-/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1353,6 +1467,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'userAppointmentState'
+ */
+export type EnumuserAppointmentStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'userAppointmentState'>
+    
+
+
+/**
+ * Reference to a field of type 'userAppointmentState[]'
+ */
+export type ListEnumuserAppointmentStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'userAppointmentState[]'>
     
 
 /**
@@ -1452,12 +1580,14 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   role?: Prisma.roleOmit
   user?: Prisma.userOmit
+  client?: Prisma.clientOmit
   creditCard?: Prisma.creditCardOmit
   employee?: Prisma.employeeOmit
-  payment?: Prisma.paymentOmit
+  professor?: Prisma.professorOmit
   activity?: Prisma.activityOmit
   appointment?: Prisma.appointmentOmit
   userAppointment?: Prisma.userAppointmentOmit
+  payment?: Prisma.paymentOmit
   qR?: Prisma.QROmit
 }
 

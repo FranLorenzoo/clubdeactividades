@@ -3,14 +3,14 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllCreditCards() {
   return prisma.creditCard.findMany({
-    include: { user: true },
+    include: { client: true },
   });
 }
 
 export async function getCreditCardById(id: number) {
   return prisma.creditCard.findUnique({
     where: { id },
-    include: { user: true },
+    include: { client: true },
   });
 }
 

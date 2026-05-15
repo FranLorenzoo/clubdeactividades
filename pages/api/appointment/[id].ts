@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { deleteAppointment, getAppointmentById, updateAppointment } from "@/lib/sql/appointment";
 import { parseFields, parseId } from "@/lib/validators/api";
 import { Prisma } from "@/lib/generated/prisma/client";
-import { CreateAppointmentDto } from "@/lib/dto/appointment";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) { 
   const { id } = req.query;
@@ -39,16 +38,27 @@ async function updateAppointmentByIdHandler(id: number, body: Record<string, unk
   const { ok, values, error} = parseFields({
     initialDate: "date",
     endDate: "date",
+    price: "number",
     currentSlots: "number",
-    slotsAvailable: "number"
+    slotsAvailable: "number",
   }, body);
 
   if(!ok) return res.status(400).json({ message: "Bad request " + error });
 
-  const dto = values as CreateAppointmentDto;
+  const updateInput: Prisma.appointmentUpdateInput = {
+    initialDate: values.initialDate as Date,
+    endDate: values.endDate as Date,
+    price: values.price as number,
+    currentSlots: values.currentSlots as number,
+    slotsAvailable: values.slotsAvailable as number,
+  };
+
+  const { professorId, activityId } = body;
+  if (professorId) updateInput.professor = { connect: { id: Number(professorId) } };
+  if (activityId) updateInput.activity = { connect: { id: Number(activityId) } };
 
   try {
-    const appointment = await updateAppointment(id, dto);
+    const appointment = await updateAppointment(id, updateInput);
     return res.status(200).json(appointment);
 
   } catch (error) {

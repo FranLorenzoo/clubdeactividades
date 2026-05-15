@@ -3,14 +3,14 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllUserAppointments() {
   return prisma.userAppointment.findMany({
-    include: { user: true, appointment: true, qr: true },
+    include: { appointment: true, client: true, payments: true, qr: true },
   });
 }
 
 export async function getUserAppointmentById(id: number) {
   return prisma.userAppointment.findUnique({
     where: { id },
-    include: { user: true, appointment: true, qr: true },
+    include: { appointment: true, client: true, payments: true, qr: true },
   });
 }
 

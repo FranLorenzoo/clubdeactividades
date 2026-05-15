@@ -1,6 +1,7 @@
 import { CreateAppointmentDto } from "@/lib/dto/appointment";
 import { createAppointment, getAllAppointments } from "@/lib/sql/appointment";
 import { parseFields } from "@/lib/validators/api";
+import { Prisma } from "@/lib/generated/prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) { 
@@ -31,22 +32,31 @@ async function createAppointmentHandler(body: Record<string, unknown>, res: Next
     {
       initialDate: "date",
       endDate: "date",
-      currentSlots: "number",
-      slotsAvailable: "number"
+      price: "number",
     },
     body
   );
 
   if(!ok) return res.status(400).json({ message: "Bad request " + error });
 
-  const dto = values as CreateAppointmentDto;
+  const { professorId, activityId, currentSlots, slotsAvailable } = body;
 
-  const { professorId, activityId } = body;
-  if(professorId) dto.professorId = Number(professorId);
-  if(activityId) dto.activityId = Number(activityId);
+  if (!professorId || !activityId) {
+    return res.status(400).json({ message: "Missing required fields: professorId, activityId" });
+  }
+
+  const createInput: Prisma.appointmentCreateInput = {
+    initialDate: values.initialDate as Date,
+    endDate: values.endDate as Date,
+    price: values.price as number,
+    currentSlots: currentSlots !== undefined ? Number(currentSlots) : 0,
+    slotsAvailable: slotsAvailable !== undefined ? Number(slotsAvailable) : 0,
+    activity: { connect: { id: Number(activityId) } },
+    professor: { connect: { id: Number(professorId) } },
+  };
   
   try {
-    const appointment = await createAppointment(dto);
+    const appointment = await createAppointment(createInput);
     return res.status(200).json(appointment);
     
   } catch (error) {

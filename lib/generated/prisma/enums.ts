@@ -9,17 +9,10 @@
 * 🟢 You can import this file directly.
 */
 
-export const paymentMethod = {
-  CASH: 'CASH',
-  CARD: 'CARD'
+export const userAppointmentState = {
+  PAGO_COMPLETO: 'PAGO_COMPLETO',
+  PAGO_PARCIAL: 'PAGO_PARCIAL',
+  IMPAGO: 'IMPAGO'
 } as const
 
-export type paymentMethod = (typeof paymentMethod)[keyof typeof paymentMethod]
-
-
-export const subscriptionType = {
-  ABONADO: 'ABONADO',
-  NOABONADO: 'NOABONADO'
-} as const
-
-export type subscriptionType = (typeof subscriptionType)[keyof typeof subscriptionType]
+export type userAppointmentState = (typeof userAppointmentState)[keyof typeof userAppointmentState]
