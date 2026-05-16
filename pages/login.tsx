@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { log } from "console";
 
 export default function Login() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ export default function Login() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, role }),
     });
 
     if (!logInAttempt.ok) {
@@ -31,7 +31,26 @@ export default function Login() {
     const logInSuccess = await logInAttempt.json();
 
     localStorage.setItem("userId", logInSuccess.id);
-    router.push("/");
+    switch(logInSuccess.role) {
+      case "ADMIN":
+        router.push("/dashboard/admin");
+        break;
+
+      case "CLIENT":
+        router.push("/dashboard/client");
+        break;
+
+      case "EMPLOYEE":
+        router.push("/dashboard/employee");
+        break;
+
+      case "PROFESSOR":
+        router.push("/dashboard/professor");
+        break;
+
+      default:
+        router.push("/");
+    }
   };
 
   return (

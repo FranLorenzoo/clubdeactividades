@@ -31,7 +31,7 @@ export default function Searchbar() {
   }
 
   return (
-    <div className="w-full max-w-xl mx-auto">
+    <div className="w-full max-w-xl mx-auto mt-[50px]">
       <form onSubmit={handleSubmit} className="flex gap-3">
         <input
           type="text"

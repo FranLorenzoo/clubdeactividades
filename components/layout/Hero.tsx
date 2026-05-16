@@ -1,12 +1,6 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 export default function Hero() {
-  const [userId, setUserId] = useState<string | null>(null);
-  
-    useEffect(() => {
-      setUserId(localStorage.getItem("userId"));
-    }, []);
   return (
     <section className="max-w-7xl mx-auto px-6 py-20 text-center">
     
@@ -20,14 +14,14 @@ export default function Hero() {
             </p>
     
             <div className="flex justify-center gap-4">
-              {!userId && (
+              {
               <Link
                 href="/register"
                 className="bg-green-600 px-8 py-4 rounded-2xl font-semibold hover:bg-green-700 transition"
               >
                 Empezar ahora
               </Link>
-              )}
+              }
             </div>
           </section>
     
