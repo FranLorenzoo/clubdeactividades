@@ -37,7 +37,11 @@ export default function App({ Component, pageProps }: AppProps) {
        <title>Club360</title>
     </head>
     <Component {...pageProps} />;
+<<<<<<< HEAD
   </>);
 
 >>>>>>> 9d2b6dd (acomodando imagenes)
+=======
+  </>)
+>>>>>>> 64394bb (se me escapó un ;)
 }
