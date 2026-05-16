@@ -1,0 +1,27 @@
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/lib/generated/prisma/client";
+
+export async function getAllProfessors() {
+  return prisma.professor.findMany({
+    include: { user: true, activity: true, appointments: true },
+  });
+}
+
+export async function getProfessorById(id: number) {
+  return prisma.professor.findUnique({
+    where: { id },
+    include: { user: true, activity: true, appointments: true },
+  });
+}
+
+export async function createProfessor(data: Prisma.professorCreateInput) {
+  return prisma.professor.create({ data });
+}
+
+export async function updateProfessor(id: number, data: Prisma.professorUpdateInput) {
+  return prisma.professor.update({ where: { id }, data });
+}
+
+export async function deleteProfessor(id: number) {
+  return prisma.professor.delete({ where: { id } });
+}

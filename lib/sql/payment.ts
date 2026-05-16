@@ -3,22 +3,22 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllPayments() {
   return prisma.payment.findMany({
-    include: { employee: true, userAppointment: true },
+    include: { userAppointment: true, employee: true },
   });
 }
 
 export async function getPaymentById(id: number) {
   return prisma.payment.findUnique({
     where: { id },
-    include: { employee: true, userAppointment: true },
+    include: { userAppointment: true, employee: true },
   });
 }
 
-export async function createPayment(data: Prisma.PaymentCreateInput) {
+export async function createPayment(data: Prisma.paymentCreateInput) {
   return prisma.payment.create({ data });
 }
 
-export async function updatePayment(id: number, data: Prisma.PaymentUpdateInput) {
+export async function updatePayment(id: number, data: Prisma.paymentUpdateInput) {
   return prisma.payment.update({ where: { id }, data });
 }
 

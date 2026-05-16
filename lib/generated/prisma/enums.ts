@@ -9,10 +9,10 @@
 * 🟢 You can import this file directly.
 */
 
-export const UserAppointmentState = {
+export const userAppointmentState = {
   PAGO_COMPLETO: 'PAGO_COMPLETO',
   PAGO_PARCIAL: 'PAGO_PARCIAL',
   IMPAGO: 'IMPAGO'
 } as const
 
-export type UserAppointmentState = (typeof UserAppointmentState)[keyof typeof UserAppointmentState]
+export type userAppointmentState = (typeof userAppointmentState)[keyof typeof userAppointmentState]

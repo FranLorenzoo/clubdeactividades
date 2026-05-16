@@ -4,7 +4,7 @@
 // biome-ignore-all lint: generated file
 // @ts-nocheck 
 /*
- * This file exports the `Professor` model and its related types.
+ * This file exports the `professor` model and its related types.
  *
  * 🟢 You can import this file directly.
  */
@@ -13,10 +13,10 @@ import type * as $Enums from "../enums"
 import type * as Prisma from "../internal/prismaNamespace"
 
 /**
- * Model Professor
+ * Model professor
  * 
  */
-export type ProfessorModel = runtime.Types.Result.DefaultSelection<Prisma.$ProfessorPayload>
+export type professorModel = runtime.Types.Result.DefaultSelection<Prisma.$professorPayload>
 
 export type AggregateProfessor = {
   _count: ProfessorCountAggregateOutputType | null
@@ -91,37 +91,37 @@ export type ProfessorCountAggregateInputType = {
 
 export type ProfessorAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which Professor to aggregate.
+   * Filter which professor to aggregate.
    */
-  where?: Prisma.ProfessorWhereInput
+  where?: Prisma.professorWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of Professors to fetch.
+   * Determine the order of professors to fetch.
    */
-  orderBy?: Prisma.ProfessorOrderByWithRelationInput | Prisma.ProfessorOrderByWithRelationInput[]
+  orderBy?: Prisma.professorOrderByWithRelationInput | Prisma.professorOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
    * Sets the start position
    */
-  cursor?: Prisma.ProfessorWhereUniqueInput
+  cursor?: Prisma.professorWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` Professors from the position of the cursor.
+   * Take `±n` professors from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` Professors.
+   * Skip the first `n` professors.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Count returned Professors
+   * Count returned professors
   **/
   _count?: true | ProfessorCountAggregateInputType
   /**
@@ -161,11 +161,11 @@ export type GetProfessorAggregateType<T extends ProfessorAggregateArgs> = {
 
 
 
-export type ProfessorGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.ProfessorWhereInput
-  orderBy?: Prisma.ProfessorOrderByWithAggregationInput | Prisma.ProfessorOrderByWithAggregationInput[]
+export type professorGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.professorWhereInput
+  orderBy?: Prisma.professorOrderByWithAggregationInput | Prisma.professorOrderByWithAggregationInput[]
   by: Prisma.ProfessorScalarFieldEnum[] | Prisma.ProfessorScalarFieldEnum
-  having?: Prisma.ProfessorScalarWhereWithAggregatesInput
+  having?: Prisma.professorScalarWhereWithAggregatesInput
   take?: number
   skip?: number
   _count?: ProfessorCountAggregateInputType | true
@@ -186,7 +186,7 @@ export type ProfessorGroupByOutputType = {
   _max: ProfessorMaxAggregateOutputType | null
 }
 
-type GetProfessorGroupByPayload<T extends ProfessorGroupByArgs> = Prisma.PrismaPromise<
+type GetProfessorGroupByPayload<T extends professorGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ProfessorGroupByOutputType, T['by']> &
       {
@@ -201,378 +201,378 @@ type GetProfessorGroupByPayload<T extends ProfessorGroupByArgs> = Prisma.PrismaP
 
 
 
-export type ProfessorWhereInput = {
-  AND?: Prisma.ProfessorWhereInput | Prisma.ProfessorWhereInput[]
-  OR?: Prisma.ProfessorWhereInput[]
-  NOT?: Prisma.ProfessorWhereInput | Prisma.ProfessorWhereInput[]
-  id?: Prisma.IntFilter<"Professor"> | number
-  userId?: Prisma.IntFilter<"Professor"> | number
-  activityId?: Prisma.IntFilter<"Professor"> | number
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.ActivityWhereInput>
+export type professorWhereInput = {
+  AND?: Prisma.professorWhereInput | Prisma.professorWhereInput[]
+  OR?: Prisma.professorWhereInput[]
+  NOT?: Prisma.professorWhereInput | Prisma.professorWhereInput[]
+  id?: Prisma.IntFilter<"professor"> | number
+  userId?: Prisma.IntFilter<"professor"> | number
+  activityId?: Prisma.IntFilter<"professor"> | number
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.userWhereInput>
+  activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.activityWhereInput>
   appointments?: Prisma.AppointmentListRelationFilter
 }
 
-export type ProfessorOrderByWithRelationInput = {
+export type professorOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
-  user?: Prisma.UserOrderByWithRelationInput
-  activity?: Prisma.ActivityOrderByWithRelationInput
-  appointments?: Prisma.AppointmentOrderByRelationAggregateInput
+  user?: Prisma.userOrderByWithRelationInput
+  activity?: Prisma.activityOrderByWithRelationInput
+  appointments?: Prisma.appointmentOrderByRelationAggregateInput
 }
 
-export type ProfessorWhereUniqueInput = Prisma.AtLeast<{
+export type professorWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   userId?: number
-  AND?: Prisma.ProfessorWhereInput | Prisma.ProfessorWhereInput[]
-  OR?: Prisma.ProfessorWhereInput[]
-  NOT?: Prisma.ProfessorWhereInput | Prisma.ProfessorWhereInput[]
-  activityId?: Prisma.IntFilter<"Professor"> | number
-  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.ActivityWhereInput>
+  AND?: Prisma.professorWhereInput | Prisma.professorWhereInput[]
+  OR?: Prisma.professorWhereInput[]
+  NOT?: Prisma.professorWhereInput | Prisma.professorWhereInput[]
+  activityId?: Prisma.IntFilter<"professor"> | number
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.userWhereInput>
+  activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.activityWhereInput>
   appointments?: Prisma.AppointmentListRelationFilter
 }, "id" | "userId">
 
-export type ProfessorOrderByWithAggregationInput = {
+export type professorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
-  _count?: Prisma.ProfessorCountOrderByAggregateInput
-  _avg?: Prisma.ProfessorAvgOrderByAggregateInput
-  _max?: Prisma.ProfessorMaxOrderByAggregateInput
-  _min?: Prisma.ProfessorMinOrderByAggregateInput
-  _sum?: Prisma.ProfessorSumOrderByAggregateInput
+  _count?: Prisma.professorCountOrderByAggregateInput
+  _avg?: Prisma.professorAvgOrderByAggregateInput
+  _max?: Prisma.professorMaxOrderByAggregateInput
+  _min?: Prisma.professorMinOrderByAggregateInput
+  _sum?: Prisma.professorSumOrderByAggregateInput
 }
 
-export type ProfessorScalarWhereWithAggregatesInput = {
-  AND?: Prisma.ProfessorScalarWhereWithAggregatesInput | Prisma.ProfessorScalarWhereWithAggregatesInput[]
-  OR?: Prisma.ProfessorScalarWhereWithAggregatesInput[]
-  NOT?: Prisma.ProfessorScalarWhereWithAggregatesInput | Prisma.ProfessorScalarWhereWithAggregatesInput[]
-  id?: Prisma.IntWithAggregatesFilter<"Professor"> | number
-  userId?: Prisma.IntWithAggregatesFilter<"Professor"> | number
-  activityId?: Prisma.IntWithAggregatesFilter<"Professor"> | number
+export type professorScalarWhereWithAggregatesInput = {
+  AND?: Prisma.professorScalarWhereWithAggregatesInput | Prisma.professorScalarWhereWithAggregatesInput[]
+  OR?: Prisma.professorScalarWhereWithAggregatesInput[]
+  NOT?: Prisma.professorScalarWhereWithAggregatesInput | Prisma.professorScalarWhereWithAggregatesInput[]
+  id?: Prisma.IntWithAggregatesFilter<"professor"> | number
+  userId?: Prisma.IntWithAggregatesFilter<"professor"> | number
+  activityId?: Prisma.IntWithAggregatesFilter<"professor"> | number
 }
 
-export type ProfessorCreateInput = {
-  user: Prisma.UserCreateNestedOneWithoutProfessorInput
-  activity: Prisma.ActivityCreateNestedOneWithoutProfessorsInput
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessorInput
+export type professorCreateInput = {
+  user: Prisma.userCreateNestedOneWithoutProfessorInput
+  activity: Prisma.activityCreateNestedOneWithoutProfessorsInput
+  appointments?: Prisma.appointmentCreateNestedManyWithoutProfessorInput
 }
 
-export type ProfessorUncheckedCreateInput = {
+export type professorUncheckedCreateInput = {
   id?: number
   userId: number
   activityId: number
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessorInput
+  appointments?: Prisma.appointmentUncheckedCreateNestedManyWithoutProfessorInput
 }
 
-export type ProfessorUpdateInput = {
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessorNestedInput
-  activity?: Prisma.ActivityUpdateOneRequiredWithoutProfessorsNestedInput
-  appointments?: Prisma.AppointmentUpdateManyWithoutProfessorNestedInput
+export type professorUpdateInput = {
+  user?: Prisma.userUpdateOneRequiredWithoutProfessorNestedInput
+  activity?: Prisma.activityUpdateOneRequiredWithoutProfessorsNestedInput
+  appointments?: Prisma.appointmentUpdateManyWithoutProfessorNestedInput
 }
 
-export type ProfessorUncheckedUpdateInput = {
+export type professorUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   activityId?: Prisma.IntFieldUpdateOperationsInput | number
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessorNestedInput
+  appointments?: Prisma.appointmentUncheckedUpdateManyWithoutProfessorNestedInput
 }
 
-export type ProfessorCreateManyInput = {
+export type professorCreateManyInput = {
   id?: number
   userId: number
   activityId: number
 }
 
-export type ProfessorUpdateManyMutationInput = {
+export type professorUpdateManyMutationInput = {
 
 }
 
-export type ProfessorUncheckedUpdateManyInput = {
+export type professorUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   activityId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProfessorNullableScalarRelationFilter = {
-  is?: Prisma.ProfessorWhereInput | null
-  isNot?: Prisma.ProfessorWhereInput | null
+  is?: Prisma.professorWhereInput | null
+  isNot?: Prisma.professorWhereInput | null
 }
 
-export type ProfessorCountOrderByAggregateInput = {
+export type professorCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
 }
 
-export type ProfessorAvgOrderByAggregateInput = {
+export type professorAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
 }
 
-export type ProfessorMaxOrderByAggregateInput = {
+export type professorMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
 }
 
-export type ProfessorMinOrderByAggregateInput = {
+export type professorMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
 }
 
-export type ProfessorSumOrderByAggregateInput = {
+export type professorSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   activityId?: Prisma.SortOrder
 }
 
 export type ProfessorListRelationFilter = {
-  every?: Prisma.ProfessorWhereInput
-  some?: Prisma.ProfessorWhereInput
-  none?: Prisma.ProfessorWhereInput
+  every?: Prisma.professorWhereInput
+  some?: Prisma.professorWhereInput
+  none?: Prisma.professorWhereInput
 }
 
-export type ProfessorOrderByRelationAggregateInput = {
+export type professorOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
 export type ProfessorScalarRelationFilter = {
-  is?: Prisma.ProfessorWhereInput
-  isNot?: Prisma.ProfessorWhereInput
+  is?: Prisma.professorWhereInput
+  isNot?: Prisma.professorWhereInput
 }
 
-export type ProfessorCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutUserInput, Prisma.ProfessorUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutUserInput
-  connect?: Prisma.ProfessorWhereUniqueInput
+export type professorCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutUserInput, Prisma.professorUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutUserInput
+  connect?: Prisma.professorWhereUniqueInput
 }
 
-export type ProfessorUncheckedCreateNestedOneWithoutUserInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutUserInput, Prisma.ProfessorUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutUserInput
-  connect?: Prisma.ProfessorWhereUniqueInput
+export type professorUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutUserInput, Prisma.professorUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutUserInput
+  connect?: Prisma.professorWhereUniqueInput
 }
 
-export type ProfessorUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutUserInput, Prisma.ProfessorUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutUserInput
-  upsert?: Prisma.ProfessorUpsertWithoutUserInput
-  disconnect?: Prisma.ProfessorWhereInput | boolean
-  delete?: Prisma.ProfessorWhereInput | boolean
-  connect?: Prisma.ProfessorWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessorUpdateToOneWithWhereWithoutUserInput, Prisma.ProfessorUpdateWithoutUserInput>, Prisma.ProfessorUncheckedUpdateWithoutUserInput>
+export type professorUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutUserInput, Prisma.professorUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutUserInput
+  upsert?: Prisma.professorUpsertWithoutUserInput
+  disconnect?: Prisma.professorWhereInput | boolean
+  delete?: Prisma.professorWhereInput | boolean
+  connect?: Prisma.professorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.professorUpdateToOneWithWhereWithoutUserInput, Prisma.professorUpdateWithoutUserInput>, Prisma.professorUncheckedUpdateWithoutUserInput>
 }
 
-export type ProfessorUncheckedUpdateOneWithoutUserNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutUserInput, Prisma.ProfessorUncheckedCreateWithoutUserInput>
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutUserInput
-  upsert?: Prisma.ProfessorUpsertWithoutUserInput
-  disconnect?: Prisma.ProfessorWhereInput | boolean
-  delete?: Prisma.ProfessorWhereInput | boolean
-  connect?: Prisma.ProfessorWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessorUpdateToOneWithWhereWithoutUserInput, Prisma.ProfessorUpdateWithoutUserInput>, Prisma.ProfessorUncheckedUpdateWithoutUserInput>
+export type professorUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutUserInput, Prisma.professorUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutUserInput
+  upsert?: Prisma.professorUpsertWithoutUserInput
+  disconnect?: Prisma.professorWhereInput | boolean
+  delete?: Prisma.professorWhereInput | boolean
+  connect?: Prisma.professorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.professorUpdateToOneWithWhereWithoutUserInput, Prisma.professorUpdateWithoutUserInput>, Prisma.professorUncheckedUpdateWithoutUserInput>
 }
 
-export type ProfessorCreateNestedManyWithoutActivityInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutActivityInput, Prisma.ProfessorUncheckedCreateWithoutActivityInput> | Prisma.ProfessorCreateWithoutActivityInput[] | Prisma.ProfessorUncheckedCreateWithoutActivityInput[]
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutActivityInput | Prisma.ProfessorCreateOrConnectWithoutActivityInput[]
-  createMany?: Prisma.ProfessorCreateManyActivityInputEnvelope
-  connect?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
+export type professorCreateNestedManyWithoutActivityInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutActivityInput, Prisma.professorUncheckedCreateWithoutActivityInput> | Prisma.professorCreateWithoutActivityInput[] | Prisma.professorUncheckedCreateWithoutActivityInput[]
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutActivityInput | Prisma.professorCreateOrConnectWithoutActivityInput[]
+  createMany?: Prisma.professorCreateManyActivityInputEnvelope
+  connect?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
 }
 
-export type ProfessorUncheckedCreateNestedManyWithoutActivityInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutActivityInput, Prisma.ProfessorUncheckedCreateWithoutActivityInput> | Prisma.ProfessorCreateWithoutActivityInput[] | Prisma.ProfessorUncheckedCreateWithoutActivityInput[]
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutActivityInput | Prisma.ProfessorCreateOrConnectWithoutActivityInput[]
-  createMany?: Prisma.ProfessorCreateManyActivityInputEnvelope
-  connect?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
+export type professorUncheckedCreateNestedManyWithoutActivityInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutActivityInput, Prisma.professorUncheckedCreateWithoutActivityInput> | Prisma.professorCreateWithoutActivityInput[] | Prisma.professorUncheckedCreateWithoutActivityInput[]
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutActivityInput | Prisma.professorCreateOrConnectWithoutActivityInput[]
+  createMany?: Prisma.professorCreateManyActivityInputEnvelope
+  connect?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
 }
 
-export type ProfessorUpdateManyWithoutActivityNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutActivityInput, Prisma.ProfessorUncheckedCreateWithoutActivityInput> | Prisma.ProfessorCreateWithoutActivityInput[] | Prisma.ProfessorUncheckedCreateWithoutActivityInput[]
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutActivityInput | Prisma.ProfessorCreateOrConnectWithoutActivityInput[]
-  upsert?: Prisma.ProfessorUpsertWithWhereUniqueWithoutActivityInput | Prisma.ProfessorUpsertWithWhereUniqueWithoutActivityInput[]
-  createMany?: Prisma.ProfessorCreateManyActivityInputEnvelope
-  set?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
-  disconnect?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
-  delete?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
-  connect?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
-  update?: Prisma.ProfessorUpdateWithWhereUniqueWithoutActivityInput | Prisma.ProfessorUpdateWithWhereUniqueWithoutActivityInput[]
-  updateMany?: Prisma.ProfessorUpdateManyWithWhereWithoutActivityInput | Prisma.ProfessorUpdateManyWithWhereWithoutActivityInput[]
-  deleteMany?: Prisma.ProfessorScalarWhereInput | Prisma.ProfessorScalarWhereInput[]
+export type professorUpdateManyWithoutActivityNestedInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutActivityInput, Prisma.professorUncheckedCreateWithoutActivityInput> | Prisma.professorCreateWithoutActivityInput[] | Prisma.professorUncheckedCreateWithoutActivityInput[]
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutActivityInput | Prisma.professorCreateOrConnectWithoutActivityInput[]
+  upsert?: Prisma.professorUpsertWithWhereUniqueWithoutActivityInput | Prisma.professorUpsertWithWhereUniqueWithoutActivityInput[]
+  createMany?: Prisma.professorCreateManyActivityInputEnvelope
+  set?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
+  disconnect?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
+  delete?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
+  connect?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
+  update?: Prisma.professorUpdateWithWhereUniqueWithoutActivityInput | Prisma.professorUpdateWithWhereUniqueWithoutActivityInput[]
+  updateMany?: Prisma.professorUpdateManyWithWhereWithoutActivityInput | Prisma.professorUpdateManyWithWhereWithoutActivityInput[]
+  deleteMany?: Prisma.professorScalarWhereInput | Prisma.professorScalarWhereInput[]
 }
 
-export type ProfessorUncheckedUpdateManyWithoutActivityNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutActivityInput, Prisma.ProfessorUncheckedCreateWithoutActivityInput> | Prisma.ProfessorCreateWithoutActivityInput[] | Prisma.ProfessorUncheckedCreateWithoutActivityInput[]
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutActivityInput | Prisma.ProfessorCreateOrConnectWithoutActivityInput[]
-  upsert?: Prisma.ProfessorUpsertWithWhereUniqueWithoutActivityInput | Prisma.ProfessorUpsertWithWhereUniqueWithoutActivityInput[]
-  createMany?: Prisma.ProfessorCreateManyActivityInputEnvelope
-  set?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
-  disconnect?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
-  delete?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
-  connect?: Prisma.ProfessorWhereUniqueInput | Prisma.ProfessorWhereUniqueInput[]
-  update?: Prisma.ProfessorUpdateWithWhereUniqueWithoutActivityInput | Prisma.ProfessorUpdateWithWhereUniqueWithoutActivityInput[]
-  updateMany?: Prisma.ProfessorUpdateManyWithWhereWithoutActivityInput | Prisma.ProfessorUpdateManyWithWhereWithoutActivityInput[]
-  deleteMany?: Prisma.ProfessorScalarWhereInput | Prisma.ProfessorScalarWhereInput[]
+export type professorUncheckedUpdateManyWithoutActivityNestedInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutActivityInput, Prisma.professorUncheckedCreateWithoutActivityInput> | Prisma.professorCreateWithoutActivityInput[] | Prisma.professorUncheckedCreateWithoutActivityInput[]
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutActivityInput | Prisma.professorCreateOrConnectWithoutActivityInput[]
+  upsert?: Prisma.professorUpsertWithWhereUniqueWithoutActivityInput | Prisma.professorUpsertWithWhereUniqueWithoutActivityInput[]
+  createMany?: Prisma.professorCreateManyActivityInputEnvelope
+  set?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
+  disconnect?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
+  delete?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
+  connect?: Prisma.professorWhereUniqueInput | Prisma.professorWhereUniqueInput[]
+  update?: Prisma.professorUpdateWithWhereUniqueWithoutActivityInput | Prisma.professorUpdateWithWhereUniqueWithoutActivityInput[]
+  updateMany?: Prisma.professorUpdateManyWithWhereWithoutActivityInput | Prisma.professorUpdateManyWithWhereWithoutActivityInput[]
+  deleteMany?: Prisma.professorScalarWhereInput | Prisma.professorScalarWhereInput[]
 }
 
-export type ProfessorCreateNestedOneWithoutAppointmentsInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutAppointmentsInput, Prisma.ProfessorUncheckedCreateWithoutAppointmentsInput>
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutAppointmentsInput
-  connect?: Prisma.ProfessorWhereUniqueInput
+export type professorCreateNestedOneWithoutAppointmentsInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutAppointmentsInput, Prisma.professorUncheckedCreateWithoutAppointmentsInput>
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutAppointmentsInput
+  connect?: Prisma.professorWhereUniqueInput
 }
 
-export type ProfessorUpdateOneRequiredWithoutAppointmentsNestedInput = {
-  create?: Prisma.XOR<Prisma.ProfessorCreateWithoutAppointmentsInput, Prisma.ProfessorUncheckedCreateWithoutAppointmentsInput>
-  connectOrCreate?: Prisma.ProfessorCreateOrConnectWithoutAppointmentsInput
-  upsert?: Prisma.ProfessorUpsertWithoutAppointmentsInput
-  connect?: Prisma.ProfessorWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessorUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.ProfessorUpdateWithoutAppointmentsInput>, Prisma.ProfessorUncheckedUpdateWithoutAppointmentsInput>
+export type professorUpdateOneRequiredWithoutAppointmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.professorCreateWithoutAppointmentsInput, Prisma.professorUncheckedCreateWithoutAppointmentsInput>
+  connectOrCreate?: Prisma.professorCreateOrConnectWithoutAppointmentsInput
+  upsert?: Prisma.professorUpsertWithoutAppointmentsInput
+  connect?: Prisma.professorWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.professorUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.professorUpdateWithoutAppointmentsInput>, Prisma.professorUncheckedUpdateWithoutAppointmentsInput>
 }
 
-export type ProfessorCreateWithoutUserInput = {
-  activity: Prisma.ActivityCreateNestedOneWithoutProfessorsInput
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessorInput
+export type professorCreateWithoutUserInput = {
+  activity: Prisma.activityCreateNestedOneWithoutProfessorsInput
+  appointments?: Prisma.appointmentCreateNestedManyWithoutProfessorInput
 }
 
-export type ProfessorUncheckedCreateWithoutUserInput = {
+export type professorUncheckedCreateWithoutUserInput = {
   id?: number
   activityId: number
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessorInput
+  appointments?: Prisma.appointmentUncheckedCreateNestedManyWithoutProfessorInput
 }
 
-export type ProfessorCreateOrConnectWithoutUserInput = {
-  where: Prisma.ProfessorWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProfessorCreateWithoutUserInput, Prisma.ProfessorUncheckedCreateWithoutUserInput>
+export type professorCreateOrConnectWithoutUserInput = {
+  where: Prisma.professorWhereUniqueInput
+  create: Prisma.XOR<Prisma.professorCreateWithoutUserInput, Prisma.professorUncheckedCreateWithoutUserInput>
 }
 
-export type ProfessorUpsertWithoutUserInput = {
-  update: Prisma.XOR<Prisma.ProfessorUpdateWithoutUserInput, Prisma.ProfessorUncheckedUpdateWithoutUserInput>
-  create: Prisma.XOR<Prisma.ProfessorCreateWithoutUserInput, Prisma.ProfessorUncheckedCreateWithoutUserInput>
-  where?: Prisma.ProfessorWhereInput
+export type professorUpsertWithoutUserInput = {
+  update: Prisma.XOR<Prisma.professorUpdateWithoutUserInput, Prisma.professorUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.professorCreateWithoutUserInput, Prisma.professorUncheckedCreateWithoutUserInput>
+  where?: Prisma.professorWhereInput
 }
 
-export type ProfessorUpdateToOneWithWhereWithoutUserInput = {
-  where?: Prisma.ProfessorWhereInput
-  data: Prisma.XOR<Prisma.ProfessorUpdateWithoutUserInput, Prisma.ProfessorUncheckedUpdateWithoutUserInput>
+export type professorUpdateToOneWithWhereWithoutUserInput = {
+  where?: Prisma.professorWhereInput
+  data: Prisma.XOR<Prisma.professorUpdateWithoutUserInput, Prisma.professorUncheckedUpdateWithoutUserInput>
 }
 
-export type ProfessorUpdateWithoutUserInput = {
-  activity?: Prisma.ActivityUpdateOneRequiredWithoutProfessorsNestedInput
-  appointments?: Prisma.AppointmentUpdateManyWithoutProfessorNestedInput
+export type professorUpdateWithoutUserInput = {
+  activity?: Prisma.activityUpdateOneRequiredWithoutProfessorsNestedInput
+  appointments?: Prisma.appointmentUpdateManyWithoutProfessorNestedInput
 }
 
-export type ProfessorUncheckedUpdateWithoutUserInput = {
+export type professorUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   activityId?: Prisma.IntFieldUpdateOperationsInput | number
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessorNestedInput
+  appointments?: Prisma.appointmentUncheckedUpdateManyWithoutProfessorNestedInput
 }
 
-export type ProfessorCreateWithoutActivityInput = {
-  user: Prisma.UserCreateNestedOneWithoutProfessorInput
-  appointments?: Prisma.AppointmentCreateNestedManyWithoutProfessorInput
+export type professorCreateWithoutActivityInput = {
+  user: Prisma.userCreateNestedOneWithoutProfessorInput
+  appointments?: Prisma.appointmentCreateNestedManyWithoutProfessorInput
 }
 
-export type ProfessorUncheckedCreateWithoutActivityInput = {
+export type professorUncheckedCreateWithoutActivityInput = {
   id?: number
   userId: number
-  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutProfessorInput
+  appointments?: Prisma.appointmentUncheckedCreateNestedManyWithoutProfessorInput
 }
 
-export type ProfessorCreateOrConnectWithoutActivityInput = {
-  where: Prisma.ProfessorWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProfessorCreateWithoutActivityInput, Prisma.ProfessorUncheckedCreateWithoutActivityInput>
+export type professorCreateOrConnectWithoutActivityInput = {
+  where: Prisma.professorWhereUniqueInput
+  create: Prisma.XOR<Prisma.professorCreateWithoutActivityInput, Prisma.professorUncheckedCreateWithoutActivityInput>
 }
 
-export type ProfessorCreateManyActivityInputEnvelope = {
-  data: Prisma.ProfessorCreateManyActivityInput | Prisma.ProfessorCreateManyActivityInput[]
+export type professorCreateManyActivityInputEnvelope = {
+  data: Prisma.professorCreateManyActivityInput | Prisma.professorCreateManyActivityInput[]
   skipDuplicates?: boolean
 }
 
-export type ProfessorUpsertWithWhereUniqueWithoutActivityInput = {
-  where: Prisma.ProfessorWhereUniqueInput
-  update: Prisma.XOR<Prisma.ProfessorUpdateWithoutActivityInput, Prisma.ProfessorUncheckedUpdateWithoutActivityInput>
-  create: Prisma.XOR<Prisma.ProfessorCreateWithoutActivityInput, Prisma.ProfessorUncheckedCreateWithoutActivityInput>
+export type professorUpsertWithWhereUniqueWithoutActivityInput = {
+  where: Prisma.professorWhereUniqueInput
+  update: Prisma.XOR<Prisma.professorUpdateWithoutActivityInput, Prisma.professorUncheckedUpdateWithoutActivityInput>
+  create: Prisma.XOR<Prisma.professorCreateWithoutActivityInput, Prisma.professorUncheckedCreateWithoutActivityInput>
 }
 
-export type ProfessorUpdateWithWhereUniqueWithoutActivityInput = {
-  where: Prisma.ProfessorWhereUniqueInput
-  data: Prisma.XOR<Prisma.ProfessorUpdateWithoutActivityInput, Prisma.ProfessorUncheckedUpdateWithoutActivityInput>
+export type professorUpdateWithWhereUniqueWithoutActivityInput = {
+  where: Prisma.professorWhereUniqueInput
+  data: Prisma.XOR<Prisma.professorUpdateWithoutActivityInput, Prisma.professorUncheckedUpdateWithoutActivityInput>
 }
 
-export type ProfessorUpdateManyWithWhereWithoutActivityInput = {
-  where: Prisma.ProfessorScalarWhereInput
-  data: Prisma.XOR<Prisma.ProfessorUpdateManyMutationInput, Prisma.ProfessorUncheckedUpdateManyWithoutActivityInput>
+export type professorUpdateManyWithWhereWithoutActivityInput = {
+  where: Prisma.professorScalarWhereInput
+  data: Prisma.XOR<Prisma.professorUpdateManyMutationInput, Prisma.professorUncheckedUpdateManyWithoutActivityInput>
 }
 
-export type ProfessorScalarWhereInput = {
-  AND?: Prisma.ProfessorScalarWhereInput | Prisma.ProfessorScalarWhereInput[]
-  OR?: Prisma.ProfessorScalarWhereInput[]
-  NOT?: Prisma.ProfessorScalarWhereInput | Prisma.ProfessorScalarWhereInput[]
-  id?: Prisma.IntFilter<"Professor"> | number
-  userId?: Prisma.IntFilter<"Professor"> | number
-  activityId?: Prisma.IntFilter<"Professor"> | number
+export type professorScalarWhereInput = {
+  AND?: Prisma.professorScalarWhereInput | Prisma.professorScalarWhereInput[]
+  OR?: Prisma.professorScalarWhereInput[]
+  NOT?: Prisma.professorScalarWhereInput | Prisma.professorScalarWhereInput[]
+  id?: Prisma.IntFilter<"professor"> | number
+  userId?: Prisma.IntFilter<"professor"> | number
+  activityId?: Prisma.IntFilter<"professor"> | number
 }
 
-export type ProfessorCreateWithoutAppointmentsInput = {
-  user: Prisma.UserCreateNestedOneWithoutProfessorInput
-  activity: Prisma.ActivityCreateNestedOneWithoutProfessorsInput
+export type professorCreateWithoutAppointmentsInput = {
+  user: Prisma.userCreateNestedOneWithoutProfessorInput
+  activity: Prisma.activityCreateNestedOneWithoutProfessorsInput
 }
 
-export type ProfessorUncheckedCreateWithoutAppointmentsInput = {
+export type professorUncheckedCreateWithoutAppointmentsInput = {
   id?: number
   userId: number
   activityId: number
 }
 
-export type ProfessorCreateOrConnectWithoutAppointmentsInput = {
-  where: Prisma.ProfessorWhereUniqueInput
-  create: Prisma.XOR<Prisma.ProfessorCreateWithoutAppointmentsInput, Prisma.ProfessorUncheckedCreateWithoutAppointmentsInput>
+export type professorCreateOrConnectWithoutAppointmentsInput = {
+  where: Prisma.professorWhereUniqueInput
+  create: Prisma.XOR<Prisma.professorCreateWithoutAppointmentsInput, Prisma.professorUncheckedCreateWithoutAppointmentsInput>
 }
 
-export type ProfessorUpsertWithoutAppointmentsInput = {
-  update: Prisma.XOR<Prisma.ProfessorUpdateWithoutAppointmentsInput, Prisma.ProfessorUncheckedUpdateWithoutAppointmentsInput>
-  create: Prisma.XOR<Prisma.ProfessorCreateWithoutAppointmentsInput, Prisma.ProfessorUncheckedCreateWithoutAppointmentsInput>
-  where?: Prisma.ProfessorWhereInput
+export type professorUpsertWithoutAppointmentsInput = {
+  update: Prisma.XOR<Prisma.professorUpdateWithoutAppointmentsInput, Prisma.professorUncheckedUpdateWithoutAppointmentsInput>
+  create: Prisma.XOR<Prisma.professorCreateWithoutAppointmentsInput, Prisma.professorUncheckedCreateWithoutAppointmentsInput>
+  where?: Prisma.professorWhereInput
 }
 
-export type ProfessorUpdateToOneWithWhereWithoutAppointmentsInput = {
-  where?: Prisma.ProfessorWhereInput
-  data: Prisma.XOR<Prisma.ProfessorUpdateWithoutAppointmentsInput, Prisma.ProfessorUncheckedUpdateWithoutAppointmentsInput>
+export type professorUpdateToOneWithWhereWithoutAppointmentsInput = {
+  where?: Prisma.professorWhereInput
+  data: Prisma.XOR<Prisma.professorUpdateWithoutAppointmentsInput, Prisma.professorUncheckedUpdateWithoutAppointmentsInput>
 }
 
-export type ProfessorUpdateWithoutAppointmentsInput = {
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessorNestedInput
-  activity?: Prisma.ActivityUpdateOneRequiredWithoutProfessorsNestedInput
+export type professorUpdateWithoutAppointmentsInput = {
+  user?: Prisma.userUpdateOneRequiredWithoutProfessorNestedInput
+  activity?: Prisma.activityUpdateOneRequiredWithoutProfessorsNestedInput
 }
 
-export type ProfessorUncheckedUpdateWithoutAppointmentsInput = {
+export type professorUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
   activityId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
-export type ProfessorCreateManyActivityInput = {
+export type professorCreateManyActivityInput = {
   id?: number
   userId: number
 }
 
-export type ProfessorUpdateWithoutActivityInput = {
-  user?: Prisma.UserUpdateOneRequiredWithoutProfessorNestedInput
-  appointments?: Prisma.AppointmentUpdateManyWithoutProfessorNestedInput
+export type professorUpdateWithoutActivityInput = {
+  user?: Prisma.userUpdateOneRequiredWithoutProfessorNestedInput
+  appointments?: Prisma.appointmentUpdateManyWithoutProfessorNestedInput
 }
 
-export type ProfessorUncheckedUpdateWithoutActivityInput = {
+export type professorUncheckedUpdateWithoutActivityInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
-  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutProfessorNestedInput
+  appointments?: Prisma.appointmentUncheckedUpdateManyWithoutProfessorNestedInput
 }
 
-export type ProfessorUncheckedUpdateManyWithoutActivityInput = {
+export type professorUncheckedUpdateManyWithoutActivityInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   userId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -604,64 +604,64 @@ export type ProfessorCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ex
  * ProfessorCountOutputType without action
  */
 export type ProfessorCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.AppointmentWhereInput
+  where?: Prisma.appointmentWhereInput
 }
 
 
-export type ProfessorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type professorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   activityId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
-  appointments?: boolean | Prisma.Professor$appointmentsArgs<ExtArgs>
+  user?: boolean | Prisma.userDefaultArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
+  appointments?: boolean | Prisma.professor$appointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfessorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professor"]>
 
-export type ProfessorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type professorSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   activityId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.userDefaultArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professor"]>
 
-export type ProfessorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+export type professorSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   userId?: boolean
   activityId?: boolean
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.userDefaultArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professor"]>
 
-export type ProfessorSelectScalar = {
+export type professorSelectScalar = {
   id?: boolean
   userId?: boolean
   activityId?: boolean
 }
 
-export type ProfessorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "activityId", ExtArgs["result"]["professor"]>
-export type ProfessorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
-  appointments?: boolean | Prisma.Professor$appointmentsArgs<ExtArgs>
+export type professorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "activityId", ExtArgs["result"]["professor"]>
+export type professorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.userDefaultArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
+  appointments?: boolean | Prisma.professor$appointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfessorCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ProfessorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+export type professorIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.userDefaultArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
 }
-export type ProfessorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  activity?: boolean | Prisma.ActivityDefaultArgs<ExtArgs>
+export type professorIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.userDefaultArgs<ExtArgs>
+  activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
 }
 
-export type $ProfessorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  name: "Professor"
+export type $professorPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  name: "professor"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs>
-    activity: Prisma.$ActivityPayload<ExtArgs>
-    appointments: Prisma.$AppointmentPayload<ExtArgs>[]
+    user: Prisma.$userPayload<ExtArgs>
+    activity: Prisma.$activityPayload<ExtArgs>
+    appointments: Prisma.$appointmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -671,18 +671,18 @@ export type $ProfessorPayload<ExtArgs extends runtime.Types.Extensions.InternalA
   composites: {}
 }
 
-export type ProfessorGetPayload<S extends boolean | null | undefined | ProfessorDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ProfessorPayload, S>
+export type professorGetPayload<S extends boolean | null | undefined | professorDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$professorPayload, S>
 
-export type ProfessorCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
-  Omit<ProfessorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+export type professorCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+  Omit<professorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
     select?: ProfessorCountAggregateInputType | true
   }
 
-export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Professor'], meta: { name: 'Professor' } }
+export interface professorDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+  [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['professor'], meta: { name: 'professor' } }
   /**
    * Find zero or one Professor that matches the filter.
-   * @param {ProfessorFindUniqueArgs} args - Arguments to find a Professor
+   * @param {professorFindUniqueArgs} args - Arguments to find a Professor
    * @example
    * // Get one Professor
    * const professor = await prisma.professor.findUnique({
@@ -691,12 +691,12 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    *   }
    * })
    */
-  findUnique<T extends ProfessorFindUniqueArgs>(args: Prisma.SelectSubset<T, ProfessorFindUniqueArgs<ExtArgs>>): Prisma.Prisma__ProfessorClient<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findUnique<T extends professorFindUniqueArgs>(args: Prisma.SelectSubset<T, professorFindUniqueArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find one Professor that matches the filter or throw an error with `error.code='P2025'`
    * if no matches were found.
-   * @param {ProfessorFindUniqueOrThrowArgs} args - Arguments to find a Professor
+   * @param {professorFindUniqueOrThrowArgs} args - Arguments to find a Professor
    * @example
    * // Get one Professor
    * const professor = await prisma.professor.findUniqueOrThrow({
@@ -705,13 +705,13 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    *   }
    * })
    */
-  findUniqueOrThrow<T extends ProfessorFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, ProfessorFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__ProfessorClient<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findUniqueOrThrow<T extends professorFindUniqueOrThrowArgs>(args: Prisma.SelectSubset<T, professorFindUniqueOrThrowArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find the first Professor that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ProfessorFindFirstArgs} args - Arguments to find a Professor
+   * @param {professorFindFirstArgs} args - Arguments to find a Professor
    * @example
    * // Get one Professor
    * const professor = await prisma.professor.findFirst({
@@ -720,14 +720,14 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    *   }
    * })
    */
-  findFirst<T extends ProfessorFindFirstArgs>(args?: Prisma.SelectSubset<T, ProfessorFindFirstArgs<ExtArgs>>): Prisma.Prisma__ProfessorClient<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  findFirst<T extends professorFindFirstArgs>(args?: Prisma.SelectSubset<T, professorFindFirstArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find the first Professor that matches the filter or
    * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ProfessorFindFirstOrThrowArgs} args - Arguments to find a Professor
+   * @param {professorFindFirstOrThrowArgs} args - Arguments to find a Professor
    * @example
    * // Get one Professor
    * const professor = await prisma.professor.findFirstOrThrow({
@@ -736,13 +736,13 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    *   }
    * })
    */
-  findFirstOrThrow<T extends ProfessorFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, ProfessorFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__ProfessorClient<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  findFirstOrThrow<T extends professorFindFirstOrThrowArgs>(args?: Prisma.SelectSubset<T, professorFindFirstOrThrowArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Find zero or more Professors that matches the filter.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ProfessorFindManyArgs} args - Arguments to filter and select certain fields only.
+   * @param {professorFindManyArgs} args - Arguments to filter and select certain fields only.
    * @example
    * // Get all Professors
    * const professors = await prisma.professor.findMany()
@@ -754,11 +754,11 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * const professorWithIdOnly = await prisma.professor.findMany({ select: { id: true } })
    * 
    */
-  findMany<T extends ProfessorFindManyArgs>(args?: Prisma.SelectSubset<T, ProfessorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+  findMany<T extends professorFindManyArgs>(args?: Prisma.SelectSubset<T, professorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
   /**
    * Create a Professor.
-   * @param {ProfessorCreateArgs} args - Arguments to create a Professor.
+   * @param {professorCreateArgs} args - Arguments to create a Professor.
    * @example
    * // Create one Professor
    * const Professor = await prisma.professor.create({
@@ -768,11 +768,11 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * })
    * 
    */
-  create<T extends ProfessorCreateArgs>(args: Prisma.SelectSubset<T, ProfessorCreateArgs<ExtArgs>>): Prisma.Prisma__ProfessorClient<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  create<T extends professorCreateArgs>(args: Prisma.SelectSubset<T, professorCreateArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Create many Professors.
-   * @param {ProfessorCreateManyArgs} args - Arguments to create many Professors.
+   * @param {professorCreateManyArgs} args - Arguments to create many Professors.
    * @example
    * // Create many Professors
    * const professor = await prisma.professor.createMany({
@@ -782,11 +782,11 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * })
    *     
    */
-  createMany<T extends ProfessorCreateManyArgs>(args?: Prisma.SelectSubset<T, ProfessorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  createMany<T extends professorCreateManyArgs>(args?: Prisma.SelectSubset<T, professorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Create many Professors and returns the data saved in the database.
-   * @param {ProfessorCreateManyAndReturnArgs} args - Arguments to create many Professors.
+   * @param {professorCreateManyAndReturnArgs} args - Arguments to create many Professors.
    * @example
    * // Create many Professors
    * const professor = await prisma.professor.createManyAndReturn({
@@ -806,11 +806,11 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * Read more here: https://pris.ly/d/null-undefined
    * 
    */
-  createManyAndReturn<T extends ProfessorCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, ProfessorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+  createManyAndReturn<T extends professorCreateManyAndReturnArgs>(args?: Prisma.SelectSubset<T, professorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Delete a Professor.
-   * @param {ProfessorDeleteArgs} args - Arguments to delete one Professor.
+   * @param {professorDeleteArgs} args - Arguments to delete one Professor.
    * @example
    * // Delete one Professor
    * const Professor = await prisma.professor.delete({
@@ -820,11 +820,11 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * })
    * 
    */
-  delete<T extends ProfessorDeleteArgs>(args: Prisma.SelectSubset<T, ProfessorDeleteArgs<ExtArgs>>): Prisma.Prisma__ProfessorClient<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  delete<T extends professorDeleteArgs>(args: Prisma.SelectSubset<T, professorDeleteArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Update one Professor.
-   * @param {ProfessorUpdateArgs} args - Arguments to update one Professor.
+   * @param {professorUpdateArgs} args - Arguments to update one Professor.
    * @example
    * // Update one Professor
    * const professor = await prisma.professor.update({
@@ -837,11 +837,11 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * })
    * 
    */
-  update<T extends ProfessorUpdateArgs>(args: Prisma.SelectSubset<T, ProfessorUpdateArgs<ExtArgs>>): Prisma.Prisma__ProfessorClient<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  update<T extends professorUpdateArgs>(args: Prisma.SelectSubset<T, professorUpdateArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
   /**
    * Delete zero or more Professors.
-   * @param {ProfessorDeleteManyArgs} args - Arguments to filter Professors to delete.
+   * @param {professorDeleteManyArgs} args - Arguments to filter Professors to delete.
    * @example
    * // Delete a few Professors
    * const { count } = await prisma.professor.deleteMany({
@@ -851,13 +851,13 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * })
    * 
    */
-  deleteMany<T extends ProfessorDeleteManyArgs>(args?: Prisma.SelectSubset<T, ProfessorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  deleteMany<T extends professorDeleteManyArgs>(args?: Prisma.SelectSubset<T, professorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Update zero or more Professors.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ProfessorUpdateManyArgs} args - Arguments to update one or more rows.
+   * @param {professorUpdateManyArgs} args - Arguments to update one or more rows.
    * @example
    * // Update many Professors
    * const professor = await prisma.professor.updateMany({
@@ -870,11 +870,11 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * })
    * 
    */
-  updateMany<T extends ProfessorUpdateManyArgs>(args: Prisma.SelectSubset<T, ProfessorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
+  updateMany<T extends professorUpdateManyArgs>(args: Prisma.SelectSubset<T, professorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<Prisma.BatchPayload>
 
   /**
    * Update zero or more Professors and returns the data updated in the database.
-   * @param {ProfessorUpdateManyAndReturnArgs} args - Arguments to update many Professors.
+   * @param {professorUpdateManyAndReturnArgs} args - Arguments to update many Professors.
    * @example
    * // Update many Professors
    * const professor = await prisma.professor.updateManyAndReturn({
@@ -900,11 +900,11 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * Read more here: https://pris.ly/d/null-undefined
    * 
    */
-  updateManyAndReturn<T extends ProfessorUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, ProfessorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+  updateManyAndReturn<T extends professorUpdateManyAndReturnArgs>(args: Prisma.SelectSubset<T, professorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
   /**
    * Create or update one Professor.
-   * @param {ProfessorUpsertArgs} args - Arguments to update or create a Professor.
+   * @param {professorUpsertArgs} args - Arguments to update or create a Professor.
    * @example
    * // Update or create a Professor
    * const professor = await prisma.professor.upsert({
@@ -919,14 +919,14 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    *   }
    * })
    */
-  upsert<T extends ProfessorUpsertArgs>(args: Prisma.SelectSubset<T, ProfessorUpsertArgs<ExtArgs>>): Prisma.Prisma__ProfessorClient<runtime.Types.Result.GetResult<Prisma.$ProfessorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+  upsert<T extends professorUpsertArgs>(args: Prisma.SelectSubset<T, professorUpsertArgs<ExtArgs>>): Prisma.Prisma__professorClient<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
 
   /**
    * Count the number of Professors.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ProfessorCountArgs} args - Arguments to filter Professors to count.
+   * @param {professorCountArgs} args - Arguments to filter Professors to count.
    * @example
    * // Count the number of Professors
    * const count = await prisma.professor.count({
@@ -935,8 +935,8 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    *   }
    * })
   **/
-  count<T extends ProfessorCountArgs>(
-    args?: Prisma.Subset<T, ProfessorCountArgs>,
+  count<T extends professorCountArgs>(
+    args?: Prisma.Subset<T, professorCountArgs>,
   ): Prisma.PrismaPromise<
     T extends runtime.Types.Utils.Record<'select', any>
       ? T['select'] extends true
@@ -975,7 +975,7 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * Group by Professor.
    * Note, that providing `undefined` is treated as the value not being there.
    * Read more here: https://pris.ly/d/null-undefined
-   * @param {ProfessorGroupByArgs} args - Group by arguments.
+   * @param {professorGroupByArgs} args - Group by arguments.
    * @example
    * // Group by city, order by createdAt, get count
    * const result = await prisma.user.groupBy({
@@ -990,14 +990,14 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
    * 
   **/
   groupBy<
-    T extends ProfessorGroupByArgs,
+    T extends professorGroupByArgs,
     HasSelectOrTake extends Prisma.Or<
       Prisma.Extends<'skip', Prisma.Keys<T>>,
       Prisma.Extends<'take', Prisma.Keys<T>>
     >,
     OrderByArg extends Prisma.True extends HasSelectOrTake
-      ? { orderBy: ProfessorGroupByArgs['orderBy'] }
-      : { orderBy?: ProfessorGroupByArgs['orderBy'] },
+      ? { orderBy: professorGroupByArgs['orderBy'] }
+      : { orderBy?: professorGroupByArgs['orderBy'] },
     OrderFields extends Prisma.ExcludeUnderscoreKeys<Prisma.Keys<Prisma.MaybeTupleToUnion<T['orderBy']>>>,
     ByFields extends Prisma.MaybeTupleToUnion<T['by']>,
     ByValid extends Prisma.Has<ByFields, OrderFields>,
@@ -1046,24 +1046,24 @@ export interface ProfessorDelegate<ExtArgs extends runtime.Types.Extensions.Inte
           ? never
           : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
       }[OrderFields]
-  >(args: Prisma.SubsetIntersection<T, ProfessorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProfessorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  >(args: Prisma.SubsetIntersection<T, professorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProfessorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
 /**
- * Fields of the Professor model
+ * Fields of the professor model
  */
-readonly fields: ProfessorFieldRefs;
+readonly fields: professorFieldRefs;
 }
 
 /**
- * The delegate class that acts as a "Promise-like" for Professor.
+ * The delegate class that acts as a "Promise-like" for professor.
  * Why is this prefixed with `Prisma__`?
  * Because we want to prevent naming conflicts as mentioned in
  * https://github.com/prisma/prisma-client-js/issues/707
  */
-export interface Prisma__ProfessorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+export interface Prisma__professorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  activity<T extends Prisma.ActivityDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ActivityDefaultArgs<ExtArgs>>): Prisma.Prisma__ActivityClient<runtime.Types.Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  appointments<T extends Prisma.Professor$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Professor$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  user<T extends Prisma.userDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.userDefaultArgs<ExtArgs>>): Prisma.Prisma__userClient<runtime.Types.Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  activity<T extends Prisma.activityDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.activityDefaultArgs<ExtArgs>>): Prisma.Prisma__activityClient<runtime.Types.Result.GetResult<Prisma.$activityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  appointments<T extends Prisma.professor$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.professor$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1090,450 +1090,450 @@ export interface Prisma__ProfessorClient<T, Null = never, ExtArgs extends runtim
 
 
 /**
- * Fields of the Professor model
+ * Fields of the professor model
  */
-export interface ProfessorFieldRefs {
-  readonly id: Prisma.FieldRef<"Professor", 'Int'>
-  readonly userId: Prisma.FieldRef<"Professor", 'Int'>
-  readonly activityId: Prisma.FieldRef<"Professor", 'Int'>
+export interface professorFieldRefs {
+  readonly id: Prisma.FieldRef<"professor", 'Int'>
+  readonly userId: Prisma.FieldRef<"professor", 'Int'>
+  readonly activityId: Prisma.FieldRef<"professor", 'Int'>
 }
     
 
 // Custom InputTypes
 /**
- * Professor findUnique
+ * professor findUnique
  */
-export type ProfessorFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * Filter, which Professor to fetch.
+   * Filter, which professor to fetch.
    */
-  where: Prisma.ProfessorWhereUniqueInput
+  where: Prisma.professorWhereUniqueInput
 }
 
 /**
- * Professor findUniqueOrThrow
+ * professor findUniqueOrThrow
  */
-export type ProfessorFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * Filter, which Professor to fetch.
+   * Filter, which professor to fetch.
    */
-  where: Prisma.ProfessorWhereUniqueInput
+  where: Prisma.professorWhereUniqueInput
 }
 
 /**
- * Professor findFirst
+ * professor findFirst
  */
-export type ProfessorFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * Filter, which Professor to fetch.
+   * Filter, which professor to fetch.
    */
-  where?: Prisma.ProfessorWhereInput
+  where?: Prisma.professorWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of Professors to fetch.
+   * Determine the order of professors to fetch.
    */
-  orderBy?: Prisma.ProfessorOrderByWithRelationInput | Prisma.ProfessorOrderByWithRelationInput[]
+  orderBy?: Prisma.professorOrderByWithRelationInput | Prisma.professorOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for Professors.
+   * Sets the position for searching for professors.
    */
-  cursor?: Prisma.ProfessorWhereUniqueInput
+  cursor?: Prisma.professorWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` Professors from the position of the cursor.
+   * Take `±n` professors from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` Professors.
+   * Skip the first `n` professors.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of Professors.
+   * Filter by unique combinations of professors.
    */
   distinct?: Prisma.ProfessorScalarFieldEnum | Prisma.ProfessorScalarFieldEnum[]
 }
 
 /**
- * Professor findFirstOrThrow
+ * professor findFirstOrThrow
  */
-export type ProfessorFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * Filter, which Professor to fetch.
+   * Filter, which professor to fetch.
    */
-  where?: Prisma.ProfessorWhereInput
+  where?: Prisma.professorWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of Professors to fetch.
+   * Determine the order of professors to fetch.
    */
-  orderBy?: Prisma.ProfessorOrderByWithRelationInput | Prisma.ProfessorOrderByWithRelationInput[]
+  orderBy?: Prisma.professorOrderByWithRelationInput | Prisma.professorOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for searching for Professors.
+   * Sets the position for searching for professors.
    */
-  cursor?: Prisma.ProfessorWhereUniqueInput
+  cursor?: Prisma.professorWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` Professors from the position of the cursor.
+   * Take `±n` professors from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` Professors.
+   * Skip the first `n` professors.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of Professors.
+   * Filter by unique combinations of professors.
    */
   distinct?: Prisma.ProfessorScalarFieldEnum | Prisma.ProfessorScalarFieldEnum[]
 }
 
 /**
- * Professor findMany
+ * professor findMany
  */
-export type ProfessorFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * Filter, which Professors to fetch.
+   * Filter, which professors to fetch.
    */
-  where?: Prisma.ProfessorWhereInput
+  where?: Prisma.professorWhereInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
    * 
-   * Determine the order of Professors to fetch.
+   * Determine the order of professors to fetch.
    */
-  orderBy?: Prisma.ProfessorOrderByWithRelationInput | Prisma.ProfessorOrderByWithRelationInput[]
+  orderBy?: Prisma.professorOrderByWithRelationInput | Prisma.professorOrderByWithRelationInput[]
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
    * 
-   * Sets the position for listing Professors.
+   * Sets the position for listing professors.
    */
-  cursor?: Prisma.ProfessorWhereUniqueInput
+  cursor?: Prisma.professorWhereUniqueInput
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Take `±n` Professors from the position of the cursor.
+   * Take `±n` professors from the position of the cursor.
    */
   take?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
    * 
-   * Skip the first `n` Professors.
+   * Skip the first `n` professors.
    */
   skip?: number
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
    * 
-   * Filter by unique combinations of Professors.
+   * Filter by unique combinations of professors.
    */
   distinct?: Prisma.ProfessorScalarFieldEnum | Prisma.ProfessorScalarFieldEnum[]
 }
 
 /**
- * Professor create
+ * professor create
  */
-export type ProfessorCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * The data needed to create a Professor.
+   * The data needed to create a professor.
    */
-  data: Prisma.XOR<Prisma.ProfessorCreateInput, Prisma.ProfessorUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.professorCreateInput, Prisma.professorUncheckedCreateInput>
 }
 
 /**
- * Professor createMany
+ * professor createMany
  */
-export type ProfessorCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to create many Professors.
+   * The data used to create many professors.
    */
-  data: Prisma.ProfessorCreateManyInput | Prisma.ProfessorCreateManyInput[]
+  data: Prisma.professorCreateManyInput | Prisma.professorCreateManyInput[]
   skipDuplicates?: boolean
 }
 
 /**
- * Professor createManyAndReturn
+ * professor createManyAndReturn
  */
-export type ProfessorCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelectCreateManyAndReturn<ExtArgs> | null
+  select?: Prisma.professorSelectCreateManyAndReturn<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
-   * The data used to create many Professors.
+   * The data used to create many professors.
    */
-  data: Prisma.ProfessorCreateManyInput | Prisma.ProfessorCreateManyInput[]
+  data: Prisma.professorCreateManyInput | Prisma.professorCreateManyInput[]
   skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorIncludeCreateManyAndReturn<ExtArgs> | null
+  include?: Prisma.professorIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
- * Professor update
+ * professor update
  */
-export type ProfessorUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * The data needed to update a Professor.
+   * The data needed to update a professor.
    */
-  data: Prisma.XOR<Prisma.ProfessorUpdateInput, Prisma.ProfessorUncheckedUpdateInput>
+  data: Prisma.XOR<Prisma.professorUpdateInput, Prisma.professorUncheckedUpdateInput>
   /**
-   * Choose, which Professor to update.
+   * Choose, which professor to update.
    */
-  where: Prisma.ProfessorWhereUniqueInput
+  where: Prisma.professorWhereUniqueInput
 }
 
 /**
- * Professor updateMany
+ * professor updateMany
  */
-export type ProfessorUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * The data used to update Professors.
+   * The data used to update professors.
    */
-  data: Prisma.XOR<Prisma.ProfessorUpdateManyMutationInput, Prisma.ProfessorUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.professorUpdateManyMutationInput, Prisma.professorUncheckedUpdateManyInput>
   /**
-   * Filter which Professors to update
+   * Filter which professors to update
    */
-  where?: Prisma.ProfessorWhereInput
+  where?: Prisma.professorWhereInput
   /**
-   * Limit how many Professors to update.
+   * Limit how many professors to update.
    */
   limit?: number
 }
 
 /**
- * Professor updateManyAndReturn
+ * professor updateManyAndReturn
  */
-export type ProfessorUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelectUpdateManyAndReturn<ExtArgs> | null
+  select?: Prisma.professorSelectUpdateManyAndReturn<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
-   * The data used to update Professors.
+   * The data used to update professors.
    */
-  data: Prisma.XOR<Prisma.ProfessorUpdateManyMutationInput, Prisma.ProfessorUncheckedUpdateManyInput>
+  data: Prisma.XOR<Prisma.professorUpdateManyMutationInput, Prisma.professorUncheckedUpdateManyInput>
   /**
-   * Filter which Professors to update
+   * Filter which professors to update
    */
-  where?: Prisma.ProfessorWhereInput
+  where?: Prisma.professorWhereInput
   /**
-   * Limit how many Professors to update.
+   * Limit how many professors to update.
    */
   limit?: number
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorIncludeUpdateManyAndReturn<ExtArgs> | null
+  include?: Prisma.professorIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
- * Professor upsert
+ * professor upsert
  */
-export type ProfessorUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * The filter to search for the Professor to update in case it exists.
+   * The filter to search for the professor to update in case it exists.
    */
-  where: Prisma.ProfessorWhereUniqueInput
+  where: Prisma.professorWhereUniqueInput
   /**
-   * In case the Professor found by the `where` argument doesn't exist, create a new Professor with this data.
+   * In case the professor found by the `where` argument doesn't exist, create a new professor with this data.
    */
-  create: Prisma.XOR<Prisma.ProfessorCreateInput, Prisma.ProfessorUncheckedCreateInput>
+  create: Prisma.XOR<Prisma.professorCreateInput, Prisma.professorUncheckedCreateInput>
   /**
-   * In case the Professor was found with the provided `where` argument, update it with this data.
+   * In case the professor was found with the provided `where` argument, update it with this data.
    */
-  update: Prisma.XOR<Prisma.ProfessorUpdateInput, Prisma.ProfessorUncheckedUpdateInput>
+  update: Prisma.XOR<Prisma.professorUpdateInput, Prisma.professorUncheckedUpdateInput>
 }
 
 /**
- * Professor delete
+ * professor delete
  */
-export type ProfessorDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
   /**
-   * Filter which Professor to delete.
+   * Filter which professor to delete.
    */
-  where: Prisma.ProfessorWhereUniqueInput
+  where: Prisma.professorWhereUniqueInput
 }
 
 /**
- * Professor deleteMany
+ * professor deleteMany
  */
-export type ProfessorDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Filter which Professors to delete
+   * Filter which professors to delete
    */
-  where?: Prisma.ProfessorWhereInput
+  where?: Prisma.professorWhereInput
   /**
-   * Limit how many Professors to delete.
+   * Limit how many professors to delete.
    */
   limit?: number
 }
 
 /**
- * Professor.appointments
+ * professor.appointments
  */
-export type Professor$appointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professor$appointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Appointment
+   * Select specific fields to fetch from the appointment
    */
-  select?: Prisma.AppointmentSelect<ExtArgs> | null
+  select?: Prisma.appointmentSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Appointment
+   * Omit specific fields from the appointment
    */
-  omit?: Prisma.AppointmentOmit<ExtArgs> | null
+  omit?: Prisma.appointmentOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.AppointmentInclude<ExtArgs> | null
-  where?: Prisma.AppointmentWhereInput
-  orderBy?: Prisma.AppointmentOrderByWithRelationInput | Prisma.AppointmentOrderByWithRelationInput[]
-  cursor?: Prisma.AppointmentWhereUniqueInput
+  include?: Prisma.appointmentInclude<ExtArgs> | null
+  where?: Prisma.appointmentWhereInput
+  orderBy?: Prisma.appointmentOrderByWithRelationInput | Prisma.appointmentOrderByWithRelationInput[]
+  cursor?: Prisma.appointmentWhereUniqueInput
   take?: number
   skip?: number
   distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
 }
 
 /**
- * Professor without action
+ * professor without action
  */
-export type ProfessorDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type professorDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Professor
+   * Select specific fields to fetch from the professor
    */
-  select?: Prisma.ProfessorSelect<ExtArgs> | null
+  select?: Prisma.professorSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Professor
+   * Omit specific fields from the professor
    */
-  omit?: Prisma.ProfessorOmit<ExtArgs> | null
+  omit?: Prisma.professorOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.ProfessorInclude<ExtArgs> | null
+  include?: Prisma.professorInclude<ExtArgs> | null
 }
