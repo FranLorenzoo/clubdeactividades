@@ -7,6 +7,5 @@ export default function App({ Component, pageProps }: AppProps) {
        <title>Club360</title>
     </head>
     <Component {...pageProps} />;
-  </>);
-
+  </>)
 }
