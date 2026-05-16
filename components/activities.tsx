@@ -1,12 +1,11 @@
-import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const activityImage = [
-  { id: 1, nombre: "Fútbol", imagen: "/futbol.jpg" },
-  { id: 2, nombre: "Vóley", imagen: "/voley.jpg" },
-  { id: 3, nombre: "Pádel", imagen: "/padel.jpg" },
-  { id: 4, nombre: "Básquet", imagen: "/basquet.jpg" },
+  { id: 1, nombre: "Futbol", imagen: "/futbol.jpg" },
+  { id: 2, nombre: "Voley", imagen: "/voley.jpg" },
+  { id: 3, nombre: "Paddle", imagen: "/basquet.jpg" },
+  { id: 4, nombre: "Basquet", imagen: "/padel.jpg" },
 ];
 
 export default function Activities() {
@@ -48,13 +47,6 @@ export default function Activities() {
               <h3 className="text-2xl font-bold mb-4">
                 {activity.name}
               </h3>
-
-              <Link
-                href={`/actividad/${activity.id}`}
-                className="block text-center bg-green-600 py-3 rounded-xl hover:bg-green-700 transition"
-              >
-                Reservar
-              </Link>
             </div>
           </div>
         ))}
