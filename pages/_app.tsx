@@ -28,6 +28,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   );
 =======
 export default function App({ Component, pageProps }: AppProps) {
+<<<<<<< HEAD
   return <Component {...pageProps} />;
 >>>>>>> aa6fa6b (pages y components recuperados (#13))
+=======
+  return (<>
+    <head>
+       <title>Club360</title>
+    </head>
+    <Component {...pageProps} />;
+  </>);
+
+>>>>>>> 9d2b6dd (acomodando imagenes)
 }

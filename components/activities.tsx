@@ -2,10 +2,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const activityImage = [
-  { id: 1, nombre: "Futbol", imagen: "/futbol.jpg" },
-  { id: 2, nombre: "Voley", imagen: "/voley.jpg" },
-  { id: 3, nombre: "Paddle", imagen: "/basquet.jpg" },
-  { id: 4, nombre: "Basquet", imagen: "/padel.jpg" },
+  { id: 1, nombre: "Futbol", imagen: "/futbol.png" },
+  { id: 2, nombre: "Voley", imagen: "/voley.png" },
+  { id: 3, nombre: "Paddle", imagen: "/basquet.png" },
+  { id: 4, nombre: "Basquet", imagen: "/padel.png" },
 ];
 
 export default function Activities() {
