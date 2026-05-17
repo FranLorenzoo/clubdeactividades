@@ -29,6 +29,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 =======
 export default function App({ Component, pageProps }: AppProps) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   return <Component {...pageProps} />;
 >>>>>>> aa6fa6b (pages y components recuperados (#13))
 =======
@@ -44,4 +45,7 @@ export default function App({ Component, pageProps }: AppProps) {
 =======
   </>)
 >>>>>>> 64394bb (se me escapó un ;)
+=======
+  return <Component {...pageProps} />
+>>>>>>> 8cacacf (creando boton para crear cliente)
 }

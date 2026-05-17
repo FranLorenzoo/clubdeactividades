@@ -37,13 +37,6 @@ export default function AdminNavbar() {
           </Link>
 
           <Link
-            href="/dashboard/admin/users"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
-          >
-            Ver clientes
-          </Link>
-
-          <Link
             href="/dashboard/admin/employees"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
           >
@@ -54,7 +47,7 @@ export default function AdminNavbar() {
             href="/dashboard/admin/searchclient"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
           >
-            Buscar Clientes
+            Ver Clientes
           </Link>
 
         </nav>
