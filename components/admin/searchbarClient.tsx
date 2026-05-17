@@ -9,8 +9,29 @@ const today = new Date();
 today.setFullYear(
   today.getFullYear() - 18
 );
-const maxDate =
-  today.toISOString().split("T")[0];
+const maxDate = today.toISOString().split("T")[0];
+
+function calculateAge(fechaNacimiento: string
+) {
+  const today = new Date();
+  const birth = new Date(fechaNacimiento);
+  let age = today.getFullYear() - birth.getFullYear();
+
+  const monthDifference =
+    today.getMonth() -
+    birth.getMonth();
+
+  if (
+    monthDifference < 0 ||
+    (
+      monthDifference === 0 &&
+      today.getDate() < birth.getDate()
+    )
+  ) {
+    age--;
+  }
+  return age;
+}
 
 export default function Searchbar() {
   const [open, setOpen] = useState(false);
@@ -22,8 +43,6 @@ export default function Searchbar() {
 
   async function handleCreateClient(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    const age = 20;
 
     try {
       const response = await fetch(
@@ -38,7 +57,7 @@ export default function Searchbar() {
             lastName,
             email,
             dni,
-            age,
+            age: calculateAge(fechaNacimiento),
             roleId: "1",
             password: generateRandomPassword(),
           }),

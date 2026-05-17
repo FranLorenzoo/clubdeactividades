@@ -1,4 +1,4 @@
-import Searchbar from "@/components/admin/searchbar";
+import Searchbar from "@/components/admin/searchbarClient";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function SearchClient() {
