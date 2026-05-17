@@ -85,7 +85,7 @@ export default function ActividadDetalle() {
       ) : (
         <main className="min-h-screen bg-zinc-950 text-white">
           <ActivityHero activity={activity} />
-          <ScheduleGrid activityDays={activity.days} activityName={activity.name} />
+          <ScheduleGrid activityDays={activity.days} activityId={id as string} />
           <ActivityInfo />
         </main>
       )}
