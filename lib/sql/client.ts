@@ -25,3 +25,10 @@ export async function updateClient(id: number, data: Prisma.clientUpdateInput) {
 export async function deleteClient(id: number) {
   return prisma.client.delete({ where: { id } });
 }
+
+export async function getClientByUserId(userId: number) {
+  return prisma.client.findUnique({
+    where: { userId },
+    include: { user: true, creditCard: true, userAppointments: true },
+  });
+}
