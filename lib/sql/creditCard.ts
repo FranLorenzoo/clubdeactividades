@@ -25,3 +25,10 @@ export async function updateCreditCard(id: number, data: Prisma.creditCardUpdate
 export async function deleteCreditCard(id: number) {
   return prisma.creditCard.delete({ where: { id } });
 }
+
+export async function getCreditCardByClientId(clientId: number) {
+  return prisma.creditCard.findUnique({
+    where: { clientId },
+    include: { client: true },
+  });
+}

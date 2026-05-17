@@ -1,4 +1,3 @@
-import { CreateAppointmentDto } from "@/lib/dto/appointment";
 import { createAppointment, getAllAppointments } from "@/lib/sql/appointment";
 import { parseFields } from "@/lib/validators/api";
 import { Prisma } from "@/lib/generated/prisma/client";
@@ -20,9 +19,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 async function getAllAppointmentsHandler(res: NextApiResponse) {
   try {
     const appointments = await getAllAppointments();
-    res.status(200).json(appointments);
+    return res.status(200).json(appointments);
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 }
 

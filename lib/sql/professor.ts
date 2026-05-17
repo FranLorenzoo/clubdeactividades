@@ -25,3 +25,17 @@ export async function updateProfessor(id: number, data: Prisma.professorUpdateIn
 export async function deleteProfessor(id: number) {
   return prisma.professor.delete({ where: { id } });
 }
+
+export async function getProfessorByUserId(userId: number) {
+  return prisma.professor.findUnique({
+    where: { userId },
+    include: { user: true, activity: true, appointments: true },
+  });
+}
+
+export async function getProfessorsByActivityId(activityId: number) {
+  return prisma.professor.findMany({
+    where: { activityId },
+    include: { user: true, activity: true, appointments: true },
+  });
+}
