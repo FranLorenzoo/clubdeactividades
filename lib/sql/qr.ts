@@ -25,3 +25,10 @@ export async function updateQR(id: number, data: Prisma.QRUpdateInput) {
 export async function deleteQR(id: number) {
   return prisma.qR.delete({ where: { id } });
 }
+
+export async function getQRByUserAppointmentId(userAppointmentId: number) {
+  return prisma.qR.findUnique({
+    where: { userAppointmentId },
+    include: { userAppointment: true },
+  });
+}

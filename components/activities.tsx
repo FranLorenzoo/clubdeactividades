@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const activityImage = [
@@ -31,9 +32,10 @@ export default function Activities() {
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
 
         {activities?.map((activity) => (
-          <div
+          <Link
             key={activity.id}
-            className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-green-500 transition"
+            href={`/actividad/${activity.id}`}
+            className="bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 hover:border-green-500 transition block"
           >
             <Image
               src={activityImage[activity.id as number - 1].imagen}
@@ -48,7 +50,7 @@ export default function Activities() {
                 {activity.name}
               </h3>
             </div>
-          </div>
+          </Link>
         ))}
 
       </div>

@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/Navbar";
 
 import ActivityHero from "@/components/activity/activity-hero";
 import ActivityInfo from "@/components/activity/activities-info";
+import ScheduleGrid from "@/components/activity/schedule-grid";
 import { useEffect, useState } from "react";
-import ActivityDays from "@/components/activity/activity-days";
 
 
 const activities: Record<
@@ -85,7 +85,7 @@ export default function ActividadDetalle() {
       ) : (
         <main className="min-h-screen bg-zinc-950 text-white">
           <ActivityHero activity={activity} />
-          <ActivityDays activity={activity} id={id} />
+          <ScheduleGrid activityDays={activity.days} activityId={id as string} />
           <ActivityInfo />
         </main>
       )}

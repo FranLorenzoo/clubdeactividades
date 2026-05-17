@@ -25,3 +25,17 @@ export async function updatePayment(id: number, data: Prisma.paymentUpdateInput)
 export async function deletePayment(id: number) {
   return prisma.payment.delete({ where: { id } });
 }
+
+export async function getPaymentsByUserAppointmentId(userAppointmentId: number) {
+  return prisma.payment.findMany({
+    where: { userAppointmentId },
+    include: { userAppointment: true, employee: true },
+  });
+}
+
+export async function getPaymentsByEmployeeId(employeeId: number) {
+  return prisma.payment.findMany({
+    where: { employeeId },
+    include: { userAppointment: true, employee: true },
+  });
+}
