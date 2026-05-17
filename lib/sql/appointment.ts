@@ -25,3 +25,17 @@ export async function updateAppointment(id: number, data: Prisma.appointmentUpda
 export async function deleteAppointment(id: number) {
   return prisma.appointment.delete({ where: { id } });
 }
+
+export async function getAppointmentsByActivityId(activityId: number) {
+  return prisma.appointment.findMany({
+    where: { activityId },
+    include: { activity: true, professor: true, userAppointments: true },
+  });
+}
+
+export async function getAppointmentsByProfessorId(professorId: number) {
+  return prisma.appointment.findMany({
+    where: { professorId },
+    include: { activity: true, professor: true, userAppointments: true },
+  });
+}

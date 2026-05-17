@@ -25,3 +25,10 @@ export async function updateEmployee(id: number, data: Prisma.employeeUpdateInpu
 export async function deleteEmployee(id: number) {
   return prisma.employee.delete({ where: { id } });
 }
+
+export async function getEmployeeByUserId(userId: number) {
+  return prisma.employee.findUnique({
+    where: { userId },
+    include: { user: true, payments: true },
+  });
+}
