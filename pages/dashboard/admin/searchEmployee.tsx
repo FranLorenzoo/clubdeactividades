@@ -5,7 +5,7 @@ export default function SearchClient() {
   return (
     <DashboardLayout role="ADMIN">
       <h1 className="text-3xl font-bold mb-6">
-        Clientes
+        Empleados
       </h1> 
       <Searchbar />
     </DashboardLayout>

@@ -1,87 +1,93 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import crypto from "crypto";
 
 const generateRandomPassword = () => {
   return crypto.randomBytes(5).toString("hex");
 };
 
+const today = new Date();
+today.setFullYear(
+  today.getFullYear() - 18
+);
+const maxDate =
+  today.toISOString().split("T")[0];
+
 export default function Searchbar() {
   const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [dni, setDni] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
 
-  async function handleCreateClient(e: React.FormEvent<HTMLFormElement>) {
-  e.preventDefault();
+  async function handleCreateClient(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-  const formData = new FormData(e.currentTarget);
+    const age = 20;
 
-  const name =
-    formData.get("name");
+    try {
+      const response = await fetch(
+        "/api/user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            lastName,
+            email,
+            dni,
+            age,
+            roleId: "1",
+            password: generateRandomPassword(),
+          }),
+        }
+      );
 
-  const lastName =
-    formData.get("lastName");
+      const data = await response.json();
 
-  const email =
-    formData.get("email");
+      if (response.ok) {
 
-  const dni =
-    formData.get("dni");
+        alert("Cliente creado");
 
-  try {
+        setOpen(false);
+        setName("");
+        setLastName("");
+        setEmail("");
+        setDni("");
+        setFechaNacimiento("");
 
-    const response = await fetch(
-      "/api/user",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          lastName,
-          email,
-          dni,
-          password: generateRandomPassword(),
-        }),
+        return;
       }
-    );
 
-    const data = await response.json();
+      alert(
+        data.message ||
+        "Error al crear cliente"
+      );
 
-    if(response.ok) {
+    } catch (error) {
 
-      alert("Cliente creado");
+      console.error(error);
 
-      setOpen(false);
-
-      return;
+      alert("Error de conexión");
     }
-
-    alert(
-      data.message ||
-      "Error al crear cliente"
-    );
-
-  } catch(error) {
-
-    console.error(error);
-
-    alert("Error de conexión");
-  }
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
 
     const value =
-      (formData.get("searchValue") as string).trim();
+      String(formData.get("searchValue") || "").trim();
 
     try {
 
       const response =
         await fetch(`/api/user?dni=${value}`);
 
-      if(response.ok) {
+      if (response.ok) {
 
         const user = await response.json();
 
@@ -91,7 +97,7 @@ export default function Searchbar() {
         return;
       }
 
-      if(response.status === 404) {
+      if (response.status === 404) {
 
         alert("Cliente no encontrado");
 
@@ -105,7 +111,7 @@ export default function Searchbar() {
         "Error inesperado"
       );
 
-    } catch(error) {
+    } catch (error) {
 
       console.error(error);
 
@@ -113,10 +119,8 @@ export default function Searchbar() {
     }
   }
 
-  return (
-
-    <>
-      <div className="flex items-center gap-3 w-full max-w-xl mx-auto mt-[50px]">
+  return ( <>
+      <div className="flex items-center gap-3 w-full max-w-xl mx-auto mt-[50px] relative z-10">
 
         <form
           onSubmit={handleSubmit}
@@ -159,7 +163,7 @@ export default function Searchbar() {
 
         <button
           onClick={() => setOpen(true)}
-          className="gap-3 bg-[#F59134] text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition"
+          className="gap-3 bg-[#316788] text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition"
         >
           Crear cliente
         </button>
@@ -215,35 +219,42 @@ export default function Searchbar() {
               <form
               onSubmit={handleCreateClient}
               className="space-y-4">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Nombre"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    className="
+                      border
+                      rounded-xl
+                      p-4
+                      w-1/2
+                    "
+                  />
 
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Nombre"
-                  className="
-                    w-full
-                    border
-                    rounded-xl
-                    p-4
-                  "
-                />
-
-                <input
-                  type="text"
-                  name="lastName"
-                  placeholder="Apellido"
-                  className="
-                    w-full
-                    border
-                    rounded-xl
-                    p-4
-                  "
-                />
+                  <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Apellido"
+                    value={lastName}
+                    onChange={(event) => setLastName(event.target.value)}
+                    className="
+                      border
+                      rounded-xl
+                      p-4
+                      w-1/2
+                    "
+                  />
+              </div>
 
                 <input
                   type="email"
                   name="email"
                   placeholder="Email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                   className="
                     w-full
                     border
@@ -256,6 +267,23 @@ export default function Searchbar() {
                   type="text"
                   name="dni"
                   placeholder="DNI"
+                  value={dni}
+                  onChange={(event) => setDni(event.target.value)}
+                  className="
+                    w-full
+                    border
+                    rounded-xl
+                    p-4
+                  "
+                />
+
+                <input
+                  type="date"
+                  name="fechaNacimiento"
+                  max={maxDate}
+                  placeholder="Fecha de nacimiento (YYYY-MM-DD)"
+                  value={fechaNacimiento}
+                  onChange={(event) => setFechaNacimiento(event.target.value)}
                   className="
                     w-full
                     border
@@ -266,6 +294,7 @@ export default function Searchbar() {
 
                 <button
                   type="submit"
+                  disabled={!name || !lastName || !email || !dni || !fechaNacimiento}
                   className="
                     w-full
                     bg-[#316788]
@@ -275,6 +304,8 @@ export default function Searchbar() {
                     font-semibold
                     hover:opacity-90
                     transition
+                    disabled:opacity-50
+                    disabled:cursor-not-allowed
                   "
                 >
                   Crear cliente
