@@ -30,10 +30,10 @@ export default function AdminNavbar() {
         <nav className="flex flex-col gap-4 px-6 py-8">
 
           <Link
-            href="/dashboard/admin/appointments/create"
+            href="/dashboard/admin/createAppointment"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
           >
-            Crear turno
+            Crear Turno
           </Link>
 
           <Link
