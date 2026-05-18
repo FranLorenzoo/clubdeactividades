@@ -39,3 +39,22 @@ export async function getProfessorsByActivityId(activityId: number) {
     include: { user: true, activity: true, appointments: true },
   });
 }
+
+export async function getProfessorsNamesByActivityId(activityId: number) {
+  return prisma.professor.findMany({
+    where: {
+      activityId: activityId
+    },
+
+    select: {
+      id: true,
+
+      user: {
+        select: {
+          id: true,
+          name: true
+        }
+      }
+    }
+  });
+}
