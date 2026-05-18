@@ -20,7 +20,7 @@ export default function DashboardLayout({ role, children }: DashboardLayoutProps
       {role === "EMPLOYEE" && <EmployeeNavbar />}
       {role === "PROFESSOR" && <ProfessorNavbar />}
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 bg-[#e0e0e0] p-6">
         {children}
       </main>
     </div>
