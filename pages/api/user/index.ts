@@ -1,6 +1,8 @@
 import { getAllUsers, createUser } from "@/lib/sql/user";
 import { parseFields } from "@/lib/validators/api";
+import { connect } from "http2";
 import { NextApiRequest, NextApiResponse } from "next";
+import { act, Activity } from "react";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -31,12 +33,21 @@ async function createUserHandler(body: Record<string, unknown>, res: NextApiResp
       lastName: "string",
       age: "number",
       dni: "string",
-      roleId: "number"
-    }, body); 
+      roleId: "number",
+    }, body);
+    
+    if(values.roleId === 4) {
+      if(typeof body.activityId !== "number") {
+        return res.status(400).json({
+        message:
+          "activityId es requerido",
+        });
+      }
+    }  
 
     if(!ok) return res.status(400).json({ message: "Bad request " + error });
 
-    const reqBody = {
+    const reqBody: any = {
       email: values.email as string,
       password: values.password as string,
       dni: values.dni as string,
@@ -46,13 +57,29 @@ async function createUserHandler(body: Record<string, unknown>, res: NextApiResp
       role: {
         connect: { id: values.roleId as number },
       },
-      client: {
-        create: {
-          suspended: false,
-          active: true,
-        },
-      },
     };
+    if(values.roleId === 1) {
+      reqBody.client = {
+        create: {
+        suspended: false,
+        active: true,
+        },
+      };
+    }else if(values.roleId === 4) {
+      reqBody.professor = {
+        create: {
+          activity: {
+            connect: {
+              id: Number(body.activityId)
+            },
+          },
+        },
+      };
+    }else {
+      reqBody.employee = {
+        create: {},
+      };
+    }
 
     const user = await createUser(reqBody);
     res.status(201).json(user);

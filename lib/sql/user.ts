@@ -14,6 +14,20 @@ export async function getUserById(id: number) {
   });
 }
 
+export async function getUserByDNI(dni: string) {
+  return prisma.user.findFirst({
+    where: { dni },
+    include: { role: true, client: true, employee: true, professor: true },
+  });
+}
+
+export async function getUserByEmail(email: string) {
+  return prisma.user.findUnique({
+    where: { email },
+    include: { role: true, client: true, employee: true, professor: true },
+  });
+}
+
 export async function createUser(data: Prisma.userCreateInput) {
   return prisma.user.create({ data });
 }
@@ -24,18 +38,4 @@ export async function updateUser(id: number, data: Prisma.userUpdateInput) {
 
 export async function deleteUser(id: number) {
   return prisma.user.delete({ where: { id } });
-}
-
-export async function getUserByEmail(email: string) {
-  return prisma.user.findUnique({
-    where: { email },
-    include: { role: true, client: true, employee: true, professor: true },
-  });
-}
-
-export async function getUserByDNI(dni: string) {
-  return prisma.user.findFirst({
-    where: { dni },
-    include: { role: true, client: true, employee: true, professor: true },
-  });
 }
