@@ -32,3 +32,17 @@ export async function getClientByUserId(userId: number) {
     include: { user: true, creditCard: true, userAppointments: true },
   });
 }
+
+export async function getClientByUserDni(dni: string) {
+  return prisma.client.findFirst({
+    where: {
+      user: {
+        dni: dni,
+        roleId: 1
+      }
+    },
+    include: { 
+      user: true 
+    },
+  });
+}
