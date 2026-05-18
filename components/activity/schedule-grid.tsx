@@ -27,50 +27,75 @@ const DAY_INDEX_MAP: Record<number, string> = {
 };
 
 type ReserveType = "mensual" | "unica" | null;
+type PaymentMethod = "efectivo" | "tarjeta" | null;
+
+function remainingClassesThisMonth(dayOfWeek: number): number {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  let count = 0;
+  const d = new Date(today);
+  while (d <= endOfMonth) {
+    if (d.getDay() === dayOfWeek) count++;
+    d.setDate(d.getDate() + 1);
+  }
+  return count;
+}
+
+function calcAmount(reserveType: ReserveType, price: number, dayOfWeek: number): number {
+  if (reserveType === "unica") return price * 0.5;
+  const remaining = remainingClassesThisMonth(dayOfWeek);
+  return price * remaining * 0.85;
+}
+
+interface CreditCard {
+  id: number;
+  cardNumber: string;
+  cardHolder: string;
+  expireDate: string;
+}
 
 interface ReservePopupProps {
   time: string;
   available: number;
   waitingList: boolean;
+  price: number;
+  dayOfWeek: number;
   reserveType: ReserveType;
   onTypeChange: (t: ReserveType) => void;
-  onConfirm: () => void;
+  onConfirm: (paymentMethod: PaymentMethod) => void;
   onClose: () => void;
+  creditCard: CreditCard | null;
+  loadingCard: boolean;
 }
 
 function ReservePopup({
-  time,
-  available,
-  waitingList,
-  reserveType,
-  onTypeChange,
-  onConfirm,
-  onClose,
+  time, available, waitingList, price, dayOfWeek,
+  reserveType, onTypeChange, onConfirm, onClose,
+  creditCard, loadingCard,
 }: ReservePopupProps) {
-  const canConfirm = reserveType !== null;
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null);
+
+  const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
+  const canConfirm = reserveType !== null && paymentMethod !== null;
+  const cardBlocked = paymentMethod === "tarjeta" && !creditCard;
+
   return (
-    <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-52 bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
-      <div className="flex justify-between items-center mb-2">
+    <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-60 bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
+      <div className="flex justify-between items-center mb-3">
         <p className="font-bold text-base">{time}hs</p>
-        <button
-          onClick={onClose}
-          className="text-zinc-500 hover:text-white text-sm leading-none"
-        >
-          ✕
-        </button>
+        <button onClick={onClose} className="text-zinc-500 hover:text-white text-sm leading-none">✕</button>
       </div>
+
       <p className="text-xs text-zinc-400 mb-3">
-        {waitingList
-          ? "Lista de espera"
-          : available > 0
-          ? `${available} cupos disponibles`
-          : "Sin cupos"}
+        {waitingList ? "Lista de espera" : available > 0 ? `${available} cupos disponibles` : "Sin cupos"}
       </p>
+
       <p className="text-xs text-zinc-400 mb-2">Tipo de reserva</p>
-      <div className="flex flex-col gap-2 mb-3">
+      <div className="flex gap-2 mb-4">
         <button
-          onClick={() => onTypeChange(reserveType === "mensual" ? null : "mensual")}
-          className={`w-full text-xs font-semibold py-1.5 rounded-xl border transition ${
+          onClick={() => { onTypeChange(reserveType === "mensual" ? null : "mensual"); setPaymentMethod(null); }}
+          className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
             reserveType === "mensual"
               ? "bg-green-600 border-green-600 text-white"
               : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700"
@@ -79,8 +104,8 @@ function ReservePopup({
           Mensual
         </button>
         <button
-          onClick={() => onTypeChange(reserveType === "unica" ? null : "unica")}
-          className={`w-full text-xs font-semibold py-1.5 rounded-xl border transition ${
+          onClick={() => { onTypeChange(reserveType === "unica" ? null : "unica"); setPaymentMethod(null); }}
+          className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
             reserveType === "unica"
               ? "bg-green-600 border-green-600 text-white"
               : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700"
@@ -89,11 +114,73 @@ function ReservePopup({
           Única vez
         </button>
       </div>
+
+      {reserveType && (
+        <>
+          <p className="text-xs text-zinc-400 mb-2">Método de pago</p>
+          <div className="flex gap-2 mb-3">
+            <button
+              onClick={() => setPaymentMethod(paymentMethod === "efectivo" ? null : "efectivo")}
+              className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
+                paymentMethod === "efectivo"
+                  ? "bg-green-600 border-green-600 text-white"
+                  : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700"
+              }`}
+            >
+              Efectivo
+            </button>
+            <button
+              onClick={() => setPaymentMethod(paymentMethod === "tarjeta" ? null : "tarjeta")}
+              className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
+                paymentMethod === "tarjeta"
+                  ? "bg-green-600 border-green-600 text-white"
+                  : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700"
+              }`}
+            >
+              Tarjeta
+            </button>
+          </div>
+
+          {paymentMethod === "tarjeta" && (
+            <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-3 mb-3 text-xs">
+              {loadingCard ? (
+                <p className="text-zinc-400">Cargando tarjeta...</p>
+              ) : creditCard ? (
+                <>
+                  <p className="text-zinc-200 font-semibold">{creditCard.cardHolder}</p>
+                  <p className="text-zinc-400 mt-0.5">•••• •••• •••• {creditCard.cardNumber.slice(-4)}</p>
+                  <p className="text-zinc-500 mt-0.5">
+                    Vence{" "}
+                    {new Date(creditCard.expireDate).toLocaleDateString("es-AR", {
+                      month: "2-digit",
+                      year: "2-digit",
+                    })}
+                  </p>
+                </>
+              ) : (
+                <p className="text-red-400">No tenés tarjeta registrada</p>
+              )}
+            </div>
+          )}
+
+          {paymentMethod && (
+            <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-3 mb-4 text-xs">
+              <p className="text-zinc-400 mb-1">
+                {reserveType === "unica"
+                  ? "Seña del 50%"
+                  : `${remainingClassesThisMonth(dayOfWeek)} clases restantes · −15%`}
+              </p>
+              <p className="text-white font-bold text-lg">${amount.toFixed(2)}</p>
+            </div>
+          )}
+        </>
+      )}
+
       <button
-        onClick={onConfirm}
-        disabled={!canConfirm}
+        onClick={() => onConfirm(paymentMethod)}
+        disabled={!canConfirm || cardBlocked}
         className={`w-full text-xs font-semibold py-2 rounded-xl transition ${
-          canConfirm
+          canConfirm && !cardBlocked
             ? "bg-green-600 hover:bg-green-700 text-white"
             : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
         }`}
@@ -103,6 +190,14 @@ function ReservePopup({
       <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-zinc-700" />
     </div>
   );
+}
+
+interface AppointmentSlot {
+  time: string;
+  available: number;
+  waitingList: boolean;
+  price: number;
+  dayOfWeek: number;
 }
 
 interface ScheduleGridProps {
@@ -115,6 +210,29 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   const [activeSlot, setActiveSlot] = useState<{ day: string; time: string } | null>(null);
   const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [creditCard, setCreditCard] = useState<CreditCard | null>(null);
+  const [loadingCard, setLoadingCard] = useState(false);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+    const fetchCard = async () => {
+      try {
+        setLoadingCard(true);
+        const clientRes = await fetch(`/api/client/user/${userId}`);
+        if (!clientRes.ok) return;
+        const client = await clientRes.json();
+        const cardRes = await fetch(`/api/credit-card/client/${client.id}`);
+        if (!cardRes.ok) return;
+        setCreditCard(await cardRes.json());
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoadingCard(false);
+      }
+    };
+    fetchCard();
+  }, []);
 
   useEffect(() => {
     if (!activityId) return;
@@ -133,7 +251,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     fetchAppointments();
   }, [activityId]);
 
-  function getAppointment(day: string, time: string) {
+  function getAppointment(day: string, time: string): AppointmentSlot | null {
     const appt = appointments.find((a) => {
       const date = new Date(a.initialDate);
       const apptDay = DAY_INDEX_MAP[date.getDay()];
@@ -144,7 +262,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     const count = appt.userAppointments?.length ?? 0;
     const waitingList = count >= 10;
     const available = waitingList ? 0 : 10 - count;
-    return { time, available, waitingList };
+    const dayOfWeek = new Date(appt.initialDate).getDay();
+    return { time, available, waitingList, price: appt.price ?? 0, dayOfWeek };
   }
 
   function handleSlotClick(day: string, time: string) {
@@ -157,10 +276,10 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     }
   }
 
-  function handleConfirm() {
-    if (!activeSlot || !reserveType) return;
-    // TODO: trigger real reservation flow
-    alert(`Reservando ${activeSlot.time} el ${activeSlot.day} — tipo: ${reserveType}`);
+  function handleConfirm(paymentMethod: PaymentMethod) {
+    if (!activeSlot || !reserveType || !paymentMethod) return;
+    // TODO: trigger real reservation + payment flow
+    alert(`Reservando ${activeSlot.time} el ${activeSlot.day}\nTipo: ${reserveType}\nPago: ${paymentMethod}`);
     setActiveSlot(null);
     setReserveType(null);
   }
@@ -212,6 +331,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                                 time={time}
                                 available={appt.available}
                                 waitingList={appt.waitingList}
+                                price={appt.price}
+                                dayOfWeek={appt.dayOfWeek}
                                 reserveType={reserveType}
                                 onTypeChange={setReserveType}
                                 onConfirm={handleConfirm}
@@ -219,6 +340,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                                   setActiveSlot(null);
                                   setReserveType(null);
                                 }}
+                                creditCard={creditCard}
+                                loadingCard={loadingCard}
                               />
                             )}
                           </div>
