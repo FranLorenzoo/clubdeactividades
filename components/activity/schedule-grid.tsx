@@ -16,6 +16,7 @@ const TIME_SLOTS = [
   "20:00",
 ];
 
+// JS getDay(): 0=Sun,1=Mon,...,6=Sat
 const DAY_INDEX_MAP: Record<number, string> = {
   1: "Lunes",
   2: "Martes",
@@ -27,6 +28,25 @@ const DAY_INDEX_MAP: Record<number, string> = {
 };
 
 type ReserveType = "mensual" | "unica" | null;
+
+function getWeekRange(offset: number): { start: Date; end: Date } {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const dayOfWeek = today.getDay(); // 0=Sun
+  const daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - daysSinceMonday + offset * 7);
+  const saturday = new Date(monday);
+  saturday.setDate(monday.getDate() + 5);
+  saturday.setHours(23, 59, 59, 999);
+  return { start: monday, end: saturday };
+}
+
+function formatWeekLabel(start: Date, end: Date): string {
+  const fmt = (d: Date) =>
+    d.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit" });
+  return `Semana del ${fmt(start)} al ${fmt(end)}`;
+}
 
 function remainingClassesThisMonth(dayOfWeek: number): number {
   const today = new Date();
@@ -53,6 +73,49 @@ interface CreditCard {
   cardHolder: string;
   expireDate: string;
 }
+
+// ─── Detail popup (admin / employee) ─────────────────────────────────────────
+
+interface DetailPopupProps {
+  time: string;
+  available: number;
+  waitingList: boolean;
+  price: number;
+  professorName: string;
+  onClose: () => void;
+}
+
+function DetailPopup({ time, available, waitingList, price, professorName, onClose }: DetailPopupProps) {
+  return (
+    <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-60 bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
+      <div className="flex justify-between items-center mb-3">
+        <p className="font-bold text-base">{time}hs</p>
+        <button onClick={onClose} className="text-zinc-500 hover:text-white text-sm leading-none">✕</button>
+      </div>
+
+      <div className="space-y-2 text-sm">
+        <div className="flex justify-between">
+          <span className="text-zinc-400">Profesor</span>
+          <span className="text-zinc-200 font-medium">{professorName || "—"}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-zinc-400">Cupos</span>
+          <span className={waitingList ? "text-orange-400 font-medium" : available === 0 ? "text-red-400 font-medium" : "text-green-400 font-medium"}>
+            {waitingList ? "Lista de espera" : available > 0 ? `${available} disponibles` : "Sin cupos"}
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-zinc-400">Precio</span>
+          <span className="text-zinc-200 font-medium">${price.toFixed(2)}</span>
+        </div>
+      </div>
+
+      <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-zinc-700" />
+    </div>
+  );
+}
+
+// ─── Reserve popup (client) ───────────────────────────────────────────────────
 
 interface ReservePopupProps {
   time: string;
@@ -116,35 +179,49 @@ function ReservePopup({
         <>
           <p className="text-xs text-zinc-400 mb-2">Método de pago</p>
 
-            <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-3 mb-3 text-xs">
-              {loadingCard ? (
-                <p className="text-zinc-400">Cargando tarjeta...</p>
-              ) : creditCard ? (
-                <>
-                  <p className="text-zinc-200 font-semibold">{creditCard.cardHolder}</p>
-                  <p className="text-zinc-400 mt-0.5">•••• •••• •••• {creditCard.cardNumber.slice(-4)}</p>
-                  <p className="text-zinc-500 mt-0.5">
-                    Vence{" "}
-                    {new Date(creditCard.expireDate).toLocaleDateString("es-AR", {
-                      month: "2-digit",
-                      year: "2-digit",
-                    })}
-                  </p>
-                </>
-              ) : (
-                <p className="text-red-400">No tenés tarjeta registrada</p>
-              )}
-            </div>
+          <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-3 mb-3 text-xs">
+            {loadingCard ? (
+              <p className="text-zinc-400">Cargando tarjeta...</p>
+            ) : creditCard ? (
+              <>
+                <p className="text-zinc-200 font-semibold">{creditCard.cardHolder}</p>
+                <p className="text-zinc-400 mt-0.5">•••• •••• •••• {creditCard.cardNumber.slice(-4)}</p>
+                <p className="text-zinc-500 mt-0.5">
+                  Vence{" "}
+                  {new Date(creditCard.expireDate).toLocaleDateString("es-AR", {
+                    month: "2-digit",
+                    year: "2-digit",
+                  })}
+                </p>
+              </>
+            ) : (
+              <p className="text-red-400">No tenés tarjeta registrada</p>
+            )}
+          </div>
 
-            <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-3 mb-4 text-xs">
-              <button className="text-zinc-400 mb-1" onClick={() => setPayment(0.5)}>
-                Seña del 50%
-              </button>
-              <button className="text-zinc-400 mb-1" onClick={() => setPayment(1)}>
-                Pago total
-              </button>
-              <p className="text-white font-bold text-lg">${(amount * (payment ?? 1)).toFixed(2)}</p>
-            </div>
+          <div className="flex gap-2 mb-4">
+            <button
+              className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
+                payment === 0.5
+                  ? "bg-green-600 border-green-600 text-white"
+                  : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700"
+              }`}
+              onClick={() => setPayment(0.5)}
+            >
+              Seña del 50%
+            </button>
+            <button
+              className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
+                payment === 1
+                  ? "bg-green-600 border-green-600 text-white"
+                  : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700"
+              }`}
+              onClick={() => setPayment(1)}
+            >
+              Pago total
+            </button>
+          </div>
+          <p className="pb-3 text-white font-bold text-lg">${(amount * (payment ?? 1)).toFixed(2)}</p>
         </>
       )}
 
@@ -164,12 +241,16 @@ function ReservePopup({
   );
 }
 
+// ─── Main component ───────────────────────────────────────────────────────────
+
 interface AppointmentSlot {
+  id: number;
   time: string;
   available: number;
   waitingList: boolean;
   price: number;
   dayOfWeek: number;
+  professorName: string;
 }
 
 interface ScheduleGridProps {
@@ -184,6 +265,15 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   const [loading, setLoading] = useState(true);
   const [creditCard, setCreditCard] = useState<CreditCard | null>(null);
   const [loadingCard, setLoadingCard] = useState(false);
+  const [weekOffset, setWeekOffset] = useState(0);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  const { start: weekStart, end: weekEnd } = getWeekRange(weekOffset);
+  const weekLabel = formatWeekLabel(weekStart, weekEnd);
+
+  useEffect(() => {
+    setUserRole(localStorage.getItem("userRole"));
+  }, []);
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -226,6 +316,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   function getAppointment(day: string, time: string): AppointmentSlot | null {
     const appt = appointments.find((a) => {
       const date = new Date(a.initialDate);
+      if (date < weekStart || date > weekEnd) return false;
       const apptDay = DAY_INDEX_MAP[date.getDay()];
       const apptTime = date.toTimeString().slice(0, 5);
       return apptDay === day && apptTime === time;
@@ -235,7 +326,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     const waitingList = count >= 10;
     const available = waitingList ? 0 : 10 - count;
     const dayOfWeek = new Date(appt.initialDate).getDay();
-    return { time, available, waitingList, price: appt.price ?? 0, dayOfWeek };
+    const professorName = appt.professor?.user?.name ?? "";
+    return { id: appt.id, time, available, waitingList, price: appt.price ?? 0, dayOfWeek, professorName };
   }
 
   function handleSlotClick(day: string, time: string) {
@@ -248,17 +340,30 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     }
   }
 
-  function handleConfirm() {
-    if (!activeSlot || !reserveType) return;
-    // TODO: trigger real reservation + payment flow
-    alert(`Reservando ${activeSlot.time} el ${activeSlot.day}\nTipo: ${reserveType}\}`);
-    setActiveSlot(null);
-    setReserveType(null);
-  }
+  const isStaff = userRole === "ADMIN" || userRole === "EMPLOYEE";
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-16">
-      <h2 className="text-2xl font-bold text-white mb-8">Turnos disponibles</h2>
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-2xl font-bold text-white">Turnos disponibles</h2>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => { setWeekOffset((o) => o - 1); setActiveSlot(null); setReserveType(null); }}
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-zinc-700 text-zinc-300 hover:bg-zinc-800 transition text-lg"
+            aria-label="Semana anterior"
+          >
+            ‹
+          </button>
+          <span className="text-sm text-zinc-400 min-w-[200px] text-center">{weekLabel}</span>
+          <button
+            onClick={() => { setWeekOffset((o) => o + 1); setActiveSlot(null); setReserveType(null); }}
+            className="w-8 h-8 flex items-center justify-center rounded-full border border-zinc-700 text-zinc-300 hover:bg-zinc-800 transition text-lg"
+            aria-label="Semana siguiente"
+          >
+            ›
+          </button>
+        </div>
+      </div>
 
       {loading ? (
         <p className="text-zinc-400">Cargando turnos...</p>
@@ -299,21 +404,29 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                               {time}
                             </button>
                             {isActive && (
-                              <ReservePopup
-                                time={time}
-                                available={appt.available}
-                                waitingList={appt.waitingList}
-                                price={appt.price}
-                                dayOfWeek={appt.dayOfWeek}
-                                reserveType={reserveType}
-                                onTypeChange={setReserveType}
-                                onClose={() => {
-                                  setActiveSlot(null);
-                                  setReserveType(null);
-                                }}
-                                creditCard={creditCard}
-                                loadingCard={loadingCard}
-                              />
+                              isStaff ? (
+                                <DetailPopup
+                                  time={time}
+                                  available={appt.available}
+                                  waitingList={appt.waitingList}
+                                  price={appt.price}
+                                  professorName={appt.professorName}
+                                  onClose={() => { setActiveSlot(null); setReserveType(null); }}
+                                />
+                              ) : (
+                                <ReservePopup
+                                  time={time}
+                                  available={appt.available}
+                                  waitingList={appt.waitingList}
+                                  price={appt.price}
+                                  dayOfWeek={appt.dayOfWeek}
+                                  reserveType={reserveType}
+                                  onTypeChange={setReserveType}
+                                  onClose={() => { setActiveSlot(null); setReserveType(null); }}
+                                  creditCard={creditCard}
+                                  loadingCard={loadingCard}
+                                />
+                              )
                             )}
                           </div>
                         )}
