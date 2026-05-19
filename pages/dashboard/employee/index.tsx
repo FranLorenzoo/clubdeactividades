@@ -4,7 +4,7 @@ export default function EmployeeHomePage() {
 
   return (
     <DashboardLayout role="EMPLOYEE" >
-      <h1 className="text-3xl font-bold">
+      <h1 className="text-white text-3xl font-bold">
         Panel empleado
       </h1>
     </DashboardLayout>

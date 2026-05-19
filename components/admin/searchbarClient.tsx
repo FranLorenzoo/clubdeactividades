@@ -23,6 +23,15 @@ export default function Searchbar() {
   const [email, setEmail] = useState("");
   const [dni, setDni] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  function resetForm() {
+      setName("");
+      setLastName("");
+      setEmail("");
+      setDni("");
+      setFechaNacimiento("");
+  }
 
   async function handleCreateClient(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -211,36 +220,64 @@ export default function Searchbar() {
       {
         open && (
 
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div
+            className="
+              fixed
+              inset-0
+              bg-black/50
+              flex
+              items-center
+              justify-center
+              z-50
+              p-4
+            "
+          >
 
-            <div className="bg-white w-full max-w-lg rounded-2xl p-8 shadow-xl">
+            <div
+              className="
+                bg-[#1B1E22]
+                w-full
+                max-w-lg
+                rounded-2xl
+                p-8
+                shadow-xl
+              "
+            >
 
               <div className="flex justify-between items-center mb-6">
 
-                <h2 className="text-2xl font-bold text-black">
+                <h2 className="text-2xl font-bold text-white">
                   Crear cliente
                 </h2>
 
                 <button
-                  onClick={() => setOpen(false)}
-                  className="text-zinc-500 hover:text-black text-xl"
+                  onClick={() => {
+                    setOpen(false);
+                    resetForm();
+                  }}
+                  className="
+                    text-zinc-500
+                    hover:text-white
+                    text-xl
+                  "
                 >
                   ✕
                 </button>
 
               </div>
 
-              <form onSubmit={handleCreateClient} className="space-y-4">
-
+              <form
+              onSubmit={handleCreateClient}
+              className="space-y-4">
                 <div className="flex gap-2">
-
                   <input
                     type="text"
                     name="name"
                     placeholder="Nombre"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="border rounded-xl p-4 w-1/2"
+                    className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 w-1/2 outline-none transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                   />
 
                   <input
@@ -249,10 +286,10 @@ export default function Searchbar() {
                     placeholder="Apellido"
                     value={lastName}
                     onChange={(event) => setLastName(event.target.value)}
-                    className="border rounded-xl p-4 w-1/2"
+                    className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 w-1/2 outline-none transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                   />
-
-                </div>
+              </div>
 
                 <input
                   type="email"
@@ -260,7 +297,8 @@ export default function Searchbar() {
                   placeholder="Email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  className="w-full border rounded-xl p-4"
+                  className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                 />
 
                 <input
@@ -269,7 +307,8 @@ export default function Searchbar() {
                   placeholder="DNI"
                   value={dni}
                   onChange={(event) => setDni(event.target.value)}
-                  className="w-full border rounded-xl p-4"
+                  className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                 />
 
                 <input
@@ -279,21 +318,34 @@ export default function Searchbar() {
                   placeholder="Fecha de nacimiento (YYYY-MM-DD)"
                   value={fechaNacimiento}
                   onChange={(event) => setFechaNacimiento(event.target.value)}
-                  className="w-full border rounded-xl p-4"
+                  className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                 />
 
                 <button
                   type="submit"
                   disabled={!name || !lastName || !email || !dni || !fechaNacimiento}
-                  className="w-full bg-[#316788] text-white py-4 rounded-xl font-semibold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="
+                    w-full
+                    bg-[#F59134]
+                    text-white
+                    py-4
+                    rounded-xl
+                    font-semibold
+                    hover:opacity-90
+                    transition
+                    disabled:opacity-50
+                    disabled:cursor-not-allowed
+                  "
                 >
-                  Crear cliente
+                  {
+                      loading
+                        ? "Creando cliente..."
+                        : "Crear cliente"
+                    }
                 </button>
-
               </form>
-
             </div>
-
           </div>
         )
       }

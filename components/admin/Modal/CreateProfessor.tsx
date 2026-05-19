@@ -11,14 +11,6 @@ type Props = {
 };
 const maxDate = getMaxDate();
 
-type EmployeeFormValues = {
-  nombre: string;
-  email: string;
-  role: string;
-  password: string;
-  confirmarPassword: string;
-};
-
 export default function CreateProfessor({onClose}: Props) {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -113,7 +105,7 @@ export default function CreateProfessor({onClose}: Props) {
 
               <div
                 className="
-                  bg-white
+                  bg-[#1B1E22]
                   w-full
                   max-w-lg
                   rounded-2xl
@@ -124,7 +116,7 @@ export default function CreateProfessor({onClose}: Props) {
 
                 <div className="flex justify-between items-center mb-6">
 
-                  <h2 className="text-2xl font-bold text-black">
+                  <h2 className="text-2xl font-bold text-white">
                     Crear profesor
                   </h2>
 
@@ -135,7 +127,7 @@ export default function CreateProfessor({onClose}: Props) {
                     }}
                     className="
                       text-zinc-500
-                      hover:text-black
+                      hover:text-white
                       text-xl
                     "
                   >
@@ -154,12 +146,8 @@ export default function CreateProfessor({onClose}: Props) {
                       placeholder="Nombre"
                       value={name}
                       onChange={(event) => setName(event.target.value)}
-                      className="
-                        border
-                        rounded-xl
-                        p-4
-                        w-1/2
-                      "
+                      className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 w-1/2 outline-none transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                     />
 
                     <input
@@ -168,12 +156,8 @@ export default function CreateProfessor({onClose}: Props) {
                       placeholder="Apellido"
                       value={lastName}
                       onChange={(event) => setLastName(event.target.value)}
-                      className="
-                        border
-                        rounded-xl
-                        p-4
-                        w-1/2
-                      "
+                      className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 w-1/2 outline-none transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                     />
                 </div>
 
@@ -183,12 +167,8 @@ export default function CreateProfessor({onClose}: Props) {
                     placeholder="Email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    className="
-                      w-full
-                      border
-                      rounded-xl
-                      p-4
-                    "
+                    className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                   />
 
                   <input
@@ -197,18 +177,16 @@ export default function CreateProfessor({onClose}: Props) {
                     placeholder="DNI"
                     value={dni}
                     onChange={(event) => setDni(event.target.value)}
-                    className="
-                      w-full
-                      border
-                      rounded-xl
-                      p-4
-                    "
+                    className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                   />
+                
 
                   <select
                   name="activityId"
                   value={activityId}
-                  className="w-full border rounded-xl p-4"
+                  className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                   onChange={(e) =>
                     setActivityId(e.target.value)
                   }
@@ -234,12 +212,8 @@ export default function CreateProfessor({onClose}: Props) {
                     placeholder="Fecha de nacimiento (YYYY-MM-DD)"
                     value={fechaNacimiento}
                     onChange={(event) => setFechaNacimiento(event.target.value)}
-                    className="
-                      w-full
-                      border
-                      rounded-xl
-                      p-4
-                    "
+                    className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
+                     focus:ring-[#F59134]/20"
                   />
 
                   <button
@@ -247,7 +221,7 @@ export default function CreateProfessor({onClose}: Props) {
                     disabled={!name || !lastName || !email || !dni || !fechaNacimiento || !activityId}
                     className="
                       w-full
-                      bg-[#316788]
+                      bg-[#F59134]
                       text-white
                       py-4
                       rounded-xl

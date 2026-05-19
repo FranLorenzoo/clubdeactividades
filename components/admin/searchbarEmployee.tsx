@@ -61,30 +61,12 @@ export default function Searchbar() {
             type="text"
             placeholder="Buscar por DNI"
             name="searchValue"
-            className="
-              flex-1
-              border
-              border-gray-300
-              rounded-xl
-              px-4
-              py-2
-              outline-none
-              focus:ring-2
-              focus:ring-[#316788]
-            "
+            className="flex-1 border border-[#F59134] rounded-xl bg-[#18181b] text-[#fdfdfd] px-4 py-2 outline-none focus:ring-2 focus:ring-[#F59134]"
           />
 
           <button
             type="submit"
-            className="
-              bg-[#316788]
-              text-white
-              px-5
-              py-2
-              rounded-xl
-              hover:opacity-90
-              transition
-            "
+            className="bg-[#F59134] text-[#09090b] px-5 py-2 rounded-xl hover:opacity-90 hover:scale-[1.02] cursor-pointer transition"
           >
             Buscar
           </button>
@@ -93,13 +75,13 @@ export default function Searchbar() {
 
         <button
           onClick={() => setOpenEmployee(true)}
-          className="gap-3 bg-[#316788] text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition">
+          className="gap-3 bg-[#F59134] text-[#09090b] px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 hover:scale-[1.02] cursor-pointer transition">
           Crear empleado
         </button>
 
         <button
           onClick={() => setOpenProfessor(true)}
-          className="gap-3 bg-[#316788] text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition">
+          className="gap-3 bg-[#F59134] text-[#09090b] px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 hover:scale-[1.02] cursor-pointer transition">
           Crear profesor
         </button>
       </div>
