@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import crypto from "crypto";
 
 const generateRandomPassword = () => {
@@ -40,6 +40,23 @@ export default function Searchbar() {
   const [email, setEmail] = useState("");
   const [dni, setDni] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [clientes, setClientes]= useState<any[]>([]); 
+
+  useEffect (()=>{
+    async function fetchCliente(){
+            try {
+                const res = await fetch("/api/client"); 
+                if (res.ok){
+                    const data = await res.json(); 
+                    setClientes(data); 
+                }
+            }catch(err){
+                console.error("Error cargando clientes", err); 
+            }
+        }
+        fetchCliente(); 
+    }, []) 
+
 
   async function handleCreateClient(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -337,6 +354,40 @@ export default function Searchbar() {
           </div>
         )
       }
+
+      <div className="mt-6 max-w-xl mx-auto">
+  <h3 className="text-lg font-bold mb-3">Lista de clientes</h3>
+  <ul className="space-y-2">
+    {clientes.map((cli) => (
+      <li
+        key={cli.id}
+        className="border rounded-lg px-4 py-3 bg-white shadow-sm"
+      >
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-sm font-semibold text-gray-600">Nombre</p>
+            <p>{cli.user?.name} {cli.user?.lastName}</p>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-600">DNI</p>
+            <p>{cli.user?.dni}</p>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-600">Email</p>
+            <p>{cli.user?.email}</p>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-600">Estado</p>
+            <p className={cli.suspended ? "text-red-600 font-bold" : "text-green-600 font-bold"}>
+              {cli.suspended ? "Suspendido" : "Activo"}
+            </p>
+          </div>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
 
     </>
   );

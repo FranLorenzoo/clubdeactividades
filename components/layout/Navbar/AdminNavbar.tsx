@@ -49,7 +49,21 @@ export default function AdminNavbar() {
           >
             Ver Clientes
           </Link>
+          
+          <Link
+            href="/dashboard/admin/searchProfessor"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+          >
+            Ver Profesores 
+          </Link>
+          
 
+          <Link
+            href="/dashboard/admin/searchAppoin"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+          >
+            Ver Turnos
+          </Link>
         </nav>
       </div>
 
