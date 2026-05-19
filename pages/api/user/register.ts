@@ -5,31 +5,63 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Método no permitido" });
+    return res.status(405).json({
+      message: "Método no permitido"
+    });
   }
 
   try {
-      const { email, password, name, lastName, age, dni, roleId } = req.body;
 
-      if (!email || !password || !name || !lastName || !age || !dni || !roleId) {
-        return res.status(400).json({ message: "Missing required fields" });
+    const {
+      email,
+      password,
+      name,
+      lastName,
+      age,
+      dni,
+      roleId
+    } = req.body;
+
+    // verificar email repetido
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email
       }
+    });
 
-      const user = await prisma.user.create({
-        data: {
-          email,
-          password,
-          name,
-          lastName,
-          age: Number(age),
-          dni,
-          role: { connect: { id: Number(roleId) } },
-        },
+    if (existingUser) {
+      return res.status(400).json({
+        message: "El correo ya está registrado"
       });
+    }
 
-    res.status(201).json(user);
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password,
+        name,
+        lastName,
+        age: Number(age),
+        dni,
+        role: {
+          connect: {
+            id: Number(roleId)
+          }
+        }
+      }
+    });
+
+    return res.status(201).json(user);
+
   } catch (error) {
-    res.status(500).json({ message: "Error al registrar usuario" });
+
+    console.error(error);
+
+    return res.status(500).json({
+      message: "Error al registrar usuario"
+    });
+
   }
 }
