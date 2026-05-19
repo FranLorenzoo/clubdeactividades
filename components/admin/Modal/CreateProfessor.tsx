@@ -1,6 +1,7 @@
 import {useState } from "react";
 import crypto from "crypto";
 import { useEffect } from "react";
+import { calculateAge, getMaxDate, generateRandomPassword } from "@/lib/utils/helpers";
 
 type Activity = {
   id: number;
@@ -9,32 +10,7 @@ type Activity = {
 type Props = {
   onClose: () => void;
 };
-
-const generateRandomPassword = () => {
-  return crypto.randomBytes(5).toString("hex");
-};
-const today = new Date();
-today.setFullYear(today.getFullYear() - 18);
-const maxDate = today.toISOString().split("T")[0];
-
-function calculateAge(fechaNacimiento: string) {
-  const today = new Date();
-  const birth = new Date(fechaNacimiento);
-  let age = today.getFullYear() - birth.getFullYear();
-  const monthDifference =
-    today.getMonth() -
-    birth.getMonth();
-  if (
-    monthDifference < 0 ||
-    (
-      monthDifference === 0 &&
-      today.getDate() < birth.getDate()
-    )
-  ) {
-    age--;
-  }
-  return age;
-}
+const maxDate = getMaxDate();
 
 type EmployeeFormValues = {
   nombre: string;
