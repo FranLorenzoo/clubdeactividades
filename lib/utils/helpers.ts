@@ -1,4 +1,5 @@
 import { RRule } from 'rrule';
+import crypto from "crypto";
 
 type AppointmentForm = {
   day: string;
@@ -61,4 +62,38 @@ function addOneHour(startDate: Date) {
   const endDate = new Date(startDate);
   endDate.setHours(startDate.getHours() + 1);
   return endDate;
+}
+
+export const generateRandomPassword = () => {
+  return crypto.randomBytes(8).toString("hex");
+};
+
+export function getMaxDate() {
+  const today = new Date();
+  today.setFullYear(
+    today.getFullYear() - 18
+  );
+  return today.toISOString().split("T")[0];
+}
+
+
+export function calculateAge(fechaNacimiento: string) {
+  const today = new Date();
+  const birth = new Date(fechaNacimiento);
+  let age = today.getFullYear() - birth.getFullYear();
+
+  const monthDifference =
+    today.getMonth() -
+    birth.getMonth();
+
+  if (
+    monthDifference < 0 ||
+    (
+      monthDifference === 0 &&
+      today.getDate() < birth.getDate()
+    )
+  ) {
+    age--;
+  }
+  return age;
 }

@@ -3,7 +3,6 @@ import type { AppProps } from "next/app";
 import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 
-<<<<<<< HEAD
 export default function MyApp({ Component, pageProps }: AppProps) {
   type User = { id: string; email: string; rol: string };
   const [user, setUser] = useState<User | null>(null);
@@ -26,26 +25,4 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </main>
     </div>
   );
-=======
-export default function App({ Component, pageProps }: AppProps) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  return <Component {...pageProps} />;
->>>>>>> aa6fa6b (pages y components recuperados (#13))
-=======
-  return (<>
-    <head>
-       <title>Club360</title>
-    </head>
-    <Component {...pageProps} />;
-<<<<<<< HEAD
-  </>);
-
->>>>>>> 9d2b6dd (acomodando imagenes)
-=======
-  </>)
->>>>>>> 64394bb (se me escapó un ;)
-=======
-  return <Component {...pageProps} />
->>>>>>> 8cacacf (creando boton para crear cliente)
 }

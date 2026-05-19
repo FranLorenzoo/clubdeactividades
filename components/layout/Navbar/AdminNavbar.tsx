@@ -11,7 +11,7 @@ export default function AdminNavbar() {
   }
 
   return (
-    <aside className="h-screen w-64 shrink-0 border-r border-[#4a5568] bg-[#09090B] flex flex-col justify-between">
+    <aside className="h-screen w-64 shrink-0 border-r border-zinc-800 bg-[#1B1E22] flex flex-col justify-between">
 
       <div>
 
@@ -21,7 +21,7 @@ export default function AdminNavbar() {
             className="text-4xl font-extrabold text-[#fdfdfd]"
           >
             Club
-            <span className="text-green-500">
+            <span className="text-green-600">
               360
             </span>
           </Link>
@@ -31,14 +31,14 @@ export default function AdminNavbar() {
 
           <Link
             href="/dashboard/admin/createAppointment"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
           >
             Crear Turno
           </Link>
 
           <Link
             href="/dashboard/admin/searchEmployee"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
           >
             Ver empleados
           </Link>
