@@ -13,6 +13,8 @@ export default function CreateEmployee({onClose}: Props) {
   const [dni, setDni] = useState("");
   const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   function resetForm() {
       setName("");
@@ -49,17 +51,15 @@ export default function CreateEmployee({onClose}: Props) {
           const data = await response.json();
     
           if (response.ok) {
-            alert("Empleado creado");
-    
-            onClose();
+            setSuccessMessage("Empleado creado exitosamente");
+            setErrorMessage("")
             resetForm();
+            setLoading(false);
             return;
           }
-    
-          alert(
-            data.message ||
-            "Error al crear empleado"
-          );
+
+          setErrorMessage(data.message)
+          setSuccessMessage("")
     
         } catch (error) {
     
@@ -171,7 +171,20 @@ export default function CreateEmployee({onClose}: Props) {
                   className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
                      focus:ring-[#F59134]/20"
                 />
-
+                {
+                  errorMessage && (
+                    <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg">
+                      {errorMessage}
+                    </div>
+                  )
+                }
+                {
+                  successMessage && (
+                   <div className="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-lg">
+                      {successMessage}
+                    </div>
+                  )
+                }
                 <button
                   type="submit"
                   disabled={!name || !lastName || !email || !dni || !fechaNacimiento}
