@@ -27,7 +27,6 @@ const DAY_INDEX_MAP: Record<number, string> = {
 };
 
 type ReserveType = "mensual" | "unica" | null;
-type PaymentMethod = "efectivo" | "tarjeta" | null;
 
 function remainingClassesThisMonth(dayOfWeek: number): number {
   const today = new Date();
@@ -63,7 +62,6 @@ interface ReservePopupProps {
   dayOfWeek: number;
   reserveType: ReserveType;
   onTypeChange: (t: ReserveType) => void;
-  onConfirm: (paymentMethod: PaymentMethod) => void;
   onClose: () => void;
   creditCard: CreditCard | null;
   loadingCard: boolean;
@@ -71,14 +69,13 @@ interface ReservePopupProps {
 
 function ReservePopup({
   time, available, waitingList, price, dayOfWeek,
-  reserveType, onTypeChange, onConfirm, onClose,
+  reserveType, onTypeChange, onClose,
   creditCard, loadingCard,
 }: ReservePopupProps) {
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(null);
-
+  const [payment, setPayment] = useState<number | null>(1);
   const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
-  const canConfirm = reserveType !== null && paymentMethod !== null;
-  const cardBlocked = paymentMethod === "tarjeta" && !creditCard;
+  const canConfirm = reserveType !== null;
+  const cardBlocked = !creditCard;
 
   return (
     <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-60 bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
@@ -94,7 +91,7 @@ function ReservePopup({
       <p className="text-xs text-zinc-400 mb-2">Tipo de reserva</p>
       <div className="flex gap-2 mb-4">
         <button
-          onClick={() => { onTypeChange(reserveType === "mensual" ? null : "mensual"); setPaymentMethod(null); }}
+          onClick={() => { onTypeChange(reserveType === "mensual" ? null : "mensual"); }}
           className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
             reserveType === "mensual"
               ? "bg-green-600 border-green-600 text-white"
@@ -104,7 +101,7 @@ function ReservePopup({
           Mensual
         </button>
         <button
-          onClick={() => { onTypeChange(reserveType === "unica" ? null : "unica"); setPaymentMethod(null); }}
+          onClick={() => { onTypeChange(reserveType === "unica" ? null : "unica"); }}
           className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
             reserveType === "unica"
               ? "bg-green-600 border-green-600 text-white"
@@ -115,33 +112,10 @@ function ReservePopup({
         </button>
       </div>
 
-      {reserveType && (
+      {reserveType === "unica" && (
         <>
           <p className="text-xs text-zinc-400 mb-2">Método de pago</p>
-          <div className="flex gap-2 mb-3">
-            <button
-              onClick={() => setPaymentMethod(paymentMethod === "efectivo" ? null : "efectivo")}
-              className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
-                paymentMethod === "efectivo"
-                  ? "bg-green-600 border-green-600 text-white"
-                  : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700"
-              }`}
-            >
-              Efectivo
-            </button>
-            <button
-              onClick={() => setPaymentMethod(paymentMethod === "tarjeta" ? null : "tarjeta")}
-              className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
-                paymentMethod === "tarjeta"
-                  ? "bg-green-600 border-green-600 text-white"
-                  : "bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700"
-              }`}
-            >
-              Tarjeta
-            </button>
-          </div>
 
-          {paymentMethod === "tarjeta" && (
             <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-3 mb-3 text-xs">
               {loadingCard ? (
                 <p className="text-zinc-400">Cargando tarjeta...</p>
@@ -161,23 +135,21 @@ function ReservePopup({
                 <p className="text-red-400">No tenés tarjeta registrada</p>
               )}
             </div>
-          )}
 
-          {paymentMethod && (
             <div className="bg-zinc-800 border border-zinc-700 rounded-xl p-3 mb-4 text-xs">
-              <p className="text-zinc-400 mb-1">
-                {reserveType === "unica"
-                  ? "Seña del 50%"
-                  : `${remainingClassesThisMonth(dayOfWeek)} clases restantes · −15%`}
-              </p>
-              <p className="text-white font-bold text-lg">${amount.toFixed(2)}</p>
+              <button className="text-zinc-400 mb-1" onClick={() => setPayment(0.5)}>
+                Seña del 50%
+              </button>
+              <button className="text-zinc-400 mb-1" onClick={() => setPayment(1)}>
+                Pago total
+              </button>
+              <p className="text-white font-bold text-lg">${(amount * (payment ?? 1)).toFixed(2)}</p>
             </div>
-          )}
         </>
       )}
 
       <button
-        onClick={() => onConfirm(paymentMethod)}
+        onClick={() => void 0}
         disabled={!canConfirm || cardBlocked}
         className={`w-full text-xs font-semibold py-2 rounded-xl transition ${
           canConfirm && !cardBlocked
@@ -276,10 +248,10 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     }
   }
 
-  function handleConfirm(paymentMethod: PaymentMethod) {
-    if (!activeSlot || !reserveType || !paymentMethod) return;
+  function handleConfirm() {
+    if (!activeSlot || !reserveType) return;
     // TODO: trigger real reservation + payment flow
-    alert(`Reservando ${activeSlot.time} el ${activeSlot.day}\nTipo: ${reserveType}\nPago: ${paymentMethod}`);
+    alert(`Reservando ${activeSlot.time} el ${activeSlot.day}\nTipo: ${reserveType}\}`);
     setActiveSlot(null);
     setReserveType(null);
   }
@@ -335,7 +307,6 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                                 dayOfWeek={appt.dayOfWeek}
                                 reserveType={reserveType}
                                 onTypeChange={setReserveType}
-                                onConfirm={handleConfirm}
                                 onClose={() => {
                                   setActiveSlot(null);
                                   setReserveType(null);
