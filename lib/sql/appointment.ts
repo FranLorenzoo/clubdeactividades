@@ -4,6 +4,9 @@ import { Prisma } from "@/lib/generated/prisma/client";
 export async function getAllAppointments() {
   return prisma.appointment.findMany({
     include: { activity: true, professor: true, userAppointments: true },
+    orderBy: {
+      initialDate: "asc"
+    }
   });
 }
 
@@ -23,7 +26,7 @@ export async function updateAppointment(id: number, data: Prisma.appointmentUpda
 }
 
 export async function deleteAppointment(id: number) {
-  return prisma.appointment.delete({ where: { id } });
+  return prisma.appointment.delete({ where: { id:Number(id) } });
 }
 
 export async function getAppointmentsByActivityId(activityId: number) {
@@ -39,3 +42,4 @@ export async function getAppointmentsByProfessorId(professorId: number) {
     include: { activity: true, professor: true, userAppointments: true },
   });
 }
+
