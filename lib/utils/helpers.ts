@@ -65,7 +65,7 @@ function addOneHour(startDate: Date) {
 }
 
 export const generateRandomPassword = () => {
-  return crypto.randomBytes(5).toString("hex");
+  return crypto.randomBytes(8).toString("hex");
 };
 
 export function getMaxDate() {

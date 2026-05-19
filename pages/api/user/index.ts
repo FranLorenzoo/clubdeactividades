@@ -1,8 +1,6 @@
 import { getAllUsers, createUser } from "@/lib/sql/user";
 import { parseFields } from "@/lib/validators/api";
-import { connect } from "http2";
 import { NextApiRequest, NextApiResponse } from "next";
-import { act, Activity } from "react";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -84,6 +82,11 @@ async function createUserHandler(body: Record<string, unknown>, res: NextApiResp
     const user = await createUser(reqBody);
     res.status(201).json(user);
   } catch (error) {
+
+    if (typeof error === "object" && error !== null && "code" in error && error.code === "P2002"){
+      return res.status(409).json({message: "El mail ya existe, ingrese otro"})
+    }
+
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }

@@ -1,15 +1,13 @@
-import { useState, useEffect } from "react";
-import { getMaxDate, generateRandomPassword, calculateAge} from "@/lib/utils/helpers";
-type Activity = {
-  id: number;
-  name: string;
-}
+import {useState } from "react";
+import { useEffect } from "react";
+import { calculateAge, getMaxDate, generateRandomPassword } from "@/lib/utils/helpers";
+
 type Props = {
   onClose: () => void;
 };
 const maxDate = getMaxDate();
 
-export default function CreateEmployee({onClose}: Props) {
+export default function CreateClient({onClose}: Props) {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,8 +16,6 @@ export default function CreateEmployee({onClose}: Props) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [activityId, setActivityId] = useState("");
-  const [activities, setActivities] = useState<Activity[]>([]);
 
   function resetForm() {
       setName("");
@@ -27,14 +23,11 @@ export default function CreateEmployee({onClose}: Props) {
       setEmail("");
       setDni("");
       setFechaNacimiento("");
-      setActivityId("")
   }
-
   useEffect(() => {
       fetch('/api/activity')
       .then(res => res.json())
       .then(actData => {
-        setActivities(actData)
       })
       .catch(error => {
         console.error(error)
@@ -42,53 +35,55 @@ export default function CreateEmployee({onClose}: Props) {
       });
       }, [])
 
-  async function handleCreateEmployee (e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    setLoading(true);
-    try {
-          const response = await fetch(
-            "/api/user",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                name,
-                lastName,
-                email,
-                dni,
-                age: calculateAge(fechaNacimiento),
-                roleId: 3,
-                password: generateRandomPassword(),
-              }),
-            }
-          );
-    
-          const data = await response.json();
-    
-          if (response.ok) {
-            setSuccessMessage("Profesor creado exitosamente");
-            setErrorMessage("")
-            resetForm();
-            setLoading(false);
-            return;
+  async function handleCreateClient(e: React.FormEvent<HTMLFormElement>) {
+      e.preventDefault();
+  
+      setLoading(true);
+      try {
+        const response = await fetch(
+          "/api/user",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name,
+              lastName,
+              email,
+              dni,
+              age: calculateAge(fechaNacimiento),
+              roleId: "1",
+              password: generateRandomPassword(),
+            }),
           }
-    
-          setErrorMessage(data.message)
-          setSuccessMessage("")
-    
-        } catch (error) {
-    
-          console.error(error);
-    
-          alert("Error de conexión");
+        );
+  
+        const data = await response.json();
+  
+        if (response.ok) {
+  
+          setSuccessMessage("Cliente creado exitosamente");
+          setErrorMessage("")
+          resetForm();
+          setLoading(false);
+          return;
         }
-    setLoading(false);
-  }
-  return (
-    <div
+  
+        setErrorMessage(data.message);
+        setSuccessMessage("");
+  
+      } catch (error) {
+  
+        console.error(error);
+  
+        alert("Error de conexión");
+      }
+      setLoading(false);
+  
+    }
+    return (
+      <div
             className="
               fixed
               inset-0
@@ -115,13 +110,13 @@ export default function CreateEmployee({onClose}: Props) {
               <div className="flex justify-between items-center mb-6">
 
                 <h2 className="text-2xl font-bold text-white">
-                  Crear empleado
+                  Crear cliente
                 </h2>
 
                 <button
                   onClick={() => {
-                    resetForm();
                     onClose();
+                    resetForm();
                   }}
                   className="
                     text-zinc-500
@@ -135,7 +130,7 @@ export default function CreateEmployee({onClose}: Props) {
               </div>
 
               <form
-              onSubmit={handleCreateEmployee}
+              onSubmit={handleCreateClient}
               className="space-y-4">
                 <div className="flex gap-2">
                   <input
@@ -178,28 +173,6 @@ export default function CreateEmployee({onClose}: Props) {
                   className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
                      focus:ring-[#F59134]/20"
                 />
-                <select
-                  name="activityId"
-                  value={activityId}
-                  className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
-                     focus:ring-[#F59134]/20"
-                  onChange={(e) =>
-                    setActivityId(e.target.value)
-                  }
-                >
-                  <option value="" disabled>
-                    Seleccione una actividad
-                  </option>
-
-                  {activities.map((activity) => (
-                    <option
-                      key={activity.id}
-                      value={activity.id}
-                    >
-                      {activity.name}
-                    </option>
-                  ))}
-                </select>
 
                 <input
                   type="date"
@@ -211,8 +184,6 @@ export default function CreateEmployee({onClose}: Props) {
                   className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
                      focus:ring-[#F59134]/20"
                 />
-
-                
                 {
                   errorMessage && (
                     <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg">
@@ -229,7 +200,7 @@ export default function CreateEmployee({onClose}: Props) {
                 }
                 <button
                   type="submit"
-                  disabled={!name || !lastName || !email || !dni || !fechaNacimiento || !activityId}
+                  disabled={!name || !lastName || !email || !dni || !fechaNacimiento}
                   className="
                     w-full
                     bg-[#F59134]
@@ -245,12 +216,12 @@ export default function CreateEmployee({onClose}: Props) {
                 >
                   {
                       loading
-                        ? "Creando empleado..."
-                        : "Crear empleado"
-                    }
+                        ? "Creando cliente..."
+                        : "Crear cliente"
+                  }
                 </button>
               </form>
             </div>
           </div>
-  );
-};
+    );
+}
