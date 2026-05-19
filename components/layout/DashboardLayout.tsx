@@ -13,14 +13,14 @@ type DashboardLayoutProps = {
 export default function DashboardLayout({ role, children }: DashboardLayoutProps) {
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-zinc-950">
 
       {role === "CLIENT" && <ClientNavbar />}
       {role === "ADMIN" && <AdminNavbar />}
       {role === "EMPLOYEE" && <EmployeeNavbar />}
       {role === "PROFESSOR" && <ProfessorNavbar />}
 
-      <main className="flex-1 bg-[#e0e0e0] p-6">
+      <main className="flex-1 bg-zinc-950 text-white p-8">
         {children}
       </main>
     </div>
