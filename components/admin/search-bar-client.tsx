@@ -33,7 +33,7 @@ function calculateAge(fechaNacimiento: string
   return age;
 }
 
-export default function Searchbar() {
+export default function SearchBar() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");

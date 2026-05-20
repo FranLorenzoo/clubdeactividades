@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
-import AdminNavbar from "./Navbar/AdminNavbar";
-import ClientNavbar from "./Navbar/ClientNavbar";
-import EmployeeNavbar from "./Navbar/EmployeeNavbar";
-import ProfessorNavbar from "./Navbar/ProfessorNavbar";
+import AdminNavbar from "./Navbar/admin-navbar";
+import ClientNavbar from "./Navbar/client-navbar";
+import EmployeeNavbar from "./Navbar/employee-navbar";
+import ProfessorNavbar from "./Navbar/professor-navbar";
 
 type Role = "ADMIN" | "CLIENT" | "EMPLOYEE" | "PROFESSOR";
 type DashboardLayoutProps = {

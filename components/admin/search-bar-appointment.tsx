@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function AgendaSemanal({ deporte }: { deporte: string }) {
+export default function WeeklyCalendar({ deporte }: { deporte: string }) {
   const [turnos, setTurnos] = useState<any[]>([]);
 
   useEffect(() => {
@@ -13,13 +13,13 @@ export default function AgendaSemanal({ deporte }: { deporte: string }) {
 
         const grupos: Record<string, any> = {};
         filtrados.forEach((t: any) => {
-          const fecha = new Date(t.initialDate);
-          const diaSemana = fecha.toLocaleDateString("es-AR", { weekday: "long" });
-          const hora = fecha.getHours();
-          const clave = `${diaSemana}-${hora}`;
+          const date = new Date(t.initialDate);
+          const dayWeek = date.toLocaleDateString("es-AR", { weekday: "long" });
+          const hour = date.getHours();
+          const key = `${dayWeek}-${hour}`;
 
-          if (!grupos[clave]) {
-            grupos[clave] = t;
+          if (!grupos[key]) {
+            grupos[key] = t;
           }
         });
 
@@ -27,6 +27,8 @@ export default function AgendaSemanal({ deporte }: { deporte: string }) {
       });
   }, [deporte]);
 
+
+  /*
   const eliminarTurno = async (id: number) => {
     try {
       await fetch(`/api/appointment/${id}`, { method: "DELETE" });
@@ -38,23 +40,25 @@ export default function AgendaSemanal({ deporte }: { deporte: string }) {
     }
   };
 
-  const turnosPorDia: Record<string, any[]> = {};
+  */
+
+  const appointmentsPerDay: Record<string, any[]> = {};
   turnos.forEach((t: any) => {
     const fecha = new Date(t.initialDate);
     const diaSemana = fecha.toLocaleDateString("es-AR", { weekday: "long" });
-    if (!turnosPorDia[diaSemana]) turnosPorDia[diaSemana] = [];
-    turnosPorDia[diaSemana].push(t);
+    if (!appointmentsPerDay[diaSemana]) appointmentsPerDay[diaSemana] = [];
+    appointmentsPerDay[diaSemana].push(t);
   });
 
-  Object.keys(turnosPorDia).forEach(dia => {
-    turnosPorDia[dia].sort(
-      (a, b) =>
-        new Date(a.initialDate).getTime() - new Date(b.initialDate).getTime()
+  Object.keys(appointmentsPerDay).forEach(dia => {
+    appointmentsPerDay[dia].sort(
+      (turnoUno, turnoDos) =>
+        new Date(turnoUno.initialDate).getTime() - new Date(turnoDos.initialDate).getTime()
     );
   });
 
 
-  const diasOrden = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+  const daysOrder = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 
   return (
     <div className="bg-black min-h-screen p-6">
@@ -62,16 +66,16 @@ export default function AgendaSemanal({ deporte }: { deporte: string }) {
         Agenda semanal de {deporte}
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        {diasOrden.map(dia => (
+        {daysOrder.map(day => (
           <div
-            key={dia}
+            key={day}
             className="bg-gray-900 text-white border border-green-500 rounded-lg p-3"
           >
             <h3 className="text-lg font-bold mb-2 capitalize text-green-300">
-              {dia}
+              {day}
             </h3>
-            {turnosPorDia[dia]?.length ? (
-              turnosPorDia[dia].map((t: any) => {
+            {appointmentsPerDay[day]?.length ? (
+              appointmentsPerDay[day].map((t: any) => {
                 const fecha = new Date(t.initialDate);
                 const hora = fecha.toLocaleTimeString("es-AR", {
                   hour: "2-digit",
@@ -88,12 +92,6 @@ export default function AgendaSemanal({ deporte }: { deporte: string }) {
                     <p className="text-gray-400">Cupos disponibles: {t.currentSlots}</p>
                     <p className="text-gray-400">Cupo total: {t.slotsAvailable}</p>
                     <p className="text-gray-400">Precio: ${t.price}</p>
-                    <button
-                      onClick={() => eliminarTurno(t.id)}
-                      className="bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700 mt-1 self-end"
-                    >
-                      Eliminar
-                    </button>
                   </div>
                 );
               })

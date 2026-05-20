@@ -1,4 +1,4 @@
-import Searchbar from "@/components/admin/searchAppoin";
+import Searchbar from "@/components/admin/search-appoin";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function SearchAppointment() {

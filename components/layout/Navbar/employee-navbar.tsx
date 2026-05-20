@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-export default function AdminNavbar() {
+export default function EmployeeNavbar() {
 
   const router = useRouter();
 
@@ -17,7 +17,7 @@ export default function AdminNavbar() {
 
         <div className="px-7 py-8 border-b border-[#4a5568]">
           <Link
-            href="/dashboard/admin"
+            href="/dashboard/employee"
             className="text-4xl font-extrabold text-[#fdfdfd]"
           >
             Club
@@ -30,40 +30,12 @@ export default function AdminNavbar() {
         <nav className="flex flex-col gap-4 px-6 py-8">
 
           <Link
-            href="/dashboard/admin/createAppointment"
+            href="/dashboard/employee/search-client"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
-          >
-            Crear Turno
-          </Link>
-
-          <Link
-            href="/dashboard/admin/searchEmployee"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
-          >
-            Ver empleados
-          </Link>
-
-          <Link
-            href="/dashboard/admin/searchclient"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
           >
             Ver Clientes
           </Link>
-          
-          <Link
-            href="/dashboard/admin/searchProfessor"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
-          >
-            Ver Profesores 
-          </Link>
-          
 
-          <Link
-            href="/dashboard/admin/searchAppoin"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
-          >
-            Ver Turnos
-          </Link>
         </nav>
       </div>
 

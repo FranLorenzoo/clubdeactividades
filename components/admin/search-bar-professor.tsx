@@ -1,7 +1,7 @@
 import {FormEvent, useEffect, useState } from "react";
-import CreateProfessor from "./Modal/CreateProfessor";
+import CreateProfessor from "./Modal/create-professor";
 
-export default function searchbarProfessor(){
+export default function SearchBarProfessor(){
     const [profesor, setProfessor]= useState<any[]>([]); 
     const [openProfessor, setOpenProfessor] = useState(false);
 

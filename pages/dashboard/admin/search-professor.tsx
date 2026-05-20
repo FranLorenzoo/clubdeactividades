@@ -1,4 +1,4 @@
-import Searchbar from "@/components/admin/searchbarProfessor"; 
+import Searchbar from "@/components/admin/search-bar-professor"; 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function searchProfessor() {

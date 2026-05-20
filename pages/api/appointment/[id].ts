@@ -91,8 +91,8 @@ async function deleteAppointmentByIdHandler(id: number, res: NextApiResponse) {
 
     const idsToDelete = sameActivityAppointments
       .filter(a => {
-        const d = new Date(a.initialDate);
-        return d.getDay() === baseDay && d.getHours() === baseHour;
+        const initial = new Date(a.initialDate);
+        return initial.getDay() === baseDay && initial.getHours() === baseHour;
       })
       .map(a => a.id);
 

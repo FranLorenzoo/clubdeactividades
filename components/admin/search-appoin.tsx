@@ -1,7 +1,7 @@
 import { useState } from "react";
-import AgendaSemanal from "./searchbarAppointment"; 
+import WeeklyCalendar from "./search-bar-appointment"; 
 
-export default function VistaInicial() {
+export default function InitialView() {
   const [selectedSport, setSelectedSport] = useState<string | null>(null);
 
   const deportes = [
@@ -46,7 +46,7 @@ export default function VistaInicial() {
           <h2 className="text-2xl font-bold mb-6 text-green-400">
             Turnos de {selectedSport}
           </h2>
-          <AgendaSemanal deporte={selectedSport} />
+          <WeeklyCalendar deporte={selectedSport} />
         </>
       )}
     </div>
