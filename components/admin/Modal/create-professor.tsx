@@ -113,7 +113,7 @@ export default function CreateEmployee({onClose}: Props) {
               <div className="flex justify-between items-center mb-6">
 
                 <h2 className="text-2xl font-bold text-white">
-                  Crear empleado
+                  Crear profesor
                 </h2>
 
                 <button
@@ -244,8 +244,8 @@ export default function CreateEmployee({onClose}: Props) {
                 >
                   {
                       loading
-                        ? "Creando empleado..."
-                        : "Crear empleado"
+                        ? "Creando profesor..."
+                        : "Crear profesor"
                     }
                 </button>
               </form>
