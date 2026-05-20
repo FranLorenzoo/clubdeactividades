@@ -45,6 +45,7 @@ export default function SearchBar() {
                 if (res.ok){
                     const data = await res.json(); 
                     setClientes(data); 
+                    console.log(data)
                 }
             }catch(err){
                 console.error("Error cargando clientes", err); 

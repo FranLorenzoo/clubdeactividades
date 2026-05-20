@@ -92,7 +92,7 @@ async function createUserHandler(body: Record<string, unknown>, res: NextApiResp
   } catch (error) {
 
     if (typeof error === "object" && error !== null && "code" in error && error.code === "P2002"){
-      return res.status(409).json({message: "El mail ya existe, ingrese otro"})
+      return res.status(409).json({message: "El mail ya existe"})
     }
 
     console.error(error);
