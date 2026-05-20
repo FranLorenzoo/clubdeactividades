@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/nav-bar";
 
 import ActivityHero from "@/components/activity/activity-hero";
 import ActivityInfo from "@/components/activity/activities-info";

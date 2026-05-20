@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/nav-bar";
 
 import DiaHeader from "@/components/activity/day-header";
 import TurnosList from "@/components/activity/appointment-list";
