@@ -26,6 +26,18 @@ export default function CreateClient({onClose}: Props) {
   }
   async function handleCreateClient(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
+      const emailInput =
+      document.querySelector(
+      'input[placeholder="Email"]'
+    ) as HTMLInputElement;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      emailInput.setCustomValidity(
+        "Ingresá un correo válido"
+      );
+      emailInput.reportValidity();
+      return;
+    }
 
       setLoading(true);
       try {
@@ -137,11 +149,12 @@ export default function CreateClient({onClose}: Props) {
               </div>
 
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   placeholder="Email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={(event) =>{ event.target.setCustomValidity("");
+                    setEmail(event.target.value)}}
                   className={inputCls}
                 />
 
