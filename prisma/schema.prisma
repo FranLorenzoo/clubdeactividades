@@ -148,8 +148,8 @@ model payment {
 
   paymentMethod      String
 
-  employeeId         Int
-  employee           employee         @relation(fields: [employeeId], references: [id])
+  employeeId         Int?
+  employee           employee?        @relation(fields: [employeeId], references: [id])
 }
 
 model QR {
