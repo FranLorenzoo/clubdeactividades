@@ -27,6 +27,18 @@ export default function CreateEmployee({onClose}: Props) {
   async function handleCreateEmployee (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    const emailInput =
+      document.querySelector(
+      'input[placeholder="Email"]'
+    ) as HTMLInputElement;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      emailInput.setCustomValidity(
+        "Ingresá un correo válido"
+      );
+      emailInput.reportValidity();
+      return;
+    }
     setLoading(true);
     try {
           const response = await fetch(
@@ -69,6 +81,7 @@ export default function CreateEmployee({onClose}: Props) {
         }
     setLoading(false);
   }
+
   const inputClsMedium =
     "w-1/2 bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
   const inputCls =
@@ -137,11 +150,12 @@ export default function CreateEmployee({onClose}: Props) {
               </div>
 
                 <input
-                  type="email"
+                  type="text"
                   name="email"
                   placeholder="Email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChange={(event) =>{ event.target.setCustomValidity("");
+                    setEmail(event.target.value)}}
                   className={inputCls}
                 />
 
