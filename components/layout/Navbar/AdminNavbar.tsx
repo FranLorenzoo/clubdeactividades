@@ -21,7 +21,7 @@ export default function AdminNavbar() {
             className="text-4xl font-extrabold text-[#fdfdfd]"
           >
             Club
-            <span className="text-green-500">
+            <span className="text-green-600">
               360
             </span>
           </Link>

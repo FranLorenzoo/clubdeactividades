@@ -6,7 +6,7 @@ export default function ProfessorNavbar() {
   const router = useRouter();
 
   function handleLogout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
     router.push("/");
   }
 
@@ -33,7 +33,7 @@ export default function ProfessorNavbar() {
             href="/dashboard/professor/algo..."
             className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
-            Un Boton
+            Mis actividades
           </Link>
 
           <Link
