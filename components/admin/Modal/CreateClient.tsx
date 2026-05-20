@@ -82,6 +82,10 @@ export default function CreateClient({onClose}: Props) {
       setLoading(false);
   
     }
+    const inputClsMedium =
+    "w-1/2 bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
+    const inputCls =
+    "w-full bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
     return (
       <div
             className="
@@ -97,14 +101,7 @@ export default function CreateClient({onClose}: Props) {
           >
 
             <div
-              className="
-                bg-[#1B1E22]
-                w-full
-                max-w-lg
-                rounded-2xl
-                p-8
-                shadow-xl
-              "
+              className="bg-zinc-900 border border-zinc-800 w-full max-w-lg rounded-2xl p-8 shadow-xl"
             >
 
               <div className="flex justify-between items-center mb-6">
@@ -139,8 +136,7 @@ export default function CreateClient({onClose}: Props) {
                     placeholder="Nombre"
                     value={name}
                     onChange={(event) => setName(event.target.value)}
-                    className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 w-1/2 outline-none transition-all duration-300 focus:border-[#F59134] focus:ring-2
-                     focus:ring-[#F59134]/20"
+                    className={inputClsMedium}
                   />
 
                   <input
@@ -149,8 +145,7 @@ export default function CreateClient({onClose}: Props) {
                     placeholder="Apellido"
                     value={lastName}
                     onChange={(event) => setLastName(event.target.value)}
-                    className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 w-1/2 outline-none transition-all duration-300 focus:border-[#F59134] focus:ring-2
-                     focus:ring-[#F59134]/20"
+                    className={inputClsMedium}
                   />
               </div>
 
@@ -160,8 +155,7 @@ export default function CreateClient({onClose}: Props) {
                   placeholder="Email"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
-                     focus:ring-[#F59134]/20"
+                  className={inputCls}
                 />
 
                 <input
@@ -170,8 +164,7 @@ export default function CreateClient({onClose}: Props) {
                   placeholder="DNI"
                   value={dni}
                   onChange={(event) => setDni(event.target.value)}
-                  className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
-                     focus:ring-[#F59134]/20"
+                  className={inputCls}
                 />
 
                 <input
@@ -181,8 +174,7 @@ export default function CreateClient({onClose}: Props) {
                   placeholder="Fecha de nacimiento (YYYY-MM-DD)"
                   value={fechaNacimiento}
                   onChange={(event) => setFechaNacimiento(event.target.value)}
-                  className="bg-zinc-800 border border-zinc-700 text-white rounded-xl p-4 outline-none w-full transition-all duration-300 focus:border-[#F59134] focus:ring-2
-                     focus:ring-[#F59134]/20"
+                  className={inputCls}
                 />
                 {
                   errorMessage && (
@@ -203,7 +195,7 @@ export default function CreateClient({onClose}: Props) {
                   disabled={!name || !lastName || !email || !dni || !fechaNacimiento}
                   className="
                     w-full
-                    bg-[#F59134]
+                    bg-green-600
                     text-white
                     py-4
                     rounded-xl

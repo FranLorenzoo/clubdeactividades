@@ -6,7 +6,7 @@ export default function ClientNavbar() {
   const router = useRouter();
 
   function handleLogout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
     router.push("/");
   }
 
