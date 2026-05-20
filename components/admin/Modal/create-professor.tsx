@@ -60,8 +60,9 @@ export default function CreateEmployee({onClose}: Props) {
                 email,
                 dni,
                 age: calculateAge(fechaNacimiento),
-                roleId: 3,
+                roleId: 4,
                 password: generateRandomPassword(),
+                activityId: Number(activityId)
               }),
             }
           );
@@ -112,7 +113,7 @@ export default function CreateEmployee({onClose}: Props) {
               <div className="flex justify-between items-center mb-6">
 
                 <h2 className="text-2xl font-bold text-white">
-                  Crear empleado
+                  Crear Profesor
                 </h2>
 
                 <button
@@ -236,8 +237,8 @@ export default function CreateEmployee({onClose}: Props) {
                 >
                   {
                       loading
-                        ? "Creando empleado..."
-                        : "Crear empleado"
+                        ? "Creando profesor..."
+                        : "Crear profesor"
                     }
                 </button>
               </form>

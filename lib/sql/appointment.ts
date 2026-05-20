@@ -3,7 +3,12 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllAppointments() {
   return prisma.appointment.findMany({
-    include: { activity: true, professor: true, userAppointments: true },
+    include: { activity: true, 
+      professor: {
+        include: {
+          user: true, 
+        }, 
+      },userAppointments: true},
     orderBy: {
       initialDate: "asc"
     }

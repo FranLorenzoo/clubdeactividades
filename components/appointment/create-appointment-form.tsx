@@ -96,14 +96,18 @@ export default function CreateAppointmentForm() {
     setProfessors([]);
   }
 
+  const inputCls ="w-full bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
+
   return (
-    <div className="min-h-screen bg-[#f4f4f5] py-10 px-4">
+    <div className="min-h-screen py-10 px-4">
 
       <form
         className="
           max-w-4xl
           mx-auto
-          bg-[#09090b]
+          bg-zinc-900
+          border
+          border-zinc-800
           rounded-3xl
           shadow-2xl
           shadow-black/20
@@ -119,7 +123,7 @@ export default function CreateAppointmentForm() {
             Crear turno
           </h1>
 
-          <p className="text-[#8bb8d3] mt-3 text-lg">
+          <p className="text-white mt-3 text-lg">
             Complete los datos del turno.
           </p>
 
@@ -137,19 +141,7 @@ export default function CreateAppointmentForm() {
               name="day"
               required
               onChange={e => setDay(e.target.value)}
-              className="
-                w-full
-                border
-                border-[#F59134]
-                rounded-2xl
-                px-5
-                py-3
-                bg-[#18181b]
-                text-[#fdfdfd]
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#F59134]
-              "
+              className={inputCls}
             >
 
               <option value="" disabled selected>
@@ -177,19 +169,7 @@ export default function CreateAppointmentForm() {
               name="startTime"
               required
               onChange={e => setStartTime(e.target.value)}
-              className="
-                w-full
-                border
-                border-[#F59134]
-                rounded-2xl
-                px-5
-                py-3
-                bg-[#18181b]
-                text-[#fdfdfd]
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#F59134]
-              "
+              className={inputCls}
             >
 
               <option value="" disabled selected>
@@ -230,22 +210,7 @@ export default function CreateAppointmentForm() {
               max={99}
               required
               onChange={e => setMaxSlots(e.target.value)}
-              className="
-                w-full
-                border
-                border-[#F59134]
-                rounded-2xl
-                px-5
-                py-3
-                bg-[#18181b]
-                text-[#fdfdfd]
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#F59134]
-                [appearance:textfield]
-                [&::-webkit-outer-spin-button]:appearance-none
-                [&::-webkit-inner-spin-button]:appearance-none
-              "
+              className={inputCls}
             />
 
           </div>
@@ -263,22 +228,7 @@ export default function CreateAppointmentForm() {
               step="0.01"
               required
               onChange={e => setPrice(e.target.value)}
-              className="
-                w-full
-                border
-                border-[#F59134]
-                rounded-2xl
-                px-5
-                py-3
-                bg-[#18181b]
-                text-[#fdfdfd]
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#F59134]
-                [appearance:textfield]
-                [&::-webkit-outer-spin-button]:appearance-none
-                [&::-webkit-inner-spin-button]:appearance-none
-              "
+              className={inputCls}
               placeholder="$0.00"
             />
 
@@ -298,19 +248,7 @@ export default function CreateAppointmentForm() {
               name="activityId"
               value={activityId}
               required
-              className="
-                w-full
-                border
-                border-[#F59134]
-                rounded-2xl
-                px-5
-                py-3
-                bg-[#18181b]
-                text-[#fdfdfd]
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#F59134]
-              "
+              className={inputCls}
               onChange={(e) => {
                 setActivityId(e.target.value);
                 setProfessorId("");
@@ -344,19 +282,7 @@ export default function CreateAppointmentForm() {
               name="professorId"
               value={professorId}
               required
-              className="
-                w-full
-                border
-                border-[#F59134]
-                rounded-2xl
-                px-5
-                py-3
-                bg-[#18181b]
-                text-[#fdfdfd]
-                focus:outline-none
-                focus:ring-2
-                focus:ring-[#F59134]
-              "
+              className={inputCls}
               onChange={(e) => {
                 setProfessorId(e.target.value);
               }}
@@ -397,7 +323,7 @@ export default function CreateAppointmentForm() {
 
               ${
                 isFormValid
-                  ? "bg-[#F59134] text-[#09090b] hover:opacity-90 hover:scale-[1.02] cursor-pointer"
+                  ? "bg-green-600 text-[#09090b] hover:opacity-90 hover:scale-[1.02] cursor-pointer"
                   : "bg-[#6b7280] text-[#d1d5db] cursor-not-allowed opacity-60"
               }
             `}

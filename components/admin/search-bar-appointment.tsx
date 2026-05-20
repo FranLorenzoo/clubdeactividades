@@ -89,9 +89,9 @@ export default function WeeklyCalendar({ deporte }: { deporte: string }) {
                     className="border border-green-500 rounded-md p-2 mb-2 text-xs flex flex-col bg-gray-800"
                   >
                     <p className="text-gray-300">{hora} hs</p>
-                    <p className="text-gray-400">Cupos disponibles: {t.currentSlots}</p>
+                    <p className="text-gray-400">Cupos disp: {t.currentSlots}</p>
                     <p className="text-gray-400">Cupo total: {t.slotsAvailable}</p>
-                    <p className="text-gray-400">Precio: ${t.price}</p>
+                    <p className="text-gray-400">Profe:{t.professor?.user?.name}</p>
                   </div>
                 );
               })
