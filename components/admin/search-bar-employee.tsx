@@ -20,6 +20,21 @@ export default function Searchbar() {
     fetchEmployees();
   }, []);
 
+
+  const deleteEmployee = async (idUno: number, idDos: number) => {
+    try {
+      const res= await fetch(`/api/employee/${idUno}`, { method: "DELETE" });
+      await fetch(`/api/user/${idDos}`, { method: "DELETE" });
+      if (res.ok){
+        setEmployees((prev) => prev.filter((emp) => emp.id !== idUno));
+        alert("El empleado fue eliminado con éxito");
+      }
+    } catch (error) {
+      console.error("Error eliminando empleado:", error);
+      alert("Error inesperado al eliminar empleado");
+    }
+  };
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -85,14 +100,14 @@ export default function Searchbar() {
               py-2
               outline-none
               focus:ring-2
-              focus:ring-[#316788]
+              focus:ring-green-600
             "
           />
 
           <button
             type="submit"
             className="
-              bg-[#316788]
+              bg-green-600
               text-white
               px-5
               py-2
@@ -108,7 +123,7 @@ export default function Searchbar() {
 
         <button
           onClick={() => setOpenEmployee(true)}
-          className="gap-3 bg-[#316788] text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition">
+          className="gap-3 bg-green-600 text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition">
           Crear empleado
         </button>
 
@@ -139,7 +154,15 @@ export default function Searchbar() {
             <p className="text-sm font-semibold text-gray-600">DNI</p>
             <p className="text-gray-700 text-sm font-semibold">{emp.user?.dni}</p>
           </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-600">Email</p>
+            <p className="text-gray-700 text-sm font-semibold">{emp.user?.email}</p>
+          </div>
         </div>
+        <button onClick={() => deleteEmployee(emp.id, emp.user?.id)} 
+          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
+          Eliminar</button>
+
       </li>
     ))}
   </ul>

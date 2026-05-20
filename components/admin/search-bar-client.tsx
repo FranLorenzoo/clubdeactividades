@@ -12,6 +12,9 @@ today.setFullYear(
 );
 const maxDate = today.toISOString().split("T")[0];
 
+
+
+
 function calculateAge(fechaNacimiento: string
 ) {
   const today = new Date();
@@ -34,6 +37,8 @@ function calculateAge(fechaNacimiento: string
   return age;
 }
 
+
+
 export default function SearchBar() {
   const [open, setOpen] = useState(false);
   const [clientes, setClientes]= useState<any[]>([]); 
@@ -53,6 +58,22 @@ export default function SearchBar() {
         }
         fetchCliente(); 
     }, []) 
+
+
+    const deleteClient = async (idUno: number, idDos: number) => {
+    try {
+      const res= await fetch(`/api/client/${idUno}`, { method: "DELETE" });
+      await fetch(`/api/user/${idDos}`, { method: "DELETE" });
+      if (res.ok){
+        setClientes((prev) => prev.filter((cli) => cli.id !== idUno));
+        alert("El cliente fue eliminado con éxito");
+      }
+      } catch (error) {
+      console.error("Error eliminando cliente:", error);
+      alert("Error inesperado al eliminar cliente");
+    }
+  };
+
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -120,14 +141,14 @@ export default function SearchBar() {
               py-2
               outline-none
               focus:ring-2
-              focus:ring-[#316788]
+              focus:ring-green-600
             "
           />
 
           <button
             type="submit"
             className="
-              bg-[#316788]
+              bg-green-600
               text-white
               px-5
               py-2
@@ -143,7 +164,7 @@ export default function SearchBar() {
 
         <button
           onClick={() => setOpen(true)}
-          className="gap-3 bg-[#316788] text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition"
+          className="gap-3 bg-green-600 text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition"
         >
           Crear cliente
         </button>
@@ -186,6 +207,10 @@ export default function SearchBar() {
             </p>
           </div>
         </div>
+        <button onClick={() => deleteClient(cli.id, cli.user?.id)}
+          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
+          Eliminar
+        </button>
       </li>
     ))}
   </ul>

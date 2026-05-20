@@ -21,6 +21,21 @@ export default function SearchBarProfessor(){
         fetchProfessor(); 
     }, []) 
 
+
+    const deleteProfessor = async (idUno: number, idDos: number) => {
+    try {
+      const res= await fetch(`/api/professor/${idUno}`, { method: "DELETE" });
+      await fetch(`/api/user/${idDos}`, { method: "DELETE" });
+      if (res.ok){
+        setProfessor((prev) => prev.filter((pro) => pro.id !== idUno));
+        alert("El profesor fue eliminado con éxito");
+      }
+    } catch (error) {
+      console.error("Error eliminando profesor:", error);
+      alert("Error inesperado al eliminar profesor");
+    }
+  };
+
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -86,14 +101,14 @@ export default function SearchBarProfessor(){
                   py-2
                   outline-none
                   focus:ring-2
-                  focus:ring-[#316788]
+                  focus:ring-green-600
                 "
               />
     
               <button
                 type="submit"
                 className="
-                  bg-[#316788]
+                  bg-green-600
                   text-white
                   px-5
                   py-2
@@ -109,7 +124,7 @@ export default function SearchBarProfessor(){
     
             <button
               onClick={() => setOpenProfessor(true)}
-              className="gap-3 bg-[#316788] text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition">
+              className="gap-3 bg-green-600 text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition">
               Crear profesor
             </button>
           </div>
@@ -144,7 +159,14 @@ export default function SearchBarProfessor(){
             <p className="text-sm font-semibold text-gray-600">Actividad</p>
             <p className="text-gray-700 text-sm font-semibold">{pro.activity?.name ?? "Sin actividad"}</p>
           </div>
+          <div>
+            <p className="text-sm font-semibold text-gray-600">Email</p>
+            <p className="text-gray-700 text-sm font-semibold">{pro.user?.email}</p>
+          </div>
         </div>
+        <button onClick={() => deleteProfessor(pro.id, pro.user?.id)} 
+          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
+          Eliminar</button>
       </li>
     ))}
   </ul>
