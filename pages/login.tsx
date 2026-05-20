@@ -31,6 +31,7 @@ export default function Login() {
     const logInSuccess = await logInAttempt.json();
 
     localStorage.setItem("userId", logInSuccess.id);
+    localStorage.setItem("userRole", logInSuccess.role);
     switch(logInSuccess.role) {
       case "ADMIN":
         router.push("/dashboard/admin");

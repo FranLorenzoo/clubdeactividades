@@ -1,4 +1,4 @@
-import { getAllUsers, createUser } from "@/lib/sql/user";
+import { getAllUsers, createUser, getUserByDNI } from "@/lib/sql/user";
 import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
 import { act, Activity } from "react";
@@ -45,6 +45,13 @@ async function createUserHandler(body: Record<string, unknown>, res: NextApiResp
     }  
 
     if(!ok) return res.status(400).json({ message: "Bad request " + error });
+
+    const existingDni = await getUserByDNI(values.dni as string);
+    if(existingDni){
+      return res.status(409).json({
+        message: "El DNI ya existe",
+      });
+    }
 
     const reqBody: any = {
       email: values.email as string,

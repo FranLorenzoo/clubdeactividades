@@ -6,22 +6,22 @@ export default function ClientNavbar() {
   const router = useRouter();
 
   function handleLogout() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
     router.push("/");
   }
 
   return (
-    <aside className="h-screen w-64 shrink-0 border-r border-[#4a5568] bg-[#373F4B] flex flex-col justify-between">
+    <aside className="sticky top-0 h-screen w-64 shrink-0 border-r border-zinc-800 bg-zinc-900 flex flex-col justify-between">
 
       <div>
 
-        <div className="px-7 py-8 border-b border-[#4a5568]">
+        <div className="px-7 py-8 border-b border-zinc-800">
           <Link
-            href="/dashboard/admin"
+            href="/"
             className="text-4xl font-extrabold text-[#fdfdfd]"
           >
             Club
-            <span className="text-[#F59134]">
+            <span className="text-green-500">
               360
             </span>
           </Link>
@@ -31,9 +31,16 @@ export default function ClientNavbar() {
 
           <Link
             href="/dashboard/client/algo..."
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
             Un Boton
+          </Link>
+
+          <Link
+            href="/dashboard/profile"
+            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+          >
+            Mi Perfil
           </Link>
 
         </nav>
@@ -43,7 +50,7 @@ export default function ClientNavbar() {
 
         <button
           onClick={handleLogout}
-          className="w-full bg-[#F59134] hover:opacity-90 text-white py-4 rounded-2xl font-semibold transition"
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-2xl font-semibold transition"
         >
           Cerrar sesión
         </button>
