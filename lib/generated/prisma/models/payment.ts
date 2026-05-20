@@ -203,7 +203,7 @@ export type PaymentGroupByOutputType = {
   paymentDate: Date
   amount: number
   paymentMethod: string
-  employeeId: number
+  employeeId: number | null
   _count: PaymentCountAggregateOutputType | null
   _avg: PaymentAvgAggregateOutputType | null
   _sum: PaymentSumAggregateOutputType | null
@@ -235,9 +235,9 @@ export type paymentWhereInput = {
   paymentDate?: Prisma.DateTimeFilter<"payment"> | Date | string
   amount?: Prisma.FloatFilter<"payment"> | number
   paymentMethod?: Prisma.StringFilter<"payment"> | string
-  employeeId?: Prisma.IntFilter<"payment"> | number
+  employeeId?: Prisma.IntNullableFilter<"payment"> | number | null
   userAppointment?: Prisma.XOR<Prisma.UserAppointmentScalarRelationFilter, Prisma.userAppointmentWhereInput>
-  employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.employeeWhereInput>
+  employee?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.employeeWhereInput> | null
 }
 
 export type paymentOrderByWithRelationInput = {
@@ -246,7 +246,7 @@ export type paymentOrderByWithRelationInput = {
   paymentDate?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   userAppointment?: Prisma.userAppointmentOrderByWithRelationInput
   employee?: Prisma.employeeOrderByWithRelationInput
 }
@@ -260,9 +260,9 @@ export type paymentWhereUniqueInput = Prisma.AtLeast<{
   paymentDate?: Prisma.DateTimeFilter<"payment"> | Date | string
   amount?: Prisma.FloatFilter<"payment"> | number
   paymentMethod?: Prisma.StringFilter<"payment"> | string
-  employeeId?: Prisma.IntFilter<"payment"> | number
+  employeeId?: Prisma.IntNullableFilter<"payment"> | number | null
   userAppointment?: Prisma.XOR<Prisma.UserAppointmentScalarRelationFilter, Prisma.userAppointmentWhereInput>
-  employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.employeeWhereInput>
+  employee?: Prisma.XOR<Prisma.EmployeeNullableScalarRelationFilter, Prisma.employeeWhereInput> | null
 }, "id">
 
 export type paymentOrderByWithAggregationInput = {
@@ -271,7 +271,7 @@ export type paymentOrderByWithAggregationInput = {
   paymentDate?: Prisma.SortOrder
   amount?: Prisma.SortOrder
   paymentMethod?: Prisma.SortOrder
-  employeeId?: Prisma.SortOrder
+  employeeId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.paymentCountOrderByAggregateInput
   _avg?: Prisma.paymentAvgOrderByAggregateInput
   _max?: Prisma.paymentMaxOrderByAggregateInput
@@ -288,7 +288,7 @@ export type paymentScalarWhereWithAggregatesInput = {
   paymentDate?: Prisma.DateTimeWithAggregatesFilter<"payment"> | Date | string
   amount?: Prisma.FloatWithAggregatesFilter<"payment"> | number
   paymentMethod?: Prisma.StringWithAggregatesFilter<"payment"> | string
-  employeeId?: Prisma.IntWithAggregatesFilter<"payment"> | number
+  employeeId?: Prisma.IntNullableWithAggregatesFilter<"payment"> | number | null
 }
 
 export type paymentCreateInput = {
@@ -296,7 +296,7 @@ export type paymentCreateInput = {
   amount: number
   paymentMethod: string
   userAppointment: Prisma.userAppointmentCreateNestedOneWithoutPaymentsInput
-  employee: Prisma.employeeCreateNestedOneWithoutPaymentsInput
+  employee?: Prisma.employeeCreateNestedOneWithoutPaymentsInput
 }
 
 export type paymentUncheckedCreateInput = {
@@ -305,7 +305,7 @@ export type paymentUncheckedCreateInput = {
   paymentDate: Date | string
   amount: number
   paymentMethod: string
-  employeeId: number
+  employeeId?: number | null
 }
 
 export type paymentUpdateInput = {
@@ -313,7 +313,7 @@ export type paymentUpdateInput = {
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
   userAppointment?: Prisma.userAppointmentUpdateOneRequiredWithoutPaymentsNestedInput
-  employee?: Prisma.employeeUpdateOneRequiredWithoutPaymentsNestedInput
+  employee?: Prisma.employeeUpdateOneWithoutPaymentsNestedInput
 }
 
 export type paymentUncheckedUpdateInput = {
@@ -322,7 +322,7 @@ export type paymentUncheckedUpdateInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.IntFieldUpdateOperationsInput | number
+  employeeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type paymentCreateManyInput = {
@@ -331,7 +331,7 @@ export type paymentCreateManyInput = {
   paymentDate: Date | string
   amount: number
   paymentMethod: string
-  employeeId: number
+  employeeId?: number | null
 }
 
 export type paymentUpdateManyMutationInput = {
@@ -346,7 +346,7 @@ export type paymentUncheckedUpdateManyInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.IntFieldUpdateOperationsInput | number
+  employeeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type PaymentListRelationFilter = {
@@ -484,6 +484,14 @@ export type paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput = {
   deleteMany?: Prisma.paymentScalarWhereInput | Prisma.paymentScalarWhereInput[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type paymentCreateWithoutEmployeeInput = {
   paymentDate: Date | string
   amount: number
@@ -534,14 +542,14 @@ export type paymentScalarWhereInput = {
   paymentDate?: Prisma.DateTimeFilter<"payment"> | Date | string
   amount?: Prisma.FloatFilter<"payment"> | number
   paymentMethod?: Prisma.StringFilter<"payment"> | string
-  employeeId?: Prisma.IntFilter<"payment"> | number
+  employeeId?: Prisma.IntNullableFilter<"payment"> | number | null
 }
 
 export type paymentCreateWithoutUserAppointmentInput = {
   paymentDate: Date | string
   amount: number
   paymentMethod: string
-  employee: Prisma.employeeCreateNestedOneWithoutPaymentsInput
+  employee?: Prisma.employeeCreateNestedOneWithoutPaymentsInput
 }
 
 export type paymentUncheckedCreateWithoutUserAppointmentInput = {
@@ -549,7 +557,7 @@ export type paymentUncheckedCreateWithoutUserAppointmentInput = {
   paymentDate: Date | string
   amount: number
   paymentMethod: string
-  employeeId: number
+  employeeId?: number | null
 }
 
 export type paymentCreateOrConnectWithoutUserAppointmentInput = {
@@ -614,14 +622,14 @@ export type paymentCreateManyUserAppointmentInput = {
   paymentDate: Date | string
   amount: number
   paymentMethod: string
-  employeeId: number
+  employeeId?: number | null
 }
 
 export type paymentUpdateWithoutUserAppointmentInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  employee?: Prisma.employeeUpdateOneRequiredWithoutPaymentsNestedInput
+  employee?: Prisma.employeeUpdateOneWithoutPaymentsNestedInput
 }
 
 export type paymentUncheckedUpdateWithoutUserAppointmentInput = {
@@ -629,7 +637,7 @@ export type paymentUncheckedUpdateWithoutUserAppointmentInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.IntFieldUpdateOperationsInput | number
+  employeeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type paymentUncheckedUpdateManyWithoutUserAppointmentInput = {
@@ -637,7 +645,7 @@ export type paymentUncheckedUpdateManyWithoutUserAppointmentInput = {
   paymentDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   amount?: Prisma.FloatFieldUpdateOperationsInput | number
   paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
-  employeeId?: Prisma.IntFieldUpdateOperationsInput | number
+  employeeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -650,7 +658,7 @@ export type paymentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   paymentMethod?: boolean
   employeeId?: boolean
   userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.employeeDefaultArgs<ExtArgs>
+  employee?: boolean | Prisma.payment$employeeArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type paymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -661,7 +669,7 @@ export type paymentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   paymentMethod?: boolean
   employeeId?: boolean
   userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.employeeDefaultArgs<ExtArgs>
+  employee?: boolean | Prisma.payment$employeeArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type paymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -672,7 +680,7 @@ export type paymentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   paymentMethod?: boolean
   employeeId?: boolean
   userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.employeeDefaultArgs<ExtArgs>
+  employee?: boolean | Prisma.payment$employeeArgs<ExtArgs>
 }, ExtArgs["result"]["payment"]>
 
 export type paymentSelectScalar = {
@@ -687,22 +695,22 @@ export type paymentSelectScalar = {
 export type paymentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userAppointmentId" | "paymentDate" | "amount" | "paymentMethod" | "employeeId", ExtArgs["result"]["payment"]>
 export type paymentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.employeeDefaultArgs<ExtArgs>
+  employee?: boolean | Prisma.payment$employeeArgs<ExtArgs>
 }
 export type paymentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.employeeDefaultArgs<ExtArgs>
+  employee?: boolean | Prisma.payment$employeeArgs<ExtArgs>
 }
 export type paymentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userAppointment?: boolean | Prisma.userAppointmentDefaultArgs<ExtArgs>
-  employee?: boolean | Prisma.employeeDefaultArgs<ExtArgs>
+  employee?: boolean | Prisma.payment$employeeArgs<ExtArgs>
 }
 
 export type $paymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "payment"
   objects: {
     userAppointment: Prisma.$userAppointmentPayload<ExtArgs>
-    employee: Prisma.$employeePayload<ExtArgs>
+    employee: Prisma.$employeePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -710,7 +718,7 @@ export type $paymentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     paymentDate: Date
     amount: number
     paymentMethod: string
-    employeeId: number
+    employeeId: number | null
   }, ExtArgs["result"]["payment"]>
   composites: {}
 }
@@ -1106,7 +1114,7 @@ readonly fields: paymentFieldRefs;
 export interface Prisma__paymentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   userAppointment<T extends Prisma.userAppointmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.userAppointmentDefaultArgs<ExtArgs>>): Prisma.Prisma__userAppointmentClient<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  employee<T extends Prisma.employeeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.employeeDefaultArgs<ExtArgs>>): Prisma.Prisma__employeeClient<runtime.Types.Result.GetResult<Prisma.$employeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  employee<T extends Prisma.payment$employeeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.payment$employeeArgs<ExtArgs>>): Prisma.Prisma__employeeClient<runtime.Types.Result.GetResult<Prisma.$employeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1540,6 +1548,25 @@ export type paymentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many payments to delete.
    */
   limit?: number
+}
+
+/**
+ * payment.employee
+ */
+export type payment$employeeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the employee
+   */
+  select?: Prisma.employeeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the employee
+   */
+  omit?: Prisma.employeeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.employeeInclude<ExtArgs> | null
+  where?: Prisma.employeeWhereInput
 }
 
 /**

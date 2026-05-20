@@ -1,4 +1,4 @@
-import { getUserAppointmentsByAppointmentId } from "@/lib/sql/userAppointment";
+import { getUserAppointmentsByAppointmentId } from "@/lib/sql/user-appointment";
 import { parseId } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
 
