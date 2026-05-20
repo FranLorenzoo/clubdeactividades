@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { deleteAppointment, getAppointmentById, updateAppointment } from "@/lib/sql/appointment";
 import { parseFields, parseId } from "@/lib/validators/api";
 import { Prisma } from "@/lib/generated/prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) { 
   const { id } = req.query;
@@ -74,18 +75,39 @@ async function updateAppointmentByIdHandler(id: number, body: Record<string, unk
 }
 
 async function deleteAppointmentByIdHandler(id: number, res: NextApiResponse) {
-  try { 
-    await deleteAppointment(id);
-    return res.status(200).json({ message: "Appointment deleted" });
+  try {
+    const appointment = await getAppointmentById(id);
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    const baseDate = new Date(appointment.initialDate);
+    const baseDay = baseDate.getDay(); 
+    const baseHour = baseDate.getHours();
+
+    const sameActivityAppointments = await prisma.appointment.findMany({
+      where: { activityId: appointment.activityId }
+    });
+
+    const idsToDelete = sameActivityAppointments
+      .filter(a => {
+        const initial = new Date(a.initialDate);
+        return initial.getDay() === baseDay && initial.getHours() === baseHour;
+      })
+      .map(a => a.id);
+
+    await prisma.appointment.deleteMany({
+      where: { id: { in: idsToDelete } }
+    });
+
+    return res.status(200).json({ message: "Appointments deleted in cascade" });
 
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
-        return res.status(404).json({
-          message: "Appointment not found"
-        });
+        return res.status(404).json({ message: "Appointment not found" });
       }
     }
-    res.status(500).json({ message: "Internal server error" }); 
+    res.status(500).json({ message: "Internal server error" });
   }
 }

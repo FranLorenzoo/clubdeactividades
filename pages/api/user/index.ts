@@ -1,6 +1,7 @@
 import { getAllUsers, createUser, getUserByDNI } from "@/lib/sql/user";
 import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
+import { act, Activity } from "react";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {

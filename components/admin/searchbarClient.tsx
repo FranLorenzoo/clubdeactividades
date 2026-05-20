@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { calculateAge, generateRandomPassword, getMaxDate } from "@/lib/utils/helpers";
-import CreateClient from "./Modal/CreateClient";
+import CreateClient from "./Modal/create-client";
 
 type Client = {
   id: number;

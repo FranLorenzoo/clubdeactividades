@@ -30,33 +30,40 @@ export default function AdminNavbar() {
         <nav className="flex flex-col gap-4 px-6 py-8">
 
           <Link
-            href="/dashboard/admin/createAppointment"
-            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+            href="/dashboard/admin/create-appointment"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
           >
             Crear Turno
           </Link>
 
           <Link
-            href="/dashboard/admin/searchEmployee"
-            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+            href="/dashboard/admin/search-employee"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
           >
             Ver empleados
           </Link>
 
           <Link
-            href="/dashboard/admin/searchclient"
-            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+            href="/dashboard/admin/search-client"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
           >
             Ver Clientes
           </Link>
+          
+          <Link
+            href="/dashboard/admin/search-professor"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+          >
+            Ver Profesores 
+          </Link>
+          
 
           <Link
-            href="/dashboard/profile"
-            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+            href="/dashboard/admin/search-appoin"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
           >
-            Mi Perfil
+            Ver Turnos
           </Link>
-
         </nav>
       </div>
 

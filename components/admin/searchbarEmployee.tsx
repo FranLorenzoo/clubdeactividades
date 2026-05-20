@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import CreateEmployee from "./Modal/CreateEmployee";
-import CreateProfessor from "./Modal/CreateProfessor";
+import CreateEmployee from "./Modal/create-employee";
+import CreateProfessor from "./Modal/create-professor";
 
 export default function Searchbar() {
   const [openEmployee, setOpenEmployee] = useState(false);
