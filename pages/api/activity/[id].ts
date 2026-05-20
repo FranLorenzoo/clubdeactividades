@@ -7,6 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method === "GET") {
     try {
       const activity = await getActivityById(id);
+      console.log(activity);
       if (!activity) return res.status(404).json({ message: "Activity not found" });
       res.status(200).json(activity);
     } catch (error) {

@@ -7,6 +7,8 @@ const TIME_SLOTS = [
   "09:00",
   "10:00",
   "11:00",
+  "12:00",
+  "13:00",
   "14:00",
   "15:00",
   "16:00",
@@ -48,15 +50,33 @@ function formatWeekLabel(start: Date, end: Date): string {
   return `Semana del ${fmt(start)} al ${fmt(end)}`;
 }
 
+function getWeekOffsetForDate(date: Date): number {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const dayOfWeek = today.getDay();
+  const daysSinceMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const currentMonday = new Date(today);
+  currentMonday.setDate(today.getDate() - daysSinceMonday);
+
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  const targetDayOfWeek = d.getDay();
+  const targetDaysSinceMonday = targetDayOfWeek === 0 ? 6 : targetDayOfWeek - 1;
+  const targetMonday = new Date(d);
+  targetMonday.setDate(d.getDate() - targetDaysSinceMonday);
+
+  return Math.round((targetMonday.getTime() - currentMonday.getTime()) / (7 * 24 * 60 * 60 * 1000));
+}
+
 function remainingClassesThisMonth(dayOfWeek: number): number {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
   let count = 0;
-  const d = new Date(today);
-  while (d <= endOfMonth) {
-    if (d.getDay() === dayOfWeek) count++;
-    d.setDate(d.getDate() + 1);
+  const day = new Date(today);
+  while (day <= endOfMonth) {
+    if (day.getDay() === dayOfWeek) count++;
+    day.setDate(day.getDate() + 1);
   }
   return count;
 }
@@ -123,22 +143,25 @@ interface ReservePopupProps {
   waitingList: boolean;
   price: number;
   dayOfWeek: number;
+  alreadyReserved: boolean;
   reserveType: ReserveType;
   onTypeChange: (t: ReserveType) => void;
   onClose: () => void;
+  onConfirm: (reserveType: ReserveType, paymentMultiplier: number) => void;
+  confirming: boolean;
   creditCard: CreditCard | null;
   loadingCard: boolean;
 }
 
 function ReservePopup({
-  time, available, waitingList, price, dayOfWeek,
-  reserveType, onTypeChange, onClose,
+  time, available, waitingList, price, dayOfWeek, alreadyReserved,
+  reserveType, onTypeChange, onClose, onConfirm, confirming,
   creditCard, loadingCard,
 }: ReservePopupProps) {
   const [payment, setPayment] = useState<number | null>(1);
   const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
   const canConfirm = reserveType !== null;
-  const cardBlocked = !creditCard;
+  const cardBlocked = reserveType === "unica" && !creditCard;
 
   return (
     <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-60 bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
@@ -151,8 +174,12 @@ function ReservePopup({
         {waitingList ? "Lista de espera" : available > 0 ? `${available} cupos disponibles` : "Sin cupos"}
       </p>
 
+      {alreadyReserved && (
+        <p className="text-xs text-yellow-400 font-medium mb-3">Ya tenés este turno reservado.</p>
+      )}
+
       <p className="text-xs text-zinc-400 mb-2">Tipo de reserva</p>
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4" style={{ pointerEvents: alreadyReserved ? "none" : "auto", opacity: alreadyReserved ? 0.4 : 1 }}>
         <button
           onClick={() => { onTypeChange(reserveType === "mensual" ? null : "mensual"); }}
           className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
@@ -226,15 +253,15 @@ function ReservePopup({
       )}
 
       <button
-        onClick={() => void 0}
-        disabled={!canConfirm || cardBlocked}
+        onClick={() => onConfirm(reserveType, payment ?? 1)}
+        disabled={alreadyReserved || !canConfirm || cardBlocked || confirming}
         className={`w-full text-xs font-semibold py-2 rounded-xl transition ${
-          canConfirm && !cardBlocked
+          !alreadyReserved && canConfirm && !cardBlocked && !confirming
             ? "bg-green-600 hover:bg-green-700 text-white"
             : "bg-zinc-800 text-zinc-600 cursor-not-allowed"
         }`}
       >
-        Confirmar
+        {confirming ? "Reservando..." : "Confirmar"}
       </button>
       <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-zinc-700" />
     </div>
@@ -251,6 +278,7 @@ interface AppointmentSlot {
   price: number;
   dayOfWeek: number;
   professorName: string;
+  alreadyReserved: boolean;
 }
 
 interface ScheduleGridProps {
@@ -267,6 +295,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   const [loadingCard, setLoadingCard] = useState(false);
   const [weekOffset, setWeekOffset] = useState(0);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [clientId, setClientId] = useState<number | null>(null);
+  const [confirming, setConfirming] = useState(false);
 
   const { start: weekStart, end: weekEnd } = getWeekRange(weekOffset);
   const weekLabel = formatWeekLabel(weekStart, weekEnd);
@@ -284,6 +314,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         const clientRes = await fetch(`/api/client/user/${userId}`);
         if (!clientRes.ok) return;
         const client = await clientRes.json();
+        setClientId(client.id);
         const cardRes = await fetch(`/api/credit-card/client/${client.id}`);
         if (!cardRes.ok) return;
         setCreditCard(await cardRes.json());
@@ -304,6 +335,16 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         const res = await fetch(`/api/appointment/activity/${activityId}`);
         const data = await res.json();
         setAppointments(data);
+        if (Array.isArray(data) && data.length > 0) {
+          const now = new Date();
+          const upcoming = (data as any[])
+            .map((appointment) => new Date(appointment.initialDate))
+            .filter((date) => date >= now)
+            .sort((dateA, dateB) => dateA.getTime() - dateB.getTime());
+          if (upcoming.length > 0) {
+            setWeekOffset(getWeekOffsetForDate(upcoming[0]));
+          }
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -317,8 +358,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     const appt = appointments.find((a) => {
       const date = new Date(a.initialDate);
       if (date < weekStart || date > weekEnd) return false;
-      const apptDay = DAY_INDEX_MAP[date.getDay()];
-      const apptTime = date.toTimeString().slice(0, 5);
+      const apptDay = DAY_INDEX_MAP[date.getUTCDay()];
+      const apptTime = `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}`;
       return apptDay === day && apptTime === time;
     });
     if (!appt) return null;
@@ -327,7 +368,77 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     const available = waitingList ? 0 : 10 - count;
     const dayOfWeek = new Date(appt.initialDate).getDay();
     const professorName = appt.professor?.user?.name ?? "";
-    return { id: appt.id, time, available, waitingList, price: appt.price ?? 0, dayOfWeek, professorName };
+    const alreadyReserved = clientId !== null && (appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false);
+    return { id: appt.id, time, available, waitingList, price: appt.price ?? 0, dayOfWeek, professorName, alreadyReserved };
+  }
+
+  async function handleConfirm(selectedReserveType: ReserveType, paymentMultiplier: number) {
+    if (!clientId || !activeSlot) return;
+    const clickedAppt = getAppointment(activeSlot.day, activeSlot.time);
+    if (!clickedAppt) return;
+
+    setConfirming(true);
+    try {
+      const now = new Date();
+
+      if (selectedReserveType === "unica") {
+        const state = paymentMultiplier === 1 ? "PAGO_COMPLETO" : "PAGO_PARCIAL";
+        await fetch("/api/user-appointment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            appointmentId: clickedAppt.id,
+            clientId,
+            rejected: false,
+            state,
+            reservationDate: now.toISOString(),
+          }),
+        });
+      } else if (selectedReserveType === "mensual") {
+        const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
+        if (!originalAppt) return;
+        const targetUTCDay = new Date(originalAppt.initialDate).getUTCDay();
+        const currentUTCMonth = now.getUTCMonth();
+        const currentUTCYear = now.getUTCFullYear();
+
+        const relevantAppointments = appointments.filter((appt) => {
+          const apptDate = new Date(appt.initialDate);
+          const alreadyBooked = appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false;
+          return apptDate >= now && apptDate.getUTCDay() === targetUTCDay && !alreadyBooked;
+        });
+
+        await Promise.all(
+          relevantAppointments.map((appt) => {
+            const apptDate = new Date(appt.initialDate);
+            const isCurrentMonth =
+              apptDate.getUTCMonth() === currentUTCMonth &&
+              apptDate.getUTCFullYear() === currentUTCYear;
+            const state = isCurrentMonth ? "PAGO_COMPLETO" : "IMPAGO";
+            return fetch("/api/user-appointment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                appointmentId: appt.id,
+                clientId,
+                rejected: false,
+                state,
+                reservationDate: now.toISOString(),
+              }),
+            });
+          })
+        );
+      }
+
+      const refreshRes = await fetch(`/api/appointment/activity/${activityId}`);
+      const refreshedData = await refreshRes.json();
+      setAppointments(refreshedData);
+      setActiveSlot(null);
+      setReserveType(null);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setConfirming(false);
+    }
   }
 
   function handleSlotClick(day: string, time: string) {
@@ -420,9 +531,12 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                                   waitingList={appt.waitingList}
                                   price={appt.price}
                                   dayOfWeek={appt.dayOfWeek}
+                                  alreadyReserved={appt.alreadyReserved}
                                   reserveType={reserveType}
                                   onTypeChange={setReserveType}
                                   onClose={() => { setActiveSlot(null); setReserveType(null); }}
+                                  onConfirm={handleConfirm}
+                                  confirming={confirming}
                                   creditCard={creditCard}
                                   loadingCard={loadingCard}
                                 />
