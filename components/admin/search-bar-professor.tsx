@@ -134,15 +134,15 @@ export default function SearchBarProfessor(){
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm font-semibold text-gray-600">Nombre</p>
-            <p>{pro.user?.name} {pro.user?.lastName}</p>
+            <p className="text-gray-700 text-sm font-semibold">{pro.user?.name} {pro.user?.lastName}</p>
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-600">DNI</p>
-            <p>{pro.user?.dni}</p>
+            <p className="text-gray-700 text-sm font-semibold">{pro.user?.dni}</p>
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-600">Actividad</p>
-            <p>{pro.activity?.name ?? "Sin actividad"}</p>
+            <p className="text-gray-700 text-sm font-semibold">{pro.activity?.name ?? "Sin actividad"}</p>
           </div>
         </div>
       </li>

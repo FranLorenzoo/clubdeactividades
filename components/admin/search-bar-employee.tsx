@@ -133,11 +133,11 @@ export default function Searchbar() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm font-semibold text-gray-600">Nombre</p>
-            <p>{emp.user?.name} {emp.user?.lastName}</p>
+            <p className="text-gray-700 text-sm font-semibold">{emp.user?.name} {emp.user?.lastName}</p>
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-600">DNI</p>
-            <p>{emp.user?.dni}</p>
+            <p className="text-gray-700 text-sm font-semibold">{emp.user?.dni}</p>
           </div>
         </div>
       </li>
