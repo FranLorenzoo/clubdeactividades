@@ -34,7 +34,7 @@ const activities: Record<
     icon: "🏐",
     days: ["martes", "jueves", "sabado"],
   },
-  "3": {
+  "4": {
     name: "Pádel",
     description: "Clases recreativas y partidos intensos.",
     color: "from-orange-500 to-red-600",
@@ -42,7 +42,7 @@ const activities: Record<
     days: ["lunes", "miercoles", "viernes"],
   },
 
-  "4": {
+  "3": {
     name: "Básquet",
     description:
       "Clases intensivas, recreativas y para jugar en equipo.",
