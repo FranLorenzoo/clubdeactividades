@@ -1,4 +1,4 @@
-import { getUserAppointmentById, updateUserAppointment, deleteUserAppointment } from "@/lib/sql/userAppointment";
+import { getUserAppointmentById, updateUserAppointment, deleteUserAppointment } from "@/lib/sql/user-appointment";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

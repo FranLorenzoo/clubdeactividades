@@ -44,7 +44,21 @@ export default function CreateEmployee({onClose}: Props) {
 
   async function handleCreateEmployee (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const emailInput =
+      document.querySelector(
+      'input[placeholder="Email"]'
+    ) as HTMLInputElement;
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+
+      emailInput.setCustomValidity(
+        "Ingresá un correo válido"
+      );
+      emailInput.reportValidity();
+      return;
+    }
     setLoading(true);
     try {
           const response = await fetch(
@@ -113,7 +127,7 @@ export default function CreateEmployee({onClose}: Props) {
               <div className="flex justify-between items-center mb-6">
 
                 <h2 className="text-2xl font-bold text-white">
-                  Crear Profesor
+                  Crear profesor
                 </h2>
 
                 <button
@@ -156,20 +170,28 @@ export default function CreateEmployee({onClose}: Props) {
               </div>
 
                 <input
-                  type="email"
+                  type="text"
                   name="email"
+                  className={inputCls}
                   placeholder="Email"
                   value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  className={inputCls}
+                  onChange={(event) =>{ event.target.setCustomValidity("");
+                    setEmail(event.target.value)}}
                 />
 
                 <input
                   type="text"
                   name="dni"
                   placeholder="DNI"
+                  maxLength={8}
+                  minLength={8}
                   value={dni}
-                  onChange={(event) => setDni(event.target.value)}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (/^\d*$/.test(value)) {
+                      setDni(value);
+                    }
+                  }}
                   className={inputCls}
                 />
                 <select
