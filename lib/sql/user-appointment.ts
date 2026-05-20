@@ -29,7 +29,7 @@ export async function deleteUserAppointment(id: number) {
 export async function getUserAppointmentsByClientId(clientId: number) {
   return prisma.userAppointment.findMany({
     where: { clientId },
-    include: { appointment: true, client: true, payments: true, qr: true },
+    include: { appointment: { include: { activity: true } }, client: true, payments: true, qr: true },
   });
 }
 

@@ -32,8 +32,8 @@ async function createPaymentHandler(body: Record<string, unknown>, res: NextApiR
   if (!ok) return res.status(400).json({ message: "Bad request " + error });
 
   const { userAppointmentId, employeeId } = body;
-  if (!userAppointmentId || !employeeId) {
-    return res.status(400).json({ message: "Missing required fields: userAppointmentId, employeeId" });
+  if (!userAppointmentId) {
+    return res.status(400).json({ message: "Missing required field: userAppointmentId" });
   }
 
   const createInput: Prisma.paymentCreateInput = {
@@ -41,7 +41,7 @@ async function createPaymentHandler(body: Record<string, unknown>, res: NextApiR
     amount: values.amount as number,
     paymentMethod: values.paymentMethod as string,
     userAppointment: { connect: { id: Number(userAppointmentId) } },
-    employee: { connect: { id: Number(employeeId) } },
+    ...(employeeId ? { employee: { connect: { id: Number(employeeId) } } } : {}),
   };
 
   try {

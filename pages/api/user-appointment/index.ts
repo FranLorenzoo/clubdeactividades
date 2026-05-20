@@ -1,4 +1,4 @@
-import { getAllUserAppointments, createUserAppointment } from "@/lib/sql/userAppointment";
+import { getAllUserAppointments, createUserAppointment } from "@/lib/sql/user-appointment";
 import { Prisma, userAppointmentState } from "@/lib/generated/prisma/client";
 import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";

@@ -398,8 +398,6 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
         if (!originalAppt) return;
         const targetUTCDay = new Date(originalAppt.initialDate).getUTCDay();
-        const currentUTCMonth = now.getUTCMonth();
-        const currentUTCYear = now.getUTCFullYear();
 
         const relevantAppointments = appointments.filter((appt) => {
           const apptDate = new Date(appt.initialDate);
@@ -409,11 +407,6 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
 
         await Promise.all(
           relevantAppointments.map((appt) => {
-            const apptDate = new Date(appt.initialDate);
-            const isCurrentMonth =
-              apptDate.getUTCMonth() === currentUTCMonth &&
-              apptDate.getUTCFullYear() === currentUTCYear;
-            const state = isCurrentMonth ? "PAGO_COMPLETO" : "IMPAGO";
             return fetch("/api/user-appointment", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -421,7 +414,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                 appointmentId: appt.id,
                 clientId,
                 rejected: false,
-                state,
+                state: "IMPAGO",
                 reservationDate: now.toISOString(),
               }),
             });
