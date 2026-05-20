@@ -31,28 +31,28 @@ export default function AdminNavbar() {
 
           <Link
             href="/dashboard/admin/create-appointment"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >
             Crear Turno
           </Link>
 
           <Link
             href="/dashboard/admin/search-employee"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >
             Ver empleados
           </Link>
 
           <Link
             href="/dashboard/admin/search-client"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >
             Ver Clientes
           </Link>
           
           <Link
             href="/dashboard/admin/search-professor"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >
             Ver Profesores 
           </Link>
@@ -60,7 +60,7 @@ export default function AdminNavbar() {
 
           <Link
             href="/dashboard/admin/search-appoin"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-[#316788] transition"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >
             Ver Turnos
           </Link>

@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import crypto from "crypto";
+import CreateClient from "./Modal/create-client";
 
 const generateRandomPassword = () => {
   return crypto.randomBytes(5).toString("hex");
@@ -35,11 +36,6 @@ function calculateAge(fechaNacimiento: string
 
 export default function SearchBar() {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [dni, setDni] = useState("");
-  const [fechaNacimiento, setFechaNacimiento] = useState("");
   const [clientes, setClientes]= useState<any[]>([]); 
 
   useEffect (()=>{
@@ -56,59 +52,6 @@ export default function SearchBar() {
         }
         fetchCliente(); 
     }, []) 
-
-
-  async function handleCreateClient(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(
-        "/api/user",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            lastName,
-            email,
-            dni,
-            age: calculateAge(fechaNacimiento),
-            roleId: "1",
-            password: generateRandomPassword(),
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-
-        alert("Cliente creado");
-
-        setOpen(false);
-        setName("");
-        setLastName("");
-        setEmail("");
-        setDni("");
-        setFechaNacimiento("");
-
-        return;
-      }
-
-      alert(
-        data.message ||
-        "Error al crear cliente"
-      );
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert("Error de conexión");
-    }
-  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -208,150 +151,9 @@ export default function SearchBar() {
 
       {
         open && (
-
-          <div
-            className="
-              fixed
-              inset-0
-              bg-black/50
-              flex
-              items-center
-              justify-center
-              z-50
-              p-4
-            "
-          >
-
-            <div
-              className="
-                bg-white
-                w-full
-                max-w-lg
-                rounded-2xl
-                p-8
-                shadow-xl
-              "
-            >
-
-              <div className="flex justify-between items-center mb-6">
-
-                <h2 className="text-2xl font-bold text-black">
-                  Crear cliente
-                </h2>
-
-                <button
-                  onClick={() => setOpen(false)}
-                  className="
-                    text-zinc-500
-                    hover:text-black
-                    text-xl
-                  "
-                >
-                  ✕
-                </button>
-
-              </div>
-
-              <form
-              onSubmit={handleCreateClient}
-              className="space-y-4">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Nombre"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    className="
-                      border
-                      rounded-xl
-                      p-4
-                      w-1/2
-                    "
-                  />
-
-                  <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Apellido"
-                    value={lastName}
-                    onChange={(event) => setLastName(event.target.value)}
-                    className="
-                      border
-                      rounded-xl
-                      p-4
-                      w-1/2
-                    "
-                  />
-              </div>
-
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  className="
-                    w-full
-                    border
-                    rounded-xl
-                    p-4
-                  "
-                />
-
-                <input
-                  type="text"
-                  name="dni"
-                  placeholder="DNI"
-                  value={dni}
-                  onChange={(event) => setDni(event.target.value)}
-                  className="
-                    w-full
-                    border
-                    rounded-xl
-                    p-4
-                  "
-                />
-
-                <input
-                  type="date"
-                  name="fechaNacimiento"
-                  max={maxDate}
-                  placeholder="Fecha de nacimiento (YYYY-MM-DD)"
-                  value={fechaNacimiento}
-                  onChange={(event) => setFechaNacimiento(event.target.value)}
-                  className="
-                    w-full
-                    border
-                    rounded-xl
-                    p-4
-                  "
-                />
-
-                <button
-                  type="submit"
-                  disabled={!name || !lastName || !email || !dni || !fechaNacimiento}
-                  className="
-                    w-full
-                    bg-[#316788]
-                    text-white
-                    py-4
-                    rounded-xl
-                    font-semibold
-                    hover:opacity-90
-                    transition
-                    disabled:opacity-50
-                    disabled:cursor-not-allowed
-                  "
-                >
-                  Crear cliente
-                </button>
-
-              </form>
-
-            </div>
-
-          </div>
+          <CreateClient
+            onClose={() => setOpen(false)}
+          />
         )
       }
 
@@ -366,15 +168,15 @@ export default function SearchBar() {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-sm font-semibold text-gray-600">Nombre</p>
-            <p>{cli.user?.name} {cli.user?.lastName}</p>
+            <p className="text-gray-700 text-sm font-semibold">{cli.user?.name} {cli.user?.lastName}</p>
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-600">DNI</p>
-            <p>{cli.user?.dni}</p>
+            <p className="text-gray-700 text-sm font-semibold">{cli.user?.dni}</p>
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-600">Email</p>
-            <p>{cli.user?.email}</p>
+            <p className="text-gray-700 text-sm font-semibold">{cli.user?.email}</p>
           </div>
           <div>
             <p className="text-sm font-semibold text-gray-600">Estado</p>

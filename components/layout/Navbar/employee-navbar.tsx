@@ -31,7 +31,7 @@ export default function EmployeeNavbar() {
 
           <Link
             href="/dashboard/employee/search-client"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-green-600 transition"
+            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
             Ver Clientes
           </Link>

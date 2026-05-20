@@ -24,17 +24,6 @@ export default function CreateClient({onClose}: Props) {
       setDni("");
       setFechaNacimiento("");
   }
-  useEffect(() => {
-      fetch('/api/activity')
-      .then(res => res.json())
-      .then(actData => {
-      })
-      .catch(error => {
-        console.error(error)
-        alert("Error al cargar actividades")
-      });
-      }, [])
-
   async function handleCreateClient(e: React.FormEvent<HTMLFormElement>) {
       e.preventDefault();
   
@@ -82,10 +71,8 @@ export default function CreateClient({onClose}: Props) {
       setLoading(false);
   
     }
-    const inputClsMedium =
-    "w-1/2 bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
-    const inputCls =
-    "w-full bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
+    const inputClsMedium ="w-1/2 bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
+    const inputCls ="w-full bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
     return (
       <div
             className="
