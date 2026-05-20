@@ -60,7 +60,7 @@ export default function CreateEmployee({onClose}: Props) {
                 email,
                 dni,
                 age: calculateAge(fechaNacimiento),
-                roleId: 3,
+                roleId: 4,
                 password: generateRandomPassword(),
               }),
             }
@@ -167,8 +167,15 @@ export default function CreateEmployee({onClose}: Props) {
                   type="text"
                   name="dni"
                   placeholder="DNI"
+                  maxLength={8}
+                  minLength={8}
                   value={dni}
-                  onChange={(event) => setDni(event.target.value)}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (/^\d*$/.test(value)) {
+                      setDni(value);
+                    }
+                  }}
                   className={inputCls}
                 />
                 <select
