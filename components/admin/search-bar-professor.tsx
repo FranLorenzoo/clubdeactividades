@@ -1,4 +1,4 @@
-import {ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {FormEvent, useEffect, useState } from "react";
 import CreateProfessor from "./Modal/create-professor";
 
 type Professor = {
@@ -54,8 +54,10 @@ export default function SearchBarProfessor(){
     }
   };
 
-    function handleSearch(e: ChangeEvent<HTMLInputElement>) {
-      const searchValue = e.target.value;
+    function handleSearch(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const searchValue = String(formData.get("searchValue"));
       const filteredProfessors = professors.filter(professor => 
         professor.user.dni.includes(searchValue)
         || professor.user.email.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
@@ -68,13 +70,13 @@ export default function SearchBarProfessor(){
     
             <form
               className="flex gap-3"
+              onSubmit={handleSearch}
             >
     
               <input
                 type="text"
-                placeholder="Buscar por DNI"
+                placeholder="Buscar por DNI o Email"
                 name="searchValue"
-                onChange={handleSearch}
                 className="
                   flex-1
                   border
@@ -87,6 +89,11 @@ export default function SearchBarProfessor(){
                   focus:ring-green-600
                 "
               />
+              <button
+            className="gap-3 bg-green-600 text-white px-5 py-2 rounded-xl whitespace-nowrap hover:opacity-90 transition"
+          >
+            Buscar
+          </button>
             </form>
     
             <button
