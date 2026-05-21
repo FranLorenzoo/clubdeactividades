@@ -1,4 +1,4 @@
-import { getAllProfessors, createProfessor, getProfessorsNamesByActivityId } from "@/lib/sql/professor";
+import { getAllProfessors, createProfessor, getProfessorsNamesByActivityId, getProfessorByUserDni } from "@/lib/sql/professor";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -18,11 +18,20 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
   switch(keys.length) {
     case 0:
       return getAllProfessorsHandler(res);
+
     case 1:
-      const activityId = Number(req.query[keys[0]]);
-      if(isNaN(activityId)) return res.status(400).json({ message: "Invalid query param" });
-      
-      return getProfessorsByActivityIdHandler(activityId, res);
+      const key = keys[0];
+      const value = req.query[key];
+      if(typeof value === "string" && value.trim() !== "") {
+        if(key === "dni") {
+          if(typeof value === "string") return getProfessorByDniHandler(value, res);
+        } else {
+          const activityId = Number(value);
+          if(!isNaN(activityId)) return getProfessorsByActivityIdHandler(activityId, res);
+        }
+      }
+      return res.status(400).json({ message: "Invalid query param" });
+
     default:
       return res.status(400).json({ message: "Bad request" });
   }
@@ -64,5 +73,15 @@ async function getProfessorsByActivityIdHandler(activityId: number, res: NextApi
     return res.status(200).json(professors);
   } catch(error) {
     res.status(500).json({ message: "Internal server error: " + error });
+  }
+}
+
+async function getProfessorByDniHandler(dni: string, res: NextApiResponse) {
+  try {
+    const professor = await getProfessorByUserDni(dni);
+    if(!professor) return res.status(404).json({ message: "Professor Not Found" });
+    return res.status(200).json(professor);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 }

@@ -1,15 +1,32 @@
 import { useState, useEffect } from "react";
 import { getMaxDate, generateRandomPassword, calculateAge} from "@/lib/utils/helpers";
+
+type Professor = {
+  id: number,
+  user: {
+    email: string;
+    name: string;
+    lastName: string;
+    dni: string;
+    id: number;
+  },
+  activity: {
+    id: number,
+    name: string
+  }
+}
+
 type Activity = {
   id: number;
   name: string;
 }
 type Props = {
   onClose: () => void;
+  onProfessorCreated: (newProfessor: Professor) => void;
 };
 const maxDate = getMaxDate();
 
-export default function CreateEmployee({onClose}: Props) {
+export default function CreateEmployee({onClose, onProfessorCreated}: Props) {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -88,6 +105,11 @@ export default function CreateEmployee({onClose}: Props) {
             setErrorMessage("")
             resetForm();
             setLoading(false);
+            const professorResponse = await fetch(
+              `/api/professor?dni=${data.dni}`
+            );
+            const createdProfessor = await professorResponse.json();
+            onProfessorCreated(createdProfessor);
             return;
           }
     

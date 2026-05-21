@@ -1,9 +1,21 @@
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useEffect, ChangeEvent } from "react";
 import CreateEmployee from "./Modal/create-employee";
+
+type Employee = {
+  id: number,
+  user: {
+    name: string;
+    lastName: string;
+    email: string;
+    dni: string;
+    id: number;
+  }
+}
 
 export default function Searchbar() {
   const [openEmployee, setOpenEmployee] = useState(false);
-  const [employees, setEmployees] = useState<any[]>([]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
   
   useEffect(() => {
     async function fetchEmployees() {
@@ -12,6 +24,7 @@ export default function Searchbar() {
         if (res.ok) {
           const data = await res.json();
           setEmployees(data);
+          setFilteredEmployees(data);
         }
       } catch (err) {
         console.error("Error cargando empleados", err);
@@ -35,55 +48,19 @@ export default function Searchbar() {
     }
   };
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
-    const value =
-      String(formData.get("searchValue") || "").trim();
-
-    try {
-
-      const response =
-        await fetch(`/api/user?dni=${value}`);
-
-      if (response.ok) {
-
-        const user = await response.json();
-
-        window.location.href =
-          `/user/${user.id}`;
-
-        return;
-      }
-
-      if (response.status === 404) {
-
-        alert("Empleado no encontrado");
-
-        return;
-      }
-
-      const errorData = await response.json();
-
-      alert(
-        errorData.message ||
-        "Error inesperado"
-      );
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert("Error de conexión");
-    }
+  function handleSearch(e: ChangeEvent<HTMLInputElement>) {
+    const searchValue = e.target.value;
+    const filteredEmployees = employees.filter(employee => 
+      employee.user.dni.includes(searchValue)
+      || employee.user.email.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+    );
+    setFilteredEmployees(filteredEmployees);
   }
 
   return ( <>
       <div className="flex items-center gap-3 w-full max-w-xl mx-auto mt-[50px] relative z-10">
 
         <form
-          onSubmit={handleSubmit}
           className="flex gap-3"
         >
 
@@ -91,6 +68,7 @@ export default function Searchbar() {
             type="text"
             placeholder="Buscar por DNI"
             name="searchValue"
+            onChange={handleSearch}
             className="
               flex-1
               border
@@ -103,22 +81,6 @@ export default function Searchbar() {
               focus:ring-green-600
             "
           />
-
-          <button
-            type="submit"
-            className="
-              bg-green-600
-              text-white
-              px-5
-              py-2
-              rounded-xl
-              hover:opacity-90
-              transition
-            "
-          >
-            Buscar
-          </button>
-
         </form>
 
         <button
@@ -133,6 +95,11 @@ export default function Searchbar() {
         openEmployee && (
           <CreateEmployee
             onClose={() => setOpenEmployee(false)}
+            onEmployeeCreated={(newEmployee) => {
+              setEmployees((prev) => [...prev, newEmployee]);
+              setFilteredEmployees((prev) => [...prev, newEmployee]);
+              setOpenEmployee(false);
+            }}
           />
         )
       }
@@ -140,7 +107,7 @@ export default function Searchbar() {
       <div className="mt-6 max-w-xl mx-auto">
   <h3 className="text-lg font-bold mb-3">Lista de empleados</h3>
   <ul className="space-y-2">
-    {employees.map((emp) => (
+    {filteredEmployees.map((emp) => (
       <li
         key={emp.id}
         className="border rounded-lg px-4 py-3 bg-white shadow-sm"
