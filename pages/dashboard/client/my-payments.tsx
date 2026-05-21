@@ -19,6 +19,7 @@ interface PendingPaymentItem {
 export default function MisPagosPage() {
   const [pendingPartial, setPendingPartial] = useState<PendingPaymentItem[]>([]);
   const [pendingMonthly, setPendingMonthly] = useState<PendingPaymentItem[]>([]);
+  const [overdueDebts, setOverdueDebts] = useState<PendingPaymentItem[]>([]);
   const [completed, setCompleted] = useState<PendingPaymentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [paying, setPaying] = useState<string | number | null>(null);
@@ -41,6 +42,7 @@ export default function MisPagosPage() {
 
       const partial: PendingPaymentItem[] = [];
       const impago: PendingPaymentItem[] = [];
+      const overdue: PendingPaymentItem[] = [];
       const done: PendingPaymentItem[] = [];
 
       for (const ua of userAppointments) {
@@ -55,7 +57,9 @@ export default function MisPagosPage() {
           partial.push({ userAppointmentId: ua.id, state: "PAGO_PARCIAL", appointment: apptInfo });
         } else if (ua.state === "IMPAGO") {
           const apptDate = new Date(ua.appointment.initialDate);
-          if (
+          if (apptDate < now) {
+            overdue.push({ userAppointmentId: ua.id, state: "IMPAGO", appointment: apptInfo });
+          } else if (
             apptDate.getUTCMonth() === currentUTCMonth &&
             apptDate.getUTCFullYear() === currentUTCYear
           ) {
@@ -68,6 +72,7 @@ export default function MisPagosPage() {
 
       setPendingPartial(partial);
       setPendingMonthly(impago);
+      setOverdueDebts(overdue);
       setCompleted(done);
     } catch (error) {
       console.error(error);
@@ -95,6 +100,36 @@ export default function MisPagosPage() {
         toast.success("Pago registrado correctamente");
       } else {
         toast.error("Error al procesar el pago");
+      }
+      await fetchPayments();
+    } catch {
+      toast.error("Error de conexión");
+    } finally {
+      setPaying(null);
+    }
+  };
+
+  const handlePayAllDebts = async () => {
+    setPaying("debts");
+    try {
+      const results = await Promise.all(
+        overdueDebts.map((item) =>
+          fetch("/api/payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userAppointmentId: item.userAppointmentId,
+              paymentDate: new Date().toISOString(),
+              amount: item.appointment.price,
+              paymentMethod: "online",
+            }),
+          })
+        )
+      );
+      if (results.every((r) => r.ok)) {
+        toast.success("Deudas saldadas. Ya podés reservar turnos.");
+      } else {
+        toast.error("Algunos pagos fallaron");
       }
       await fetchPayments();
     } catch {
@@ -136,6 +171,8 @@ export default function MisPagosPage() {
   };
 
   const now = new Date();
+  const isSuspended = overdueDebts.length >= 3;
+  const totalDebt = overdueDebts.reduce((s, i) => s + i.appointment.price, 0);
   const monthlyByActivity = pendingMonthly.reduce<Record<string, PendingPaymentItem[]>>(
     (acc, item) => {
       const key = item.appointment.activity?.name ?? "Sin actividad";
@@ -154,6 +191,48 @@ export default function MisPagosPage() {
         <p className="text-zinc-400 text-sm">Cargando...</p>
       ) : (
         <div className="space-y-10">
+
+          {/* ── Deudas vencidas / Suspensión ── */}
+          {overdueDebts.length > 0 && (
+            <div>
+              <h3 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-4">
+                Deudas vencidas
+              </h3>
+              <div className={`rounded-2xl px-5 py-4 border ${
+                isSuspended ? "bg-red-950/40 border-red-800" : "bg-zinc-900 border-zinc-800"
+              }`}>
+                {isSuspended && (
+                  <p className="text-red-400 font-semibold text-sm mb-3">
+                    ⚠️ Cuenta suspendida — tenés {overdueDebts.length} turnos impagos vencidos. No podés reservar nuevos turnos hasta regularizar.
+                  </p>
+                )}
+                <div className="space-y-1.5 mb-4">
+                  {overdueDebts.map((item) => {
+                    const date = new Date(item.appointment.initialDate);
+                    return (
+                      <div key={item.userAppointmentId} className="flex items-center justify-between text-sm">
+                        <span className="text-zinc-300 capitalize">
+                          {item.appointment.activity?.name ?? "—"} —{" "}
+                          {date.toLocaleDateString("es-AR", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" })}
+                        </span>
+                        <span className="text-red-400">${item.appointment.price.toFixed(2)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="flex items-center justify-between border-t border-zinc-800 pt-4">
+                  <p className="text-red-400 font-bold text-lg">${totalDebt.toFixed(2)}</p>
+                  <button
+                    onClick={handlePayAllDebts}
+                    disabled={paying === "debts"}
+                    className="text-sm font-semibold px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 disabled:bg-zinc-700 disabled:text-zinc-500 text-white transition"
+                  >
+                    {paying === "debts" ? "Pagando..." : "Pagar todas las deudas"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ── Reservas únicas con seña pendiente ── */}
           <div>

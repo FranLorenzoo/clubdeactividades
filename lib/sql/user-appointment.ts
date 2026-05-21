@@ -39,3 +39,13 @@ export async function getUserAppointmentsByAppointmentId(appointmentId: number) 
     include: { appointment: true, client: true, payments: true, qr: true },
   });
 }
+
+export async function getOverdueImpagoCountByClientId(clientId: number) {
+  return prisma.userAppointment.count({
+    where: {
+      clientId,
+      state: "IMPAGO",
+      appointment: { initialDate: { lt: new Date() } },
+    },
+  });
+}
