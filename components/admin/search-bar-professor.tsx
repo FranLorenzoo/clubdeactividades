@@ -1,9 +1,25 @@
-import {FormEvent, useEffect, useState } from "react";
+import {ChangeEvent, FormEvent, useEffect, useState } from "react";
 import CreateProfessor from "./Modal/create-professor";
 
+type Professor = {
+  id: number,
+  user: {
+    email: string;
+    name: string;
+    lastName: string;
+    dni: string;
+    id: number;
+  },
+  activity: {
+    id: number,
+    name: string
+  }
+}
+
 export default function SearchBarProfessor(){
-    const [profesor, setProfessor]= useState<any[]>([]); 
+    const [professors, setProfessors] = useState<Professor[]>([]); 
     const [openProfessor, setOpenProfessor] = useState(false);
+    const [filteredProfessors, setFilteredProfessors] = useState<Professor[]>([]);
 
 
     useEffect (()=>{
@@ -12,7 +28,8 @@ export default function SearchBarProfessor(){
                 const res = await fetch("/api/professor"); 
                 if (res.ok){
                     const data = await res.json(); 
-                    setProfessor(data); 
+                    setProfessors(data); 
+                    setFilteredProfessors(data)
                 }
             }catch(err){
                 console.error("Error cargando profesores", err); 
@@ -27,7 +44,7 @@ export default function SearchBarProfessor(){
       const res= await fetch(`/api/professor/${idUno}`, { method: "DELETE" });
       await fetch(`/api/user/${idDos}`, { method: "DELETE" });
       if (res.ok){
-        setProfessor((prev) => prev.filter((pro) => pro.id !== idUno));
+        setProfessors((prev) => prev.filter((pro) => pro.id !== idUno));
         alert("El profesor fue eliminado con éxito");
       }
     } catch (error) {
@@ -36,55 +53,19 @@ export default function SearchBarProfessor(){
     }
   };
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-    
-        const value =
-          String(formData.get("searchValue") || "").trim();
-    
-        try {
-    
-          const response =
-            await fetch(`/api/user?dni=${value}`);
-    
-          if (response.ok) {
-    
-            const user = await response.json();
-    
-            window.location.href =
-              `/user/${user.id}`;
-    
-            return;
-          }
-    
-          if (response.status === 404) {
-    
-            alert("Empleado no encontrado");
-    
-            return;
-          }
-    
-          const errorData = await response.json();
-    
-          alert(
-            errorData.message ||
-            "Error inesperado"
-          );
-    
-        } catch (error) {
-    
-          console.error(error);
-    
-          alert("Error de conexión");
-        }
+    function handleSearch(e: ChangeEvent<HTMLInputElement>) {
+      const searchValue = e.target.value;
+      const filteredProfessors = professors.filter(professor => 
+        professor.user.dni.includes(searchValue)
+        || professor.user.email.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+      );
+      setFilteredProfessors(filteredProfessors);
     }
     
     return ( <>
           <div className="flex items-center gap-3 w-full max-w-xl mx-auto mt-[50px] relative z-10">
     
             <form
-              onSubmit={handleSubmit}
               className="flex gap-3"
             >
     
@@ -92,6 +73,7 @@ export default function SearchBarProfessor(){
                 type="text"
                 placeholder="Buscar por DNI"
                 name="searchValue"
+                onChange={handleSearch}
                 className="
                   flex-1
                   border
@@ -104,22 +86,6 @@ export default function SearchBarProfessor(){
                   focus:ring-green-600
                 "
               />
-    
-              <button
-                type="submit"
-                className="
-                  bg-green-600
-                  text-white
-                  px-5
-                  py-2
-                  rounded-xl
-                  hover:opacity-90
-                  transition
-                "
-              >
-                Buscar
-              </button>
-    
             </form>
     
             <button
@@ -135,13 +101,18 @@ export default function SearchBarProfessor(){
     
               <CreateProfessor
                 onClose={() => setOpenProfessor(false)}
+                onProfessorCreated={(newProfessor) => {
+                  setProfessors((prev) => [...prev, newProfessor]);
+                  setFilteredProfessors((prev) => [...prev, newProfessor]);
+                  setOpenProfessor(true);
+                }}
               />
             )
           }
         <div className="mt-6 max-w-xl mx-auto">
   <h3 className="text-lg font-bold mb-3">Lista de profesores</h3>
   <ul className="space-y-2">
-    {profesor.map((pro) => (
+    {filteredProfessors.map((pro) => (
       <li
         key={pro.id}
         className="border rounded-lg px-4 py-3 bg-white shadow-sm"
