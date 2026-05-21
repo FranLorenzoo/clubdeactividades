@@ -58,3 +58,18 @@ export async function getProfessorsNamesByActivityId(activityId: number) {
     }
   });
 }
+
+export async function getProfessorByUserDni(dni: string) {
+  return prisma.professor.findFirst({
+    where: {
+      user: {
+        dni: dni,
+        roleId: 4
+      }
+    },
+    include: { 
+      user: true,
+      activity: true
+    },
+  });
+}

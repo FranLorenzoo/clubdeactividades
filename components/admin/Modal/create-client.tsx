@@ -1,13 +1,26 @@
 import {useState } from "react";
-import { useEffect } from "react";
 import { calculateAge, getMaxDate, generateRandomPassword } from "@/lib/utils/helpers";
+
+type Client = {
+  id: number;
+  suspended: boolean;
+  active: boolean;
+  user: {
+    id: number,
+    email: string,
+    name: string,
+    lastName: string,
+    dni: string
+  }
+}
 
 type Props = {
   onClose: () => void;
+  onClientCreated: (client: Client) => void;
 };
 const maxDate = getMaxDate();
 
-export default function CreateClient({onClose}: Props) {
+export default function CreateClient({onClose, onClientCreated}: Props) {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -68,6 +81,11 @@ export default function CreateClient({onClose}: Props) {
           setErrorMessage("")
           resetForm();
           setLoading(false);
+          const clientResponse = await fetch(
+            `/api/client?dni=${data.dni}`
+          );
+          const createdClient = await clientResponse.json();
+          onClientCreated(createdClient);
           return;
         }
   

@@ -32,3 +32,17 @@ export async function getEmployeeByUserId(userId: number) {
     include: { user: true, payments: true },
   });
 }
+
+export async function getEmployeeByUserDni(dni: string) {
+  return prisma.employee.findFirst({
+    where: {
+      user: {
+        dni: dni,
+        roleId: 3
+      }
+    },
+    include: { 
+      user: true 
+    },
+  });
+}
