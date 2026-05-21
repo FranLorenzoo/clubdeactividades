@@ -30,10 +30,17 @@ export default function ClientNavbar() {
         <nav className="flex flex-col gap-4 px-6 py-8">
 
           <Link
-            href="/dashboard/client/mis-pagos"
+            href="/dashboard/client/my-payments"
             className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
             Mis pagos
+          </Link>
+
+          <Link
+            href="/dashboard/client/mis-turnos"
+            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+          >
+            Mis turnos
           </Link>
 
           <Link

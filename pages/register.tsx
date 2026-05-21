@@ -207,34 +207,37 @@ export default function Register() {
 
     try {
 
-      const res = await fetch(
-        "/api/user/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            name,
-            lastName,
-            dni,
-            age: edad,
-            roleId: 1,
-          }),
-        }
-      );
+      const res = await fetch("/api/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          name,
+          lastName,
+          dni,
+          age: edad,
+          roleId: 1,
+        }),
+      });
 
-      const data =
-        await res.json();
-
-
-  
-
-
-      if (res.ok) {
+      const data = await res.json();
+      const createClientRes = await fetch("/api/client", {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          userId: data.id,
+          suspended: false,
+          active: true,
+        })
+      });
+      if (res.ok && createClientRes.ok) {
 
         setMensajeExito(
           "Usted ha sido registrado con éxito"

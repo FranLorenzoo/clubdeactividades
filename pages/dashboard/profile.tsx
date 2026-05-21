@@ -67,9 +67,11 @@ export default function ProfilePage() {
         setName(data.name);
         setLastName(data.lastName);
         setAge(String(data.age));
-
+        console.log(storedRole)
         if (storedRole === "CLIENT" && data.client) {
-          const cid = data.client.id;
+          const clientFromAPI = await fetch(`/api/client/user/${storedUserId}`);
+          const clientData = await clientFromAPI.json();
+          const cid = clientData.id;
           setClientId(cid);
           setLoadingCard(true);
           const cardRes = await fetch(`/api/credit-card/client/${cid}`);
@@ -123,6 +125,7 @@ export default function ProfilePage() {
 
   async function handleSaveCard(e: React.FormEvent) {
     e.preventDefault();
+    console.log("Saving card for clientId", clientId);
     if (!clientId) return;
     setSavingCard(true);
     setCardMsg(null);
@@ -134,6 +137,7 @@ export default function ProfilePage() {
         expireDate: new Date(expireDate).toISOString(),
         clientId,
       };
+      console.log("Saving card with data", body);
 
       let res: Response;
       if (cardId) {

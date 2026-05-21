@@ -28,7 +28,7 @@ export async function deleteClient(id: number) {
 
 export async function getClientByUserId(userId: number) {
   return prisma.client.findUnique({
-    where: { userId },
+    where: { userId: userId },
     include: { user: true, creditCard: true, userAppointments: true },
   });
 }

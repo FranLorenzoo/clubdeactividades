@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import toast from "react-hot-toast";
 
 interface AppointmentInfo {
   id: number;
@@ -20,7 +21,7 @@ export default function MisPagosPage() {
   const [pendingMonthly, setPendingMonthly] = useState<PendingPaymentItem[]>([]);
   const [completed, setCompleted] = useState<PendingPaymentItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [paying, setPaying] = useState<"monthly" | number | null>(null);
+  const [paying, setPaying] = useState<string | number | null>(null);
 
   const fetchPayments = async () => {
     const userId = localStorage.getItem("userId");
@@ -80,12 +81,7 @@ export default function MisPagosPage() {
   const handlePayPartial = async (userAppointmentId: number, amount: number) => {
     setPaying(userAppointmentId);
     try {
-      await fetch(`/api/user-appointment/${userAppointmentId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ state: "PAGO_COMPLETO" }),
-      });
-      await fetch("/api/payment", {
+      const res = await fetch("/api/payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -95,48 +91,60 @@ export default function MisPagosPage() {
           paymentMethod: "online",
         }),
       });
+      if (res.ok) {
+        toast.success("Pago registrado correctamente");
+      } else {
+        toast.error("Error al procesar el pago");
+      }
       await fetchPayments();
+    } catch {
+      toast.error("Error de conexión");
     } finally {
       setPaying(null);
     }
   };
 
-  const handlePayMonthly = async () => {
-    setPaying("monthly");
+  const handlePayActivity = async (activityName: string, items: PendingPaymentItem[]) => {
+    const key = `activity:${activityName}`;
+    setPaying(key);
     try {
-      await Promise.all(
-        pendingMonthly.map((item) =>
-          fetch(`/api/user-appointment/${item.userAppointmentId}`, {
-            method: "PUT",
+      const results = await Promise.all(
+        items.map((item) =>
+          fetch("/api/payment", {
+            method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ state: "PAGO_COMPLETO" }),
-          }).then(() =>
-            fetch("/api/payment", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                userAppointmentId: item.userAppointmentId,
-                paymentDate: new Date().toISOString(),
-                amount: item.appointment.price,
-                paymentMethod: "online",
-              }),
-            })
-          )
+            body: JSON.stringify({
+              userAppointmentId: item.userAppointmentId,
+              paymentDate: new Date().toISOString(),
+              amount: item.appointment.price,
+              paymentMethod: "online",
+            }),
+          })
         )
       );
+      if (results.every((r) => r.ok)) {
+        toast.success(`Pago de ${activityName} registrado`);
+      } else {
+        toast.error("Algunos pagos fallaron");
+      }
       await fetchPayments();
+    } catch {
+      toast.error("Error de conexión");
     } finally {
       setPaying(null);
     }
   };
 
-  const monthlyTotal = pendingMonthly.reduce((sum, item) => sum + item.appointment.price, 0);
   const now = new Date();
-  const sortedMonthly = [...pendingMonthly].sort(
-    (a, b) => new Date(a.appointment.endDate).getTime() - new Date(b.appointment.endDate).getTime()
+  const monthlyByActivity = pendingMonthly.reduce<Record<string, PendingPaymentItem[]>>(
+    (acc, item) => {
+      const key = item.appointment.activity?.name ?? "Sin actividad";
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(item);
+      return acc;
+    },
+    {}
   );
-  const deadline = sortedMonthly.length > 0 ? new Date(sortedMonthly[0].appointment.endDate) : null;
-  const isOverdue = deadline !== null && now > deadline;
 
   return (
     <DashboardLayout role="CLIENT">
@@ -208,48 +216,58 @@ export default function MisPagosPage() {
             {pendingMonthly.length === 0 ? (
               <p className="text-zinc-500 text-sm">No tenés clases mensuales pendientes de pago este mes.</p>
             ) : (
-              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <p className="font-semibold capitalize">
-                      {now.toLocaleDateString("es-AR", { month: "long", year: "numeric" })}
-                    </p>
-                    <p className={`text-xs mt-0.5 ${isOverdue ? "text-red-400" : "text-zinc-400"}`}>
-                      {deadline
-                        ? `Vence el ${deadline.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}${isOverdue ? " — vencido" : ""}`
-                        : "Sin vencimiento"}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className={`font-bold text-lg ${isOverdue ? "text-red-400" : "text-yellow-400"}`}>
-                      ${monthlyTotal.toFixed(2)}
-                    </p>
-                    <p className="text-zinc-500 text-xs mt-0.5">
-                      {pendingMonthly.length} clase{pendingMonthly.length !== 1 ? "s" : ""}
-                    </p>
-                    <button
-                      onClick={handlePayMonthly}
-                      disabled={paying === "monthly"}
-                      className="mt-2 text-xs font-semibold px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 disabled:bg-zinc-700 disabled:text-zinc-500 text-white transition"
-                    >
-                      {paying === "monthly" ? "Pagando..." : `Pagar $${monthlyTotal.toFixed(2)}`}
-                    </button>
-                  </div>
-                </div>
-                <div className="space-y-1.5 border-t border-zinc-800 pt-3">
-                  {pendingMonthly.map((item) => {
-                    const date = new Date(item.appointment.initialDate);
-                    return (
-                      <div key={item.userAppointmentId} className="flex items-center justify-between text-sm">
-                        <span className="text-zinc-300 capitalize">
-                          {item.appointment.activity?.name ?? "—"} —{" "}
-                          {date.toLocaleDateString("es-AR", { weekday: "short", day: "2-digit", month: "2-digit" })}
-                        </span>
-                        <span className="text-zinc-400">${item.appointment.price.toFixed(2)}</span>
+              <div className="space-y-4">
+                {Object.entries(monthlyByActivity).map(([activityName, items]) => {
+                  const activityTotal = items.reduce((s, i) => s + i.appointment.price, 0);
+                  const payingKey = `activity:${activityName}`;
+                  const sorted = [...items].sort(
+                    (a, b) => new Date(a.appointment.endDate).getTime() - new Date(b.appointment.endDate).getTime()
+                  );
+                  const actDeadline = sorted.length > 0 ? new Date(sorted[0].appointment.endDate) : null;
+                  const actOverdue = actDeadline !== null && now > actDeadline;
+                  return (
+                    <div key={activityName} className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div>
+                          <p className="font-semibold capitalize">{activityName}</p>
+                          <p className={`text-xs mt-0.5 ${actOverdue ? "text-red-400" : "text-zinc-400"}`}>
+                            {actDeadline
+                              ? `Vence el ${actDeadline.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}${actOverdue ? " — vencido" : ""}`
+                              : "Sin vencimiento"}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className={`font-bold text-lg ${actOverdue ? "text-red-400" : "text-yellow-400"}`}>
+                            ${activityTotal.toFixed(2)}
+                          </p>
+                          <p className="text-zinc-500 text-xs mt-0.5">
+                            {items.length} clase{items.length !== 1 ? "s" : ""}
+                          </p>
+                          <button
+                            onClick={() => handlePayActivity(activityName, items)}
+                            disabled={paying === payingKey}
+                            className="mt-2 text-xs font-semibold px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 disabled:bg-zinc-700 disabled:text-zinc-500 text-white transition"
+                          >
+                            {paying === payingKey ? "Pagando..." : `Pagar $${activityTotal.toFixed(2)}`}
+                          </button>
+                        </div>
                       </div>
-                    );
-                  })}
-                </div>
+                      <div className="space-y-1.5 border-t border-zinc-800 pt-3">
+                        {items.map((item) => {
+                          const date = new Date(item.appointment.initialDate);
+                          return (
+                            <div key={item.userAppointmentId} className="flex items-center justify-between text-sm">
+                              <span className="text-zinc-300">
+                                {date.toLocaleDateString("es-AR", { weekday: "short", day: "2-digit", month: "2-digit" })}
+                              </span>
+                              <span className="text-zinc-400">${item.appointment.price.toFixed(2)}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
