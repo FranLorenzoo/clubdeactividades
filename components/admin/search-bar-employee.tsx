@@ -40,6 +40,7 @@ export default function Searchbar() {
       await fetch(`/api/user/${idDos}`, { method: "DELETE" });
       if (res.ok){
         setEmployees((prev) => prev.filter((emp) => emp.id !== idUno));
+        setFilteredEmployees((prev) => prev.filter((pro) => pro.id !== idUno));
         alert("El empleado fue eliminado con éxito");
       }
     } catch (error) {

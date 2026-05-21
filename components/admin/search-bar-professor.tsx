@@ -45,6 +45,7 @@ export default function SearchBarProfessor(){
       await fetch(`/api/user/${idDos}`, { method: "DELETE" });
       if (res.ok){
         setProfessors((prev) => prev.filter((pro) => pro.id !== idUno));
+        setFilteredProfessors((prev) => prev.filter((pro) => pro.id !== idUno));
         alert("El profesor fue eliminado con éxito");
       }
     } catch (error) {
