@@ -151,17 +151,35 @@ interface ReservePopupProps {
   confirming: boolean;
   creditCard: CreditCard | null;
   loadingCard: boolean;
+  suspended: boolean;
 }
 
 function ReservePopup({
   time, available, waitingList, price, dayOfWeek, alreadyReserved,
   reserveType, onTypeChange, onClose, onConfirm, confirming,
-  creditCard, loadingCard,
+  creditCard, loadingCard, suspended,
 }: ReservePopupProps) {
   const [payment, setPayment] = useState<number | null>(1);
   const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
   const canConfirm = reserveType !== null;
   const cardBlocked = reserveType === "unica" && !creditCard;
+
+  if (suspended) {
+    return (
+      <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-60 bg-zinc-900 border border-red-800 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
+        <div className="flex justify-between items-center mb-3">
+          <p className="font-bold text-base text-red-400">Cuenta suspendida</p>
+          <button onClick={onClose} className="text-zinc-500 hover:text-white text-sm leading-none">✕</button>
+        </div>
+        <p className="text-zinc-400 text-xs leading-relaxed">
+          Tenés 3 o más turnos impagos vencidos. Ir a{" "}
+          <a href="/dashboard/client/my-payments" className="text-zinc-200 underline font-semibold">Mis pagos</a>{" "}
+          para regularizar tu situación y volver a reservar.
+        </p>
+        <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-red-800" />
+      </div>
+    );
+  }
 
   return (
     <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-60 bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
@@ -297,6 +315,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   const [userRole, setUserRole] = useState<string | null>(null);
   const [clientId, setClientId] = useState<number | null>(null);
   const [confirming, setConfirming] = useState(false);
+  const [suspended, setSuspended] = useState(false);
 
   const { start: weekStart, end: weekEnd } = getWeekRange(weekOffset);
   const weekLabel = formatWeekLabel(weekStart, weekEnd);
@@ -315,6 +334,15 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         if (!clientRes.ok) return;
         const client = await clientRes.json();
         setClientId(client.id);
+        const uaRes = await fetch(`/api/user-appointment/client/${client.id}`);
+        if (uaRes.ok) {
+          const uas: any[] = await uaRes.json();
+          const now = new Date();
+          const overdueCount = uas.filter(
+            (ua) => ua.state === "IMPAGO" && new Date(ua.appointment.initialDate) < now
+          ).length;
+          setSuspended(overdueCount >= 3);
+        }
         const cardRes = await fetch(`/api/credit-card/client/${client.id}`);
         if (!cardRes.ok) return;
         setCreditCard(await cardRes.json());
@@ -532,6 +560,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                                   confirming={confirming}
                                   creditCard={creditCard}
                                   loadingCard={loadingCard}
+                                  suspended={suspended}
                                 />
                               )
                             )}

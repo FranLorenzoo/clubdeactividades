@@ -1,4 +1,4 @@
-import { getAllUserAppointments, createUserAppointment } from "@/lib/sql/user-appointment";
+import { getAllUserAppointments, createUserAppointment, getOverdueImpagoCountByClientId } from "@/lib/sql/user-appointment";
 import { Prisma, userAppointmentState } from "@/lib/generated/prisma/client";
 import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -38,6 +38,14 @@ async function createUserAppointmentHandler(body: Record<string, unknown>, res: 
   const validStates = ["PAGO_COMPLETO", "PAGO_PARCIAL", "IMPAGO"];
   if (!validStates.includes(String(state))) {
     return res.status(400).json({ message: "Invalid state. Must be PAGO_COMPLETO, PAGO_PARCIAL or IMPAGO" });
+  }
+
+  const overdueCount = await getOverdueImpagoCountByClientId(Number(clientId));
+  if (overdueCount >= 3) {
+    return res.status(403).json({
+      message: "Tu cuenta está suspendida por 3 o más turnos impagos vencidos. Regularizá tu situación en Mis pagos.",
+      suspended: true,
+    });
   }
 
   const createInput: Prisma.userAppointmentCreateInput = {
