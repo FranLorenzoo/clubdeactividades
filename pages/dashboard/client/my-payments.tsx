@@ -80,11 +80,6 @@ export default function MisPagosPage() {
   const handlePayPartial = async (userAppointmentId: number, amount: number) => {
     setPaying(userAppointmentId);
     try {
-      await fetch(`/api/user-appointment/${userAppointmentId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ state: "PAGO_COMPLETO" }),
-      });
       await fetch("/api/payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -106,22 +101,16 @@ export default function MisPagosPage() {
     try {
       await Promise.all(
         pendingMonthly.map((item) =>
-          fetch(`/api/user-appointment/${item.userAppointmentId}`, {
-            method: "PUT",
+          fetch("/api/payment", {
+            method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ state: "PAGO_COMPLETO" }),
-          }).then(() =>
-            fetch("/api/payment", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                userAppointmentId: item.userAppointmentId,
-                paymentDate: new Date().toISOString(),
-                amount: item.appointment.price,
-                paymentMethod: "online",
-              }),
-            })
-          )
+            body: JSON.stringify({
+              userAppointmentId: item.userAppointmentId,
+              paymentDate: new Date().toISOString(),
+              amount: item.appointment.price,
+              paymentMethod: "online",
+            }),
+          })
         )
       );
       await fetchPayments();
