@@ -173,7 +173,7 @@ export default function Register() {
     if (edad < 18) {
 
       fechaInput.setCustomValidity(
-        "Debés ser mayor de 18 años"
+        "La edad debe ser mayor o igual a 18 años"
       );
 
       fechaInput.reportValidity();
@@ -259,6 +259,19 @@ export default function Register() {
 
           return;
         }
+        if (
+            data.message ===
+            "El DNI ya está registrado"
+          ) {
+
+            dniInput.setCustomValidity(
+              "El DNI ya está registrado"
+            );
+
+            dniInput.reportValidity();
+
+            return;
+          }
 
       }
 

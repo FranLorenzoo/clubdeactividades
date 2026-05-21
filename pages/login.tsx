@@ -3,68 +3,178 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 export default function Login() {
+
   const router = useRouter();
 
+  const [mensaje, setMensaje] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (
+    e: React.FormEvent
+  ) => {
+
     e.preventDefault();
 
+    setMensaje("");
+
     if (!email || !password) {
-      alert("Completá los campos");
+
+      setMensaje(
+        "Completá todos los campos"
+      );
+
+      setTimeout(()=>{
+        setMensaje("");
+      },2500);
+
       return;
     }
-    const logInAttempt = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password, role }),
-    });
 
-    if (!logInAttempt.ok) {
-      alert("Credenciales incorrectas");
-      return;
+    try {
+
+      const logInAttempt =
+      await fetch(
+        "/api/login",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+            "application/json"
+          },
+          body: JSON.stringify({
+            email,
+            password,
+            role
+          })
+        }
+      );
+
+      const data =
+      await logInAttempt.json();
+
+      console.log(data);
+
+      if (!logInAttempt.ok) {
+
+        setMensaje(
+          "Correo o contraseña incorrectos"
+        );
+
+        setTimeout(()=>{
+          setMensaje("");
+        },2500);
+
+        return;
+      }
+
+      localStorage.setItem(
+        "userId",
+        data.id
+      );
+
+      localStorage.setItem(
+        "userEmail",
+        data.email
+      );
+
+      // SOLO PARA CLIENTE
+      if(data.role==="CLIENT"){
+
+        localStorage.setItem(
+          "mostrarBienvenida",
+          "true"
+        );
+
+      }
+
+      switch(data.role){
+
+        case "ADMIN":
+          router.push(
+            "/dashboard/admin"
+          );
+          break;
+
+        case "CLIENT":
+          router.push(
+            "/dashboard/client"
+          );
+          break;
+
+        case "EMPLOYEE":
+          router.push(
+            "/dashboard/employee"
+          );
+          break;
+
+        case "PROFESSOR":
+          router.push(
+            "/dashboard/professor"
+          );
+          break;
+
+        default:
+          router.push("/");
+      }
+
+    } catch {
+
+      setMensaje(
+        "Error al iniciar sesión"
+      );
+
+      setTimeout(()=>{
+        setMensaje("");
+      },2500);
+
     }
-    const logInSuccess = await logInAttempt.json();
 
-    localStorage.setItem("userId", logInSuccess.id);
-    switch(logInSuccess.role) {
-      case "ADMIN":
-        router.push("/dashboard/admin");
-        break;
-
-      case "CLIENT":
-        router.push("/dashboard/client");
-        break;
-
-      case "EMPLOYEE":
-        router.push("/dashboard/employee");
-        break;
-
-      case "PROFESSOR":
-        router.push("/dashboard/professor");
-        break;
-
-      default:
-        router.push("/");
-    }
   };
 
   return (
+
     <main className="h-screen w-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-white flex items-center justify-center px-6">
 
       <div className="w-full max-w-md bg-zinc-900/95 backdrop-blur-sm border border-zinc-800 rounded-3xl p-10 shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
 
         <div className="text-center mb-10">
+
           <Link
             href="/"
             className="text-4xl font-extrabold tracking-tight"
           >
-            Club<span className="text-green-500">360</span>
+            Club
+            <span className="text-green-500">
+              360
+            </span>
           </Link>
+
+          {mensaje && (
+
+            <div
+            className="
+            mt-5
+            mx-auto
+            w-fit
+            px-4
+            py-2
+            rounded-full
+            text-sm
+            font-medium
+            bg-red-500/10
+            border
+            border-red-500/20
+            text-red-400
+            "
+            >
+
+              ⚠️ {mensaje}
+
+            </div>
+
+          )}
 
           <h1 className="text-3xl font-bold mt-7 tracking-tight">
             Iniciar sesión
@@ -73,15 +183,23 @@ export default function Login() {
           <p className="text-zinc-400 mt-3 text-sm">
             Ingresá para continuar
           </p>
+
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-5">
+        <form
+        onSubmit={handleLogin}
+        className="space-y-5"
+        >
 
           <input
             type="email"
             placeholder="Correo electrónico"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e)=>
+              setEmail(
+                e.target.value
+              )
+            }
             className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3.5 outline-none transition-all duration-300 focus:border-green-500 focus:ring-2 focus:ring-green-500/20"
           />
 
@@ -89,7 +207,11 @@ export default function Login() {
             type="password"
             placeholder="Contraseña"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e)=>
+              setPassword(
+                e.target.value
+              )
+            }
             className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3.5 outline-none transition-all duration-300 focus:border-green-500 focus:ring-2 focus:ring-green-500/20"
           />
 
@@ -103,17 +225,21 @@ export default function Login() {
         </form>
 
         <p className="text-center text-zinc-400 mt-7 text-sm">
+
           ¿No tenés cuenta?{" "}
+
           <Link
             href="/register"
             className="text-green-500 hover:text-green-400 hover:underline font-medium transition"
           >
             Registrate
           </Link>
+
         </p>
 
       </div>
 
     </main>
+
   );
 }

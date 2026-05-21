@@ -25,33 +25,49 @@ export default async function handler(
     } = req.body;
 
     // verificar email repetido
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email
-      }
-    });
+    const existingEmail =
+      await prisma.user.findUnique({
+        where: {
+          email
+        }
+      });
 
-    if (existingUser) {
+    if (existingEmail) {
       return res.status(400).json({
         message: "El correo ya está registrado"
       });
     }
 
-    const user = await prisma.user.create({
-      data: {
-        email,
-        password,
-        name,
-        lastName,
-        age: Number(age),
-        dni,
-        role: {
-          connect: {
-            id: Number(roleId)
+    // verificar DNI repetido
+    const existingDni =
+      await prisma.user.findFirst({
+        where: {
+          dni
+        }
+      });
+
+    if (existingDni) {
+      return res.status(400).json({
+        message: "El DNI ya está registrado"
+      });
+    }
+
+    const user =
+      await prisma.user.create({
+        data: {
+          email,
+          password,
+          name,
+          lastName,
+          age: Number(age),
+          dni,
+          role: {
+            connect: {
+              id: Number(roleId)
+            }
           }
         }
-      }
-    });
+      });
 
     return res.status(201).json(user);
 
@@ -60,7 +76,8 @@ export default async function handler(
     console.error(error);
 
     return res.status(500).json({
-      message: "Error al registrar usuario"
+      message:
+      "Error al registrar usuario"
     });
 
   }
