@@ -106,7 +106,7 @@ export default function Searchbar() {
             onEmployeeCreated={(newEmployee) => {
               setEmployees((prev) => [...prev, newEmployee]);
               setFilteredEmployees((prev) => [...prev, newEmployee]);
-              setOpenEmployee(false);
+              setOpenEmployee(true);
             }}
           />
         )

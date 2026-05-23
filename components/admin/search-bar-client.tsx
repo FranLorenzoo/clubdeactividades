@@ -112,7 +112,7 @@ export default function SearchBar() {
             onClientCreated={(newClient) => {
               setClientes((prev) => [...prev, newClient]);
               setFilteredClients((prev) => [...prev, newClient]);
-              setOpen(false);
+              setOpen(true);
             }}
           />
         )
