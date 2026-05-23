@@ -243,6 +243,21 @@ export default function Register() {
           "Usted ha sido registrado con éxito"
         );
 
+        const mailbody = {
+          to: "mail_prueba@gmail.com", //data.email,
+          subject: 'registro completo',
+          text: 'Te registraste correctamente en Club360'
+        }
+
+        await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify(mailbody)
+      });
+
         setTimeout(() => {
           router.push("/login");
         }, 2000);
