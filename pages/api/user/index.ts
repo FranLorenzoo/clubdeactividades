@@ -60,6 +60,7 @@ async function createUserHandler(body: Record<string, unknown>, res: NextApiResp
       age: values.age as number,
       name: values.name as string,
       lastName: values.lastName as string,
+      isDeleted: false,
       role: {
         connect: { id: values.roleId as number },
       },
