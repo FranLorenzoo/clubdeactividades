@@ -46,6 +46,7 @@ export type UserMinAggregateOutputType = {
   lastName: string | null
   age: number | null
   dni: string | null
+  isDeleted: boolean | null
   roleId: number | null
 }
 
@@ -57,6 +58,7 @@ export type UserMaxAggregateOutputType = {
   lastName: string | null
   age: number | null
   dni: string | null
+  isDeleted: boolean | null
   roleId: number | null
 }
 
@@ -68,6 +70,7 @@ export type UserCountAggregateOutputType = {
   lastName: number
   age: number
   dni: number
+  isDeleted: number
   roleId: number
   _all: number
 }
@@ -93,6 +96,7 @@ export type UserMinAggregateInputType = {
   lastName?: true
   age?: true
   dni?: true
+  isDeleted?: true
   roleId?: true
 }
 
@@ -104,6 +108,7 @@ export type UserMaxAggregateInputType = {
   lastName?: true
   age?: true
   dni?: true
+  isDeleted?: true
   roleId?: true
 }
 
@@ -115,6 +120,7 @@ export type UserCountAggregateInputType = {
   lastName?: true
   age?: true
   dni?: true
+  isDeleted?: true
   roleId?: true
   _all?: true
 }
@@ -213,6 +219,7 @@ export type UserGroupByOutputType = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   roleId: number
   _count: UserCountAggregateOutputType | null
   _avg: UserAvgAggregateOutputType | null
@@ -247,6 +254,7 @@ export type userWhereInput = {
   lastName?: Prisma.StringFilter<"user"> | string
   age?: Prisma.IntFilter<"user"> | number
   dni?: Prisma.StringFilter<"user"> | string
+  isDeleted?: Prisma.BoolFilter<"user"> | boolean
   roleId?: Prisma.IntFilter<"user"> | number
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.roleWhereInput>
   client?: Prisma.XOR<Prisma.ClientNullableScalarRelationFilter, Prisma.clientWhereInput> | null
@@ -262,6 +270,7 @@ export type userOrderByWithRelationInput = {
   lastName?: Prisma.SortOrder
   age?: Prisma.SortOrder
   dni?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
   role?: Prisma.roleOrderByWithRelationInput
   client?: Prisma.clientOrderByWithRelationInput
@@ -280,6 +289,7 @@ export type userWhereUniqueInput = Prisma.AtLeast<{
   lastName?: Prisma.StringFilter<"user"> | string
   age?: Prisma.IntFilter<"user"> | number
   dni?: Prisma.StringFilter<"user"> | string
+  isDeleted?: Prisma.BoolFilter<"user"> | boolean
   roleId?: Prisma.IntFilter<"user"> | number
   role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.roleWhereInput>
   client?: Prisma.XOR<Prisma.ClientNullableScalarRelationFilter, Prisma.clientWhereInput> | null
@@ -295,6 +305,7 @@ export type userOrderByWithAggregationInput = {
   lastName?: Prisma.SortOrder
   age?: Prisma.SortOrder
   dni?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
   _count?: Prisma.userCountOrderByAggregateInput
   _avg?: Prisma.userAvgOrderByAggregateInput
@@ -314,6 +325,7 @@ export type userScalarWhereWithAggregatesInput = {
   lastName?: Prisma.StringWithAggregatesFilter<"user"> | string
   age?: Prisma.IntWithAggregatesFilter<"user"> | number
   dni?: Prisma.StringWithAggregatesFilter<"user"> | string
+  isDeleted?: Prisma.BoolWithAggregatesFilter<"user"> | boolean
   roleId?: Prisma.IntWithAggregatesFilter<"user"> | number
 }
 
@@ -324,6 +336,7 @@ export type userCreateInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   role: Prisma.roleCreateNestedOneWithoutUsersInput
   client?: Prisma.clientCreateNestedOneWithoutUserInput
   employee?: Prisma.employeeCreateNestedOneWithoutUserInput
@@ -338,6 +351,7 @@ export type userUncheckedCreateInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   roleId: number
   client?: Prisma.clientUncheckedCreateNestedOneWithoutUserInput
   employee?: Prisma.employeeUncheckedCreateNestedOneWithoutUserInput
@@ -351,6 +365,7 @@ export type userUpdateInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.roleUpdateOneRequiredWithoutUsersNestedInput
   client?: Prisma.clientUpdateOneWithoutUserNestedInput
   employee?: Prisma.employeeUpdateOneWithoutUserNestedInput
@@ -365,6 +380,7 @@ export type userUncheckedUpdateInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
   client?: Prisma.clientUncheckedUpdateOneWithoutUserNestedInput
   employee?: Prisma.employeeUncheckedUpdateOneWithoutUserNestedInput
@@ -379,6 +395,7 @@ export type userCreateManyInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   roleId: number
 }
 
@@ -389,6 +406,7 @@ export type userUpdateManyMutationInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type userUncheckedUpdateManyInput = {
@@ -399,6 +417,7 @@ export type userUncheckedUpdateManyInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -420,6 +439,7 @@ export type userCountOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   age?: Prisma.SortOrder
   dni?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
 }
 
@@ -437,6 +457,7 @@ export type userMaxOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   age?: Prisma.SortOrder
   dni?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
 }
 
@@ -448,6 +469,7 @@ export type userMinOrderByAggregateInput = {
   lastName?: Prisma.SortOrder
   age?: Prisma.SortOrder
   dni?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   roleId?: Prisma.SortOrder
 }
 
@@ -504,6 +526,10 @@ export type userUncheckedUpdateManyWithoutRoleNestedInput = {
   deleteMany?: Prisma.userScalarWhereInput | Prisma.userScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type userCreateNestedOneWithoutClientInput = {
   create?: Prisma.XOR<Prisma.userCreateWithoutClientInput, Prisma.userUncheckedCreateWithoutClientInput>
   connectOrCreate?: Prisma.userCreateOrConnectWithoutClientInput
@@ -553,6 +579,7 @@ export type userCreateWithoutRoleInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   client?: Prisma.clientCreateNestedOneWithoutUserInput
   employee?: Prisma.employeeCreateNestedOneWithoutUserInput
   professor?: Prisma.professorCreateNestedOneWithoutUserInput
@@ -566,6 +593,7 @@ export type userUncheckedCreateWithoutRoleInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   client?: Prisma.clientUncheckedCreateNestedOneWithoutUserInput
   employee?: Prisma.employeeUncheckedCreateNestedOneWithoutUserInput
   professor?: Prisma.professorUncheckedCreateNestedOneWithoutUserInput
@@ -608,6 +636,7 @@ export type userScalarWhereInput = {
   lastName?: Prisma.StringFilter<"user"> | string
   age?: Prisma.IntFilter<"user"> | number
   dni?: Prisma.StringFilter<"user"> | string
+  isDeleted?: Prisma.BoolFilter<"user"> | boolean
   roleId?: Prisma.IntFilter<"user"> | number
 }
 
@@ -618,6 +647,7 @@ export type userCreateWithoutClientInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   role: Prisma.roleCreateNestedOneWithoutUsersInput
   employee?: Prisma.employeeCreateNestedOneWithoutUserInput
   professor?: Prisma.professorCreateNestedOneWithoutUserInput
@@ -631,6 +661,7 @@ export type userUncheckedCreateWithoutClientInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   roleId: number
   employee?: Prisma.employeeUncheckedCreateNestedOneWithoutUserInput
   professor?: Prisma.professorUncheckedCreateNestedOneWithoutUserInput
@@ -659,6 +690,7 @@ export type userUpdateWithoutClientInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.roleUpdateOneRequiredWithoutUsersNestedInput
   employee?: Prisma.employeeUpdateOneWithoutUserNestedInput
   professor?: Prisma.professorUpdateOneWithoutUserNestedInput
@@ -672,6 +704,7 @@ export type userUncheckedUpdateWithoutClientInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
   employee?: Prisma.employeeUncheckedUpdateOneWithoutUserNestedInput
   professor?: Prisma.professorUncheckedUpdateOneWithoutUserNestedInput
@@ -684,6 +717,7 @@ export type userCreateWithoutEmployeeInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   role: Prisma.roleCreateNestedOneWithoutUsersInput
   client?: Prisma.clientCreateNestedOneWithoutUserInput
   professor?: Prisma.professorCreateNestedOneWithoutUserInput
@@ -697,6 +731,7 @@ export type userUncheckedCreateWithoutEmployeeInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   roleId: number
   client?: Prisma.clientUncheckedCreateNestedOneWithoutUserInput
   professor?: Prisma.professorUncheckedCreateNestedOneWithoutUserInput
@@ -725,6 +760,7 @@ export type userUpdateWithoutEmployeeInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.roleUpdateOneRequiredWithoutUsersNestedInput
   client?: Prisma.clientUpdateOneWithoutUserNestedInput
   professor?: Prisma.professorUpdateOneWithoutUserNestedInput
@@ -738,6 +774,7 @@ export type userUncheckedUpdateWithoutEmployeeInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
   client?: Prisma.clientUncheckedUpdateOneWithoutUserNestedInput
   professor?: Prisma.professorUncheckedUpdateOneWithoutUserNestedInput
@@ -750,6 +787,7 @@ export type userCreateWithoutProfessorInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   role: Prisma.roleCreateNestedOneWithoutUsersInput
   client?: Prisma.clientCreateNestedOneWithoutUserInput
   employee?: Prisma.employeeCreateNestedOneWithoutUserInput
@@ -763,6 +801,7 @@ export type userUncheckedCreateWithoutProfessorInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
   roleId: number
   client?: Prisma.clientUncheckedCreateNestedOneWithoutUserInput
   employee?: Prisma.employeeUncheckedCreateNestedOneWithoutUserInput
@@ -791,6 +830,7 @@ export type userUpdateWithoutProfessorInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.roleUpdateOneRequiredWithoutUsersNestedInput
   client?: Prisma.clientUpdateOneWithoutUserNestedInput
   employee?: Prisma.employeeUpdateOneWithoutUserNestedInput
@@ -804,6 +844,7 @@ export type userUncheckedUpdateWithoutProfessorInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   roleId?: Prisma.IntFieldUpdateOperationsInput | number
   client?: Prisma.clientUncheckedUpdateOneWithoutUserNestedInput
   employee?: Prisma.employeeUncheckedUpdateOneWithoutUserNestedInput
@@ -817,6 +858,7 @@ export type userCreateManyRoleInput = {
   lastName: string
   age: number
   dni: string
+  isDeleted: boolean
 }
 
 export type userUpdateWithoutRoleInput = {
@@ -826,6 +868,7 @@ export type userUpdateWithoutRoleInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   client?: Prisma.clientUpdateOneWithoutUserNestedInput
   employee?: Prisma.employeeUpdateOneWithoutUserNestedInput
   professor?: Prisma.professorUpdateOneWithoutUserNestedInput
@@ -839,6 +882,7 @@ export type userUncheckedUpdateWithoutRoleInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   client?: Prisma.clientUncheckedUpdateOneWithoutUserNestedInput
   employee?: Prisma.employeeUncheckedUpdateOneWithoutUserNestedInput
   professor?: Prisma.professorUncheckedUpdateOneWithoutUserNestedInput
@@ -852,6 +896,7 @@ export type userUncheckedUpdateManyWithoutRoleInput = {
   lastName?: Prisma.StringFieldUpdateOperationsInput | string
   age?: Prisma.IntFieldUpdateOperationsInput | number
   dni?: Prisma.StringFieldUpdateOperationsInput | string
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -864,6 +909,7 @@ export type userSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   lastName?: boolean
   age?: boolean
   dni?: boolean
+  isDeleted?: boolean
   roleId?: boolean
   role?: boolean | Prisma.roleDefaultArgs<ExtArgs>
   client?: boolean | Prisma.user$clientArgs<ExtArgs>
@@ -879,6 +925,7 @@ export type userSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastName?: boolean
   age?: boolean
   dni?: boolean
+  isDeleted?: boolean
   roleId?: boolean
   role?: boolean | Prisma.roleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -891,6 +938,7 @@ export type userSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastName?: boolean
   age?: boolean
   dni?: boolean
+  isDeleted?: boolean
   roleId?: boolean
   role?: boolean | Prisma.roleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
@@ -903,10 +951,11 @@ export type userSelectScalar = {
   lastName?: boolean
   age?: boolean
   dni?: boolean
+  isDeleted?: boolean
   roleId?: boolean
 }
 
-export type userOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "lastName" | "age" | "dni" | "roleId", ExtArgs["result"]["user"]>
+export type userOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "lastName" | "age" | "dni" | "isDeleted" | "roleId", ExtArgs["result"]["user"]>
 export type userInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   role?: boolean | Prisma.roleDefaultArgs<ExtArgs>
   client?: boolean | Prisma.user$clientArgs<ExtArgs>
@@ -936,6 +985,7 @@ export type $userPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     lastName: string
     age: number
     dni: string
+    isDeleted: boolean
     roleId: number
   }, ExtArgs["result"]["user"]>
   composites: {}
@@ -1371,6 +1421,7 @@ export interface userFieldRefs {
   readonly lastName: Prisma.FieldRef<"user", 'String'>
   readonly age: Prisma.FieldRef<"user", 'Int'>
   readonly dni: Prisma.FieldRef<"user", 'String'>
+  readonly isDeleted: Prisma.FieldRef<"user", 'Boolean'>
   readonly roleId: Prisma.FieldRef<"user", 'Int'>
 }
     

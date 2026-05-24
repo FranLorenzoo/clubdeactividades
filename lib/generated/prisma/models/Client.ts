@@ -388,10 +388,6 @@ export type clientUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.clientUpdateToOneWithWhereWithoutUserInput, Prisma.clientUpdateWithoutUserInput>, Prisma.clientUncheckedUpdateWithoutUserInput>
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type clientCreateNestedOneWithoutCreditCardInput = {
   create?: Prisma.XOR<Prisma.clientCreateWithoutCreditCardInput, Prisma.clientUncheckedCreateWithoutCreditCardInput>
   connectOrCreate?: Prisma.clientCreateOrConnectWithoutCreditCardInput
