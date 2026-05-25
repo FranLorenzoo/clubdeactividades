@@ -69,6 +69,7 @@ export default function CreateClient({onClose, onClientCreated}: Props) {
               age: calculateAge(fechaNacimiento),
               roleId: 1,
               password: generateRandomPassword(),
+              isDeleted: false
             }),
           }
         );

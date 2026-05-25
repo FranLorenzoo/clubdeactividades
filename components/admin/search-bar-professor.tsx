@@ -39,10 +39,9 @@ export default function SearchBarProfessor(){
     }, []) 
 
 
-    const deleteProfessor = async (idUno: number, idDos: number) => {
+    const deleteProfessor = async (idUno: number) => {
     try {
       const res= await fetch(`/api/professor/${idUno}`, { method: "DELETE" });
-      await fetch(`/api/user/${idDos}`, { method: "DELETE" });
       if (res.ok){
         setProfessors((prev) => prev.filter((pro) => pro.id !== idUno));
         setFilteredProfessors((prev) => prev.filter((pro) => pro.id !== idUno));
@@ -143,7 +142,7 @@ export default function SearchBarProfessor(){
             <p className="text-gray-700 text-sm font-semibold">{pro.user?.email}</p>
           </div>
         </div>
-        <button onClick={() => deleteProfessor(pro.id, pro.user?.id)} 
+        <button onClick={() => deleteProfessor(pro.id)} 
           className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
           Eliminar</button>
       </li>

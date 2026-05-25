@@ -3,27 +3,28 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllUsers() {
   return prisma.user.findMany({
+    where: { isDeleted: false },
     include: { role: true, client: true, employee: true, professor: true },
   });
 }
 
 export async function getUserById(id: number) {
-  return prisma.user.findUnique({
-    where: { id },
+  return prisma.user.findFirst({
+    where: { id, isDeleted: false },
     include: { role: true, client: true, employee: true, professor: true },
   });
 }
 
 export async function getUserByDNI(dni: string) {
   return prisma.user.findFirst({
-    where: { dni },
+    where: { dni, isDeleted: false },
     include: { role: true, client: true, employee: true, professor: true },
   });
 }
 
 export async function getUserByEmail(email: string) {
-  return prisma.user.findUnique({
-    where: { email },
+  return prisma.user.findFirst({
+    where: { email, isDeleted: false },
     include: { role: true, client: true, employee: true, professor: true },
   });
 }
@@ -37,5 +38,10 @@ export async function updateUser(id: number, data: Prisma.userUpdateInput) {
 }
 
 export async function deleteUser(id: number) {
-  return prisma.user.delete({ where: { id } });
-}
+  return prisma.user.update({
+    where: { id },
+    data: {
+      isDeleted: true,
+    },
+  });
+} 
