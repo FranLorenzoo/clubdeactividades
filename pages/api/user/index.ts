@@ -1,4 +1,4 @@
-import { sendEmail } from "@/lib/email/emaiPassword";
+import { sendEmail } from "@/lib/email/emailPassword";
 import { getAllUsers, createUser, getUserByDNI } from "@/lib/sql/user";
 import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
