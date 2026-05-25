@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { transporter } from "@/lib/utils/nodemailer";
+import { getHTMLContent, transporter } from "@/lib/utils/nodemailer";
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,6 +22,7 @@ export default async function handler(
       to,
       subject,
       text,
+      html: getHTMLContent()
     });
 
     return res.status(200).json({
