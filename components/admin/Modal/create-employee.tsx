@@ -69,6 +69,7 @@ export default function CreateEmployee({onClose, onEmployeeCreated}: Props) {
                 age: calculateAge(fechaNacimiento),
                 roleId: 3,
                 password: generateRandomPassword(),
+                isDeleted: false
               }),
             }
           );

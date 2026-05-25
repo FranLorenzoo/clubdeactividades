@@ -277,6 +277,19 @@ export default function Register() {
 
           return;
         }
+        if (
+          data.message ===
+          "El DNI ya está registrado"
+        ) {
+
+          dniInput.setCustomValidity(
+            "El DNI ya está registrado"
+          );
+
+          dniInput.reportValidity();
+
+          return;
+        }
 
       }
 

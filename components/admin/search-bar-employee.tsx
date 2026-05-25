@@ -38,10 +38,9 @@ export default function Searchbar() {
   }, []);
 
 
-  const deleteEmployee = async (idUno: number, idDos: number) => {
+  const deleteEmployee = async (idUno: number) => {
     try {
       const res= await fetch(`/api/employee/${idUno}`, { method: "DELETE" });
-      await fetch(`/api/user/${idDos}`, { method: "DELETE" });
       if (res.ok){
         setEmployees((prev) => prev.filter((emp) => emp.id !== idUno));
         setFilteredEmployees((prev) => prev.filter((pro) => pro.id !== idUno));
@@ -143,7 +142,7 @@ export default function Searchbar() {
             <p className="text-gray-700 text-sm font-semibold">{emp.user?.email}</p>
           </div>
         </div>
-        <button onClick={() => deleteEmployee(emp.id, emp.user?.id)} 
+        <button onClick={() => deleteEmployee(emp.id)} 
           className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
           Eliminar</button>
 

@@ -3,13 +3,23 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllProfessors() {
   return prisma.professor.findMany({
+    where: {
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, activity: true, appointments: true },
   });
 }
 
 export async function getProfessorById(id: number) {
-  return prisma.professor.findUnique({
-    where: { id },
+  return prisma.professor.findFirst({
+    where: { 
+      id,
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, activity: true, appointments: true },
   });
 }
@@ -23,19 +33,46 @@ export async function updateProfessor(id: number, data: Prisma.professorUpdateIn
 }
 
 export async function deleteProfessor(id: number) {
-  return prisma.professor.delete({ where: { id } });
+  const professor = await prisma.professor.findUnique({
+    where: {
+      id: id
+    }
+  });
+
+  if (!professor) {
+    throw new Error("professor not found");
+  }
+
+  return prisma.user.update({
+    where: {
+      id: professor.userId
+    },
+    data: {
+      isDeleted: true
+    }
+  });
 }
 
 export async function getProfessorByUserId(userId: number) {
-  return prisma.professor.findUnique({
-    where: { userId },
+  return prisma.professor.findFirst({
+    where: { 
+      userId,
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, activity: true, appointments: true },
   });
 }
 
 export async function getProfessorsByActivityId(activityId: number) {
   return prisma.professor.findMany({
-    where: { activityId },
+    where: { 
+      activityId,
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, activity: true, appointments: true },
   });
 }
@@ -43,7 +80,10 @@ export async function getProfessorsByActivityId(activityId: number) {
 export async function getProfessorsNamesByActivityId(activityId: number) {
   return prisma.professor.findMany({
     where: {
-      activityId: activityId
+      activityId: activityId,
+      user: {
+        isDeleted: false
+      }
     },
 
     select: {
@@ -64,7 +104,8 @@ export async function getProfessorByUserDni(dni: string) {
     where: {
       user: {
         dni: dni,
-        roleId: 4
+        roleId: 4,
+        isDeleted: false
       }
     },
     include: { 

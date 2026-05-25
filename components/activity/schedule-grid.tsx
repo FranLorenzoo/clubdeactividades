@@ -316,6 +316,9 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   const [clientId, setClientId] = useState<number | null>(null);
   const [confirming, setConfirming] = useState(false);
   const [suspended, setSuspended] = useState(false);
+  const [clientEmail, setClientEmail] = useState<string>("");
+  const [clientName, setClientName] = useState<string>("");
+  const [clientLastName, setClientLastName] = useState<string>("");
 
   const { start: weekStart, end: weekEnd } = getWeekRange(weekOffset);
   const weekLabel = formatWeekLabel(weekStart, weekEnd);
@@ -334,6 +337,9 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         if (!clientRes.ok) return;
         const client = await clientRes.json();
         setClientId(client.id);
+        setClientEmail(client.user.email);
+        setClientName(client.user.name);
+        setClientLastName(client.user.lastName);
         const uaRes = await fetch(`/api/user-appointment/client/${client.id}`);
         if (uaRes.ok) {
           const uas: any[] = await uaRes.json();
@@ -411,7 +417,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
 
       if (selectedReserveType === "unica") {
         const state = paymentMultiplier === 1 ? "PAGO_COMPLETO" : "PAGO_PARCIAL";
-        await fetch("/api/user-appointment", {
+        const response = await fetch("/api/user-appointment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -422,6 +428,19 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
             reservationDate: now.toISOString(),
           }),
         });
+        if(response.ok) {
+          await fetch("/api/send-email", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              to: clientEmail,
+              subject: "Reserva realizada",
+              text: "",
+            }),
+          });
+        }
       } else if (selectedReserveType === "mensual") {
         const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
         if (!originalAppt) return;
@@ -433,7 +452,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
           return apptDate >= now && apptDate.getUTCDay() === targetUTCDay && !alreadyBooked;
         });
 
-        await Promise.all(
+        const responses = await Promise.all(
           relevantAppointments.map((appt) => {
             return fetch("/api/user-appointment", {
               method: "POST",
@@ -448,6 +467,20 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
             });
           })
         );
+        const successful = responses.every(response => response.ok);
+        if(successful) {
+          await fetch("/api/send-email", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              to: clientEmail,
+              subject: "Reserva realizada",
+              text: "Tu reserva fue registrada correctamente",
+            }),
+          });
+        }
       }
 
       const refreshRes = await fetch(`/api/appointment/activity/${activityId}`);
