@@ -17,8 +17,10 @@ export default function Searchbar() {
   const [openEmployee, setOpenEmployee] = useState(false);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
+  const [loadingEmployees, setLoadingEmployees] = useState(true);
   
   useEffect(() => {
+    setLoadingEmployees(true);
     async function fetchEmployees() {
       try {
         const res = await fetch("/api/employee");
@@ -30,6 +32,7 @@ export default function Searchbar() {
       } catch (err) {
         console.error("Error cargando empleados", err);
       }
+      setLoadingEmployees(false);
     }
     fetchEmployees();
   }, []);
@@ -114,11 +117,16 @@ export default function Searchbar() {
 
       <div className="mt-6 max-w-xl mx-auto">
   <h3 className="text-lg font-bold mb-3">Lista de empleados</h3>
-  <ul className="space-y-2">
-    {filteredEmployees.filter(emp => !emp.user.isDeleted).map((emp) => (
-      <li
-        key={emp.id}
-        className="border rounded-lg px-4 py-3 bg-white shadow-sm"
+  {loadingEmployees ? (
+    <p className="text-gray-500">Cargando empleados...</p>
+  ) : filteredEmployees.length === 0 ? (
+    <p className="text-gray-500">No se encontraron empleados.</p>
+  ) : (
+    <ul className="space-y-2">
+      {filteredEmployees.filter(emp => !emp.user.isDeleted).map((emp) => (
+        <li
+          key={emp.id}
+          className="border rounded-lg px-4 py-3 bg-white shadow-sm"
       >
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -139,11 +147,9 @@ export default function Searchbar() {
           Eliminar</button>
 
       </li>
-    ))}
-  </ul>
+      ))}
+    </ul>
+    )}
 </div>
-
-
     </>
-  );
-}
+);}

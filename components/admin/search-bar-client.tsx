@@ -18,9 +18,11 @@ type Client = {
 export default function SearchBar() {
   const [open, setOpen] = useState(false);
   const [clientes, setClientes]= useState<Client[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(true);
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
 
   useEffect (()=>{
+    setLoadingUsers(true);
     async function fetchCliente(){
             try {
                 const res = await fetch("/api/client"); 
@@ -33,6 +35,7 @@ export default function SearchBar() {
             }catch(err){
                 console.error("Error cargando clientes", err); 
             }
+            setLoadingUsers(false);
         }
         fetchCliente(); 
     }, []) 
@@ -120,11 +123,16 @@ export default function SearchBar() {
 
       <div className="mt-6 max-w-xl mx-auto">
         <h3 className="text-lg font-bold mb-3">Lista de clientes</h3>
-        <ul className="space-y-2">
-          {filteredClients.filter(clie => !clie.user.isDeleted).map((cli) => (
-            <li
-              key={cli.id}
-              className="border rounded-lg px-4 py-3 bg-white shadow-sm"
+        {loadingUsers ? (
+          <p className="text-gray-500">Cargando clientes...</p>
+        ) : filteredClients.length === 0 ? (
+          <p className="text-gray-500">No se encontraron clientes</p>
+        ) : (
+          <ul className="space-y-2">
+             {filteredClients.filter(clie => !clie.user.isDeleted).map((cli) => (
+              <li
+                key={cli.id}
+                className="border rounded-lg px-4 py-3 bg-white shadow-sm"
             >
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -151,8 +159,9 @@ export default function SearchBar() {
                 Eliminar
               </button>
             </li>
-          ))}
-        </ul>
+            ))}
+            </ul>
+          )}
       </div>
     </>
   );

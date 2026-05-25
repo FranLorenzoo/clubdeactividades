@@ -19,11 +19,13 @@ type Professor = {
 
 export default function SearchBarProfessor(){
     const [professors, setProfessors] = useState<Professor[]>([]); 
+    const [loadingProfessors, setLoadingProfessors] = useState(true);
     const [openProfessor, setOpenProfessor] = useState(false);
     const [filteredProfessors, setFilteredProfessors] = useState<Professor[]>([]);
 
 
     useEffect (()=>{
+      setLoadingProfessors(true);
         async function fetchProfessor(){
             try {
                 const res = await fetch("/api/professor"); 
@@ -35,6 +37,7 @@ export default function SearchBarProfessor(){
             }catch(err){
                 console.error("Error cargando profesores", err); 
             }
+            setLoadingProfessors(false);
         }
         fetchProfessor(); 
     }, []) 
@@ -119,11 +122,16 @@ export default function SearchBarProfessor(){
           }
         <div className="mt-6 max-w-xl mx-auto">
   <h3 className="text-lg font-bold mb-3">Lista de profesores</h3>
-  <ul className="space-y-2">
-    {filteredProfessors.filter(pro => !pro.user.isDeleted).map((pro) => (
-      <li
-        key={pro.id}
-        className="border rounded-lg px-4 py-3 bg-white shadow-sm"
+  {loadingProfessors ? (
+    <p className="text-gray-500">Cargando profesores...</p>
+    ) : filteredProfessors.length === 0 ? (
+    <p className="text-gray-500">No se encontraron profesores.</p>
+  ) : (
+    <ul className="space-y-2">
+      {filteredProfessors.filter(pro => !pro.user.isDeleted).map((pro) => (
+        <li
+          key={pro.id}
+          className="border rounded-lg px-4 py-3 bg-white shadow-sm"
       >
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -147,16 +155,9 @@ export default function SearchBarProfessor(){
           className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
           Eliminar</button>
       </li>
-    ))}
+     ))}
   </ul>
-</div>
-
-    
-    
-        </>
-      );
-
-    
-
-
-}
+  )}
+  </div>
+  </>
+);}
