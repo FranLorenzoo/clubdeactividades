@@ -6,11 +6,12 @@ type Client = {
   suspended: boolean;
   active: boolean;
   user: {
-    id: number,
-    email: string,
-    name: string,
-    lastName: string,
-    dni: string
+    id: number;
+    email: string;
+    name: string;
+    lastName: string;
+    dni: string;
+    isDeleted: boolean;
   }
 }
 
@@ -69,6 +70,7 @@ export default function CreateClient({onClose, onClientCreated}: Props) {
               age: calculateAge(fechaNacimiento),
               roleId: 1,
               password: generateRandomPassword(),
+              isDeleted: false
             }),
           }
         );

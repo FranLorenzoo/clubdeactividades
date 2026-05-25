@@ -3,13 +3,22 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllClients() {
   return prisma.client.findMany({
+    where: { 
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, creditCard: true, userAppointments: true },
   });
 }
 
 export async function getClientById(id: number) {
-  return prisma.client.findUnique({
-    where: { id },
+  return prisma.client.findFirst({
+    where: { id,
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, creditCard: true, userAppointments: true },
   });
 }
@@ -23,12 +32,34 @@ export async function updateClient(id: number, data: Prisma.clientUpdateInput) {
 }
 
 export async function deleteClient(id: number) {
-  return prisma.client.delete({ where: { id } });
+  const client = await prisma.client.findUnique({
+    where: {
+      id: id
+    }
+  });
+
+  if (!client) {
+    throw new Error("Client not found");
+  }
+
+  return prisma.user.update({
+    where: {
+      id: client.userId
+    },
+    data: {
+      isDeleted: true
+    }
+  });
 }
 
 export async function getClientByUserId(userId: number) {
-  return prisma.client.findUnique({
-    where: { userId: userId },
+  return prisma.client.findFirst({
+    where: { 
+      userId,
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, creditCard: true, userAppointments: true },
   });
 }
@@ -38,7 +69,8 @@ export async function getClientByUserDni(dni: string) {
     where: {
       user: {
         dni: dni,
-        roleId: 1
+        roleId: 1,
+        isDeleted: false
       }
     },
     include: { 

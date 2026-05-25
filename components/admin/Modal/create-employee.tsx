@@ -9,6 +9,7 @@ type Employee = {
     email: string;
     dni: string;
     id: number;
+    isDeleted: boolean;
   }
 }
 
@@ -68,6 +69,7 @@ export default function CreateEmployee({onClose, onEmployeeCreated}: Props) {
                 age: calculateAge(fechaNacimiento),
                 roleId: 3,
                 password: generateRandomPassword(),
+                isDeleted: false
               }),
             }
           );

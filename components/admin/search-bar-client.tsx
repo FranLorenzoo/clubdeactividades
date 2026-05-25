@@ -6,11 +6,12 @@ type Client = {
   suspended: boolean;
   active: boolean;
   user: {
-    id: number,
-    email: string,
-    name: string,
-    lastName: string,
-    dni: string
+    id: number;
+    email: string;
+    name: string;
+    lastName: string;
+    dni: string;
+    isDeleted: boolean;
   }
 }
 
@@ -37,13 +38,12 @@ export default function SearchBar() {
     }, []) 
 
 
-    const deleteClient = async (idUno: number, idDos: number) => {
+    const deleteClient = async (clientId: number) => {
     try {
-      const res= await fetch(`/api/client/${idUno}`, { method: "DELETE" });
-      await fetch(`/api/user/${idDos}`, { method: "DELETE" });
+      const res= await fetch(`/api/client/${clientId}`, { method: "DELETE" });
       if (res.ok){
-        setClientes((prev) => prev.filter((cli) => cli.id !== idUno));
-        setFilteredClients((prev) => prev.filter((cli) => cli.id !== idUno));
+        setClientes((prev) => prev.filter((cli) => cli.id !== clientId));
+        setFilteredClients((prev) => prev.filter((cli) => cli.id !== clientId));
         alert("El cliente fue eliminado con éxito");
       }
       } catch (error) {
@@ -121,7 +121,7 @@ export default function SearchBar() {
       <div className="mt-6 max-w-xl mx-auto">
         <h3 className="text-lg font-bold mb-3">Lista de clientes</h3>
         <ul className="space-y-2">
-          {filteredClients.map((cli) => (
+          {filteredClients.filter(clie => !clie.user.isDeleted).map((cli) => (
             <li
               key={cli.id}
               className="border rounded-lg px-4 py-3 bg-white shadow-sm"
@@ -146,7 +146,7 @@ export default function SearchBar() {
                   </p>
                 </div>
               </div>
-              <button onClick={() => deleteClient(cli.id, cli.user?.id)}
+              <button onClick={() => deleteClient(cli.id)}
                 className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
                 Eliminar
               </button>

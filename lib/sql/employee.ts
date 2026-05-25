@@ -3,13 +3,22 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllEmployees() {
   return prisma.employee.findMany({
+    where: { 
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, payments: true },
   });
 }
 
 export async function getEmployeeById(id: number) {
-  return prisma.employee.findUnique({
-    where: { id },
+  return prisma.employee.findFirst({
+    where: { id,
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, payments: true },
   });
 }
@@ -23,12 +32,34 @@ export async function updateEmployee(id: number, data: Prisma.employeeUpdateInpu
 }
 
 export async function deleteEmployee(id: number) {
-  return prisma.employee.delete({ where: { id } });
+  const employee = await prisma.employee.findUnique({
+    where: {
+      id: id
+    }
+  });
+
+  if (!employee) {
+    throw new Error("employee not found");
+  }
+
+  return prisma.user.update({
+    where: {
+      id: employee.userId
+    },
+    data: {
+      isDeleted: true
+    }
+  });
 }
 
 export async function getEmployeeByUserId(userId: number) {
-  return prisma.employee.findUnique({
-    where: { userId },
+  return prisma.employee.findFirst({
+    where: { 
+      userId,
+      user: {
+        isDeleted: false
+      }
+    },
     include: { user: true, payments: true },
   });
 }
@@ -38,7 +69,8 @@ export async function getEmployeeByUserDni(dni: string) {
     where: {
       user: {
         dni: dni,
-        roleId: 3
+        roleId: 3,
+        isDeleted: false
       }
     },
     include: { 

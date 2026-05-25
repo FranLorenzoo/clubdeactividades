@@ -9,6 +9,7 @@ type Professor = {
     lastName: string;
     dni: string;
     id: number;
+    isDeleted: boolean;
   },
   activity: {
     id: number,
@@ -93,7 +94,8 @@ export default function CreateEmployee({onClose, onProfessorCreated}: Props) {
                 age: calculateAge(fechaNacimiento),
                 roleId: 4,
                 password: generateRandomPassword(),
-                activityId: Number(activityId)
+                activityId: Number(activityId),
+                isDeleted: false
               }),
             }
           );
