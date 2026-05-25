@@ -9,6 +9,7 @@ type Professor = {
     lastName: string;
     dni: string;
     id: number;
+    isDeleted: boolean;
   },
   activity: {
     id: number,

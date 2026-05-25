@@ -9,6 +9,7 @@ type Employee = {
     email: string;
     dni: string;
     id: number;
+    isDeleted: boolean;
   }
 }
 
@@ -114,7 +115,7 @@ export default function Searchbar() {
       <div className="mt-6 max-w-xl mx-auto">
   <h3 className="text-lg font-bold mb-3">Lista de empleados</h3>
   <ul className="space-y-2">
-    {filteredEmployees.map((emp) => (
+    {filteredEmployees.filter(emp => !emp.user.isDeleted).map((emp) => (
       <li
         key={emp.id}
         className="border rounded-lg px-4 py-3 bg-white shadow-sm"

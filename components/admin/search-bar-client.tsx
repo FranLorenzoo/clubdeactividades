@@ -6,11 +6,12 @@ type Client = {
   suspended: boolean;
   active: boolean;
   user: {
-    id: number,
-    email: string,
-    name: string,
-    lastName: string,
-    dni: string
+    id: number;
+    email: string;
+    name: string;
+    lastName: string;
+    dni: string;
+    isDeleted: boolean;
   }
 }
 
@@ -120,7 +121,7 @@ export default function SearchBar() {
       <div className="mt-6 max-w-xl mx-auto">
         <h3 className="text-lg font-bold mb-3">Lista de clientes</h3>
         <ul className="space-y-2">
-          {filteredClients.map((cli) => (
+          {filteredClients.filter(clie => !clie.user.isDeleted).map((cli) => (
             <li
               key={cli.id}
               className="border rounded-lg px-4 py-3 bg-white shadow-sm"

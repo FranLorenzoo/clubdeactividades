@@ -6,11 +6,12 @@ type Client = {
   suspended: boolean;
   active: boolean;
   user: {
-    id: number,
-    email: string,
-    name: string,
-    lastName: string,
-    dni: string
+    id: number;
+    email: string;
+    name: string;
+    lastName: string;
+    dni: string;
+    isDeleted: boolean;
   }
 }
 

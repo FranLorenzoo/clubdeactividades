@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Prisma } from "@/lib/generated/prisma/professor";
+import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllProfessors() {
   return prisma.professor.findMany({

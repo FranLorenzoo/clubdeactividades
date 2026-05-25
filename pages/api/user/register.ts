@@ -46,7 +46,6 @@ export default async function handler(
         age: Number(age),
         isDeleted: false,
         dni,
-        isDeleted: false,
         role: {
           connect: {
             id: Number(roleId)

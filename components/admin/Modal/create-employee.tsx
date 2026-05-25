@@ -9,6 +9,7 @@ type Employee = {
     email: string;
     dni: string;
     id: number;
+    isDeleted: boolean;
   }
 }
 
