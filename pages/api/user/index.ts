@@ -1,3 +1,4 @@
+import { sendEmail } from "@/lib/email/emailPassword";
 import { getAllUsers, createUser, getUserByDNI } from "@/lib/sql/user";
 import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -89,6 +90,8 @@ async function createUserHandler(body: Record<string, unknown>, res: NextApiResp
     }
 
     const user = await createUser(reqBody);
+    await sendEmail(user);
+
     res.status(201).json(user);
   } catch (error) {
 
