@@ -317,6 +317,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   const [confirming, setConfirming] = useState(false);
   const [suspended, setSuspended] = useState(false);
   const [clientEmail, setClientEmail] = useState<string>("");
+  const [clientName, setClientName] = useState<string>("");
+  const [clientLastName, setClientLastName] = useState<string>("");
 
   const { start: weekStart, end: weekEnd } = getWeekRange(weekOffset);
   const weekLabel = formatWeekLabel(weekStart, weekEnd);
@@ -336,6 +338,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         const client = await clientRes.json();
         setClientId(client.id);
         setClientEmail(client.user.email);
+        setClientName(client.user.name);
+        setClientLastName(client.user.lastName);
         const uaRes = await fetch(`/api/user-appointment/client/${client.id}`);
         if (uaRes.ok) {
           const uas: any[] = await uaRes.json();
@@ -433,7 +437,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
             body: JSON.stringify({
               to: clientEmail,
               subject: "Reserva realizada",
-              text: "Tu reserva fue registrada correctamente",
+              text: "",
             }),
           });
         }
