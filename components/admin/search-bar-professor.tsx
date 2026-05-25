@@ -9,6 +9,7 @@ type Professor = {
     lastName: string;
     dni: string;
     id: number;
+    isDeleted: boolean;
   },
   activity: {
     id: number,
@@ -128,7 +129,7 @@ export default function SearchBarProfessor(){
     <p className="text-gray-500">No se encontraron profesores.</p>
   ) : (
     <ul className="space-y-2">
-      {filteredProfessors.map((pro) => (
+      {filteredProfessors.filter(pro => !pro.user.isDeleted).map((pro) => (
         <li
           key={pro.id}
           className="border rounded-lg px-4 py-3 bg-white shadow-sm"

@@ -11,6 +11,7 @@ type Client = {
     name: string,
     lastName: string,
     dni: string
+    isDeleted: boolean;
   }
 }
 
@@ -129,7 +130,7 @@ export default function SearchBar() {
           <p className="text-gray-500">No se encontraron clientes</p>
         ) : (
           <ul className="space-y-2">
-            {filteredClients.map((cli) => (
+             {filteredClients.filter(clie => !clie.user.isDeleted).map((cli) => (
               <li
                 key={cli.id}
                 className="border rounded-lg px-4 py-3 bg-white shadow-sm"

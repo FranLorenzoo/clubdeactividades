@@ -11,6 +11,7 @@ type Client = {
     name: string,
     lastName: string,
     dni: string
+    isDeleted: boolean;
   }
 }
 
