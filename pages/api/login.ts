@@ -18,6 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(401).json({ message: "Credenciales inválidas" });
     }
 
+    if (user.isDeleted) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
     // Nota: en producción la password debe estar hasheada. Aquí comparamos plaintext solo para desarrollo.
     if (user.password !== password) {
       return res.status(401).json({ message: "Credenciales inválidas" });

@@ -37,6 +37,19 @@ export default async function handler(
       });
     }
 
+    // verificar DNI repetido
+    const existingUserDNI = await prisma.user.findFirst({
+      where: {
+        dni
+      }
+    });
+
+    if (existingUserDNI) {
+      return res.status(410).json({
+        message: "El DNI ya está registrado"
+      });
+    }
+
     const user = await prisma.user.create({
       data: {
         email,
@@ -44,8 +57,8 @@ export default async function handler(
         name,
         lastName,
         age: Number(age),
-        dni,
         isDeleted: false,
+        dni,
         role: {
           connect: {
             id: Number(roleId)

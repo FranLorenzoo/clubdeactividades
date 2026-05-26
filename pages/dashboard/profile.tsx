@@ -30,7 +30,6 @@ export default function ProfilePage() {
   // user form state
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [age, setAge] = useState("");
   const [password, setPassword] = useState("");
 
   // credit card state (client only)
@@ -66,7 +65,6 @@ export default function ProfilePage() {
         const data: UserData = await res.json();
         setName(data.name);
         setLastName(data.lastName);
-        setAge(String(data.age));
         console.log(storedRole)
         if (storedRole === "CLIENT" && data.client) {
           const clientFromAPI = await fetch(`/api/client/user/${storedUserId}`);
@@ -81,7 +79,7 @@ export default function ProfilePage() {
             setCardNumber(card.cardNumber);
             setSecurityCode(card.securityCode);
             setCardHolder(card.cardHolder);
-            setExpireDate(card.expireDate.slice(0, 10));
+            setExpireDate(card.expireDate.slice(0, 7));
           }
         }
       } catch {
@@ -104,9 +102,15 @@ export default function ProfilePage() {
       const body: Record<string, unknown> = {
         name: name.trim(),
         lastName: lastName.trim(),
-        age: Number(age),
       };
-      if (password.trim()) body.password = password.trim();
+      if (password.trim()) {
+        if (password.trim().length < 8) {
+          setUserMsg({ text: "La contraseña debe tener al menos 8 caracteres.", ok: false });
+          setSavingUser(false);
+          return;
+        }
+        body.password = password.trim();
+      }
 
       const res = await fetch(`/api/user/${userId}`, {
         method: "PUT",
@@ -130,6 +134,16 @@ export default function ProfilePage() {
     setSavingCard(true);
     setCardMsg(null);
     try {
+      if (!/^\d{16}$/.test(cardNumber.trim())) {
+        setCardMsg({ text: "El número de tarjeta debe tener exactamente 16 dígitos numéricos.", ok: false });
+        setSavingCard(false);
+        return;
+      }
+      if (!/^\d{3}$/.test(securityCode.trim())) {
+        setCardMsg({ text: "El código de seguridad debe tener exactamente 3 dígitos numéricos.", ok: false });
+        setSavingCard(false);
+        return;
+      }
       const body = {
         cardNumber: cardNumber.trim(),
         securityCode: securityCode.trim(),
@@ -211,20 +225,6 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className={labelCls}>Edad</label>
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  min={18}
-                  max={120}
-                  required
-                  placeholder="Edad"
-                />
-              </div>
-
-              <div>
                 <label className={labelCls}>
                   Nueva contraseña{" "}
                   <span className="text-zinc-600 font-normal">(dejar vacío para no cambiar)</span>
@@ -235,7 +235,6 @@ export default function ProfilePage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  minLength={8}
                   autoComplete="new-password"
                 />
               </div>
@@ -277,10 +276,11 @@ export default function ProfilePage() {
                     type="text"
                     className={inputCls}
                     value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
+                    onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, ""))}
                     required
                     placeholder="1234 5678 9012 3456"
-                    maxLength={19}
+                    maxLength={16}
+                    inputMode="numeric"
                   />
                 </div>
 
@@ -291,22 +291,23 @@ export default function ProfilePage() {
                       type="password"
                       className={inputCls}
                       value={securityCode}
-                      onChange={(e) => setSecurityCode(e.target.value)}
+                      onChange={(e) => setSecurityCode(e.target.value.replace(/\D/g, ""))}
                       required
                       placeholder="•••"
-                      maxLength={4}
+                      maxLength={3}
                       autoComplete="off"
+                      inputMode="numeric"
                     />
                   </div>
                   <div>
                     <label className={labelCls}>Fecha de vencimiento</label>
                     <input
-                      type="date"
+                      type="month"
                       className={inputCls}
                       value={expireDate}
                       onChange={(e) => setExpireDate(e.target.value)}
                       required
-                      min={new Date().toISOString().slice(0, 10)}
+                      min={new Date().toISOString().slice(0, 7)}
                     />
                   </div>
                 </div>
