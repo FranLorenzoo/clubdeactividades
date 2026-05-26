@@ -16,7 +16,7 @@ export default function InitialView() {
       {!selectedSport ? (
         <>
           <h2 className="text-2xl font-bold mb-6 text-green-400 text-center">
-            Seleccioná tu deporte
+            Seleccioná el deporte
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {deportes.map((dep) => (
