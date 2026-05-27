@@ -30,7 +30,10 @@ export default function ProfilePage() {
   // user form state
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [password, setPassword] = useState("");
+
+  // password form state
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   // credit card state (client only)
   const [clientId, setClientId] = useState<number | null>(null);
@@ -43,8 +46,10 @@ export default function ProfilePage() {
   const [loadingUser, setLoadingUser] = useState(true);
   const [loadingCard, setLoadingCard] = useState(false);
   const [savingUser, setSavingUser] = useState(false);
+  const [savingPassword, setSavingPassword] = useState(false);
   const [savingCard, setSavingCard] = useState(false);
   const [userMsg, setUserMsg] = useState<{ text: string; ok: boolean } | null>(null);
+  const [passwordMsg, setPasswordMsg] = useState<{ text: string; ok: boolean } | null>(null);
   const [cardMsg, setCardMsg] = useState<{ text: string; ok: boolean } | null>(null);
 
   useEffect(() => {
@@ -99,31 +104,47 @@ export default function ProfilePage() {
     setSavingUser(true);
     setUserMsg(null);
     try {
-      const body: Record<string, unknown> = {
-        name: name.trim(),
-        lastName: lastName.trim(),
-      };
-      if (password.trim()) {
-        if (password.trim().length < 8) {
-          setUserMsg({ text: "La contraseña debe tener al menos 8 caracteres.", ok: false });
-          setSavingUser(false);
-          return;
-        }
-        body.password = password.trim();
-      }
-
       const res = await fetch(`/api/user/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ name: name.trim(), lastName: lastName.trim() }),
       });
       if (!res.ok) throw new Error();
       setUserMsg({ text: "Perfil actualizado correctamente.", ok: true });
-      setPassword("");
     } catch {
       setUserMsg({ text: "Error al guardar los cambios.", ok: false });
     } finally {
       setSavingUser(false);
+    }
+  }
+
+  async function handleSavePassword(e: React.FormEvent) {
+    e.preventDefault();
+    if (!userId) return;
+    if (newPassword.trim() !== confirmPassword.trim()) {
+      setPasswordMsg({ text: "Las contraseñas no coinciden.", ok: false });
+      return;
+    }
+    if (newPassword.trim().length < 8) {
+      setPasswordMsg({ text: "La contraseña debe tener al menos 8 caracteres.", ok: false });
+      return;
+    }
+    setSavingPassword(true);
+    setPasswordMsg(null);
+    try {
+      const res = await fetch(`/api/user/${userId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: newPassword.trim() }),
+      });
+      if (!res.ok) throw new Error();
+      setPasswordMsg({ text: "Contraseña actualizada correctamente.", ok: true });
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch {
+      setPasswordMsg({ text: "Error al cambiar la contraseña.", ok: false });
+    } finally {
+      setSavingPassword(false);
     }
   }
 
@@ -224,21 +245,6 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              <div>
-                <label className={labelCls}>
-                  Nueva contraseña{" "}
-                  <span className="text-zinc-600 font-normal">(dejar vacío para no cambiar)</span>
-                </label>
-                <input
-                  type="password"
-                  className={inputCls}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  autoComplete="new-password"
-                />
-              </div>
-
               {userMsg && (
                 <p className={`text-sm font-medium ${userMsg.ok ? "text-green-400" : "text-red-400"}`}>
                   {userMsg.text}
@@ -254,6 +260,51 @@ export default function ProfilePage() {
               </button>
             </form>
           )}
+        </section>
+
+        {/* ── Change password section ────────────────────────────── */}
+        <section className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
+          <h2 className="text-xl font-semibold text-white mb-6">Cambiar contraseña</h2>
+          <form onSubmit={handleSavePassword} className="space-y-5">
+            <div>
+              <label className={labelCls}>Nueva contraseña</label>
+              <input
+                type="password"
+                className={inputCls}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                autoComplete="new-password"
+              />
+            </div>
+            <div>
+              <label className={labelCls}>Confirmar nueva contraseña</label>
+              <input
+                type="password"
+                className={inputCls}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                autoComplete="new-password"
+              />
+            </div>
+
+            {passwordMsg && (
+              <p className={`text-sm font-medium ${passwordMsg.ok ? "text-green-400" : "text-red-400"}`}>
+                {passwordMsg.text}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={savingPassword}
+              className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white py-3 rounded-2xl font-semibold transition"
+            >
+              {savingPassword ? "Guardando..." : "Cambiar contraseña"}
+            </button>
+          </form>
         </section>
 
         {/* ── Credit card section (client only) ──────────────────── */}
