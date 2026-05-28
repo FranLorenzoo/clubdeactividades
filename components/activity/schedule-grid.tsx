@@ -2,6 +2,28 @@ import { useEffect, useState } from "react";
 
 const ALL_DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
+const CLUB_TIME_ZONE = "America/Argentina/Buenos_Aires";
+
+const WEEKDAY_SHORT_TO_LABEL: Record<string, string> = {
+  Mon: "Lunes",
+  Tue: "Martes",
+  Wed: "Miércoles",
+  Thu: "Jueves",
+  Fri: "Viernes",
+  Sat: "Sábado",
+  Sun: "Domingo",
+};
+
+const WEEKDAY_SHORT_TO_INDEX: Record<string, number> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
+};
+
 const TIME_SLOTS = [
   "08:00",
   "09:00",
@@ -17,17 +39,6 @@ const TIME_SLOTS = [
   "19:00",
   "20:00",
 ];
-
-// JS getDay(): 0=Sun,1=Mon,...,6=Sat
-const DAY_INDEX_MAP: Record<number, string> = {
-  1: "Lunes",
-  2: "Martes",
-  3: "Miércoles",
-  4: "Jueves",
-  5: "Viernes",
-  6: "Sábado",
-  0: "Domingo",
-};
 
 type ReserveType = "mensual" | "unica" | null;
 
@@ -87,11 +98,46 @@ function calcAmount(reserveType: ReserveType, price: number, dayOfWeek: number):
   return price * remaining * 0.85;
 }
 
+function getClubWeekdayShort(date: Date): string {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    timeZone: CLUB_TIME_ZONE,
+  }).format(date);
+}
+
+function getClubDayLabel(date: Date): string {
+  return WEEKDAY_SHORT_TO_LABEL[getClubWeekdayShort(date)] ?? "";
+}
+
+function getClubDayIndex(date: Date): number {
+  return WEEKDAY_SHORT_TO_INDEX[getClubWeekdayShort(date)] ?? date.getDay();
+}
+
+function getClubTimeLabel(date: Date): string {
+  return new Intl.DateTimeFormat("es-AR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: CLUB_TIME_ZONE,
+  }).format(date);
+}
+
 interface CreditCard {
   id: number;
   cardNumber: string;
   cardHolder: string;
   expireDate: string;
+}
+
+function isInWaitingList(ua: any): boolean {
+  const queue = [...(ua.appointment?.userAppointments ?? [])].sort((a: any, b: any) => {
+    const timeDiff = new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime();
+    if (timeDiff !== 0) return timeDiff;
+    return Number(a.id) - Number(b.id);
+  });
+  const capacity = Number(ua.appointment?.slotsAvailable ?? 0);
+  const index = queue.findIndex((item: any) => item.id === ua.id);
+  return index !== -1 && index >= capacity;
 }
 
 // ─── Detail popup (admin / employee) ─────────────────────────────────────────
@@ -144,6 +190,7 @@ interface ReservePopupProps {
   price: number;
   dayOfWeek: number;
   alreadyReserved: boolean;
+  reservedInWaitingList: boolean;
   reserveType: ReserveType;
   onTypeChange: (t: ReserveType) => void;
   onClose: () => void;
@@ -155,14 +202,22 @@ interface ReservePopupProps {
 }
 
 function ReservePopup({
-  time, available, waitingList, price, dayOfWeek, alreadyReserved,
+  time, available, waitingList, price, dayOfWeek, alreadyReserved, reservedInWaitingList,
   reserveType, onTypeChange, onClose, onConfirm, confirming,
   creditCard, loadingCard, suspended,
 }: ReservePopupProps) {
   const [payment, setPayment] = useState<number | null>(1);
+  const hasCard = Boolean(creditCard);
+  const selectionBlocked = !hasCard || loadingCard;
   const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
-  const canConfirm = reserveType !== null;
-  const cardBlocked = reserveType === "unica" && !creditCard;
+  const canConfirm = reserveType !== null && hasCard;
+  const cardBlocked = !hasCard;
+
+  useEffect(() => {
+    if (!hasCard && reserveType !== null) {
+      onTypeChange(null);
+    }
+  }, [hasCard, reserveType, onTypeChange]);
 
   if (suspended) {
     return (
@@ -189,15 +244,29 @@ function ReservePopup({
       </div>
 
       <p className="text-xs text-zinc-400 mb-3">
-        {waitingList ? "Lista de espera" : available > 0 ? `${available} cupos disponibles` : "Sin cupos"}
+        {available > 0 ? `${available} cupos disponibles` : "Sin cupos disponibles. Podés anotarte en lista de espera."}
       </p>
 
       {alreadyReserved && (
-        <p className="text-xs text-yellow-400 font-medium mb-3">Ya tenés este turno reservado.</p>
+        <p className="text-xs text-yellow-400 font-medium mb-3">
+          {reservedInWaitingList ? "Estás en lista de espera para este turno." : "Ya tenés este turno reservado."}
+        </p>
+      )}
+
+      {!loadingCard && !hasCard && (
+        <p className="text-xs text-red-400 font-medium mb-3">
+          Necesitás registrar una tarjeta para poder reservar.
+        </p>
       )}
 
       <p className="text-xs text-zinc-400 mb-2">Tipo de reserva</p>
-      <div className="flex gap-2 mb-4" style={{ pointerEvents: alreadyReserved ? "none" : "auto", opacity: alreadyReserved ? 0.4 : 1 }}>
+      <div
+        className="flex gap-2 mb-4"
+        style={{
+          pointerEvents: alreadyReserved || selectionBlocked ? "none" : "auto",
+          opacity: alreadyReserved || selectionBlocked ? 0.4 : 1,
+        }}
+      >
         <button
           onClick={() => { onTypeChange(reserveType === "mensual" ? null : "mensual"); }}
           className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
@@ -297,6 +366,7 @@ interface AppointmentSlot {
   dayOfWeek: number;
   professorName: string;
   alreadyReserved: boolean;
+  reservedInWaitingList: boolean;
 }
 
 interface ScheduleGridProps {
@@ -345,7 +415,10 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
           const uas: any[] = await uaRes.json();
           const now = new Date();
           const overdueCount = uas.filter(
-            (ua) => ua.state === "IMPAGO" && new Date(ua.appointment.initialDate) < now
+              (ua) =>
+                ua.state === "IMPAGO" &&
+                new Date(ua.appointment.initialDate) < now &&
+                !isInWaitingList(ua)
           ).length;
           setSuspended(overdueCount >= 3);
         }
@@ -369,6 +442,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         const res = await fetch(`/api/appointment/activity/${activityId}`);
         const data = await res.json();
         setAppointments(data);
+        console.log("Appointments:", data);
         if (Array.isArray(data) && data.length > 0) {
           const now = new Date();
           const upcoming = (data as any[])
@@ -392,18 +466,40 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     const appt = appointments.find((a) => {
       const date = new Date(a.initialDate);
       if (date < weekStart || date > weekEnd) return false;
-      const apptDay = DAY_INDEX_MAP[date.getUTCDay()];
-      const apptTime = `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}`;
+      const apptDay = getClubDayLabel(date);
+      const apptTime = getClubTimeLabel(date);
       return apptDay === day && apptTime === time;
     });
     if (!appt) return null;
     const count = appt.userAppointments?.length ?? 0;
-    const waitingList = count >= 10;
-    const available = waitingList ? 0 : 10 - count;
-    const dayOfWeek = new Date(appt.initialDate).getDay();
+    const capacity = appt.slotsAvailable ?? 10;
+    const waitingList = count >= capacity;
+    const available = waitingList ? 0 : capacity - count;
+    const dayOfWeek = getClubDayIndex(new Date(appt.initialDate));
     const professorName = appt.professor?.user?.name ?? "";
     const alreadyReserved = clientId !== null && (appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false);
-    return { id: appt.id, time, available, waitingList, price: appt.price ?? 0, dayOfWeek, professorName, alreadyReserved };
+    const sortedReservations = [...(appt.userAppointments ?? [])].sort((a: any, b: any) => {
+      const timeDiff = new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime();
+      if (timeDiff !== 0) return timeDiff;
+      return Number(a.id) - Number(b.id);
+    });
+    const clientReservation =
+      clientId !== null ? sortedReservations.find((ua: any) => ua.clientId === clientId) : null;
+    const clientIndex = clientReservation
+      ? sortedReservations.findIndex((ua: any) => ua.id === clientReservation.id)
+      : -1;
+    const reservedInWaitingList = clientIndex >= capacity;
+    return {
+      id: appt.id,
+      time,
+      available,
+      waitingList,
+      price: appt.price ?? 0,
+      dayOfWeek,
+      professorName,
+      alreadyReserved,
+      reservedInWaitingList,
+    };
   }
 
   async function handleConfirm(selectedReserveType: ReserveType, paymentMultiplier: number) {
@@ -416,7 +512,16 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
       const now = new Date();
 
       if (selectedReserveType === "unica") {
-        const state = paymentMultiplier === 1 ? "PAGO_COMPLETO" : "PAGO_PARCIAL";
+        const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
+        if (!originalAppt) return;
+        const count = originalAppt.userAppointments?.length ?? 0;
+        const capacity = originalAppt.slotsAvailable ?? 10;
+        const isWaitlistReservation = count >= capacity;
+        const state = isWaitlistReservation
+          ? "IMPAGO"
+          : paymentMultiplier === 1
+            ? "PAGO_COMPLETO"
+            : "PAGO_PARCIAL";
         const response = await fetch("/api/user-appointment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -444,12 +549,12 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
       } else if (selectedReserveType === "mensual") {
         const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
         if (!originalAppt) return;
-        const targetUTCDay = new Date(originalAppt.initialDate).getUTCDay();
+        const targetDay = getClubDayIndex(new Date(originalAppt.initialDate));
 
         const relevantAppointments = appointments.filter((appt) => {
           const apptDate = new Date(appt.initialDate);
           const alreadyBooked = appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false;
-          return apptDate >= now && apptDate.getUTCDay() === targetUTCDay && !alreadyBooked;
+          return apptDate >= now && getClubDayIndex(apptDate) === targetDay && !alreadyBooked;
         });
 
         const responses = await Promise.all(
@@ -586,6 +691,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                                   price={appt.price}
                                   dayOfWeek={appt.dayOfWeek}
                                   alreadyReserved={appt.alreadyReserved}
+                                  reservedInWaitingList={appt.reservedInWaitingList}
                                   reserveType={reserveType}
                                   onTypeChange={setReserveType}
                                   onClose={() => { setActiveSlot(null); setReserveType(null); }}

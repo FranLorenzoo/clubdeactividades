@@ -29,7 +29,19 @@ export async function deleteUserAppointment(id: number) {
 export async function getUserAppointmentsByClientId(clientId: number) {
   return prisma.userAppointment.findMany({
     where: { clientId },
-    include: { appointment: { include: { activity: true } }, client: true, payments: true, qr: true },
+    include: {
+      appointment: {
+        include: {
+          activity: true,
+          userAppointments: {
+            orderBy: [{ reservationDate: "asc" }, { id: "asc" }],
+          },
+        },
+      },
+      client: true,
+      payments: true,
+      qr: true,
+    },
   });
 }
 
@@ -41,11 +53,28 @@ export async function getUserAppointmentsByAppointmentId(appointmentId: number) 
 }
 
 export async function getOverdueImpagoCountByClientId(clientId: number) {
-  return prisma.userAppointment.count({
+  const overdueUas = await prisma.userAppointment.findMany({
     where: {
       clientId,
       state: "IMPAGO",
       appointment: { initialDate: { lt: new Date() } },
     },
+    include: {
+      appointment: {
+        include: {
+          userAppointments: {
+            select: { id: true, reservationDate: true },
+            orderBy: [{ reservationDate: "asc" }, { id: "asc" }],
+          },
+        },
+      },
+    },
   });
+
+  return overdueUas.filter((ua) => {
+    const capacity = ua.appointment.slotsAvailable ?? 0;
+    const queue = ua.appointment.userAppointments;
+    const index = queue.findIndex((item) => item.id === ua.id);
+    return index === -1 || index < capacity;
+  }).length;
 }

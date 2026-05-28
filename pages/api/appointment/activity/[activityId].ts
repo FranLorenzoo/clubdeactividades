@@ -9,7 +9,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (activityId === null) return res.status(400).json({ message: "Invalid activityId" });
 
   try {
-    const appointments = await getAppointmentsByActivityId(activityId);
+    const from = new Date();
+    from.setHours(0, 0, 0, 0);
+    const to = new Date(from);
+    to.setMonth(to.getMonth() + 2);
+    const appointments = await getAppointmentsByActivityId(activityId, from, to);
     return res.status(200).json(appointments);
   } catch (error) {
     console.error(error);

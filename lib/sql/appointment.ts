@@ -34,9 +34,18 @@ export async function deleteAppointment(id: number) {
   return prisma.appointment.delete({ where: { id:Number(id) } });
 }
 
-export async function getAppointmentsByActivityId(activityId: number) {
+export async function getAppointmentsByActivityId(
+  activityId: number,
+  from?: Date,
+  to?: Date
+) {
   return prisma.appointment.findMany({
-    where: { activityId },
+    where: {
+      activityId,
+      ...(from || to
+        ? { initialDate: { ...(from ? { gte: from } : {}), ...(to ? { lte: to } : {}) } }
+        : {}),
+    },
     include: { activity: true, professor: { include: { user: true } }, userAppointments: true },
   });
 }
