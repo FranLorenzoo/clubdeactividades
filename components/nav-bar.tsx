@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const PANEL_URL: Record<string, string> = {
-  CLIENT: "/dashboard/client",
-  ADMIN: "/dashboard/admin",
-  EMPLOYEE: "/dashboard/employee",
-  PROFESSOR: "/dashboard/professor",
+  CLIENT: "/dashboard/profile",
+  ADMIN: "/dashboard/profile",
+  EMPLOYEE: "/dashboard/profile",
+  PROFESSOR: "/dashboard/profile",
 };
 
 export default function Navbar() {
