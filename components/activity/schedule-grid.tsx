@@ -94,6 +94,17 @@ interface CreditCard {
   expireDate: string;
 }
 
+function isInWaitingList(ua: any): boolean {
+  const queue = [...(ua.appointment?.userAppointments ?? [])].sort((a: any, b: any) => {
+    const timeDiff = new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime();
+    if (timeDiff !== 0) return timeDiff;
+    return Number(a.id) - Number(b.id);
+  });
+  const capacity = Number(ua.appointment?.slotsAvailable ?? 0);
+  const index = queue.findIndex((item: any) => item.id === ua.id);
+  return index !== -1 && index >= capacity;
+}
+
 // ─── Detail popup (admin / employee) ─────────────────────────────────────────
 
 interface DetailPopupProps {
@@ -144,6 +155,7 @@ interface ReservePopupProps {
   price: number;
   dayOfWeek: number;
   alreadyReserved: boolean;
+  reservedInWaitingList: boolean;
   reserveType: ReserveType;
   onTypeChange: (t: ReserveType) => void;
   onClose: () => void;
@@ -155,14 +167,22 @@ interface ReservePopupProps {
 }
 
 function ReservePopup({
-  time, available, waitingList, price, dayOfWeek, alreadyReserved,
+  time, available, waitingList, price, dayOfWeek, alreadyReserved, reservedInWaitingList,
   reserveType, onTypeChange, onClose, onConfirm, confirming,
   creditCard, loadingCard, suspended,
 }: ReservePopupProps) {
   const [payment, setPayment] = useState<number | null>(1);
+  const hasCard = Boolean(creditCard);
+  const selectionBlocked = !hasCard || loadingCard;
   const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
-  const canConfirm = reserveType !== null;
-  const cardBlocked = reserveType === "unica" && !creditCard;
+  const canConfirm = reserveType !== null && hasCard;
+  const cardBlocked = !hasCard;
+
+  useEffect(() => {
+    if (!hasCard && reserveType !== null) {
+      onTypeChange(null);
+    }
+  }, [hasCard, reserveType, onTypeChange]);
 
   if (suspended) {
     return (
@@ -189,15 +209,29 @@ function ReservePopup({
       </div>
 
       <p className="text-xs text-zinc-400 mb-3">
-        {waitingList ? "Lista de espera" : available > 0 ? `${available} cupos disponibles` : "Sin cupos"}
+        {available > 0 ? `${available} cupos disponibles` : "Sin cupos disponibles. Podés anotarte en lista de espera."}
       </p>
 
       {alreadyReserved && (
-        <p className="text-xs text-yellow-400 font-medium mb-3">Ya tenés este turno reservado.</p>
+        <p className="text-xs text-yellow-400 font-medium mb-3">
+          {reservedInWaitingList ? "Estás en lista de espera para este turno." : "Ya tenés este turno reservado."}
+        </p>
+      )}
+
+      {!loadingCard && !hasCard && (
+        <p className="text-xs text-red-400 font-medium mb-3">
+          Necesitás registrar una tarjeta para poder reservar.
+        </p>
       )}
 
       <p className="text-xs text-zinc-400 mb-2">Tipo de reserva</p>
-      <div className="flex gap-2 mb-4" style={{ pointerEvents: alreadyReserved ? "none" : "auto", opacity: alreadyReserved ? 0.4 : 1 }}>
+      <div
+        className="flex gap-2 mb-4"
+        style={{
+          pointerEvents: alreadyReserved || selectionBlocked ? "none" : "auto",
+          opacity: alreadyReserved || selectionBlocked ? 0.4 : 1,
+        }}
+      >
         <button
           onClick={() => { onTypeChange(reserveType === "mensual" ? null : "mensual"); }}
           className={`flex-1 text-xs font-semibold py-1.5 rounded-xl border transition ${
@@ -297,6 +331,7 @@ interface AppointmentSlot {
   dayOfWeek: number;
   professorName: string;
   alreadyReserved: boolean;
+  reservedInWaitingList: boolean;
 }
 
 interface ScheduleGridProps {
@@ -345,7 +380,10 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
           const uas: any[] = await uaRes.json();
           const now = new Date();
           const overdueCount = uas.filter(
-            (ua) => ua.state === "IMPAGO" && new Date(ua.appointment.initialDate) < now
+              (ua) =>
+                ua.state === "IMPAGO" &&
+                new Date(ua.appointment.initialDate) < now &&
+                !isInWaitingList(ua)
           ).length;
           setSuspended(overdueCount >= 3);
         }
@@ -369,6 +407,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         const res = await fetch(`/api/appointment/activity/${activityId}`);
         const data = await res.json();
         setAppointments(data);
+        console.log("Appointments:", data);
         if (Array.isArray(data) && data.length > 0) {
           const now = new Date();
           const upcoming = (data as any[])
@@ -398,12 +437,34 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     });
     if (!appt) return null;
     const count = appt.userAppointments?.length ?? 0;
-    const waitingList = count >= 10;
-    const available = waitingList ? 0 : 10 - count;
+    const capacity = appt.slotsAvailable ?? 10;
+    const waitingList = count >= capacity;
+    const available = waitingList ? 0 : capacity - count;
     const dayOfWeek = new Date(appt.initialDate).getDay();
     const professorName = appt.professor?.user?.name ?? "";
     const alreadyReserved = clientId !== null && (appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false);
-    return { id: appt.id, time, available, waitingList, price: appt.price ?? 0, dayOfWeek, professorName, alreadyReserved };
+    const sortedReservations = [...(appt.userAppointments ?? [])].sort((a: any, b: any) => {
+      const timeDiff = new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime();
+      if (timeDiff !== 0) return timeDiff;
+      return Number(a.id) - Number(b.id);
+    });
+    const clientReservation =
+      clientId !== null ? sortedReservations.find((ua: any) => ua.clientId === clientId) : null;
+    const clientIndex = clientReservation
+      ? sortedReservations.findIndex((ua: any) => ua.id === clientReservation.id)
+      : -1;
+    const reservedInWaitingList = clientIndex >= capacity;
+    return {
+      id: appt.id,
+      time,
+      available,
+      waitingList,
+      price: appt.price ?? 0,
+      dayOfWeek,
+      professorName,
+      alreadyReserved,
+      reservedInWaitingList,
+    };
   }
 
   async function handleConfirm(selectedReserveType: ReserveType, paymentMultiplier: number) {
@@ -416,7 +477,16 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
       const now = new Date();
 
       if (selectedReserveType === "unica") {
-        const state = paymentMultiplier === 1 ? "PAGO_COMPLETO" : "PAGO_PARCIAL";
+        const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
+        if (!originalAppt) return;
+        const count = originalAppt.userAppointments?.length ?? 0;
+        const capacity = originalAppt.slotsAvailable ?? 10;
+        const isWaitlistReservation = count >= capacity;
+        const state = isWaitlistReservation
+          ? "IMPAGO"
+          : paymentMultiplier === 1
+            ? "PAGO_COMPLETO"
+            : "PAGO_PARCIAL";
         const response = await fetch("/api/user-appointment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -586,6 +656,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                                   price={appt.price}
                                   dayOfWeek={appt.dayOfWeek}
                                   alreadyReserved={appt.alreadyReserved}
+                                  reservedInWaitingList={appt.reservedInWaitingList}
                                   reserveType={reserveType}
                                   onTypeChange={setReserveType}
                                   onClose={() => { setActiveSlot(null); setReserveType(null); }}

@@ -16,6 +16,17 @@ interface PendingPaymentItem {
   appointment: AppointmentInfo;
 }
 
+function isInWaitingList(ua: any): boolean {
+  const queue = [...(ua.appointment?.userAppointments ?? [])].sort((a: any, b: any) => {
+    const timeDiff = new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime();
+    if (timeDiff !== 0) return timeDiff;
+    return Number(a.id) - Number(b.id);
+  });
+  const capacity = Number(ua.appointment?.slotsAvailable ?? 0);
+  const index = queue.findIndex((item: any) => item.id === ua.id);
+  return index !== -1 && index >= capacity;
+}
+
 export default function MisPagosPage() {
   const [pendingPartial, setPendingPartial] = useState<PendingPaymentItem[]>([]);
   const [pendingMonthly, setPendingMonthly] = useState<PendingPaymentItem[]>([]);
@@ -46,6 +57,10 @@ export default function MisPagosPage() {
       const done: PendingPaymentItem[] = [];
 
       for (const ua of userAppointments) {
+        if (isInWaitingList(ua)) {
+          continue;
+        }
+
         const apptInfo: AppointmentInfo = {
           id: ua.appointment.id,
           initialDate: ua.appointment.initialDate,
