@@ -1,5 +1,6 @@
 import { generateAppointments } from "@/lib/utils/helpers";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type Activity = {
   id: number;
@@ -60,11 +61,11 @@ export default function CreateAppointmentForm() {
       });
   }, [activityId]);
 
-  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = e.currentTarget;
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
     const appointmentForm = {
       startTime: Number(formData.get("startTime")),
@@ -73,27 +74,52 @@ export default function CreateAppointmentForm() {
       currentSlots: Number(formData.get("maxSlots")),
       activityId: Number(formData.get("activityId")),
       professorId: Number(formData.get("professorId")),
-      price: Number(formData.get("price"))
+      price: Number(formData.get("price")),
     };
 
     const body = generateAppointments(appointmentForm);
-    const response = await fetch("/api/appointment", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(body)
-    });
 
-    if(!response.ok) {
-      alert("Error creando turno");
-      return
+    const firstAppointment = body[0];
+
+    const status = await dateAlreadyExist(
+      firstAppointment.initialDate,
+      firstAppointment.activityId
+    );
+
+    if(status === 404) {
+      const response = await fetch("/api/appointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        toast.error("Error creando turno");
+        return;
+      }
+    } else {
+      toast.error("El turno ya existe para esa actividad, fecha y horario");
+      return;
     }
+    
 
-    alert("Turno creado");
-
+    toast.success("Turno creado");
     form.reset();
     setActivityId("");
     setProfessorId("");
     setProfessors([]);
+  }
+
+  async function dateAlreadyExist(initialDate: Date, activityId: number) {
+    const params = new URLSearchParams({
+      initialDate: initialDate.toISOString(),
+      activityId: String(activityId),
+    });
+
+    const response = await fetch(`/api/appointment/exists?${params}`);
+    return response.status;
   }
 
   const inputCls ="w-full bg-zinc-800 border border-zinc-700 rounded-2xl p-4 text-white outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all duration-200 placeholder:text-zinc-500";
