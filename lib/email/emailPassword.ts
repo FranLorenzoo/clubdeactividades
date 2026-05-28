@@ -22,7 +22,7 @@ export async function sendEmail(user: user) {
             </p>
 
             <a
-                href="http://https://clubdeactividades.vercel.app/change-password/${user.id}"
+                href="https://clubdeactividades.vercel.app/change-password/${user.id}"
                 style="
                 display: inline-block;
                 margin-top: 20px;
