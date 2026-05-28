@@ -152,9 +152,6 @@ export default function SearchBarProfessor(){
             <p className="text-gray-700 text-sm font-semibold">{pro.user?.email}</p>
           </div>
         </div>
-        <button onClick={() => deleteProfessor(pro.id)} 
-          className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
-          Eliminar</button>
       </li>
      ))}
   </ul>

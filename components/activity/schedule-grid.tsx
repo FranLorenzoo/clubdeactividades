@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const ALL_DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
@@ -510,6 +511,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     setConfirming(true);
     try {
       const now = new Date();
+      let reservationSucceeded = false;
 
       if (selectedReserveType === "unica") {
         const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
@@ -534,6 +536,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
           }),
         });
         if(response.ok) {
+          reservationSucceeded = true;
           await fetch("/api/send-email", {
             method: "POST",
             headers: {
@@ -573,6 +576,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
           })
         );
         const successful = responses.every(response => response.ok);
+        reservationSucceeded = successful;
         if(successful) {
           await fetch("/api/send-email", {
             method: "POST",
@@ -586,6 +590,10 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
             }),
           });
         }
+      }
+
+      if (reservationSucceeded) {
+        toast.success("Turno reservado con exito");
       }
 
       const refreshRes = await fetch(`/api/appointment/activity/${activityId}`);
