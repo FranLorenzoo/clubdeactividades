@@ -44,7 +44,7 @@ export default function InitialView() {
             ← Volver a deportes
           </button>
           <h2 className="text-2xl font-bold mb-6 text-green-400">
-            Turnos de {selectedSport}
+            Clases de {selectedSport}
           </h2>
           <WeeklyCalendar deporte={selectedSport} />
         </>

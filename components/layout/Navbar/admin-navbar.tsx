@@ -33,7 +33,7 @@ export default function AdminNavbar() {
             href="/dashboard/admin/create-appointment"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >
-            Crear Turno
+            Crear Clase
           </Link>
 
           <Link
@@ -62,7 +62,7 @@ export default function AdminNavbar() {
             href="/dashboard/admin/search-appoin"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >
-            Ver Turnos
+            Ver Clases
           </Link>
         </nav>
       </div>

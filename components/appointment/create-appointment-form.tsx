@@ -120,11 +120,11 @@ export default function CreateAppointmentForm() {
         <div>
 
           <h1 className="text-4xl font-bold text-[#fdfdfd]">
-            Crear turno
+            Crear clase
           </h1>
 
           <p className="text-white mt-3 text-lg">
-            Complete los datos del turno.
+            Complete los datos de la clase.
           </p>
 
         </div>
@@ -328,7 +328,7 @@ export default function CreateAppointmentForm() {
               }
             `}
           >
-            Crear turno
+            Crear clase
           </button>
 
         </div>
