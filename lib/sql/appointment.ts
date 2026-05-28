@@ -48,3 +48,12 @@ export async function getAppointmentsByProfessorId(professorId: number) {
   });
 }
 
+export async function getAppointmentByStartDateAndActivity(initialDate: Date, activityId: number) {
+  return prisma.appointment.findFirst({
+    where: {
+      initialDate,
+      activityId,
+    },
+  });
+}
+

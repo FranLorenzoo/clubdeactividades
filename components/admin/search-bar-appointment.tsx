@@ -27,21 +27,6 @@ export default function WeeklyCalendar({ deporte }: { deporte: string }) {
       });
   }, [deporte]);
 
-
-  /*
-  const eliminarTurno = async (id: number) => {
-    try {
-      await fetch(`/api/appointment/${id}`, { method: "DELETE" });
-      setTurnos(turnos.filter((t: any) => t.id !== id));
-      alert("El turno fue eliminado con éxito");
-    } catch (error) {
-      console.error("Error eliminando turno:", error);
-      alert("Error inesperado al eliminar turno");
-    }
-  };
-
-  */
-
   const appointmentsPerDay: Record<string, any[]> = {};
   turnos.forEach((t: any) => {
     const fecha = new Date(t.initialDate);
