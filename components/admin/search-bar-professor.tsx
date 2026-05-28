@@ -1,5 +1,6 @@
 import {FormEvent, useEffect, useState } from "react";
 import CreateProfessor from "./Modal/create-professor";
+import toast from "react-hot-toast";
 
 type Professor = {
   id: number,
@@ -49,11 +50,11 @@ export default function SearchBarProfessor(){
       if (res.ok){
         setProfessors((prev) => prev.filter((pro) => pro.id !== idUno));
         setFilteredProfessors((prev) => prev.filter((pro) => pro.id !== idUno));
-        alert("El profesor fue eliminado con éxito");
+        toast.success("El profesor fue eliminado con éxito");
       }
     } catch (error) {
       console.error("Error eliminando profesor:", error);
-      alert("Error inesperado al eliminar profesor");
+      toast.error("Error inesperado al eliminar profesor");
     }
   };
 

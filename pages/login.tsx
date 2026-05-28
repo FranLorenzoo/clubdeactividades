@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function Login() {
     });
 
     if (!logInAttempt.ok) {
-      alert("Credenciales incorrectas");
+      toast.error("Credenciales incorrectas");
       return;
     }
     const logInSuccess = await logInAttempt.json();

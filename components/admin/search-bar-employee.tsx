@@ -1,5 +1,6 @@
 import { FormEvent, useState, useEffect } from "react";
 import CreateEmployee from "./Modal/create-employee";
+import toast from "react-hot-toast";
 
 type Employee = {
   id: number,
@@ -44,11 +45,11 @@ export default function Searchbar() {
       if (res.ok){
         setEmployees((prev) => prev.filter((emp) => emp.id !== idUno));
         setFilteredEmployees((prev) => prev.filter((pro) => pro.id !== idUno));
-        alert("El empleado fue eliminado con éxito");
+        toast.success("El empleado fue eliminado con éxito");
       }
     } catch (error) {
       console.error("Error eliminando empleado:", error);
-      alert("Error inesperado al eliminar empleado");
+      toast.error("Error inesperado al eliminar empleado");
     }
   };
 

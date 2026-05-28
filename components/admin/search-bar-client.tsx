@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import CreateClient from "./Modal/create-client";
+import toast from "react-hot-toast";
 
 type Client = {
   id: number;
@@ -47,11 +48,11 @@ export default function SearchBar() {
       if (res.ok){
         setClientes((prev) => prev.filter((cli) => cli.id !== clientId));
         setFilteredClients((prev) => prev.filter((cli) => cli.id !== clientId));
-        alert("El cliente fue eliminado con éxito");
+        toast.success("El cliente fue eliminado con éxito");
       }
       } catch (error) {
       console.error("Error eliminando cliente:", error);
-      alert("Error inesperado al eliminar cliente");
+      toast.error("Error inesperado al eliminar cliente");
     }
   };
 
