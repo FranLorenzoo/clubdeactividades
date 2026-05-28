@@ -52,6 +52,15 @@ export default function CreateEmployee({onClose, onEmployeeCreated}: Props) {
       emailInput.reportValidity();
       return;
     }
+
+    const dniInput = document.querySelector('input[name="dni"]') as HTMLInputElement;
+    if (dni.length < 8){
+      dniInput.setCustomValidity("Ingrese 8 digitos");
+      dniInput.checkValidity();
+      dniInput.reportValidity();
+      return
+    }
+
     setLoading(true);
     try {
           const response = await fetch(
@@ -183,9 +192,9 @@ export default function CreateEmployee({onClose, onEmployeeCreated}: Props) {
                   name="dni"
                   placeholder="DNI"
                   maxLength={8}
-                  minLength={8}
                   value={dni}
                   onChange={(event) => {
+                    event.target.setCustomValidity("");
                     const value = event.target.value;
                     if (/^\d*$/.test(value)) {
                       setDni(value);
