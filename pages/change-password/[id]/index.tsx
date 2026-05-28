@@ -13,7 +13,7 @@ export default function ChangePassword() {
   async function HandleChangePassword(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (password.length <= 8){
+    if (password.length < 8){
       toast.error("La contraseña debe tener al menos 8 caracteres")
       return;
     }
