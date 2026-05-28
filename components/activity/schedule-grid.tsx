@@ -2,6 +2,28 @@ import { useEffect, useState } from "react";
 
 const ALL_DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 
+const CLUB_TIME_ZONE = "America/Argentina/Buenos_Aires";
+
+const WEEKDAY_SHORT_TO_LABEL: Record<string, string> = {
+  Mon: "Lunes",
+  Tue: "Martes",
+  Wed: "Miércoles",
+  Thu: "Jueves",
+  Fri: "Viernes",
+  Sat: "Sábado",
+  Sun: "Domingo",
+};
+
+const WEEKDAY_SHORT_TO_INDEX: Record<string, number> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
+};
+
 const TIME_SLOTS = [
   "08:00",
   "09:00",
@@ -17,17 +39,6 @@ const TIME_SLOTS = [
   "19:00",
   "20:00",
 ];
-
-// JS getDay(): 0=Sun,1=Mon,...,6=Sat
-const DAY_INDEX_MAP: Record<number, string> = {
-  1: "Lunes",
-  2: "Martes",
-  3: "Miércoles",
-  4: "Jueves",
-  5: "Viernes",
-  6: "Sábado",
-  0: "Domingo",
-};
 
 type ReserveType = "mensual" | "unica" | null;
 
@@ -85,6 +96,30 @@ function calcAmount(reserveType: ReserveType, price: number, dayOfWeek: number):
   if (reserveType === "unica") return price * 0.5;
   const remaining = remainingClassesThisMonth(dayOfWeek);
   return price * remaining * 0.85;
+}
+
+function getClubWeekdayShort(date: Date): string {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    timeZone: CLUB_TIME_ZONE,
+  }).format(date);
+}
+
+function getClubDayLabel(date: Date): string {
+  return WEEKDAY_SHORT_TO_LABEL[getClubWeekdayShort(date)] ?? "";
+}
+
+function getClubDayIndex(date: Date): number {
+  return WEEKDAY_SHORT_TO_INDEX[getClubWeekdayShort(date)] ?? date.getDay();
+}
+
+function getClubTimeLabel(date: Date): string {
+  return new Intl.DateTimeFormat("es-AR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: CLUB_TIME_ZONE,
+  }).format(date);
 }
 
 interface CreditCard {
@@ -431,8 +466,8 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     const appt = appointments.find((a) => {
       const date = new Date(a.initialDate);
       if (date < weekStart || date > weekEnd) return false;
-      const apptDay = DAY_INDEX_MAP[date.getUTCDay()];
-      const apptTime = `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}`;
+      const apptDay = getClubDayLabel(date);
+      const apptTime = getClubTimeLabel(date);
       return apptDay === day && apptTime === time;
     });
     if (!appt) return null;
@@ -440,7 +475,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     const capacity = appt.slotsAvailable ?? 10;
     const waitingList = count >= capacity;
     const available = waitingList ? 0 : capacity - count;
-    const dayOfWeek = new Date(appt.initialDate).getDay();
+    const dayOfWeek = getClubDayIndex(new Date(appt.initialDate));
     const professorName = appt.professor?.user?.name ?? "";
     const alreadyReserved = clientId !== null && (appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false);
     const sortedReservations = [...(appt.userAppointments ?? [])].sort((a: any, b: any) => {
@@ -514,12 +549,12 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
       } else if (selectedReserveType === "mensual") {
         const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
         if (!originalAppt) return;
-        const targetUTCDay = new Date(originalAppt.initialDate).getUTCDay();
+        const targetDay = getClubDayIndex(new Date(originalAppt.initialDate));
 
         const relevantAppointments = appointments.filter((appt) => {
           const apptDate = new Date(appt.initialDate);
           const alreadyBooked = appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false;
-          return apptDate >= now && apptDate.getUTCDay() === targetUTCDay && !alreadyBooked;
+          return apptDate >= now && getClubDayIndex(apptDate) === targetDay && !alreadyBooked;
         });
 
         const responses = await Promise.all(
