@@ -96,6 +96,7 @@ export default function Login() {
 
           <button
             type="submit"
+            disabled={!email || !password}
             className="w-full bg-green-600 hover:bg-green-500 active:scale-[0.98] transition-all duration-300 py-3.5 rounded-2xl font-semibold shadow-lg shadow-green-600/20"
           >
             Ingresar

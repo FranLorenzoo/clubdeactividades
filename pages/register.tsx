@@ -418,7 +418,8 @@ export default function Register() {
           }}
         />
 
-            <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
+            <button disabled={!name || !lastName || !email || !dni || !birthDate || !password}
+            className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition">
 
               Crear cuenta
 
