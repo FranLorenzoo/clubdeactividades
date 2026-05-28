@@ -148,6 +148,8 @@ export default function ProfilePage() {
     }
   }
 
+  const verifyData = cardNumber.trim().length > 0 && securityCode.trim().length > 0 && cardHolder.trim().length > 0 && expireDate.trim().length > 0 && clientId !== null;
+
   async function handleSaveCard(e: React.FormEvent) {
     e.preventDefault();
     console.log("Saving card for clientId", clientId);
@@ -172,7 +174,6 @@ export default function ProfilePage() {
         expireDate: new Date(expireDate).toISOString(),
         clientId,
       };
-      console.log("Saving card with data", body);
 
       let res: Response;
       if (cardId) {
@@ -311,10 +312,10 @@ export default function ProfilePage() {
         {role === "CLIENT" && (
           <section className="bg-zinc-900 border border-zinc-800 rounded-3xl p-8">
             <h2 className="text-xl font-semibold text-white mb-1">
-              {cardId ? "Tarjeta de crédito" : "Agregar tarjeta de crédito"}
+              Tarjeta de crédito
             </h2>
             <p className="text-sm text-zinc-500 mb-6">
-              {cardId ? "Modificá los datos de tu tarjeta registrada." : "No tenés una tarjeta registrada. Agregá una para poder reservar turnos."}
+              Modificá los datos de tu tarjeta.
             </p>
 
             {loadingCard ? (
@@ -383,10 +384,26 @@ export default function ProfilePage() {
 
                 <button
                   type="submit"
-                  disabled={savingCard}
-                  className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white py-3 rounded-2xl font-semibold transition"
+                  disabled={savingCard || !verifyData}
+                  className={`
+                    w-full
+                    py-3
+                    rounded-2xl
+                    font-semibold
+                    transition
+
+                    ${
+                      savingCard || !verifyData
+                        ? "bg-zinc-700 text-zinc-400 cursor-not-allowed opacity-60"
+                        : "bg-green-600 hover:bg-green-700 text-white"
+                    }
+                  `}
                 >
-                  {savingCard ? "Guardando..." : cardId ? "Actualizar tarjeta" : "Agregar tarjeta"}
+                  {savingCard
+                    ? "Guardando..."
+                    : cardId
+                      ? "Actualizar tarjeta"
+                      : "Agregar tarjeta"}
                 </button>
               </form>
             )}
