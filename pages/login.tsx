@@ -34,19 +34,19 @@ export default function Login() {
     localStorage.setItem("userRole", logInSuccess.role);
     switch(logInSuccess.role) {
       case "ADMIN":
-        router.push("/dashboard/admin");
+        router.push("/dashboard/profile");
         break;
 
       case "CLIENT":
-        router.push("/dashboard/client");
+        router.push("/dashboard/profile");
         break;
 
       case "EMPLOYEE":
-        router.push("/dashboard/employee");
+        router.push("/dashboard/profile");
         break;
 
       case "PROFESSOR":
-        router.push("/dashboard/professor");
+        router.push("/dashboard/profile");
         break;
 
       default:
