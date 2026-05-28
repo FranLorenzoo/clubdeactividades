@@ -24,20 +24,6 @@ export default function ActivityHero({ activity }: any) {
             </p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 min-w-[280px]">
-            <p className="text-sm text-white/70 mb-2">
-              Disponibilidad semanal
-            </p>
-
-            <h3 className="text-4xl font-bold mb-2">
-              {activity.days.length} días
-            </h3>
-
-            <p className="text-white/80">
-              Elegí el día y reservá tu lugar.
-            </p>
-          </div>
-
         </div>
       </div>
     </section>
