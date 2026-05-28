@@ -118,7 +118,7 @@ export default function CreateAppointmentForm() {
       activityId: String(activityId),
     });
 
-    const response = await fetch(`/api/appointment/exists?${params}`);
+    const response = await fetch(`/api/appointment/exist?${params}`);
     return response.status;
   }
 
