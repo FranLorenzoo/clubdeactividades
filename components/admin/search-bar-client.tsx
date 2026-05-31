@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import CreateClient from "./Modal/create-client";
 import toast from "react-hot-toast";
+import { isValidDniQuery, isValidEmailQuery } from "@/lib/utils/helpers";
 
 type Client = {
   id: number;
@@ -59,12 +60,19 @@ export default function SearchBar() {
   function handleSearch(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const searchValue = String(formData.get("searchValue"));
-    const filteredClients = clientes.filter(client => 
-      client.user.dni.includes(searchValue)
-      || client.user.email.toLowerCase().includes(searchValue.toLowerCase())
-    );
-    setFilteredClients(filteredClients);
+    const searchValue = String(formData.get("searchValue")).trim();
+    let results: Client[] = clientes;
+    if (isValidEmailQuery(searchValue)) {
+      const normalizedEmail = searchValue.toLowerCase();
+      results = clientes.filter(
+        (client) => client.user.email.toLowerCase() === normalizedEmail
+      );
+    } else if (isValidDniQuery(searchValue)) {
+      results = clientes.filter((client) => client.user.dni === searchValue);
+    } else {
+      toast.error("Ingrese un DNI mayor a 7 caracteres o un Email válido");
+    }
+    setFilteredClients(results);
   }
 
   return ( <>

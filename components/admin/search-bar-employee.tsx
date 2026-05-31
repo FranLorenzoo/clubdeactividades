@@ -1,6 +1,7 @@
 import { FormEvent, useState, useEffect } from "react";
 import CreateEmployee from "./Modal/create-employee";
 import toast from "react-hot-toast";
+import { isValidDniQuery, isValidEmailQuery } from "@/lib/utils/helpers";
 
 type Employee = {
   id: number,
@@ -56,12 +57,19 @@ export default function Searchbar() {
   function handleSearch(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const searchValue = String(formData.get("searchValue"));
-    const filteredEmployees = employees.filter(employee => 
-      employee.user.dni.includes(searchValue)
-      || employee.user.email.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
-    );
-    setFilteredEmployees(filteredEmployees);
+    const searchValue = String(formData.get("searchValue")).trim();
+    let results: Employee[] = employees;
+    if (isValidEmailQuery(searchValue)) {
+      const normalizedEmail = searchValue.toLowerCase();
+      results = employees.filter(
+        (employee) => employee.user.email.toLowerCase() === normalizedEmail
+      );
+    } else if (isValidDniQuery(searchValue)) {
+      results = employees.filter((client) => client.user.dni === searchValue);
+    } else {
+      toast.error("Ingrese un DNI mayor a 7 caracteres o un Email válido");
+    }
+    setFilteredEmployees(results);
   }
 
   return ( <>
