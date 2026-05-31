@@ -1,6 +1,7 @@
 import {FormEvent, useEffect, useState } from "react";
 import CreateProfessor from "./Modal/create-professor";
 import toast from "react-hot-toast";
+import { isValidDniQuery, isValidEmailQuery } from "@/lib/utils/helpers";
 
 type Professor = {
   id: number,
@@ -61,12 +62,19 @@ export default function SearchBarProfessor(){
     function handleSearch(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const searchValue = String(formData.get("searchValue"));
-      const filteredProfessors = professors.filter(professor => 
-        professor.user.dni.includes(searchValue)
-        || professor.user.email.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
+    const searchValue = String(formData.get("searchValue")).trim();
+    let results: Professor[] = professors;
+    if (isValidEmailQuery(searchValue)) {
+      const normalizedEmail = searchValue.toLowerCase();
+      results = professors.filter(
+        (professor) => professor.user.email.toLowerCase() === normalizedEmail
       );
-      setFilteredProfessors(filteredProfessors);
+    } else if (isValidDniQuery(searchValue)) {
+      results = professors.filter((professor) => professor.user.dni === searchValue);
+    } else {
+      toast.error("Ingrese un DNI mayor a 7 caracteres o un Email válido");
+    }
+      setFilteredProfessors(results);
     }
     
     return ( <>

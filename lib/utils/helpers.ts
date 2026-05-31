@@ -97,3 +97,14 @@ export function calculateAge(fechaNacimiento: string) {
   }
   return age;
 }
+
+export function isValidEmailQuery(value: string): boolean {
+  return (
+    value.includes("@") &&
+    (value.endsWith(".com.ar") || value.endsWith(".com"))
+  );
+}
+
+export function isValidDniQuery(value: string): boolean {
+  return /^\d{8,}$/.test(value);
+}
