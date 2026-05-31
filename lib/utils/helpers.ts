@@ -100,8 +100,7 @@ export function calculateAge(fechaNacimiento: string) {
 
 export function isValidEmailQuery(value: string): boolean {
   return (
-    value.includes("@") &&
-    (value.endsWith(".com.ar") || value.endsWith(".com"))
+    value.includes("@") && value.endsWith(".com")
   );
 }
 
