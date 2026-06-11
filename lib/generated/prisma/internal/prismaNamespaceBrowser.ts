@@ -61,7 +61,8 @@ export const ModelName = {
   appointment: 'appointment',
   userAppointment: 'userAppointment',
   payment: 'payment',
-  QR: 'QR'
+  QR: 'QR',
+  credit: 'credit'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -197,6 +198,17 @@ export const QRScalarFieldEnum = {
 } as const
 
 export type QRScalarFieldEnum = (typeof QRScalarFieldEnum)[keyof typeof QRScalarFieldEnum]
+
+
+export const CreditScalarFieldEnum = {
+  id: 'id',
+  activityId: 'activityId',
+  endDate: 'endDate',
+  clientId: 'clientId',
+  isValid: 'isValid'
+} as const
+
+export type CreditScalarFieldEnum = (typeof CreditScalarFieldEnum)[keyof typeof CreditScalarFieldEnum]
 
 
 export const SortOrder = {

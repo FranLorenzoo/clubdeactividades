@@ -394,7 +394,8 @@ export const ModelName = {
   appointment: 'appointment',
   userAppointment: 'userAppointment',
   payment: 'payment',
-  QR: 'QR'
+  QR: 'QR',
+  credit: 'credit'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "role" | "user" | "client" | "creditCard" | "employee" | "professor" | "activity" | "appointment" | "userAppointment" | "payment" | "qR"
+    modelProps: "role" | "user" | "client" | "creditCard" | "employee" | "professor" | "activity" | "appointment" | "userAppointment" | "payment" | "qR" | "credit"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1228,6 +1229,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    credit: {
+      payload: Prisma.$creditPayload<ExtArgs>
+      fields: Prisma.creditFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.creditFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.creditFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>
+        }
+        findFirst: {
+          args: Prisma.creditFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.creditFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>
+        }
+        findMany: {
+          args: Prisma.creditFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>[]
+        }
+        create: {
+          args: Prisma.creditCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>
+        }
+        createMany: {
+          args: Prisma.creditCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.creditCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>[]
+        }
+        delete: {
+          args: Prisma.creditDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>
+        }
+        update: {
+          args: Prisma.creditUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>
+        }
+        deleteMany: {
+          args: Prisma.creditDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.creditUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.creditUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>[]
+        }
+        upsert: {
+          args: Prisma.creditUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$creditPayload>
+        }
+        aggregate: {
+          args: Prisma.CreditAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCredit>
+        }
+        groupBy: {
+          args: Prisma.creditGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CreditGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.creditCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CreditCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1384,6 +1459,17 @@ export const QRScalarFieldEnum = {
 } as const
 
 export type QRScalarFieldEnum = (typeof QRScalarFieldEnum)[keyof typeof QRScalarFieldEnum]
+
+
+export const CreditScalarFieldEnum = {
+  id: 'id',
+  activityId: 'activityId',
+  endDate: 'endDate',
+  clientId: 'clientId',
+  isValid: 'isValid'
+} as const
+
+export type CreditScalarFieldEnum = (typeof CreditScalarFieldEnum)[keyof typeof CreditScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1598,6 +1684,7 @@ export type GlobalOmitConfig = {
   userAppointment?: Prisma.userAppointmentOmit
   payment?: Prisma.paymentOmit
   qR?: Prisma.QROmit
+  credit?: Prisma.creditOmit
 }
 
 /* Types for Logging */

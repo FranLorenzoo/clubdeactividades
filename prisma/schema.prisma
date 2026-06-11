@@ -50,6 +50,7 @@ model client {
   userId     Int     @unique
   user       user    @relation(fields: [userId], references: [id])
 
+  credit credit[]
   creditCard creditCard?
   userAppointments userAppointment[]
 }
@@ -89,7 +90,7 @@ model professor {
 model activity {
   id            Int           @id @default(autoincrement())
   name          String
-
+  credits       credit[]
   professors    professor[]
   appointments  appointment[]
 }
@@ -162,4 +163,14 @@ model QR {
 
   qrImage            String
   url                String
+}
+
+model credit {
+  id         Int         @id @default(autoincrement())
+  activityId Int
+  endDate    DateTime
+  clientId   Int
+  client     client?     @relation(fields: [clientId], references: [id])
+  isValid    Boolean
+  activity   activity?   @relation(fields: [activityId], references: [id])
 }

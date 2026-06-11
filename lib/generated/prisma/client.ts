@@ -96,3 +96,8 @@ export type payment = Prisma.paymentModel
  * 
  */
 export type QR = Prisma.QRModel
+/**
+ * Model credit
+ * 
+ */
+export type credit = Prisma.creditModel

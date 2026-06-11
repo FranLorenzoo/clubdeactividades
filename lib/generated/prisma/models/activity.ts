@@ -192,6 +192,7 @@ export type activityWhereInput = {
   NOT?: Prisma.activityWhereInput | Prisma.activityWhereInput[]
   id?: Prisma.IntFilter<"activity"> | number
   name?: Prisma.StringFilter<"activity"> | string
+  credits?: Prisma.CreditListRelationFilter
   professors?: Prisma.ProfessorListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
 }
@@ -199,6 +200,7 @@ export type activityWhereInput = {
 export type activityOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  credits?: Prisma.creditOrderByRelationAggregateInput
   professors?: Prisma.professorOrderByRelationAggregateInput
   appointments?: Prisma.appointmentOrderByRelationAggregateInput
 }
@@ -209,6 +211,7 @@ export type activityWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.activityWhereInput[]
   NOT?: Prisma.activityWhereInput | Prisma.activityWhereInput[]
   name?: Prisma.StringFilter<"activity"> | string
+  credits?: Prisma.CreditListRelationFilter
   professors?: Prisma.ProfessorListRelationFilter
   appointments?: Prisma.AppointmentListRelationFilter
 }, "id">
@@ -233,6 +236,7 @@ export type activityScalarWhereWithAggregatesInput = {
 
 export type activityCreateInput = {
   name: string
+  credits?: Prisma.creditCreateNestedManyWithoutActivityInput
   professors?: Prisma.professorCreateNestedManyWithoutActivityInput
   appointments?: Prisma.appointmentCreateNestedManyWithoutActivityInput
 }
@@ -240,12 +244,14 @@ export type activityCreateInput = {
 export type activityUncheckedCreateInput = {
   id?: number
   name: string
+  credits?: Prisma.creditUncheckedCreateNestedManyWithoutActivityInput
   professors?: Prisma.professorUncheckedCreateNestedManyWithoutActivityInput
   appointments?: Prisma.appointmentUncheckedCreateNestedManyWithoutActivityInput
 }
 
 export type activityUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  credits?: Prisma.creditUpdateManyWithoutActivityNestedInput
   professors?: Prisma.professorUpdateManyWithoutActivityNestedInput
   appointments?: Prisma.appointmentUpdateManyWithoutActivityNestedInput
 }
@@ -253,6 +259,7 @@ export type activityUpdateInput = {
 export type activityUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  credits?: Prisma.creditUncheckedUpdateManyWithoutActivityNestedInput
   professors?: Prisma.professorUncheckedUpdateManyWithoutActivityNestedInput
   appointments?: Prisma.appointmentUncheckedUpdateManyWithoutActivityNestedInput
 }
@@ -299,6 +306,11 @@ export type activitySumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
+export type ActivityNullableScalarRelationFilter = {
+  is?: Prisma.activityWhereInput | null
+  isNot?: Prisma.activityWhereInput | null
+}
+
 export type activityCreateNestedOneWithoutProfessorsInput = {
   create?: Prisma.XOR<Prisma.activityCreateWithoutProfessorsInput, Prisma.activityUncheckedCreateWithoutProfessorsInput>
   connectOrCreate?: Prisma.activityCreateOrConnectWithoutProfessorsInput
@@ -327,14 +339,32 @@ export type activityUpdateOneRequiredWithoutAppointmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.activityUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.activityUpdateWithoutAppointmentsInput>, Prisma.activityUncheckedUpdateWithoutAppointmentsInput>
 }
 
+export type activityCreateNestedOneWithoutCreditsInput = {
+  create?: Prisma.XOR<Prisma.activityCreateWithoutCreditsInput, Prisma.activityUncheckedCreateWithoutCreditsInput>
+  connectOrCreate?: Prisma.activityCreateOrConnectWithoutCreditsInput
+  connect?: Prisma.activityWhereUniqueInput
+}
+
+export type activityUpdateOneWithoutCreditsNestedInput = {
+  create?: Prisma.XOR<Prisma.activityCreateWithoutCreditsInput, Prisma.activityUncheckedCreateWithoutCreditsInput>
+  connectOrCreate?: Prisma.activityCreateOrConnectWithoutCreditsInput
+  upsert?: Prisma.activityUpsertWithoutCreditsInput
+  disconnect?: Prisma.activityWhereInput | boolean
+  delete?: Prisma.activityWhereInput | boolean
+  connect?: Prisma.activityWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.activityUpdateToOneWithWhereWithoutCreditsInput, Prisma.activityUpdateWithoutCreditsInput>, Prisma.activityUncheckedUpdateWithoutCreditsInput>
+}
+
 export type activityCreateWithoutProfessorsInput = {
   name: string
+  credits?: Prisma.creditCreateNestedManyWithoutActivityInput
   appointments?: Prisma.appointmentCreateNestedManyWithoutActivityInput
 }
 
 export type activityUncheckedCreateWithoutProfessorsInput = {
   id?: number
   name: string
+  credits?: Prisma.creditUncheckedCreateNestedManyWithoutActivityInput
   appointments?: Prisma.appointmentUncheckedCreateNestedManyWithoutActivityInput
 }
 
@@ -356,23 +386,27 @@ export type activityUpdateToOneWithWhereWithoutProfessorsInput = {
 
 export type activityUpdateWithoutProfessorsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  credits?: Prisma.creditUpdateManyWithoutActivityNestedInput
   appointments?: Prisma.appointmentUpdateManyWithoutActivityNestedInput
 }
 
 export type activityUncheckedUpdateWithoutProfessorsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  credits?: Prisma.creditUncheckedUpdateManyWithoutActivityNestedInput
   appointments?: Prisma.appointmentUncheckedUpdateManyWithoutActivityNestedInput
 }
 
 export type activityCreateWithoutAppointmentsInput = {
   name: string
+  credits?: Prisma.creditCreateNestedManyWithoutActivityInput
   professors?: Prisma.professorCreateNestedManyWithoutActivityInput
 }
 
 export type activityUncheckedCreateWithoutAppointmentsInput = {
   id?: number
   name: string
+  credits?: Prisma.creditUncheckedCreateNestedManyWithoutActivityInput
   professors?: Prisma.professorUncheckedCreateNestedManyWithoutActivityInput
 }
 
@@ -394,13 +428,57 @@ export type activityUpdateToOneWithWhereWithoutAppointmentsInput = {
 
 export type activityUpdateWithoutAppointmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  credits?: Prisma.creditUpdateManyWithoutActivityNestedInput
   professors?: Prisma.professorUpdateManyWithoutActivityNestedInput
 }
 
 export type activityUncheckedUpdateWithoutAppointmentsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  credits?: Prisma.creditUncheckedUpdateManyWithoutActivityNestedInput
   professors?: Prisma.professorUncheckedUpdateManyWithoutActivityNestedInput
+}
+
+export type activityCreateWithoutCreditsInput = {
+  name: string
+  professors?: Prisma.professorCreateNestedManyWithoutActivityInput
+  appointments?: Prisma.appointmentCreateNestedManyWithoutActivityInput
+}
+
+export type activityUncheckedCreateWithoutCreditsInput = {
+  id?: number
+  name: string
+  professors?: Prisma.professorUncheckedCreateNestedManyWithoutActivityInput
+  appointments?: Prisma.appointmentUncheckedCreateNestedManyWithoutActivityInput
+}
+
+export type activityCreateOrConnectWithoutCreditsInput = {
+  where: Prisma.activityWhereUniqueInput
+  create: Prisma.XOR<Prisma.activityCreateWithoutCreditsInput, Prisma.activityUncheckedCreateWithoutCreditsInput>
+}
+
+export type activityUpsertWithoutCreditsInput = {
+  update: Prisma.XOR<Prisma.activityUpdateWithoutCreditsInput, Prisma.activityUncheckedUpdateWithoutCreditsInput>
+  create: Prisma.XOR<Prisma.activityCreateWithoutCreditsInput, Prisma.activityUncheckedCreateWithoutCreditsInput>
+  where?: Prisma.activityWhereInput
+}
+
+export type activityUpdateToOneWithWhereWithoutCreditsInput = {
+  where?: Prisma.activityWhereInput
+  data: Prisma.XOR<Prisma.activityUpdateWithoutCreditsInput, Prisma.activityUncheckedUpdateWithoutCreditsInput>
+}
+
+export type activityUpdateWithoutCreditsInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  professors?: Prisma.professorUpdateManyWithoutActivityNestedInput
+  appointments?: Prisma.appointmentUpdateManyWithoutActivityNestedInput
+}
+
+export type activityUncheckedUpdateWithoutCreditsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  professors?: Prisma.professorUncheckedUpdateManyWithoutActivityNestedInput
+  appointments?: Prisma.appointmentUncheckedUpdateManyWithoutActivityNestedInput
 }
 
 
@@ -409,11 +487,13 @@ export type activityUncheckedUpdateWithoutAppointmentsInput = {
  */
 
 export type ActivityCountOutputType = {
+  credits: number
   professors: number
   appointments: number
 }
 
 export type ActivityCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  credits?: boolean | ActivityCountOutputTypeCountCreditsArgs
   professors?: boolean | ActivityCountOutputTypeCountProfessorsArgs
   appointments?: boolean | ActivityCountOutputTypeCountAppointmentsArgs
 }
@@ -426,6 +506,13 @@ export type ActivityCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
    * Select specific fields to fetch from the ActivityCountOutputType
    */
   select?: Prisma.ActivityCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ActivityCountOutputType without action
+ */
+export type ActivityCountOutputTypeCountCreditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.creditWhereInput
 }
 
 /**
@@ -446,6 +533,7 @@ export type ActivityCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime
 export type activitySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  credits?: boolean | Prisma.activity$creditsArgs<ExtArgs>
   professors?: boolean | Prisma.activity$professorsArgs<ExtArgs>
   appointments?: boolean | Prisma.activity$appointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ActivityCountOutputTypeDefaultArgs<ExtArgs>
@@ -468,6 +556,7 @@ export type activitySelectScalar = {
 
 export type activityOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name", ExtArgs["result"]["activity"]>
 export type activityInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  credits?: boolean | Prisma.activity$creditsArgs<ExtArgs>
   professors?: boolean | Prisma.activity$professorsArgs<ExtArgs>
   appointments?: boolean | Prisma.activity$appointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ActivityCountOutputTypeDefaultArgs<ExtArgs>
@@ -478,6 +567,7 @@ export type activityIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type $activityPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "activity"
   objects: {
+    credits: Prisma.$creditPayload<ExtArgs>[]
     professors: Prisma.$professorPayload<ExtArgs>[]
     appointments: Prisma.$appointmentPayload<ExtArgs>[]
   }
@@ -878,6 +968,7 @@ readonly fields: activityFieldRefs;
  */
 export interface Prisma__activityClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  credits<T extends Prisma.activity$creditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.activity$creditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$creditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   professors<T extends Prisma.activity$professorsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.activity$professorsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$professorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   appointments<T extends Prisma.activity$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.activity$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$appointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1301,6 +1392,30 @@ export type activityDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many activities to delete.
    */
   limit?: number
+}
+
+/**
+ * activity.credits
+ */
+export type activity$creditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the credit
+   */
+  select?: Prisma.creditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the credit
+   */
+  omit?: Prisma.creditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.creditInclude<ExtArgs> | null
+  where?: Prisma.creditWhereInput
+  orderBy?: Prisma.creditOrderByWithRelationInput | Prisma.creditOrderByWithRelationInput[]
+  cursor?: Prisma.creditWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CreditScalarFieldEnum | Prisma.CreditScalarFieldEnum[]
 }
 
 /**

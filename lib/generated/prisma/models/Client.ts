@@ -213,6 +213,7 @@ export type clientWhereInput = {
   active?: Prisma.BoolFilter<"client"> | boolean
   userId?: Prisma.IntFilter<"client"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.userWhereInput>
+  credit?: Prisma.CreditListRelationFilter
   creditCard?: Prisma.XOR<Prisma.CreditCardNullableScalarRelationFilter, Prisma.creditCardWhereInput> | null
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }
@@ -223,6 +224,7 @@ export type clientOrderByWithRelationInput = {
   active?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   user?: Prisma.userOrderByWithRelationInput
+  credit?: Prisma.creditOrderByRelationAggregateInput
   creditCard?: Prisma.creditCardOrderByWithRelationInput
   userAppointments?: Prisma.userAppointmentOrderByRelationAggregateInput
 }
@@ -236,6 +238,7 @@ export type clientWhereUniqueInput = Prisma.AtLeast<{
   suspended?: Prisma.BoolFilter<"client"> | boolean
   active?: Prisma.BoolFilter<"client"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.userWhereInput>
+  credit?: Prisma.CreditListRelationFilter
   creditCard?: Prisma.XOR<Prisma.CreditCardNullableScalarRelationFilter, Prisma.creditCardWhereInput> | null
   userAppointments?: Prisma.UserAppointmentListRelationFilter
 }, "id" | "userId">
@@ -266,6 +269,7 @@ export type clientCreateInput = {
   suspended: boolean
   active: boolean
   user: Prisma.userCreateNestedOneWithoutClientInput
+  credit?: Prisma.creditCreateNestedManyWithoutClientInput
   creditCard?: Prisma.creditCardCreateNestedOneWithoutClientInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutClientInput
 }
@@ -275,6 +279,7 @@ export type clientUncheckedCreateInput = {
   suspended: boolean
   active: boolean
   userId: number
+  credit?: Prisma.creditUncheckedCreateNestedManyWithoutClientInput
   creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutClientInput
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutClientInput
 }
@@ -283,6 +288,7 @@ export type clientUpdateInput = {
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.userUpdateOneRequiredWithoutClientNestedInput
+  credit?: Prisma.creditUpdateManyWithoutClientNestedInput
   creditCard?: Prisma.creditCardUpdateOneWithoutClientNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutClientNestedInput
 }
@@ -292,6 +298,7 @@ export type clientUncheckedUpdateInput = {
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  credit?: Prisma.creditUncheckedUpdateManyWithoutClientNestedInput
   creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutClientNestedInput
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutClientNestedInput
 }
@@ -416,9 +423,26 @@ export type clientUpdateOneRequiredWithoutUserAppointmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.clientUpdateToOneWithWhereWithoutUserAppointmentsInput, Prisma.clientUpdateWithoutUserAppointmentsInput>, Prisma.clientUncheckedUpdateWithoutUserAppointmentsInput>
 }
 
+export type clientCreateNestedOneWithoutCreditInput = {
+  create?: Prisma.XOR<Prisma.clientCreateWithoutCreditInput, Prisma.clientUncheckedCreateWithoutCreditInput>
+  connectOrCreate?: Prisma.clientCreateOrConnectWithoutCreditInput
+  connect?: Prisma.clientWhereUniqueInput
+}
+
+export type clientUpdateOneWithoutCreditNestedInput = {
+  create?: Prisma.XOR<Prisma.clientCreateWithoutCreditInput, Prisma.clientUncheckedCreateWithoutCreditInput>
+  connectOrCreate?: Prisma.clientCreateOrConnectWithoutCreditInput
+  upsert?: Prisma.clientUpsertWithoutCreditInput
+  disconnect?: Prisma.clientWhereInput | boolean
+  delete?: Prisma.clientWhereInput | boolean
+  connect?: Prisma.clientWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.clientUpdateToOneWithWhereWithoutCreditInput, Prisma.clientUpdateWithoutCreditInput>, Prisma.clientUncheckedUpdateWithoutCreditInput>
+}
+
 export type clientCreateWithoutUserInput = {
   suspended: boolean
   active: boolean
+  credit?: Prisma.creditCreateNestedManyWithoutClientInput
   creditCard?: Prisma.creditCardCreateNestedOneWithoutClientInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutClientInput
 }
@@ -427,6 +451,7 @@ export type clientUncheckedCreateWithoutUserInput = {
   id?: number
   suspended: boolean
   active: boolean
+  credit?: Prisma.creditUncheckedCreateNestedManyWithoutClientInput
   creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutClientInput
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutClientInput
 }
@@ -450,6 +475,7 @@ export type clientUpdateToOneWithWhereWithoutUserInput = {
 export type clientUpdateWithoutUserInput = {
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  credit?: Prisma.creditUpdateManyWithoutClientNestedInput
   creditCard?: Prisma.creditCardUpdateOneWithoutClientNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutClientNestedInput
 }
@@ -458,6 +484,7 @@ export type clientUncheckedUpdateWithoutUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  credit?: Prisma.creditUncheckedUpdateManyWithoutClientNestedInput
   creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutClientNestedInput
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutClientNestedInput
 }
@@ -466,6 +493,7 @@ export type clientCreateWithoutCreditCardInput = {
   suspended: boolean
   active: boolean
   user: Prisma.userCreateNestedOneWithoutClientInput
+  credit?: Prisma.creditCreateNestedManyWithoutClientInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutClientInput
 }
 
@@ -474,6 +502,7 @@ export type clientUncheckedCreateWithoutCreditCardInput = {
   suspended: boolean
   active: boolean
   userId: number
+  credit?: Prisma.creditUncheckedCreateNestedManyWithoutClientInput
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutClientInput
 }
 
@@ -497,6 +526,7 @@ export type clientUpdateWithoutCreditCardInput = {
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.userUpdateOneRequiredWithoutClientNestedInput
+  credit?: Prisma.creditUpdateManyWithoutClientNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutClientNestedInput
 }
 
@@ -505,6 +535,7 @@ export type clientUncheckedUpdateWithoutCreditCardInput = {
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  credit?: Prisma.creditUncheckedUpdateManyWithoutClientNestedInput
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutClientNestedInput
 }
 
@@ -512,6 +543,7 @@ export type clientCreateWithoutUserAppointmentsInput = {
   suspended: boolean
   active: boolean
   user: Prisma.userCreateNestedOneWithoutClientInput
+  credit?: Prisma.creditCreateNestedManyWithoutClientInput
   creditCard?: Prisma.creditCardCreateNestedOneWithoutClientInput
 }
 
@@ -520,6 +552,7 @@ export type clientUncheckedCreateWithoutUserAppointmentsInput = {
   suspended: boolean
   active: boolean
   userId: number
+  credit?: Prisma.creditUncheckedCreateNestedManyWithoutClientInput
   creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutClientInput
 }
 
@@ -543,6 +576,7 @@ export type clientUpdateWithoutUserAppointmentsInput = {
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.userUpdateOneRequiredWithoutClientNestedInput
+  credit?: Prisma.creditUpdateManyWithoutClientNestedInput
   creditCard?: Prisma.creditCardUpdateOneWithoutClientNestedInput
 }
 
@@ -551,7 +585,58 @@ export type clientUncheckedUpdateWithoutUserAppointmentsInput = {
   suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userId?: Prisma.IntFieldUpdateOperationsInput | number
+  credit?: Prisma.creditUncheckedUpdateManyWithoutClientNestedInput
   creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutClientNestedInput
+}
+
+export type clientCreateWithoutCreditInput = {
+  suspended: boolean
+  active: boolean
+  user: Prisma.userCreateNestedOneWithoutClientInput
+  creditCard?: Prisma.creditCardCreateNestedOneWithoutClientInput
+  userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutClientInput
+}
+
+export type clientUncheckedCreateWithoutCreditInput = {
+  id?: number
+  suspended: boolean
+  active: boolean
+  userId: number
+  creditCard?: Prisma.creditCardUncheckedCreateNestedOneWithoutClientInput
+  userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutClientInput
+}
+
+export type clientCreateOrConnectWithoutCreditInput = {
+  where: Prisma.clientWhereUniqueInput
+  create: Prisma.XOR<Prisma.clientCreateWithoutCreditInput, Prisma.clientUncheckedCreateWithoutCreditInput>
+}
+
+export type clientUpsertWithoutCreditInput = {
+  update: Prisma.XOR<Prisma.clientUpdateWithoutCreditInput, Prisma.clientUncheckedUpdateWithoutCreditInput>
+  create: Prisma.XOR<Prisma.clientCreateWithoutCreditInput, Prisma.clientUncheckedCreateWithoutCreditInput>
+  where?: Prisma.clientWhereInput
+}
+
+export type clientUpdateToOneWithWhereWithoutCreditInput = {
+  where?: Prisma.clientWhereInput
+  data: Prisma.XOR<Prisma.clientUpdateWithoutCreditInput, Prisma.clientUncheckedUpdateWithoutCreditInput>
+}
+
+export type clientUpdateWithoutCreditInput = {
+  suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  user?: Prisma.userUpdateOneRequiredWithoutClientNestedInput
+  creditCard?: Prisma.creditCardUpdateOneWithoutClientNestedInput
+  userAppointments?: Prisma.userAppointmentUpdateManyWithoutClientNestedInput
+}
+
+export type clientUncheckedUpdateWithoutCreditInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  suspended?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userId?: Prisma.IntFieldUpdateOperationsInput | number
+  creditCard?: Prisma.creditCardUncheckedUpdateOneWithoutClientNestedInput
+  userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutClientNestedInput
 }
 
 
@@ -560,10 +645,12 @@ export type clientUncheckedUpdateWithoutUserAppointmentsInput = {
  */
 
 export type ClientCountOutputType = {
+  credit: number
   userAppointments: number
 }
 
 export type ClientCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  credit?: boolean | ClientCountOutputTypeCountCreditArgs
   userAppointments?: boolean | ClientCountOutputTypeCountUserAppointmentsArgs
 }
 
@@ -580,6 +667,13 @@ export type ClientCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exten
 /**
  * ClientCountOutputType without action
  */
+export type ClientCountOutputTypeCountCreditArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.creditWhereInput
+}
+
+/**
+ * ClientCountOutputType without action
+ */
 export type ClientCountOutputTypeCountUserAppointmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.userAppointmentWhereInput
 }
@@ -591,6 +685,7 @@ export type clientSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   active?: boolean
   userId?: boolean
   user?: boolean | Prisma.userDefaultArgs<ExtArgs>
+  credit?: boolean | Prisma.client$creditArgs<ExtArgs>
   creditCard?: boolean | Prisma.client$creditCardArgs<ExtArgs>
   userAppointments?: boolean | Prisma.client$userAppointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ClientCountOutputTypeDefaultArgs<ExtArgs>
@@ -622,6 +717,7 @@ export type clientSelectScalar = {
 export type clientOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "suspended" | "active" | "userId", ExtArgs["result"]["client"]>
 export type clientInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.userDefaultArgs<ExtArgs>
+  credit?: boolean | Prisma.client$creditArgs<ExtArgs>
   creditCard?: boolean | Prisma.client$creditCardArgs<ExtArgs>
   userAppointments?: boolean | Prisma.client$userAppointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.ClientCountOutputTypeDefaultArgs<ExtArgs>
@@ -637,6 +733,7 @@ export type $clientPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "client"
   objects: {
     user: Prisma.$userPayload<ExtArgs>
+    credit: Prisma.$creditPayload<ExtArgs>[]
     creditCard: Prisma.$creditCardPayload<ExtArgs> | null
     userAppointments: Prisma.$userAppointmentPayload<ExtArgs>[]
   }
@@ -1040,6 +1137,7 @@ readonly fields: clientFieldRefs;
 export interface Prisma__clientClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.userDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.userDefaultArgs<ExtArgs>>): Prisma.Prisma__userClient<runtime.Types.Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  credit<T extends Prisma.client$creditArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.client$creditArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$creditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   creditCard<T extends Prisma.client$creditCardArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.client$creditCardArgs<ExtArgs>>): Prisma.Prisma__creditCardClient<runtime.Types.Result.GetResult<Prisma.$creditCardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   userAppointments<T extends Prisma.client$userAppointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.client$userAppointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$userAppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1473,6 +1571,30 @@ export type clientDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many clients to delete.
    */
   limit?: number
+}
+
+/**
+ * client.credit
+ */
+export type client$creditArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the credit
+   */
+  select?: Prisma.creditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the credit
+   */
+  omit?: Prisma.creditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.creditInclude<ExtArgs> | null
+  where?: Prisma.creditWhereInput
+  orderBy?: Prisma.creditOrderByWithRelationInput | Prisma.creditOrderByWithRelationInput[]
+  cursor?: Prisma.creditWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CreditScalarFieldEnum | Prisma.CreditScalarFieldEnum[]
 }
 
 /**
