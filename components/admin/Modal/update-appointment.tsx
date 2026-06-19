@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 interface UpdateAppointmentProps {
   turno: any;
@@ -49,9 +50,11 @@ export default function UpdateAppointment({ turno, onClose }: UpdateAppointmentP
       });
 
       if (response.ok) {
-        alert("Actualización de clase exitosa");
+        toast.success("Actualización de clase exitosa");
         onClose();
-        window.location.reload(); // Refresca la grilla del padre para ver los cambios
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else {
         console.error("Error en la respuesta del servidor");
       }
