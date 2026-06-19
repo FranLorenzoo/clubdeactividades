@@ -69,7 +69,7 @@ export default function UpdateAppointment({ turno, onClose }: UpdateAppointmentP
         
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-2xl font-bold text-green-400 tracking-wide">
-            Editar Turno
+            Editar Clase
           </h3>
           <button onClick={onClose} className="text-gray-400 hover:text-white text-xl transition-colors">
             ✕
@@ -79,7 +79,11 @@ export default function UpdateAppointment({ turno, onClose }: UpdateAppointmentP
         <p className="text-sm text-gray-400 mb-6 border-b border-gray-800 pb-3">
           Deporte: <span className="text-green-300 capitalize">{turno.activity?.name}</span> <br />
           Horario: <span className="text-white font-medium">
-            {new Date(turno.initialDate).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })} hs
+            {new Date(turno.initialDate).toLocaleTimeString("es-AR", { 
+              hour: "2-digit", 
+              minute: "2-digit",
+              hour12: false // <-- Esto elimina el p. m. / a. m. y fuerza las 24 hs
+            })} hs
           </span>
         </p>
 
@@ -125,7 +129,7 @@ export default function UpdateAppointment({ turno, onClose }: UpdateAppointmentP
 
           <div>
             <label className="block text-sm font-medium text-green-300 mb-2">
-              Cupo máximo disponible (slots)
+              Cupo máximo disponible
             </label>
             <input
               type="number"
