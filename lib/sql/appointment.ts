@@ -66,3 +66,30 @@ export async function getAppointmentByStartDateAndActivity(initialDate: Date, ac
   });
 }
 
+export async function updateFutureAppointments(
+  startDate: Date,
+  activityId: number,
+  data: { price: number; professorId: number; slotsAvailable: number }
+) {
+  const newMax = data.slotsAvailable;
+
+  return prisma.$executeRaw`
+    UPDATE "appointment"
+    SET 
+      "price" = ${data.price},
+      "professorId" = ${data.professorId},
+      
+      "slotsAvailable" = CASE 
+        WHEN ${newMax} >= ("slotsAvailable" - "currentSlots") THEN ${newMax}
+        ELSE ("slotsAvailable" - "currentSlots")
+      END,
+
+      "currentSlots" = CASE 
+        WHEN ${newMax} >= ("slotsAvailable" - "currentSlots") THEN ${newMax} - ("slotsAvailable" - "currentSlots")
+        ELSE 0
+      END
+    WHERE 
+      "activityId" = ${Number(activityId)} 
+      AND "initialDate" >= ${startDate}
+  `;
+}
