@@ -1,4 +1,4 @@
-import { createAppointment, getAllAppointments } from "@/lib/sql/appointment";
+import { createAppointment, getAllAppointments, updateFutureAppointments } from "@/lib/sql/appointment";
 import { parseFields } from "@/lib/validators/api";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -10,6 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return getAllAppointmentsHandler(res);
     case "POST":
       return createAppointmentsHandler(req.body, res);
+    case "PUT":
+      return updateFutureAppointmentsHandler(req.body, res);
     default:
       res.status(405).json({ message: "Method not allowed" });
   }
@@ -86,5 +88,29 @@ async function createAppointmentsHandler(body: Record<string, unknown>[], res: N
     return res.status(500).json({
       message: "Internal server error " + error
     });
+  }
+}
+
+async function updateFutureAppointmentsHandler(body: Record<string, unknown>, res: NextApiResponse) {
+  const { ok, values, error } = parseFields({ price: "number" }, body);
+  if (!ok) return res.status(400).json({ message: "Bad request en precio: " + error });
+
+  const { professorId, slotsAvailable, activityId } = body;
+  if (!professorId || !slotsAvailable || !activityId) {
+    return res.status(400).json({ message: "Faltan campos requeridos: professorId, slotsAvailable o activityId" });
+  }
+
+  const now = new Date();
+  const firstDayNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0);
+  try {
+    const resultado = await updateFutureAppointments(firstDayNextMonth, Number(activityId), {
+      price: values.price as number,
+      professorId: Number(professorId),
+      slotsAvailable: Number(slotsAvailable),
+    });
+    return res.status(200).json({ message: "Turnos futuros actualizados con éxito" });
+
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error al actualizar clase: " + error });
   }
 }
