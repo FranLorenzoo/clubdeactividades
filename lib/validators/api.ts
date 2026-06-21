@@ -16,7 +16,7 @@ export function parseId(id: string | string[] | undefined): number | null {
   return parsedId;
 }
 
-export function parseFields(schema: Record<string, "number" | "string" | "date">, input: any): ParsedResult {
+export function parseFields(schema: Record<string, "number" | "string" | "date" | "boolean">, input: any): ParsedResult {
   const result: Record<string, any> = {};
 
   for (const key in schema) {
