@@ -1,4 +1,5 @@
 import { getAllPayments } from "@/lib/sql/payment";
+import { getValidCreditForClientAndActivity } from "@/lib/sql/credit";
 import { parseFields } from "@/lib/validators/api";
 import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -24,6 +25,85 @@ async function getAllPaymentsHandler(res: NextApiResponse) {
 }
 
 async function createPaymentHandler(body: Record<string, unknown>, res: NextApiResponse) {
+  const { userAppointmentId, employeeId } = body;
+  if (!userAppointmentId) {
+    return res.status(400).json({ message: "Missing required field: userAppointmentId" });
+  }
+
+  const uaId = Number(userAppointmentId);
+
+  // ── CREDIT payment path ───────────────────────────────────────────────────
+  if (body.paymentMethod === "CREDIT") {
+    try {
+      const result = await prisma.$transaction(async (tx) => {
+        // Fetch userAppointment with appointment → activityId and clientId
+        const ua = await tx.userAppointment.findUnique({
+          where: { id: uaId },
+          include: { appointment: true },
+        });
+        if (!ua) throw Object.assign(new Error("userAppointment not found"), { status: 404 });
+
+        const { clientId, appointment } = ua;
+        const { activityId, price } = appointment;
+
+        // Find a valid credit for this client + activity
+        const credit = await getValidCreditForClientAndActivity(clientId, activityId);
+        if (!credit) {
+          throw Object.assign(
+            new Error("No valid credit available for this activity"),
+            { status: 400 }
+          );
+        }
+
+        // Invalidate the credit
+        await tx.credit.update({
+          where: { id: credit.id },
+          data: { isValid: false },
+        });
+
+        // Create payment record (amount = full appointment price)
+        const payment = await tx.payment.create({
+          data: {
+            paymentDate: new Date(),
+            amount: price,
+            paymentMethod: "CREDIT",
+            userAppointment: { connect: { id: uaId } },
+          },
+        });
+
+        // Mark userAppointment as fully paid
+        await tx.userAppointment.update({
+          where: { id: uaId },
+          data: { state: "PAGO_COMPLETO" },
+        });
+
+        // Generate QR
+        const qrImage = await QRCode.toDataURL(String(uaId));
+        await tx.qR.upsert({
+          where: { userAppointmentId: uaId },
+          update: { qrImage },
+          create: {
+            userAppointmentId: uaId,
+            qrImage,
+            url: String(uaId),
+            accepted: false,
+          },
+        });
+
+        return { payment, state: "PAGO_COMPLETO" };
+      });
+
+      return res.status(201).json(result);
+    } catch (error) {
+      const err = error as Error & { status?: number };
+      if (err.status === 404) return res.status(404).json({ message: err.message });
+      if (err.status === 400) return res.status(400).json({ message: err.message });
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  // ── Standard payment path ─────────────────────────────────────────────────
   const { ok, values, error } = parseFields({
     paymentDate: "date",
     amount: "number",
@@ -31,13 +111,6 @@ async function createPaymentHandler(body: Record<string, unknown>, res: NextApiR
   }, body);
 
   if (!ok) return res.status(400).json({ message: "Bad request " + error });
-
-  const { userAppointmentId, employeeId } = body;
-  if (!userAppointmentId) {
-    return res.status(400).json({ message: "Missing required field: userAppointmentId" });
-  }
-
-  const uaId = Number(userAppointmentId);
 
   try {
     const result = await prisma.$transaction(async (tx) => {
