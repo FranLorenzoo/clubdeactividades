@@ -65,6 +65,13 @@ export default function AdminNavbar() {
             Ver Clases
           </Link>
           <Link
+            href="/dashboard/admin/scan-qr"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
+          >
+            Escanear QR
+          </Link>
+
+          <Link
             href="/dashboard/profile"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >

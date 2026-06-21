@@ -126,6 +126,8 @@ model userAppointment {
 
   rejected         Boolean
 
+  attended         Boolean                 @default(false)
+
   reservationDate  DateTime
 
   state            userAppointmentState
