@@ -3,39 +3,103 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllClients() {
   return prisma.client.findMany({
-    where: { 
+    where: {
       user: {
-        isDeleted: false
-      }
+        isDeleted: false,
+      },
     },
-    include: { user: true, creditCard: true, userAppointments: true },
+    include: {
+      user: true,
+      creditCard: true,
+      userAppointments: {
+        include: {
+          appointment: {
+            include: {
+              activity: true,
+            },
+          },
+          payments: true,
+        },
+      },
+    },
   });
 }
 
+
 export async function getClientById(id: number) {
-  return prisma.client.findFirst({
-    where: { id,
+  const client = await prisma.client.findFirst({
+    where: {
+      id,
       user: {
-        isDeleted: false
-      }
+        isDeleted: false,
+      },
     },
-    include: { user: true, creditCard: true, userAppointments: true },
+
+    include: {
+      user: true,
+      creditCard: true,
+
+      userAppointments: {
+        include: {
+          appointment: {
+            include: {
+              activity: true,
+            },
+          },
+          payments: true,
+        },
+      },
+    },
   });
+
+  if (!client) return null;
+
+  return {
+    ...client,
+    userAppointments: client.userAppointments.map((ua) => {
+      const price = ua.appointment.price ?? 0;
+
+      const totalPaid = ua.payments.reduce(
+        (sum, p) => sum + p.amount,
+        0
+      );
+
+      const remainingDebt = price - totalPaid;
+
+      const state =
+        totalPaid >= price
+          ? "PAGO_COMPLETO"
+          : totalPaid > 0
+          ? "PAGO_PARCIAL"
+          : "IMPAGO";
+
+      return {
+        ...ua,
+        price,
+        totalPaid,
+        remainingDebt,
+        state,
+      };
+    }),
+  };
 }
+
+
 
 export async function createClient(data: Prisma.clientCreateInput) {
   return prisma.client.create({ data });
 }
 
-export async function updateClient(id: number, data: Prisma.clientUpdateInput) {
+export async function updateClient(
+  id: number,
+  data: Prisma.clientUpdateInput
+) {
   return prisma.client.update({ where: { id }, data });
 }
 
 export async function deleteClient(id: number) {
   const client = await prisma.client.findUnique({
-    where: {
-      id: id
-    }
+    where: { id },
   });
 
   if (!client) {
@@ -44,23 +108,38 @@ export async function deleteClient(id: number) {
 
   return prisma.user.update({
     where: {
-      id: client.userId
+      id: client.userId,
     },
     data: {
-      isDeleted: true
-    }
+      isDeleted: true,
+    },
   });
 }
 
+
+
 export async function getClientByUserId(userId: number) {
   return prisma.client.findFirst({
-    where: { 
+    where: {
       userId,
       user: {
-        isDeleted: false
-      }
+        isDeleted: false,
+      },
     },
-    include: { user: true, creditCard: true, userAppointments: true },
+    include: {
+      user: true,
+      creditCard: true,
+      userAppointments: {
+        include: {
+          appointment: {
+            include: {
+              activity: true,
+            },
+          },
+          payments: true,
+        },
+      },
+    },
   });
 }
 
@@ -70,11 +149,11 @@ export async function getClientByUserDni(dni: string) {
       user: {
         dni: dni,
         roleId: 1,
-        isDeleted: false
-      }
+        isDeleted: false,
+      },
     },
-    include: { 
-      user: true 
+    include: {
+      user: true,
     },
   });
 }
