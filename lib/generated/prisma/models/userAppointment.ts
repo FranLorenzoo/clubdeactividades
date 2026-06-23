@@ -43,6 +43,7 @@ export type UserAppointmentMinAggregateOutputType = {
   appointmentId: number | null
   clientId: number | null
   rejected: boolean | null
+  attended: boolean | null
   reservationDate: Date | null
   state: $Enums.userAppointmentState | null
 }
@@ -52,6 +53,7 @@ export type UserAppointmentMaxAggregateOutputType = {
   appointmentId: number | null
   clientId: number | null
   rejected: boolean | null
+  attended: boolean | null
   reservationDate: Date | null
   state: $Enums.userAppointmentState | null
 }
@@ -61,6 +63,7 @@ export type UserAppointmentCountAggregateOutputType = {
   appointmentId: number
   clientId: number
   rejected: number
+  attended: number
   reservationDate: number
   state: number
   _all: number
@@ -84,6 +87,7 @@ export type UserAppointmentMinAggregateInputType = {
   appointmentId?: true
   clientId?: true
   rejected?: true
+  attended?: true
   reservationDate?: true
   state?: true
 }
@@ -93,6 +97,7 @@ export type UserAppointmentMaxAggregateInputType = {
   appointmentId?: true
   clientId?: true
   rejected?: true
+  attended?: true
   reservationDate?: true
   state?: true
 }
@@ -102,6 +107,7 @@ export type UserAppointmentCountAggregateInputType = {
   appointmentId?: true
   clientId?: true
   rejected?: true
+  attended?: true
   reservationDate?: true
   state?: true
   _all?: true
@@ -198,6 +204,7 @@ export type UserAppointmentGroupByOutputType = {
   appointmentId: number
   clientId: number
   rejected: boolean
+  attended: boolean
   reservationDate: Date
   state: $Enums.userAppointmentState
   _count: UserAppointmentCountAggregateOutputType | null
@@ -230,6 +237,7 @@ export type userAppointmentWhereInput = {
   appointmentId?: Prisma.IntFilter<"userAppointment"> | number
   clientId?: Prisma.IntFilter<"userAppointment"> | number
   rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
+  attended?: Prisma.BoolFilter<"userAppointment"> | boolean
   reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
   state?: Prisma.EnumuserAppointmentStateFilter<"userAppointment"> | $Enums.userAppointmentState
   appointment?: Prisma.XOR<Prisma.AppointmentScalarRelationFilter, Prisma.appointmentWhereInput>
@@ -243,6 +251,7 @@ export type userAppointmentOrderByWithRelationInput = {
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
+  attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   state?: Prisma.SortOrder
   appointment?: Prisma.appointmentOrderByWithRelationInput
@@ -260,6 +269,7 @@ export type userAppointmentWhereUniqueInput = Prisma.AtLeast<{
   appointmentId?: Prisma.IntFilter<"userAppointment"> | number
   clientId?: Prisma.IntFilter<"userAppointment"> | number
   rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
+  attended?: Prisma.BoolFilter<"userAppointment"> | boolean
   reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
   state?: Prisma.EnumuserAppointmentStateFilter<"userAppointment"> | $Enums.userAppointmentState
   appointment?: Prisma.XOR<Prisma.AppointmentScalarRelationFilter, Prisma.appointmentWhereInput>
@@ -273,6 +283,7 @@ export type userAppointmentOrderByWithAggregationInput = {
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
+  attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   state?: Prisma.SortOrder
   _count?: Prisma.userAppointmentCountOrderByAggregateInput
@@ -290,12 +301,14 @@ export type userAppointmentScalarWhereWithAggregatesInput = {
   appointmentId?: Prisma.IntWithAggregatesFilter<"userAppointment"> | number
   clientId?: Prisma.IntWithAggregatesFilter<"userAppointment"> | number
   rejected?: Prisma.BoolWithAggregatesFilter<"userAppointment"> | boolean
+  attended?: Prisma.BoolWithAggregatesFilter<"userAppointment"> | boolean
   reservationDate?: Prisma.DateTimeWithAggregatesFilter<"userAppointment"> | Date | string
   state?: Prisma.EnumuserAppointmentStateWithAggregatesFilter<"userAppointment"> | $Enums.userAppointmentState
 }
 
 export type userAppointmentCreateInput = {
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
@@ -309,6 +322,7 @@ export type userAppointmentUncheckedCreateInput = {
   appointmentId: number
   clientId: number
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   payments?: Prisma.paymentUncheckedCreateNestedManyWithoutUserAppointmentInput
@@ -317,6 +331,7 @@ export type userAppointmentUncheckedCreateInput = {
 
 export type userAppointmentUpdateInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
@@ -330,6 +345,7 @@ export type userAppointmentUncheckedUpdateInput = {
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   payments?: Prisma.paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
@@ -341,12 +357,14 @@ export type userAppointmentCreateManyInput = {
   appointmentId: number
   clientId: number
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
 }
 
 export type userAppointmentUpdateManyMutationInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
 }
@@ -356,6 +374,7 @@ export type userAppointmentUncheckedUpdateManyInput = {
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
 }
@@ -380,6 +399,7 @@ export type userAppointmentCountOrderByAggregateInput = {
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
+  attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   state?: Prisma.SortOrder
 }
@@ -395,6 +415,7 @@ export type userAppointmentMaxOrderByAggregateInput = {
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
+  attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   state?: Prisma.SortOrder
 }
@@ -404,6 +425,7 @@ export type userAppointmentMinOrderByAggregateInput = {
   appointmentId?: Prisma.SortOrder
   clientId?: Prisma.SortOrder
   rejected?: Prisma.SortOrder
+  attended?: Prisma.SortOrder
   reservationDate?: Prisma.SortOrder
   state?: Prisma.SortOrder
 }
@@ -537,6 +559,7 @@ export type userAppointmentUpdateOneRequiredWithoutQrNestedInput = {
 
 export type userAppointmentCreateWithoutClientInput = {
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
@@ -548,6 +571,7 @@ export type userAppointmentUncheckedCreateWithoutClientInput = {
   id?: number
   appointmentId: number
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   payments?: Prisma.paymentUncheckedCreateNestedManyWithoutUserAppointmentInput
@@ -588,12 +612,14 @@ export type userAppointmentScalarWhereInput = {
   appointmentId?: Prisma.IntFilter<"userAppointment"> | number
   clientId?: Prisma.IntFilter<"userAppointment"> | number
   rejected?: Prisma.BoolFilter<"userAppointment"> | boolean
+  attended?: Prisma.BoolFilter<"userAppointment"> | boolean
   reservationDate?: Prisma.DateTimeFilter<"userAppointment"> | Date | string
   state?: Prisma.EnumuserAppointmentStateFilter<"userAppointment"> | $Enums.userAppointmentState
 }
 
 export type userAppointmentCreateWithoutAppointmentInput = {
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   client: Prisma.clientCreateNestedOneWithoutUserAppointmentsInput
@@ -605,6 +631,7 @@ export type userAppointmentUncheckedCreateWithoutAppointmentInput = {
   id?: number
   clientId: number
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   payments?: Prisma.paymentUncheckedCreateNestedManyWithoutUserAppointmentInput
@@ -639,6 +666,7 @@ export type userAppointmentUpdateManyWithWhereWithoutAppointmentInput = {
 
 export type userAppointmentCreateWithoutPaymentsInput = {
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
@@ -651,6 +679,7 @@ export type userAppointmentUncheckedCreateWithoutPaymentsInput = {
   appointmentId: number
   clientId: number
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   qr?: Prisma.QRUncheckedCreateNestedOneWithoutUserAppointmentInput
@@ -674,6 +703,7 @@ export type userAppointmentUpdateToOneWithWhereWithoutPaymentsInput = {
 
 export type userAppointmentUpdateWithoutPaymentsInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
@@ -686,6 +716,7 @@ export type userAppointmentUncheckedUpdateWithoutPaymentsInput = {
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   qr?: Prisma.QRUncheckedUpdateOneWithoutUserAppointmentNestedInput
@@ -693,6 +724,7 @@ export type userAppointmentUncheckedUpdateWithoutPaymentsInput = {
 
 export type userAppointmentCreateWithoutQrInput = {
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   appointment: Prisma.appointmentCreateNestedOneWithoutUserAppointmentsInput
@@ -705,6 +737,7 @@ export type userAppointmentUncheckedCreateWithoutQrInput = {
   appointmentId: number
   clientId: number
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
   payments?: Prisma.paymentUncheckedCreateNestedManyWithoutUserAppointmentInput
@@ -728,6 +761,7 @@ export type userAppointmentUpdateToOneWithWhereWithoutQrInput = {
 
 export type userAppointmentUpdateWithoutQrInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
@@ -740,6 +774,7 @@ export type userAppointmentUncheckedUpdateWithoutQrInput = {
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   payments?: Prisma.paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
@@ -749,12 +784,14 @@ export type userAppointmentCreateManyClientInput = {
   id?: number
   appointmentId: number
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
 }
 
 export type userAppointmentUpdateWithoutClientInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   appointment?: Prisma.appointmentUpdateOneRequiredWithoutUserAppointmentsNestedInput
@@ -766,6 +803,7 @@ export type userAppointmentUncheckedUpdateWithoutClientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   payments?: Prisma.paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
@@ -776,6 +814,7 @@ export type userAppointmentUncheckedUpdateManyWithoutClientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   appointmentId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
 }
@@ -784,12 +823,14 @@ export type userAppointmentCreateManyAppointmentInput = {
   id?: number
   clientId: number
   rejected: boolean
+  attended?: boolean
   reservationDate: Date | string
   state: $Enums.userAppointmentState
 }
 
 export type userAppointmentUpdateWithoutAppointmentInput = {
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   client?: Prisma.clientUpdateOneRequiredWithoutUserAppointmentsNestedInput
@@ -801,6 +842,7 @@ export type userAppointmentUncheckedUpdateWithoutAppointmentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
   payments?: Prisma.paymentUncheckedUpdateManyWithoutUserAppointmentNestedInput
@@ -811,6 +853,7 @@ export type userAppointmentUncheckedUpdateManyWithoutAppointmentInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   clientId?: Prisma.IntFieldUpdateOperationsInput | number
   rejected?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attended?: Prisma.BoolFieldUpdateOperationsInput | boolean
   reservationDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   state?: Prisma.EnumuserAppointmentStateFieldUpdateOperationsInput | $Enums.userAppointmentState
 }
@@ -851,6 +894,7 @@ export type userAppointmentSelect<ExtArgs extends runtime.Types.Extensions.Inter
   appointmentId?: boolean
   clientId?: boolean
   rejected?: boolean
+  attended?: boolean
   reservationDate?: boolean
   state?: boolean
   appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
@@ -865,6 +909,7 @@ export type userAppointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   appointmentId?: boolean
   clientId?: boolean
   rejected?: boolean
+  attended?: boolean
   reservationDate?: boolean
   state?: boolean
   appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
@@ -876,6 +921,7 @@ export type userAppointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   appointmentId?: boolean
   clientId?: boolean
   rejected?: boolean
+  attended?: boolean
   reservationDate?: boolean
   state?: boolean
   appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
@@ -887,11 +933,12 @@ export type userAppointmentSelectScalar = {
   appointmentId?: boolean
   clientId?: boolean
   rejected?: boolean
+  attended?: boolean
   reservationDate?: boolean
   state?: boolean
 }
 
-export type userAppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "appointmentId" | "clientId" | "rejected" | "reservationDate" | "state", ExtArgs["result"]["userAppointment"]>
+export type userAppointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "appointmentId" | "clientId" | "rejected" | "attended" | "reservationDate" | "state", ExtArgs["result"]["userAppointment"]>
 export type userAppointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointment?: boolean | Prisma.appointmentDefaultArgs<ExtArgs>
   client?: boolean | Prisma.clientDefaultArgs<ExtArgs>
@@ -921,6 +968,7 @@ export type $userAppointmentPayload<ExtArgs extends runtime.Types.Extensions.Int
     appointmentId: number
     clientId: number
     rejected: boolean
+    attended: boolean
     reservationDate: Date
     state: $Enums.userAppointmentState
   }, ExtArgs["result"]["userAppointment"]>
@@ -1354,6 +1402,7 @@ export interface userAppointmentFieldRefs {
   readonly appointmentId: Prisma.FieldRef<"userAppointment", 'Int'>
   readonly clientId: Prisma.FieldRef<"userAppointment", 'Int'>
   readonly rejected: Prisma.FieldRef<"userAppointment", 'Boolean'>
+  readonly attended: Prisma.FieldRef<"userAppointment", 'Boolean'>
   readonly reservationDate: Prisma.FieldRef<"userAppointment", 'DateTime'>
   readonly state: Prisma.FieldRef<"userAppointment", 'userAppointmentState'>
 }

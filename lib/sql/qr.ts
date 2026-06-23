@@ -29,6 +29,13 @@ export async function deleteQR(id: number) {
 export async function getQRByUserAppointmentId(userAppointmentId: number) {
   return prisma.qR.findUnique({
     where: { userAppointmentId },
-    include: { userAppointment: true },
+    include: {
+      userAppointment: {
+        include: {
+          appointment: { include: { activity: true } },
+          client: { include: { user: true } },
+        },
+      },
+    },
   });
 }

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import UpdateAppointment from "./Modal/update-appointment";
 
 export default function WeeklyCalendar({ deporte }: { deporte: string }) {
   const [turnos, setTurnos] = useState<any[]>([]);
+  const [turnoAEditar, setTurnoAEditar] = useState<any | null>(null);
 
   useEffect(() => {
     fetch("/api/appointment")
@@ -71,12 +73,20 @@ export default function WeeklyCalendar({ deporte }: { deporte: string }) {
                 return (
                   <div
                     key={t.id}
-                    className="border border-green-500 rounded-md p-2 mb-2 text-xs flex flex-col bg-gray-800"
+                    className="border border-green-500 rounded-md p-2 mb-2 text-xs flex flex-col bg-gray-800 justify-between min-h-[140px] font-medium text-[14px]"
                   >
-                    <p className="text-gray-300">{hora} hs</p>
-                    <p className="text-gray-400">Cupos disp: {t.currentSlots}</p>
-                    <p className="text-gray-400">Cupo total: {t.slotsAvailable}</p>
-                    <p className="text-gray-400">Profe:{t.professor?.user?.name}</p>
+                    <div>
+                      <p className="text-gray-300 font-semibold mb-1">{hora} hs</p>
+                      <p className="text-gray-400">Cupos disp: {t.currentSlots}</p>
+                      <p className="text-gray-400">Cupo total: {t.slotsAvailable}</p>
+                      <p className="text-gray-400 truncate">Profe: {t.professor?.user?.name}</p>
+                    </div>
+                    <button
+                      onClick={() => setTurnoAEditar(t)}
+                      className="w-full bg-gray-700 text-green-400 py-1 rounded border border-gray-600 hover:bg-green-600 hover:text-white hover:border-green-500 transition-colors"
+                    >
+                      Editar Clase
+                    </button>
                   </div>
                 );
               })
@@ -85,6 +95,12 @@ export default function WeeklyCalendar({ deporte }: { deporte: string }) {
             )}
           </div>
         ))}
+        
+        {turnoAEditar && ( <UpdateAppointment 
+            turno={turnoAEditar} 
+            onClose={() => setTurnoAEditar(null)} 
+          />
+        )}
       </div>
     </div>
   );

@@ -37,6 +37,13 @@ export default function EmployeeNavbar() {
           </Link>
 
           <Link
+            href="/dashboard/employee/scan-qr"
+            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+          >
+            Escanear QR
+          </Link>
+
+          <Link
             href="/dashboard/profile"
             className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
