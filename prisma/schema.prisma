@@ -18,6 +18,11 @@ enum userAppointmentState {
   IMPAGO
 }
 
+enum userAppointmentType {
+  ABONADO
+  NO_ABONADO
+}
+
 model role {
   id    Int    @id @default(autoincrement())
   name  String
@@ -131,6 +136,8 @@ model userAppointment {
   reservationDate  DateTime
 
   state            userAppointmentState
+
+  type             userAppointmentType     @default(NO_ABONADO)
 
   payments         payment[]
 

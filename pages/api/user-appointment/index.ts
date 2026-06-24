@@ -1,5 +1,5 @@
 import { getAllUserAppointments, createUserAppointment, getOverdueImpagoCountByClientId } from "@/lib/sql/user-appointment";
-import { Prisma, userAppointmentState } from "@/lib/generated/prisma/client";
+import { Prisma, userAppointmentState, userAppointmentType } from "@/lib/generated/prisma/client";
 import { parseFields } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -29,7 +29,7 @@ async function createUserAppointmentHandler(body: Record<string, unknown>, res: 
 
   if (!ok) return res.status(400).json({ message: "Bad request " + error });
 
-  const { appointmentId, clientId, rejected, state } = body;
+  const { appointmentId, clientId, rejected, state, type } = body;
 
   if (!appointmentId || !clientId || rejected === undefined || !state) {
     return res.status(400).json({ message: "Missing required fields: appointmentId, clientId, rejected, state" });
@@ -38,6 +38,11 @@ async function createUserAppointmentHandler(body: Record<string, unknown>, res: 
   const validStates = ["PAGO_COMPLETO", "PAGO_PARCIAL", "IMPAGO"];
   if (!validStates.includes(String(state))) {
     return res.status(400).json({ message: "Invalid state. Must be PAGO_COMPLETO, PAGO_PARCIAL or IMPAGO" });
+  }
+
+  const validTypes = ["ABONADO", "NO_ABONADO"];
+  if (!type || !validTypes.includes(String(type))) {
+    return res.status(400).json({ message: "Invalid or missing type. Must be ABONADO or NO_ABONADO" });
   }
 
   const overdueCount = await getOverdueImpagoCountByClientId(Number(clientId));
@@ -52,6 +57,7 @@ async function createUserAppointmentHandler(body: Record<string, unknown>, res: 
     reservationDate: values.reservationDate as Date,
     rejected: Boolean(rejected),
     state: state as userAppointmentState,
+    type: type as userAppointmentType,
     appointment: { connect: { id: Number(appointmentId) } },
     client: { connect: { id: Number(clientId) } },
   };

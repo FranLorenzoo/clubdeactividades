@@ -532,6 +532,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
             clientId,
             rejected: false,
             state,
+            type: "NO_ABONADO",
             reservationDate: now.toISOString(),
           }),
         });
@@ -570,6 +571,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                 clientId,
                 rejected: false,
                 state: "IMPAGO",
+                type: "ABONADO",
                 reservationDate: now.toISOString(),
               }),
             });

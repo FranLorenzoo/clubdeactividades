@@ -16,3 +16,11 @@ export const userAppointmentState = {
 } as const
 
 export type userAppointmentState = (typeof userAppointmentState)[keyof typeof userAppointmentState]
+
+
+export const userAppointmentType = {
+  ABONADO: 'ABONADO',
+  NO_ABONADO: 'NO_ABONADO'
+} as const
+
+export type userAppointmentType = (typeof userAppointmentType)[keyof typeof userAppointmentType]
