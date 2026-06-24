@@ -87,6 +87,21 @@ export default function ClientProfile({ clientId }: Props) {
     }
   }
 
+async function refreshClient() {
+  try {
+    setLoading(true);
+
+    const res = await fetch(`/api/client/${clientId}`);
+    const data = await res.json();
+
+    setClient(data);
+  } catch {
+    toast.error("Error al cargar cliente");
+  } finally {
+    setLoading(false);
+  }
+}
+
   async function registerPayment(userAppointmentId: number) {
     try {
       const res = await fetch("/api/payment", {
@@ -126,25 +141,16 @@ export default function ClientProfile({ clientId }: Props) {
       });
 
       toast.success("Pago registrado correctamente");
+      await refreshClient();
     } catch {
       toast.error("Error al registrar pago");
     }
   }
 
   useEffect(() => {
-    async function fetchClient() {
-      try {
-        const res = await fetch(`/api/client/${clientId}`);
-        const data = await res.json();
-        setClient(data);
-      } catch {
-        setClient(null);
-      } finally {
-        setLoading(false);
-      }
-    }
 
-    fetchClient();
+
+    refreshClient();
   }, [clientId]);
 
   const pendingPaymentsCount =

@@ -26,6 +26,7 @@ async function getAllPaymentsHandler(res: NextApiResponse) {
   }
 }
 
+
 async function createPaymentHandler(body: Record<string, unknown>, res: NextApiResponse) {
   const { userAppointmentId, employeeId } = body;
   if (!userAppointmentId) {
@@ -106,13 +107,22 @@ async function createPaymentHandler(body: Record<string, unknown>, res: NextApiR
   }
 
   // ── Standard payment path ─────────────────────────────────────────────────
-  const { ok, values, error } = parseFields({
-    paymentDate: "date",
-    amount: "number",
-    paymentMethod: "string",
-  }, body);
 
-  if (!ok) return res.status(400).json({ message: "Bad request " + error });
+
+
+
+
+  try {
+
+    const { paymentDate, paymentMethod, userAppointmentId, employeeId } = body;
+
+    if (!userAppointmentId || !paymentMethod) {
+      return res.status(400).json({
+        message: "Missing required fields: userAppointmentId or paymentMethod",
+      });
+    }
+
+    const uaId = Number(userAppointmentId);
 
     const result = await prisma.$transaction(async (tx) => {
       const ua = await tx.userAppointment.findUnique({
@@ -138,10 +148,6 @@ async function createPaymentHandler(body: Record<string, unknown>, res: NextApiR
       let amount = price - previousTotal;
 
       if (amount < 0) amount = 0;
-
-      console.log("💰 PRICE:", price);
-      console.log("💳 PREVIOUS:", previousTotal);
-      console.log("🧾 AMOUNT:", amount);
 
       const payment = await tx.payment.create({
         data: {
