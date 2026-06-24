@@ -1433,7 +1433,8 @@ export const UserAppointmentScalarFieldEnum = {
   rejected: 'rejected',
   attended: 'attended',
   reservationDate: 'reservationDate',
-  state: 'state'
+  state: 'state',
+  type: 'type'
 } as const
 
 export type UserAppointmentScalarFieldEnum = (typeof UserAppointmentScalarFieldEnum)[keyof typeof UserAppointmentScalarFieldEnum]
@@ -1577,6 +1578,20 @@ export type EnumuserAppointmentStateFieldRefInput<$PrismaModel> = FieldRefInputT
  * Reference to a field of type 'userAppointmentState[]'
  */
 export type ListEnumuserAppointmentStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'userAppointmentState[]'>
+    
+
+
+/**
+ * Reference to a field of type 'userAppointmentType'
+ */
+export type EnumuserAppointmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'userAppointmentType'>
+    
+
+
+/**
+ * Reference to a field of type 'userAppointmentType[]'
+ */
+export type ListEnumuserAppointmentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'userAppointmentType[]'>
     
 
 /**
