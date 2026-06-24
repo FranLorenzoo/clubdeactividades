@@ -43,12 +43,6 @@ export default function ClientNavbar() {
             Mis Turnos
           </Link>
 
-          <Link
-            href="/dashboard/profile"
-            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
-          >
-            Mi Perfil
-          </Link>
 
            <Link
             href="/dashboard/client/mis-creditos"
@@ -57,6 +51,13 @@ export default function ClientNavbar() {
             Mis Creditos
           </Link>
 
+
+          <Link
+            href="/dashboard/profile"
+            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+          >
+            Mi Perfil
+          </Link>
         </nav>
       </div>
 
