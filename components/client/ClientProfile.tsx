@@ -42,7 +42,6 @@ type Props = {
 export default function ClientProfile({ clientId }: Props) {
   const [client, setClient] = useState<ClientProfileData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
 
   const router = useRouter();
 
@@ -54,61 +53,26 @@ export default function ClientProfile({ clientId }: Props) {
 
   const [showConfirmPayment, setShowConfirmPayment] = useState(false);
 
-  async function toggleSuspension() {
-    if (!client) return;
-
+  async function refreshClient() {
     try {
-      setUpdating(true);
+      setLoading(true);
 
-      const res = await fetch(`/api/client/${client.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          suspended: !client.suspended,
-        }),
-      });
+      const res = await fetch(`/api/client/${clientId}`);
+      const data = await res.json();
 
-      if (!res.ok) throw new Error();
-
-      setClient({
-        ...client,
-        suspended: !client.suspended,
-      });
-
-      toast.success(
-        !client.suspended
-          ? "Cliente suspendido correctamente"
-          : "Cliente reactivado correctamente"
-      );
+      setClient(data);
     } catch {
-      toast.error("Error al actualizar cliente");
+      toast.error("Error al cargar cliente");
     } finally {
-      setUpdating(false);
+      setLoading(false);
     }
   }
-
-async function refreshClient() {
-  try {
-    setLoading(true);
-
-    const res = await fetch(`/api/client/${clientId}`);
-    const data = await res.json();
-
-    setClient(data);
-  } catch {
-    toast.error("Error al cargar cliente");
-  } finally {
-    setLoading(false);
-  }
-}
 
   async function registerPayment(userAppointmentId: number) {
     try {
       const res = await fetch("/api/payment", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userAppointmentId,
           paymentMethod: "CASH",
@@ -122,24 +86,6 @@ async function refreshClient() {
         return;
       }
 
-      setClient((prev) => {
-        if (!prev) return prev;
-
-        return {
-          ...prev,
-          userAppointments: prev.userAppointments.map((r) =>
-            r.id === userAppointmentId
-              ? {
-                  ...r,
-                  state: data.state,
-                  totalPaid: data.totalPaid,
-                  remainingDebt: data.remainingDebt,
-                }
-              : r
-          ),
-        };
-      });
-
       toast.success("Pago registrado correctamente");
       await refreshClient();
     } catch {
@@ -148,8 +94,6 @@ async function refreshClient() {
   }
 
   useEffect(() => {
-
-
     refreshClient();
   }, [clientId]);
 
@@ -313,19 +257,10 @@ async function refreshClient() {
             <p className="mb-2">¿Estás seguro de cobrar esta clase?</p>
 
             <div className="mt-4 p-4 rounded-xl bg-zinc-800 space-y-2">
-              <p>
-                <strong>Actividad:</strong>{" "}
-                {selectedPayment.appointment.activity.name}
-              </p>
-              <p>
-                <strong>Total:</strong> ${selectedPayment.price ?? 0}
-              </p>
-              <p>
-                <strong>Pagado:</strong> ${selectedPayment.totalPaid ?? 0}
-              </p>
-              <p>
-                <strong>Debe:</strong> ${selectedPayment.remainingDebt ?? 0}
-              </p>
+              <p><strong>Actividad:</strong> {selectedPayment.appointment.activity.name}</p>
+              <p><strong>Total:</strong> ${selectedPayment.price ?? 0}</p>
+              <p><strong>Pagado:</strong> ${selectedPayment.totalPaid ?? 0}</p>
+              <p><strong>Debe:</strong> ${selectedPayment.remainingDebt ?? 0}</p>
             </div>
 
             <div className="flex gap-3 mt-6">
