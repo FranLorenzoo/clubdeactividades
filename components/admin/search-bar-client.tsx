@@ -1,6 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import CreateClient from "./Modal/create-client";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { isValidDniQuery, isValidEmailQuery } from "@/lib/utils/helpers";
 
 type Client = {
@@ -22,6 +24,9 @@ export default function SearchBar() {
   const [clientes, setClientes]= useState<Client[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [filteredClients, setFilteredClients] = useState<Client[]>([]);
+
+  const router = useRouter();
+
 
   useEffect (()=>{
     setLoadingUsers(true);
@@ -149,10 +154,6 @@ export default function SearchBar() {
                   <p className="text-gray-700 text-sm font-semibold">{cli.user?.name} {cli.user?.lastName}</p>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-600">DNI</p>
-                  <p className="text-gray-700 text-sm font-semibold">{cli.user?.dni}</p>
-                </div>
-                <div>
                   <p className="text-sm font-semibold text-gray-600">Email</p>
                   <p className="text-gray-700 text-sm font-semibold">{cli.user?.email}</p>
                 </div>
@@ -163,10 +164,43 @@ export default function SearchBar() {
                   </p>
                 </div>
               </div>
-              <button onClick={() => deleteClient(cli.id)}
-                className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
-                Eliminar
-              </button>
+
+              <div className="flex gap-2 mt-3">
+
+                <Link
+                  href={`/dashboard/client-profile/${cli.id}`}
+                  className="
+                    bg-blue-600
+                    text-white
+                    px-3
+                    py-1
+                    rounded
+                    hover:bg-blue-700
+                    text-sm
+                    font-semibold
+                  "
+                >
+                  Ver perfil
+                </Link>
+
+                <button
+                  onClick={() => deleteClient(cli.id)}
+                  className="
+                    bg-red-600
+                    text-white
+                    px-3
+                    py-1
+                    rounded
+                    hover:bg-red-700
+                    text-sm
+                    font-semibold
+                  "
+                >
+                  Eliminar
+                </button>
+
+</div>
+
             </li>
             ))}
             </ul>
