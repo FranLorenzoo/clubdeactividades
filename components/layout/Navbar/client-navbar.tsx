@@ -33,14 +33,14 @@ export default function ClientNavbar() {
             href="/dashboard/client/my-payments"
             className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
-            Mis pagos
+            Mis Pagos
           </Link>
 
           <Link
             href="/dashboard/client/mis-turnos"
             className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
-            Mis turnos
+            Mis Turnos
           </Link>
 
           <Link
@@ -48,6 +48,13 @@ export default function ClientNavbar() {
             className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
             Mi Perfil
+          </Link>
+
+           <Link
+            href="/dashboard/client/mis-creditos"
+            className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
+          >
+            Mis Creditos
           </Link>
 
         </nav>

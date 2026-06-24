@@ -16,8 +16,19 @@ export async function getCreditById(id: number) {
 
 export async function getCreditsByClientId(clientId: number) {
   return prisma.credit.findMany({
-    where: { clientId },
+    where: {
+      clientId,
+      isValid: true,
+      endDate: {
+        gte: new Date(), // 👈 solo créditos no vencidos
+      },
+    },
     include: { activity: true },
+
+    // 👇 ordenamos por vencimiento (los que vencen primero arriba)
+    orderBy: {
+      endDate: "asc",
+    },
   });
 }
 
