@@ -555,15 +555,15 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         if (!originalAppt) return;
         const originalDate = new Date(originalAppt.initialDate);
         const targetDay = getClubDayIndex(originalDate);
-        const targetMonth = originalDate.getMonth();
-        const targetYear = originalDate.getFullYear();
+        const targetMonth = originalDate.getUTCMonth();
+        const targetYear = originalDate.getUTCFullYear();
 
         const relevantAppointments = appointments.filter((appt) => {
           const apptDate = new Date(appt.initialDate);
           const alreadyBooked = appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false;
           return (
-            apptDate.getMonth() === targetMonth &&
-            apptDate.getFullYear() === targetYear &&
+            apptDate.getUTCMonth() === targetMonth &&
+            apptDate.getUTCFullYear() === targetYear &&
             getClubDayIndex(apptDate) === targetDay &&
             !alreadyBooked
           );

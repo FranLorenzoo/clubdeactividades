@@ -91,14 +91,13 @@ export default function MisPagosPage() {
           partial.push(item);
         } else if (ua.state === "IMPAGO") {
           const apptDate = new Date(ua.appointment.initialDate);
-          if (apptDate < now) {
-            overdue.push(item);
-          } else if (
-            type === "ABONADO" &&
-            apptDate.getUTCMonth() === currentUTCMonth &&
-            apptDate.getUTCFullYear() === currentUTCYear
-          ) {
+          const isCurrentOrFutureMonth =
+            apptDate.getUTCFullYear() > currentUTCYear ||
+            (apptDate.getUTCFullYear() === currentUTCYear && apptDate.getUTCMonth() >= currentUTCMonth);
+          if (type === "ABONADO" && isCurrentOrFutureMonth) {
             impago.push(item);
+          } else if (apptDate < now) {
+            overdue.push(item);
           }
         } else if (ua.state === "PAGO_COMPLETO") {
           done.push(item);
@@ -381,10 +380,10 @@ export default function MisPagosPage() {
           {/* ── Pago mensual del mes corriente ── */}
           <div>
             <h3 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-4">
-              Pago mensual — {now.toLocaleDateString("es-AR", { month: "long", year: "numeric" })}
+              Pago mensual
             </h3>
             {pendingMonthly.length === 0 ? (
-              <p className="text-zinc-500 text-sm">No tenés clases mensuales pendientes de pago este mes.</p>
+              <p className="text-zinc-500 text-sm">No tenés clases mensuales pendientes de pago.</p>
             ) : (
               <div className="space-y-4">
                 {Object.entries(monthlyByActivity).map(([activityName, items]) => {
