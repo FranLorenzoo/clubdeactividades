@@ -30,10 +30,10 @@ export default function ProfessorNavbar() {
         <nav className="flex flex-col gap-4 px-6 py-8">
 
           <Link
-            href="/dashboard/professor/algo..."
+            href="/dashboard/professor/my-turns"
             className="text-left px-5 py-4 rounded-2xl border border-zinc-700 text-zinc-100 hover:bg-zinc-800 transition"
           >
-            Mis actividades
+            Mis Turnos
           </Link>
 
           <Link
