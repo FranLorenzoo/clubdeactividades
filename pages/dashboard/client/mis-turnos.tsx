@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 interface QRInfo {
   id: number;
@@ -63,7 +64,7 @@ export default function MisTurnosPage() {
               initialDate: ua.appointment?.initialDate ?? "",
               endDate: ua.appointment?.endDate ?? "",
               qr: ua.qr ?? null,
-              cancellable: diffHours >= 0, // futuro hook para regla 24/48hs
+              cancellable: diffHours >= 0,
             };
           })
           .sort(
@@ -75,6 +76,7 @@ export default function MisTurnosPage() {
         setTurnos(pagados);
       } catch (err) {
         console.error(err);
+        toast.error("Error al cargar turnos");
       } finally {
         setLoading(false);
       }
@@ -83,30 +85,53 @@ export default function MisTurnosPage() {
     fetchTurnos();
   }, []);
 
+  /* =========================
+      CANCELAR TURNO
+  ========================= */
   const handleCancel = async (id: number) => {
     setCancelLoadingId(id);
 
+    const loadingToast = toast.loading("Cancelando turno...");
+
     try {
-      const res = await fetch(`/api/cancel/${id}`, {
+      const res = await fetch(`/api/user-appointment/cancel/${id}`, {
         method: "POST",
       });
 
-      if (!res.ok) {
-        throw new Error("Error cancelando turno");
+      const data = await res.json();
+
+      if (!res.ok || !data?.success) {
+        toast.error("No se pudo cancelar el turno", {
+          id: loadingToast,
+        });
+        return;
       }
 
-      // lo sacamos del frontend
+      toast.success(
+        data.creditCreated
+          ? "Turno cancelado y crédito generado 🎁"
+          : "Turno cancelado correctamente",
+        { id: loadingToast }
+      );
+
+      // 🔥 update UI optimista
       setTurnos((prev) =>
         prev.filter((t) => t.userAppointmentId !== id)
       );
+
     } catch (err) {
       console.error(err);
-      alert("No se pudo cancelar el turno");
+      toast.error("Error inesperado al cancelar", {
+        id: loadingToast,
+      });
     } finally {
       setCancelLoadingId(null);
     }
   };
 
+  /* =========================
+      QR
+  ========================= */
   const handleOpenQR = async (turno: TurnoItem) => {
     if (turno.qr?.qrImage) {
       setSelectedQR({ turno, qrImage: turno.qr.qrImage });
@@ -120,9 +145,10 @@ export default function MisTurnosPage() {
         `/api/qr/user-appointment/${turno.userAppointmentId}`
       );
 
-      if (res.ok) {
-        const data = await res.json();
-        setSelectedQR({ turno, qrImage: data.qrImage ?? "" });
+      const data = await res.json();
+
+      if (res.ok && data.qrImage) {
+        setSelectedQR({ turno, qrImage: data.qrImage });
       } else {
         setSelectedQR({ turno, qrImage: "" });
       }
@@ -180,6 +206,11 @@ export default function MisTurnosPage() {
                 <p className="text-zinc-500 text-xs mt-0.5">
                   {formatTime(turno.initialDate)} —{" "}
                   {formatTime(turno.endDate)}
+                </p>
+
+                {/* 🔥 BOTÓN NUEVO */}
+                <p className="text-xs mt-2 text-green-400 hover:underline">
+                  Ver QR
                 </p>
               </button>
 
