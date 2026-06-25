@@ -12,7 +12,8 @@
 export const userAppointmentState = {
   PAGO_COMPLETO: 'PAGO_COMPLETO',
   PAGO_PARCIAL: 'PAGO_PARCIAL',
-  IMPAGO: 'IMPAGO'
+  IMPAGO: 'IMPAGO',
+  CANCELLED: 'CANCELLED'
 } as const
 
 export type userAppointmentState = (typeof userAppointmentState)[keyof typeof userAppointmentState]
