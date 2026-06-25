@@ -553,12 +553,22 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
       } else if (selectedReserveType === "mensual") {
         const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
         if (!originalAppt) return;
-        const targetDay = getClubDayIndex(new Date(originalAppt.initialDate));
+        const originalDate = new Date(originalAppt.initialDate);
+        const targetDay = getClubDayIndex(originalDate);
+        const targetTime = getClubTimeLabel(originalDate);
+        const targetMonth = originalDate.getUTCMonth();
+        const targetYear = originalDate.getUTCFullYear();
 
         const relevantAppointments = appointments.filter((appt) => {
           const apptDate = new Date(appt.initialDate);
           const alreadyBooked = appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false;
-          return apptDate >= now && getClubDayIndex(apptDate) === targetDay && !alreadyBooked;
+          return (
+            apptDate.getUTCMonth() === targetMonth &&
+            apptDate.getUTCFullYear() === targetYear &&
+            getClubDayIndex(apptDate) === targetDay &&
+            getClubTimeLabel(apptDate) === targetTime &&
+            !alreadyBooked
+          );
         });
 
         const responses = await Promise.all(

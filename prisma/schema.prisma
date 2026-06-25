@@ -144,6 +144,8 @@ model userAppointment {
 
   qr               QR?
 
+  cancellationDate DateTime?
+
   @@unique([appointmentId, clientId])
 }
 

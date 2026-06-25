@@ -78,3 +78,71 @@ export async function getOverdueImpagoCountByClientId(clientId: number) {
     return index === -1 || index < capacity;
   }).length;
 }
+
+export async function cancelUserAppointment(userAppointmentId: number) {
+  const ua = await prisma.userAppointment.findUnique({
+    where: { id: userAppointmentId },
+    include: {
+      appointment: true,
+      client: true,
+    },
+  });
+
+  if (!ua) {
+    throw new Error("UserAppointment not found");
+  }
+
+  const now = new Date();
+  const appointmentDate = new Date(ua.appointment.initialDate);
+
+  const hoursDiff =
+    (appointmentDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+  // 🔴 1. validar cancelación
+  const isAbonado = ua.type === "ABONADO";
+
+  let creditCreated = false;
+
+  // 🟢 CASO ABONADO + 48HS → CREA CRÉDITO
+  if (isAbonado && hoursDiff >= 48) {
+    await prisma.credit.create({
+      data: {
+        clientId: ua.clientId,
+        activityId: ua.appointment.activityId,
+        endDate: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000),
+        isValid: true,
+      },
+    });
+
+    creditCreated = true;
+  }
+
+  // 🟡 CASO NO ABONADO + 24HS → solo devolución manual (flag)
+  const refundPending =
+    !isAbonado && hoursDiff >= 24;
+
+  // 🔄 liberar cupo
+  await prisma.appointment.update({
+    where: { id: ua.appointmentId },
+    data: {
+      currentSlots: {
+        decrement: 1,
+      },
+    },
+  });
+
+  // ❌ marcar cancelación
+  await prisma.userAppointment.update({
+    where: { id: userAppointmentId },
+    data: {
+      cancellationDate: now,
+      state: "CANCELLED",
+    },
+  });
+
+  return {
+    success: true,
+    creditCreated,
+    refundPending,
+  };
+}
