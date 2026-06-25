@@ -83,7 +83,7 @@ export async function cancelUserAppointment(userAppointmentId: number) {
   const ua = await prisma.userAppointment.findUnique({
     where: { id: userAppointmentId },
     include: {
-      appointment: true,
+      appointment: true,  
       client: true,
     },
   });
