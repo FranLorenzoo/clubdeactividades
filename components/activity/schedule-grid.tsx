@@ -620,7 +620,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
     }
   }
 
-  const isStaff = userRole === "ADMIN" || userRole === "EMPLOYEE";
+  const isStaff = userRole === "ADMIN" || userRole === "EMPLOYEE" || userRole === "PROFESSOR";
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-16">
