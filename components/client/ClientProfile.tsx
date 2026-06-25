@@ -20,6 +20,7 @@ type ClientProfileData = {
     id: number;
     reservationDate: string;
     state: string;
+    type: "ABONADO" | "NO_ABONADO";
     rejected: boolean;
     price?: number;
     totalPaid?: number;
@@ -57,7 +58,7 @@ export default function ClientProfile({ clientId }: Props) {
     try {
       setLoading(true);
 
-      const res = await fetch(`/api/client/${clientId}`);
+      const res = await fetch(`/api/client/${clientId}`, { cache: "no-store" });
       const data = await res.json();
 
       setClient(data);
@@ -171,6 +172,13 @@ export default function ClientProfile({ clientId }: Props) {
                 ? "Ocultar pagos pendientes"
                 : `Ver pagos pendientes (${pendingPaymentsCount})`}
             </button>
+
+            <button
+              onClick={refreshClient}
+              className="px-5 py-3 rounded-xl bg-zinc-700 hover:bg-zinc-600 transition font-semibold w-full"
+            >
+              Actualizar datos
+            </button>
           </div>
         </div>
 
@@ -219,8 +227,13 @@ export default function ClientProfile({ clientId }: Props) {
                       key={r.id}
                       className="p-5 rounded-2xl bg-gradient-to-r from-yellow-950 to-zinc-900 border border-yellow-700"
                     >
-                      <div className="flex justify-between">
-                        <p>⚽ {r.appointment.activity.name}</p>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p>⚽ {r.appointment.activity.name}</p>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-700 text-zinc-300 mt-1 inline-block">
+                            {r.type === "ABONADO" ? "Mensualidad" : "Clase Suelta"}
+                          </span>
+                        </div>
                         <span className="text-xs px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
                           {r.state}
                         </span>

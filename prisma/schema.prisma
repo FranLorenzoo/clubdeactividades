@@ -16,7 +16,7 @@ enum userAppointmentState {
   PAGO_COMPLETO
   PAGO_PARCIAL
   IMPAGO
-  CANCELLED 
+  CANCELLED
 }
 
 enum userAppointmentType {
