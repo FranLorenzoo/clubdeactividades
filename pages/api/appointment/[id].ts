@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case "GET":
       return getAppointmentByIdHandler(parsedId, res);
     case "PUT":
-      return updateAppointmentByIdHandler(parsedId, req.body, res);
+      return updateAppointmentByIdHandler(parsedId, res);
     case "DELETE":
       return deleteAppointmentByIdHandler(parsedId, res);
     default:
@@ -35,32 +35,21 @@ async function getAppointmentByIdHandler(id: number, res: NextApiResponse) {
   }
 }
 
-async function updateAppointmentByIdHandler(id: number, body: Record<string, unknown>, res: NextApiResponse) {
-  const { ok, values, error} = parseFields({
-    initialDate: "date",
-    endDate: "date",
-    price: "number",
-    currentSlots: "number",
-    slotsAvailable: "number",
-  }, body);
-
-  if(!ok) return res.status(400).json({ message: "Bad request " + error });
-
-  const updateInput: Prisma.appointmentUpdateInput = {
-    initialDate: values.initialDate as Date,
-    endDate: values.endDate as Date,
-    price: values.price as number,
-    currentSlots: values.currentSlots as number,
-    slotsAvailable: values.slotsAvailable as number,
-  };
-
-  const { professorId, activityId } = body;
-  if (professorId) updateInput.professor = { connect: { id: Number(professorId) } };
-  if (activityId) updateInput.activity = { connect: { id: Number(activityId) } };
+async function updateAppointmentByIdHandler(id: number, res: NextApiResponse) {
 
   try {
-    const appointment = await updateAppointment(id, updateInput);
-    return res.status(200).json(appointment);
+    const appointment = await getAppointmentById(id);
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+
+    const nuevoAppointment = await prisma.appointment.update({
+      where: { id },
+      data: {
+        currentSlots: appointment.currentSlots - 1, 
+      },
+    });
+    return res.status(200).json(nuevoAppointment);
 
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -84,30 +73,57 @@ async function deleteAppointmentByIdHandler(id: number, res: NextApiResponse) {
     const baseDate = new Date(appointment.initialDate);
     const baseDay = baseDate.getDay(); 
     const baseHour = baseDate.getHours();
+    const now = new Date();
 
+    // Traemos solo los turnos de la misma actividad que NO tengan usuarios asociados
     const sameActivityAppointments = await prisma.appointment.findMany({
-      where: { activityId: appointment.activityId }
+      where: { 
+        activityId: appointment.activityId,
+        userAppointments: {
+          none: {} // 👈 Clave: Filtra solo los turnos vacíos (sin registros en la intermedia)
+        }
+      }
     });
 
+    // Filtramos por día, hora y que sean fechas futuras
     const idsToDelete = sameActivityAppointments
       .filter(a => {
         const initial = new Date(a.initialDate);
-        return initial.getDay() === baseDay && initial.getHours() === baseHour;
+
+        // Ya no hace falta evaluar (a.currentSlots === a.slotsAvailable) 
+        // porque el filtro 'none' de arriba asegura que el turno está 100% limpio.
+        return (
+          initial.getDay() === baseDay && 
+          initial.getHours() === baseHour && 
+          now <= initial
+        );
       })
       .map(a => a.id);
+console.log("IDs a eliminar (sin reservas):", idsToDelete);
 
+    if (idsToDelete.length === 0) {
+      return res.status(200).json({ 
+        message: "No future empty appointments found to delete" 
+      });
+    }
+
+    // El borrado ahora es seguro y no disparará errores de Foreign Key (FK)
     await prisma.appointment.deleteMany({
       where: { id: { in: idsToDelete } }
     });
 
-    return res.status(200).json({ message: "Appointments deleted in cascade" });
+    return res.status(200).json({ message: "Appointments deleted in cascade successfully" });
 
   } catch (error) {
+    // Imprimimos el error real en consola para facilitar el debugging en el futuro
+    console.error("Error en deleteAppointmentByIdHandler:", error);
+
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2025") {
         return res.status(404).json({ message: "Appointment not found" });
       }
     }
-    res.status(500).json({ message: "Internal server error" });
+
+    return res.status(500).json({ message: "Internal server error" });
   }
 }

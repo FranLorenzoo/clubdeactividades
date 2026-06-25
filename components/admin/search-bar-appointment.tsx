@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import UpdateAppointment from "./Modal/update-appointment";
+import toast from "react-hot-toast";
 
 export default function WeeklyCalendar({ deporte }: { deporte: string }) {
   const [turnos, setTurnos] = useState<any[]>([]);
   const [turnoAEditar, setTurnoAEditar] = useState<any | null>(null);
+
 
   useEffect(() => {
     fetch("/api/appointment")
@@ -28,6 +30,20 @@ export default function WeeklyCalendar({ deporte }: { deporte: string }) {
         setTurnos(Object.values(grupos));
       });
   }, [deporte]);
+
+
+  const deleteAppointment = async (id: number) => {
+    try {
+      const res= await fetch(`/api/appointment/${id}`, { method: "DELETE" });
+      if (res.ok){
+        setTurnos((prev) => prev.filter((t) => t.id !== id));
+        toast.success("La clase fue eliminada con éxito");
+      }
+    } catch (error) {
+      console.error("Error eliminando clase:", error);
+      toast.error("Error inesperado al eliminar clase");
+    }
+  };
 
   const appointmentsPerDay: Record<string, any[]> = {};
   turnos.forEach((t: any) => {
@@ -77,7 +93,6 @@ export default function WeeklyCalendar({ deporte }: { deporte: string }) {
                   >
                     <div>
                       <p className="text-gray-300 font-semibold mb-1">{hora} hs</p>
-                      <p className="text-gray-400">Cupos disp: {t.currentSlots}</p>
                       <p className="text-gray-400">Cupo total: {t.slotsAvailable}</p>
                       <p className="text-gray-400 truncate">Profe: {t.professor?.user?.name}</p>
                     </div>
@@ -87,6 +102,9 @@ export default function WeeklyCalendar({ deporte }: { deporte: string }) {
                     >
                       Editar Clase
                     </button>
+                    <button onClick={() => deleteAppointment(t.id)} 
+                     className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm font-semibold">
+                      Eliminar</button>
                   </div>
                 );
               })
@@ -101,6 +119,7 @@ export default function WeeklyCalendar({ deporte }: { deporte: string }) {
             onClose={() => setTurnoAEditar(null)} 
           />
         )}
+
       </div>
     </div>
   );
