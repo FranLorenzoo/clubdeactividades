@@ -16,6 +16,7 @@ enum userAppointmentState {
   PAGO_COMPLETO
   PAGO_PARCIAL
   IMPAGO
+  CANCELLED 
 }
 
 enum userAppointmentType {
@@ -142,6 +143,8 @@ model userAppointment {
   payments         payment[]
 
   qr               QR?
+
+  cancellationDate DateTime?
 
   @@unique([appointmentId, clientId])
 }

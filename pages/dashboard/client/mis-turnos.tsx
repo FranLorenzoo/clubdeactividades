@@ -15,6 +15,7 @@ interface TurnoItem {
   initialDate: string;
   endDate: string;
   qr: QRInfo | null;
+  cancellable: boolean;
 }
 
 export default function MisTurnosPage() {
@@ -22,32 +23,53 @@ export default function MisTurnosPage() {
   const [loading, setLoading] = useState(true);
   const [selectedQR, setSelectedQR] = useState<{ turno: TurnoItem; qrImage: string } | null>(null);
   const [loadingQR, setLoadingQR] = useState(false);
+  const [cancelLoadingId, setCancelLoadingId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchTurnos = async () => {
       const userId = localStorage.getItem("userId");
-      if (!userId) { setLoading(false); return; }
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const clientRes = await fetch(`/api/client/user/${userId}`);
         if (!clientRes.ok) return;
+
         const client = await clientRes.json();
 
         const uaRes = await fetch(`/api/user-appointment/client/${client.id}`);
         if (!uaRes.ok) return;
+
         const userAppointments: any[] = await uaRes.json();
 
+        const now = new Date();
+
         const pagados: TurnoItem[] = userAppointments
-          .filter((ua) => ua.state === "PAGO_COMPLETO")
-          .map((ua) => ({
-            userAppointmentId: ua.id,
-            activityName: ua.appointment?.activity?.name ?? "—",
-            initialDate: ua.appointment?.initialDate ?? "",
-            endDate: ua.appointment?.endDate ?? "",
-            qr: ua.qr ?? null,
-          }))
+          .filter((ua) =>
+            ua.state === "PAGO_COMPLETO" ||
+            ua.state === "PAGO_PARCIAL"
+          )
+          .map((ua) => {
+            const start = new Date(ua.appointment?.initialDate);
+
+            const diffHours =
+              (start.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+            return {
+              userAppointmentId: ua.id,
+              activityName: ua.appointment?.activity?.name ?? "—",
+              initialDate: ua.appointment?.initialDate ?? "",
+              endDate: ua.appointment?.endDate ?? "",
+              qr: ua.qr ?? null,
+              cancellable: diffHours >= 0, // futuro hook para regla 24/48hs
+            };
+          })
           .sort(
             (a, b) =>
-              new Date(a.initialDate).getTime() - new Date(b.initialDate).getTime()
+              new Date(a.initialDate).getTime() -
+              new Date(b.initialDate).getTime()
           );
 
         setTurnos(pagados);
@@ -61,17 +83,43 @@ export default function MisTurnosPage() {
     fetchTurnos();
   }, []);
 
+  const handleCancel = async (id: number) => {
+    setCancelLoadingId(id);
+
+    try {
+      const res = await fetch(`/api/cancel/${id}`, {
+        method: "POST",
+      });
+
+      if (!res.ok) {
+        throw new Error("Error cancelando turno");
+      }
+
+      // lo sacamos del frontend
+      setTurnos((prev) =>
+        prev.filter((t) => t.userAppointmentId !== id)
+      );
+    } catch (err) {
+      console.error(err);
+      alert("No se pudo cancelar el turno");
+    } finally {
+      setCancelLoadingId(null);
+    }
+  };
+
   const handleOpenQR = async (turno: TurnoItem) => {
-    // Use QR from payload if already included
     if (turno.qr?.qrImage) {
       setSelectedQR({ turno, qrImage: turno.qr.qrImage });
       return;
     }
 
-    // Fallback: fetch QR by userAppointmentId
     setLoadingQR(true);
+
     try {
-      const res = await fetch(`/api/qr/user-appointment/${turno.userAppointmentId}`);
+      const res = await fetch(
+        `/api/qr/user-appointment/${turno.userAppointmentId}`
+      );
+
       if (res.ok) {
         const data = await res.json();
         setSelectedQR({ turno, qrImage: data.qrImage ?? "" });
@@ -107,58 +155,70 @@ export default function MisTurnosPage() {
       {loading ? (
         <p className="text-zinc-400 text-sm">Cargando...</p>
       ) : turnos.length === 0 ? (
-        <p className="text-zinc-500 text-sm">No tenés turnos pagos todavía.</p>
+        <p className="text-zinc-500 text-sm">
+          No tenés turnos activos.
+        </p>
       ) : (
         <div className="space-y-3">
           {turnos.map((turno) => (
-            <button
+            <div
               key={turno.userAppointmentId}
-              onClick={() => handleOpenQR(turno)}
-              disabled={loadingQR}
-              className="w-full text-left flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 hover:border-green-600 hover:bg-zinc-800 transition group"
+              className="w-full flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4 hover:border-green-600 transition"
             >
-              <div>
-                <p className="font-semibold capitalize group-hover:text-green-400 transition">
+              <button
+                onClick={() => handleOpenQR(turno)}
+                className="text-left flex-1"
+              >
+                <p className="font-semibold capitalize">
                   {turno.activityName}
                 </p>
+
                 <p className="text-zinc-400 text-sm mt-0.5 capitalize">
                   {formatDate(turno.initialDate)}
                 </p>
+
                 <p className="text-zinc-500 text-xs mt-0.5">
-                  {formatTime(turno.initialDate)} — {formatTime(turno.endDate)}
+                  {formatTime(turno.initialDate)} —{" "}
+                  {formatTime(turno.endDate)}
                 </p>
-              </div>
-              <div className="flex flex-col items-end gap-1">
-                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-600/20 text-green-400">
+              </button>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => handleCancel(turno.userAppointmentId)}
+                  disabled={cancelLoadingId === turno.userAppointmentId}
+                  className="text-xs px-3 py-1 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 transition"
+                >
+                  {cancelLoadingId === turno.userAppointmentId
+                    ? "Cancelando..."
+                    : "Cancelar"}
+                </button>
+
+                <span className="text-xs px-2 py-1 rounded-full bg-green-600/20 text-green-400">
                   Pago
                 </span>
-                <span className="text-zinc-500 text-xs group-hover:text-zinc-300 transition">
-                  Ver QR →
-                </span>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       )}
 
-      {/* QR Modal */}
+      {/* QR MODAL */}
       {selectedQR && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
           onClick={() => setSelectedQR(null)}
         >
           <div
-            className="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 flex flex-col items-center gap-5 w-80 shadow-2xl"
+            className="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 flex flex-col items-center gap-5 w-80"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-center">
-              <p className="font-bold text-lg capitalize">{selectedQR.turno.activityName}</p>
+              <p className="font-bold text-lg capitalize">
+                {selectedQR.turno.activityName}
+              </p>
               <p className="text-zinc-400 text-sm mt-1 capitalize">
                 {formatDate(selectedQR.turno.initialDate)}
-              </p>
-              <p className="text-zinc-500 text-xs mt-0.5">
-                {formatTime(selectedQR.turno.initialDate)} —{" "}
-                {formatTime(selectedQR.turno.endDate)}
               </p>
             </div>
 
@@ -166,19 +226,21 @@ export default function MisTurnosPage() {
               <div className="bg-white rounded-2xl p-3">
                 <Image
                   src={selectedQR.qrImage}
-                  alt="QR del turno"
+                  alt="QR"
                   width={200}
                   height={200}
                   unoptimized
                 />
               </div>
             ) : (
-              <p className="text-zinc-500 text-sm">QR no disponible.</p>
+              <p className="text-zinc-500 text-sm">
+                QR no disponible.
+              </p>
             )}
 
             <button
               onClick={() => setSelectedQR(null)}
-              className="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-100 py-3 rounded-2xl font-semibold transition text-sm"
+              className="w-full bg-zinc-800 hover:bg-zinc-700 py-3 rounded-2xl"
             >
               Cerrar
             </button>
