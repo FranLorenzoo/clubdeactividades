@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import toast from "react-hot-toast";
 
 function formatWeekLabel(start: Date, end: Date): string {
   const fmt = (d: Date) =>
@@ -12,19 +13,11 @@ type Turno = {
   initialDate: string;
   endDate: string;
   professorId: number;
-};
-
-type Employee = {
-  id: number,
-  user: {
-    name: string;
-    lastName: string;
-    email: string;
-    dni: string;
+  activity: {
     id: number;
-    isDeleted: boolean;
-  }
-}
+    name: string;
+  };
+};
 
 function getWeekRange(offset: number): { start: Date; end: Date } {
   const today = new Date();
@@ -39,14 +32,6 @@ function getWeekRange(offset: number): { start: Date; end: Date } {
   return { start: monday, end: saturday };
 }
 
-function getWeekStart(date: Date) {
-  const copy = new Date(date);
-  const day = copy.getDay();
-  const diff = copy.getDate() - day + (day === 0 ? -6 : 1);
-  copy.setDate(diff);
-  copy.setHours(0, 0, 0, 0);
-  return copy;
-}
 
 function formatDay(date: Date) {
   return date.toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short" });
@@ -55,14 +40,36 @@ function formatDay(date: Date) {
 export default function MyTurnsPage() {
   const [weekOffset, setWeekOffset] = useState(0);
   const [activeSlot, setActiveSlot] = useState<{ day: string; time: string } | null>(null);
-  const [currentWeekStart, setCurrentWeekStart] = useState(() => getWeekStart(new Date()));
   const { start: weekStart, end: weekEnd } = getWeekRange(weekOffset);
   const weekLabel = formatWeekLabel(weekStart, weekEnd);
   const [turnos, setTurnos] = useState<Turno[]>([]);
   const [filteredTurnos, setFilteredTurnos] = useState<Turno[]>([]);
   const [loadingTurnos, setLoadingTurnos] = useState(true);
+  const [loadingTurnoId, setLoadingTurnoId] = useState<number | null>(null);
 
+  const handleRequestReplacement = async (turno: Turno) => {
+    setLoadingTurnoId(turno.id);
+    try {
+      const response = await fetch("/api/send-replacement-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          turno: turno.id,
+        }),
+      });
 
+      if (!response.ok) {
+        throw new Error();
+      }
+
+      toast.success("Solicitud enviada");
+    } catch {
+      toast.error("No se pudo enviar la solicitud");
+    }
+    setLoadingTurnoId(null);
+  };
   useEffect(() => {
     const userId = localStorage.getItem("userId");
       setLoadingTurnos(true);
@@ -189,6 +196,16 @@ export default function MyTurnsPage() {
                               minute: "2-digit",
                             })}
                           </div>
+                          <button
+                            onClick={() => handleRequestReplacement(turno)}
+                            className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-lg transition"
+                          >
+                            {
+                              loadingTurnoId === turno.id
+                                ? "Solicitando..."
+                                : "Solicitar reemplazo"
+                            }
+                          </button>
                         </div>
                       ))
                     )}
