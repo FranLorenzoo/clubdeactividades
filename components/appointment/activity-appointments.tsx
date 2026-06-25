@@ -244,7 +244,7 @@ export default function ActivityAppointments() {
                     </div>
                     
                     <div style={{ fontSize: '0.9rem', color: '#555', marginBottom: '4px' }}>
-                      ⏱️ <strong>Horario:</strong> {startDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })} a {endDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })} hs
+                      ⏱️ <strong>Horario:</strong> {startDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })} a {endDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })} hs
                     </div>
 
                     <div style={{ fontSize: '0.9rem', color: '#555' }}>
