@@ -555,6 +555,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         if (!originalAppt) return;
         const originalDate = new Date(originalAppt.initialDate);
         const targetDay = getClubDayIndex(originalDate);
+        const targetTime = getClubTimeLabel(originalDate);
         const targetMonth = originalDate.getUTCMonth();
         const targetYear = originalDate.getUTCFullYear();
 
@@ -565,6 +566,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
             apptDate.getUTCMonth() === targetMonth &&
             apptDate.getUTCFullYear() === targetYear &&
             getClubDayIndex(apptDate) === targetDay &&
+            getClubTimeLabel(apptDate) === targetTime &&
             !alreadyBooked
           );
         });
