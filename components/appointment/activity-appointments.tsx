@@ -43,6 +43,9 @@ export default function ActivityAppointments() {
   // Estado para controlar qué turno se está editando mutuamente
   const [editingAppointmentId, setEditingAppointmentId] = useState<number | null>(null);
 
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => { setIsMounted(true); }, []);
+
   // 1. Traer las actividades al cargar el componente
   useEffect(() => {
     async function fetchActivities() {
@@ -148,171 +151,182 @@ export default function ActivityAppointments() {
   }
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      gap: '2.5rem', 
-      padding: '2rem', 
-      fontFamily: 'sans-serif',
-      maxWidth: '1200px',
-      margin: '0 auto'
-    }}>
+  <div style={{ 
+    display: 'flex', 
+    gap: '2.5rem', 
+    padding: '2rem', 
+    fontFamily: 'sans-serif',
+    maxWidth: '1200px',
+    margin: '0 auto'
+  }}>
+    
+    <div style={{ flex: '1', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <h2 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: '#fff' }}>
+        Actividades
+      </h2>
       
-      <div style={{ flex: '1', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <h2 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: '#333' }}>
-          Actividades
-        </h2>
-        
-        {activities === null ? (
-          <p style={{ color: '#666', fontSize: '0.9rem' }}>No se encontraron actividades disponibles.</p>
-        ) : (
-          activities.map((activity) => (
-            <button
-              key={activity.id}
-              onClick={() => setSelectedActivity(activity.id)}
-              style={{
-                padding: '14px 20px',
-                backgroundColor: selectedActivity === activity.id ? '#0070f3' : '#ffffff',
-                color: selectedActivity === activity.id ? '#ffffff' : '#333333',
-                border: selectedActivity === activity.id ? '1px solid #0070f3' : '1px solid #ccc',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                textAlign: 'left',
-                fontSize: '1rem',
-                fontWeight: selectedActivity === activity.id ? '600' : '400',
-                transition: 'all 0.2s ease',
-                boxShadow: selectedActivity === activity.id ? '0 4px 6px rgba(0,112,243,0.2)' : 'none'
-              }}
-            >
-              {activity.name}
-            </button>
-          ))
-        )}
-      </div>
+      {activities === null ? (
+        <p style={{ color: '#aaa', fontSize: '0.9rem' }}>No se encontraron actividades disponibles.</p>
+      ) : (
+        activities.map((activity) => (
+          <button
+            key={activity.id}
+            onClick={() => setSelectedActivity(activity.id)}
+            style={{
+              padding: '14px 20px',
+              backgroundColor: selectedActivity === activity.id ? '#0070f3' : '#1f1f1f',
+              color: '#ffffff',
+              border: selectedActivity === activity.id ? '1px solid #0070f3' : '1px solid #333',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              textAlign: 'left',
+              fontSize: '1rem',
+              fontWeight: selectedActivity === activity.id ? '600' : '400',
+              transition: 'all 0.2s ease',
+              boxShadow: selectedActivity === activity.id ? '0 4px 6px rgba(0,112,243,0.2)' : 'none'
+            }}
+          >
+            {activity.name}
+          </button>
+        ))
+      )}
+    </div>
 
-      <div style={{ 
-        flex: '2', 
-        borderLeft: '1px solid #eaeaea', 
-        paddingLeft: '2.5rem',
-        minHeight: '400px'
-      }}>
-        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: '#333' }}>
-          Turnos Disponibles
-        </h2>
-        
-        {!selectedActivity && (
-          <div style={{ padding: '2rem 0', color: '#666', textAlign: 'center', border: '2px dashed #eee', borderRadius: '8px' }}>
-            <p>Por favor, seleccione una actividad de la izquierda para ver los turnos vigentes.</p>
-          </div>
-        )}
+    <div style={{ 
+      flex: '2', 
+      backgroundColor: '#b9b9b9',
+      border: '1px solid #e0e0e0',
+      borderRadius: '12px',
+      padding: '2rem',
+      minHeight: '400px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+    }}>
+      <h2 style={{ fontSize: '1.35rem', marginBottom: '1.5rem', color: '#1a1a1a', fontWeight: '700' }}>
+        Turnos Disponibles
+      </h2>
+      
+      {!selectedActivity && (
+        <div style={{ padding: '3rem 0', color: '#666', textAlign: 'center', border: '2px dashed #ccc', borderRadius: '8px', backgroundColor: '#ffffff' }}>
+          <p>Por favor, seleccione una actividad de la izquierda para ver los turnos vigentes.</p>
+        </div>
+      )}
 
-        {loadingAppointments && (
-          <p style={{ color: '#0070f3', fontWeight: '500' }}>Buscando turnos actualizados...</p>
-        )}
+      {loadingAppointments && (
+        <p style={{ color: '#0070f3', fontWeight: '600', textAlign: 'center' }}>Buscando turnos actualizados...</p>
+      )}
 
-        {!loadingAppointments && selectedActivity && appointments.length === 0 && (
-          <div style={{ padding: '2rem 0', color: '#666', textAlign: 'center', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
-            <p>No hay turnos programados para esta actividad desde la fecha actual en adelante.</p>
-          </div>
-        )}
+      {!loadingAppointments && selectedActivity && appointments.length === 0 && (
+        <div style={{ padding: '3rem 0', color: '#666', textAlign: 'center', backgroundColor: '#ffffff', borderRadius: '8px', border: '1px solid #e0e0e0' }}>
+          <p>No hay turnos programados para esta actividad desde la fecha actual en adelante.</p>
+        </div>
+      )}
 
-        {!loadingAppointments && appointments.length > 0 && (
-          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {appointments.map((appointment) => {
-              const startDate = new Date(appointment.initialDate);
-              const endDate = new Date(appointment.endDate);
-              const profName = appointment.professor?.user?.name;
-              const profLastName = appointment.professor?.user?.lastName;
-              const isEditing = editingAppointmentId === appointment.id;
+      {!loadingAppointments && appointments.length > 0 && (
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          {appointments.map((appointment) => {
+            const startDate = new Date(appointment.initialDate);
+            const endDate = new Date(appointment.endDate);
+            const profName = appointment.professor?.user?.name;
+            const profLastName = appointment.professor?.user?.lastName;
+            const isEditing = editingAppointmentId === appointment.id;
 
-              return (
-                <li 
-                  key={appointment.id} 
-                  style={{ 
-                    padding: '16px', 
-                    border: '1px solid #eee',
-                    borderRadius: '8px',
-                    backgroundColor: '#fff',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}
-                >
-                  <div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: '600', color: '#222', marginBottom: '4px' }}>
-                      {startDate.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
-                    </div>
-                    
-                    <div style={{ fontSize: '0.9rem', color: '#555', marginBottom: '4px' }}>
-                      ⏱️ <strong>Horario:</strong> {startDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })} a {endDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })} hs
-                    </div>
+            const dateString = isMounted 
+              ? startDate.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
+              : 'Cargando fecha...';
 
-                    <div style={{ fontSize: '0.9rem', color: '#555' }}>
-                      👤 <strong>Profesor:</strong> {profName ? `${profName} ${profLastName}` : 'Por asignar'}
-                    </div>
+            const timeString = isMounted
+              ? `${startDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })} a ${endDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })} hs`
+              : '--:-- a --:-- hs';
+
+            return (
+              <li 
+                key={appointment.id} 
+                style={{ 
+                  padding: '18px', 
+                  border: '1px solid #eef0f2',
+                  borderRadius: '8px',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.33)',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  transition: 'transform 0.2s, boxShadow 0.2s'
+                }}
+              >
+                <div>
+                  <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#111', marginBottom: '6px', textTransform: 'capitalize' }}>
+                    {dateString}
+                  </div>
+                  
+                  <div style={{ fontSize: '0.9rem', color: '#444', marginBottom: '4px' }}>
+                    ⏱️ <strong style={{ color: '#222' }}>Horario:</strong> {timeString}
                   </div>
 
-                  <div style={{ textAlign: 'right' }}>
-                    {isEditing ? (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        <select 
-                          defaultValue=""
-                          onChange={(e) => {
-                            if (e.target.value) handleAssignProfessor(appointment.id, Number(e.target.value));
-                          }}
-                          style={{ 
-                            padding: '8px', 
-                            borderRadius: '6px', 
-                            border: '1px solid #ccc', 
-                            fontSize: '0.85rem',
-                            backgroundColor: '#ffffff',
-                            color: '#333333',
-                            width: '160px'
-                          }}
-                        >
-                          <option value="" disabled style={{ color: '#999' }}>Seleccionar Profesor...</option>
-                          {professors.map(p => (
-                            <option 
-                              key={p.id} 
-                              value={p.id}
-                              style={{ backgroundColor: '#ffffff', color: '#333333' }} // Aseguramos las opciones
-                            >
-                              {p.user.name} {p.user.lastName}
-                            </option>
-                          ))}
-                        </select>
-                        <button 
-                          onClick={() => setEditingAppointmentId(null)}
-                          style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer', fontSize: '0.8rem' }}
-                        >
-                          Cancelar
-                        </button>
-                      </div>
-                    ) : (
+                  <div style={{ fontSize: '0.9rem', color: '#444' }}>
+                    👤 <strong style={{ color: '#222' }}>Profesor:</strong> {profName ? `${profName} ${profLastName}` : 'Por asignar'}
+                  </div>
+                </div>
+
+                <div style={{ textAlign: 'right' }}>
+                  {isEditing ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'flex-end' }}>
                       <button 
-                        onClick={() => setEditingAppointmentId(appointment.id)}
-                        style={{
-                          padding: '8px 14px',
-                          backgroundColor: '#e6e6e6',
-                          color: '#0070f3',
-                          border: '1px solid #0070f3',
-                          borderRadius: '6px',
-                          cursor: 'pointer',
+                        onClick={() => setEditingAppointmentId(null)}
+                        style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer', fontSize: '0.95rem', fontWeight: '600' }}
+                      >
+                        Cancelar
+                      </button>
+                      <select 
+                        defaultValue=""
+                        onChange={(e) => {
+                          if (e.target.value) handleAssignProfessor(appointment.id, Number(e.target.value));
+                        }}
+                        style={{ 
+                          padding: '8px 12px', 
+                          borderRadius: '6px', 
+                          border: '1px solid #ccc', 
                           fontSize: '0.85rem',
-                          fontWeight: '500',
-                          transition: 'background-color 0.2s'
+                          backgroundColor: '#ffffff',
+                          color: '#333333',
+                          width: '160px',
+                          cursor: 'pointer'
                         }}
                       >
-                        Cambiar Profesor
-                      </button>
-                    )}
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </div>
+                        <option value="" disabled>Seleccionar Profesor...</option>
+                        {professors.map(p => (
+                          <option key={p.id} value={p.id}>
+                            {p.user.name} {p.user.lastName}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : (
+                    <button 
+                      onClick={() => setEditingAppointmentId(appointment.id)}
+                      style={{
+                        padding: '9px 16px',
+                        backgroundColor: '#0070f3', // 🚀 Botón azul primario con texto blanco para legibilidad total
+                        color: '#ffffff',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontSize: '0.85rem',
+                        fontWeight: '600',
+                        boxShadow: '0 2px 4px rgba(0,112,243,0.15)',
+                        transition: 'background-color 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#005bc5'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0070f3'}
+                    >
+                      Cambiar Profesor
+                    </button>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
-  );
-}
+  </div>
+)};
