@@ -98,22 +98,33 @@ async function createAppointmentsHandler(body: Record<string, unknown>[], res: N
 }
 
 async function updateFutureAppointmentsHandler(body: Record<string, unknown>, res: NextApiResponse) {
-  const { ok, values, error } = parseFields({ price: "number" }, body);
+  // Mantenemos la validación de formato por seguridad
+  const { ok, error } = parseFields({ price: "number" }, body);
   if (!ok) return res.status(400).json({ message: "Bad request en precio: " + error });
 
-  const { professorId, slotsAvailable, activityId } = body;
-  if (!professorId || !slotsAvailable || !activityId) {
-    return res.status(400).json({ message: "Faltan campos requeridos: professorId, slotsAvailable o activityId" });
+  // 🚀 EXTRAEMOS 'price' DIRECTAMENTE DEL BODY
+  const { price, professorId, slotsAvailable, activityId, dayOfWeek, hour } = body;
+  
+  if (price === undefined || !professorId || !slotsAvailable || !activityId || dayOfWeek === undefined || hour === undefined) {
+    return res.status(400).json({ message: "Faltan campos requeridos: precio, profesor, cupos, actividad, día o la hora" });
   }
 
   const now = new Date();
   const firstDayNextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0, 0);
+
   try {
-    const resultado = await updateFutureAppointments(firstDayNextMonth, Number(activityId), {
-      price: values.price as number,
-      professorId: Number(professorId),
-      slotsAvailable: Number(slotsAvailable),
-    });
+    const resultado = await updateFutureAppointments(
+      firstDayNextMonth, 
+      Number(activityId), 
+      Number(dayOfWeek), 
+      Number(hour), 
+      {
+        // 🚀 CASTEAMOS EXPLICITAMENTE A NÚMERO NATIVO
+        price: Number(price), 
+        professorId: Number(professorId),
+        slotsAvailable: Number(slotsAvailable),
+      }
+    );
     return res.status(200).json({ message: "Turnos futuros actualizados con éxito" });
 
   } catch (error) {

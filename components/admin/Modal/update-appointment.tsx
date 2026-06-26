@@ -35,11 +35,15 @@ export default function UpdateAppointment({ turno, onClose }: UpdateAppointmentP
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const baseDate = new Date(turno.initialDate);
+
     const payload = {
       price: price,
       professorId: professorId,
       slotsAvailable: slotsAvailable,
-      activityId: turno.activityId || turno.activity?.id
+      activityId: turno.activityId || turno.activity?.id,
+      dayOfWeek: baseDate.getDay(),
+      hour: baseDate.getHours()
     };
 
     try {
@@ -50,6 +54,7 @@ export default function UpdateAppointment({ turno, onClose }: UpdateAppointmentP
       });
 
       if (response.ok) {
+        console.log(response.body);
         toast.success("Actualización de clase exitosa");
         onClose();
         setTimeout(() => {
