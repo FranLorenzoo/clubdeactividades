@@ -43,6 +43,8 @@ type Props = {
 export default function ClientProfile({ clientId }: Props) {
   const [client, setClient] = useState<ClientProfileData | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  const [showReservationModal, setShowReservationModal] = useState(false);
 
   const router = useRouter();
 
@@ -173,12 +175,12 @@ export default function ClientProfile({ clientId }: Props) {
                 : `Ver pagos pendientes (${pendingPaymentsCount})`}
             </button>
 
-            <button
-              onClick={refreshClient}
-              className="px-5 py-3 rounded-xl bg-zinc-700 hover:bg-zinc-600 transition font-semibold w-full"
-            >
-              Actualizar datos
-            </button>
+          <button
+            onClick={() => setShowReservationModal(true)}
+            className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 transition font-semibold w-full"
+          >
+            Reservar turno
+          </button>
           </div>
         </div>
 
@@ -261,6 +263,111 @@ export default function ClientProfile({ clientId }: Props) {
           </div>
         )}
       </div>
+      {showReservationModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+
+          <div className="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 w-full max-w-md">
+
+            <h2 className="text-2xl font-bold mb-6">
+              Seleccionar actividad
+            </h2>
+
+            <div className="space-y-3">
+
+              <button
+                className="w-full py-3 rounded-xl bg-green-700 hover:bg-green-600"
+                onClick={() => {
+
+                  sessionStorage.setItem(
+                    "employeeBookingClient",
+                    JSON.stringify({
+                      id: client.id,
+                      name: client.user.name,
+                      lastName: client.user.lastName,
+                      email: client.user.email,
+                    })
+                  );
+
+                  router.push("/actividad/1");
+                }}
+              >
+                ⚽ Fútbol
+              </button>
+
+              <button
+                className="w-full py-3 rounded-xl bg-blue-700 hover:bg-blue-600"
+                onClick={() => {
+
+                  sessionStorage.setItem(
+                    "employeeBookingClient",
+                    JSON.stringify({
+                      id: client.id,
+                      name: client.user.name,
+                      lastName: client.user.lastName,
+                      email: client.user.email,
+                    })
+                  );
+
+                  router.push("/activity/2");
+                }}
+              >
+                🏐 Vóley
+              </button>
+
+              <button
+                className="w-full py-3 rounded-xl bg-purple-700 hover:bg-purple-600"
+                onClick={() => {
+
+                  sessionStorage.setItem(
+                    "employeeBookingClient",
+                    JSON.stringify({
+                      id: client.id,
+                      name: client.user.name,
+                      lastName: client.user.lastName,
+                      email: client.user.email,
+                    })
+                  );
+
+                  router.push("/activity/3");
+                }}
+              >
+                🏀 Básquet
+              </button>
+
+              <button
+                className="w-full py-3 rounded-xl bg-orange-700 hover:bg-orange-600"
+                onClick={() => {
+
+                  sessionStorage.setItem(
+                    "employeeBookingClient",
+                    JSON.stringify({
+                      id: client.id,
+                      name: client.user.name,
+                      lastName: client.user.lastName,
+                      email: client.user.email,
+                    })
+                  );
+
+                  router.push("/activity/4");
+                }}
+              >
+                🎾 Pádel
+              </button>
+
+            </div>
+
+            <button
+              className="mt-6 w-full py-3 rounded-xl bg-zinc-700 hover:bg-zinc-600"
+              onClick={() => setShowReservationModal(false)}
+            >
+              Cancelar
+            </button>
+
+          </div>
+
+        </div>
+      )}
+
 
       {showConfirmPayment && selectedPayment && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
