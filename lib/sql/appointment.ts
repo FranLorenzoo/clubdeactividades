@@ -69,21 +69,23 @@ export async function getAppointmentByStartDateAndActivity(initialDate: Date, ac
 export async function updateFutureAppointments(
   startDate: Date,
   activityId: number,
+  dayOfWeek: number,
+  hour: number,
   data: { price: number; professorId: number; slotsAvailable: number }
 ) {
   const newMax = data.slotsAvailable;
+
+  const hourString = String(hour).padStart(2, '0');
 
   return prisma.$executeRaw`
     UPDATE "appointment"
     SET 
       "price" = ${data.price},
-      "professorId" = ${data.professorId},
-      
+      "professorId" = ${Number(data.professorId)},
       "slotsAvailable" = CASE 
         WHEN ${newMax} >= ("slotsAvailable" - "currentSlots") THEN ${newMax}
         ELSE ("slotsAvailable" - "currentSlots")
       END,
-
       "currentSlots" = CASE 
         WHEN ${newMax} >= ("slotsAvailable" - "currentSlots") THEN ${newMax} - ("slotsAvailable" - "currentSlots")
         ELSE 0
@@ -91,5 +93,8 @@ export async function updateFutureAppointments(
     WHERE 
       "activityId" = ${Number(activityId)} 
       AND "initialDate" >= ${startDate}
+      -- 🚀 CAMBIAMOS EXTRACT POR FORMATEO DE TEXTO EN POSTGRES (SÚPER ESTABLE):
+      AND EXTRACT(DOW FROM "initialDate" AT TIME ZONE 'UTC' AT TIME ZONE 'America/Argentina/Buenos_Aires')::integer = ${Number(dayOfWeek)}
+      AND TO_CHAR("initialDate" AT TIME ZONE 'UTC' AT TIME ZONE 'America/Argentina/Buenos_Aires', 'HH24') = ${hourString}
   `;
 }
