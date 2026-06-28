@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import AppointmentModal from "@/components/Modal/appointmentModal";
 
 type Credit = {
   id: number;
   activity: {
+    id: number;
     name: string;
   };
   grantedAt: string;
@@ -14,6 +16,13 @@ type Credit = {
 export default function MisCreditosPage() {
   const [credits, setCredits] = useState<Credit[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCredit, setSelectedCredit] = useState<Credit | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleUseCredit = (credit: Credit) => {
+    setSelectedCredit(credit);
+    setShowModal(true);
+  };
 
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString("es-AR", {
@@ -126,6 +135,12 @@ export default function MisCreditosPage() {
                             <p className="font-semibold">
                               Crédito activo
                             </p>
+                            <button
+                              onClick={() => handleUseCredit(c)}
+                              className="text-xs px-3 py-1 rounded-xl border border-green-500/30 text-green-400 hover:bg-green-500/10 transition"
+                            >
+                              Usar
+                            </button>
                           </div>
 
                           <div className="space-y-2 text-sm text-zinc-300">
@@ -138,6 +153,13 @@ export default function MisCreditosPage() {
                               <span className="text-zinc-500">Vence</span>
                               <span>{formatDate(c.endDate)}</span>
                             </div>
+                            {showModal && selectedCredit && (
+                              <AppointmentModal
+                                open={showModal}
+                                onClose={() => setShowModal(false)}
+                                credit={selectedCredit}
+                              />
+                            )}
                           </div>
 
                           {expiring && (
@@ -152,8 +174,8 @@ export default function MisCreditosPage() {
                 </div>
               ))
             )}
-
           </div>
+          
         )}
       </div>
     </DashboardLayout>
