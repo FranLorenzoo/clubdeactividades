@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-type Appointment = {
+type appointments = {
   id: number;
   initialDate: string;
   endDate: string;
@@ -29,48 +29,39 @@ type AppointmentModalProps = {
   open: boolean;
   onClose: () => void;
   credit: Credit | null;
+  appointments: appointments[];
 };
 
 export default function AppointmentModal({
   open,
   onClose,
   credit,
+  appointments,
 }: AppointmentModalProps) {
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!open || !credit) return;
+    if (open) {
+        document.body.style.overflow = "hidden";
+    } else {
+        document.body.style.overflow = "auto";
+    }
 
-    const fetchAppointments = async () => {
-      setLoading(true);
-
-      const res = await fetch(
-        `/api/appointment/activity/${credit.activity.id}`
-      );
-
-      const data = await res.json();
-
-      setAppointments(data);
-      setLoading(false);
+    return () => {
+        document.body.style.overflow = "auto";
     };
-
-    fetchAppointments();
-  }, [open, credit]);
+    }, [open]);
   
   const availableAppointments = appointments.filter(
-  appointment => appointment.currentSlots < appointment.slotsAvailable
-);
+    appointment => appointment.currentSlots < appointment.slotsAvailable
+  );
 
   if (!open || !credit) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-      <div className="bg-zinc-900 rounded-xl p-6 w-[600px] min-h-[500px] max-h-[80vh] flex flex-col">
-        <div className="flex-1 overflow-y-auto pr-2">
-            {loading ? (
-                <p>Cargando...</p>
-            ) : availableAppointments.length === 0 ? (
+    <div className="fixed inset-0 z-50 bg-black/15 flex items-center justify-center">
+      <div className="bg-zinc-900 rounded-xl p-6 w-[600px] max-h-[80vh] flex flex-col">
+        <div className="flex-1 overflow-y-auto">
+            {availableAppointments.length === 0 ? (
                 <p className="text-zinc-400">No hay turnos disponibles.</p>
             ) : (
                 availableAppointments.map((appointment) => (
