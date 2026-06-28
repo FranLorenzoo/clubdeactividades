@@ -66,7 +66,7 @@ export default function AppointmentModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-      <div className="bg-zinc-900 rounded-xl p-6 w-[600px] max-h-[80vh] flex flex-col">
+      <div className="bg-zinc-900 rounded-xl p-6 w-[600px] min-h-[500px] max-h-[80vh] flex flex-col">
         <div className="flex-1 overflow-y-auto pr-2">
             {loading ? (
                 <p>Cargando...</p>
