@@ -2,6 +2,20 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import AppointmentModal from "@/components/Modal/appointmentModal";
 
+type Appointment = {
+  id: number;
+  initialDate: string;
+  endDate: string;
+  currentSlots: number;
+  slotsAvailable: number;
+  professor: {
+    user: {
+      name: string;
+      lastName: string;
+    };
+  };
+};
+
 type Credit = {
   id: number;
   activity: {
@@ -18,11 +32,24 @@ export default function MisCreditosPage() {
   const [loading, setLoading] = useState(true);
   const [selectedCredit, setSelectedCredit] = useState<Credit | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loadingAppointments, setLoadingAppointments] = useState(false);
+  const [openingCreditId, setOpeningCreditId] = useState<number | null>(null);
 
-  const handleUseCredit = (credit: Credit) => {
-    setSelectedCredit(credit);
-    setShowModal(true);
-  };
+  const handleUseCredit = async (credit: Credit) => {
+  setOpeningCreditId(credit.id);
+  setLoadingAppointments(true);
+
+  const res = await fetch(`/api/appointment/activity/${credit.activity.id}`);
+  const data = await res.json();
+
+  setAppointments(data);
+  setSelectedCredit(credit);
+  setShowModal(true);
+
+  setLoadingAppointments(false);
+  setOpeningCreditId(null);
+};
 
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString("es-AR", {
@@ -139,7 +166,7 @@ export default function MisCreditosPage() {
                               onClick={() => handleUseCredit(c)}
                               className="text-xs px-3 py-1 rounded-xl border border-green-500/30 text-green-400 hover:bg-green-500/10 transition"
                             >
-                              Usar
+                            {openingCreditId === c.id ? "Abriendo..." : "Usar"}
                             </button>
                           </div>
 
@@ -158,6 +185,7 @@ export default function MisCreditosPage() {
                                 open={showModal}
                                 onClose={() => setShowModal(false)}
                                 credit={selectedCredit}
+                                appointments={appointments}
                               />
                             )}
                           </div>
