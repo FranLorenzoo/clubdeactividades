@@ -1,19 +1,55 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import AppointmentModal from "@/components/Modal/appointmentModal";
+
+type Appointment = {
+  id: number;
+  initialDate: string;
+  endDate: string;
+  currentSlots: number;
+  slotsAvailable: number;
+  professor: {
+    user: {
+      name: string;
+      lastName: string;
+    };
+  };
+};
 
 type Credit = {
   id: number;
   activity: {
+    id: number;
     name: string;
   };
   grantedAt: string;
   endDate: string;
   isValid: boolean;
 };
-
 export default function MisCreditosPage() {
   const [credits, setCredits] = useState<Credit[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCredit, setSelectedCredit] = useState<Credit | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [loadingAppointments, setLoadingAppointments] = useState(false);
+  const [openingCreditId, setOpeningCreditId] = useState<number | null>(null);
+
+  const handleUseCredit = async (credit: Credit) => {
+  setOpeningCreditId(credit.id);
+  setLoadingAppointments(true);
+  const userId = localStorage.getItem("userId");
+  const res = await fetch(`/api/appointment/activity/${credit.activity.id}?userId=${userId}`
+);
+  const data = await res.json();
+  console.log("Fetched appointments:", data);
+  setAppointments(data);
+  setSelectedCredit(credit);
+  setShowModal(true);
+
+  setLoadingAppointments(false);
+  setOpeningCreditId(null);
+};
 
   const formatDate = (date: string) =>
     new Date(date).toLocaleDateString("es-AR", {
@@ -21,27 +57,25 @@ export default function MisCreditosPage() {
       month: "2-digit",
       year: "numeric",
     });
+  const fetchCredits = async () => {
+        try {
+          const userId = localStorage.getItem("userId");
+          if (!userId) return;
 
+          const clientRes = await fetch(`/api/client/user/${userId}`);
+          const client = await clientRes.json();
+
+          const creditRes = await fetch(`/api/credit/client/${client.id}`);
+          const data = await creditRes.json();
+
+          setCredits(data);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
   useEffect(() => {
-    const fetchCredits = async () => {
-      try {
-        const userId = localStorage.getItem("userId");
-        if (!userId) return;
-
-        const clientRes = await fetch(`/api/client/user/${userId}`);
-        const client = await clientRes.json();
-
-        const creditRes = await fetch(`/api/credit/client/${client.id}`);
-        const data = await creditRes.json();
-
-        setCredits(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCredits();
   }, []);
 
@@ -126,18 +160,29 @@ export default function MisCreditosPage() {
                             <p className="font-semibold">
                               Crédito activo
                             </p>
+                            <button
+                              onClick={() => handleUseCredit(c)}
+                              className="text-xs px-3 py-1 rounded-xl border border-green-500/30 text-green-400 hover:bg-green-500/10 transition"
+                            >
+                            {openingCreditId === c.id ? "Abriendo..." : "Usar"}
+                            </button>
                           </div>
 
                           <div className="space-y-2 text-sm text-zinc-300">
-                            <div className="flex justify-between">
-                              <span className="text-zinc-500">Otorgado</span>
-                              <span>{formatDate(c.grantedAt)}</span>
-                            </div>
 
                             <div className="flex justify-between">
                               <span className="text-zinc-500">Vence</span>
                               <span>{formatDate(c.endDate)}</span>
                             </div>
+                            {showModal && selectedCredit && (
+                              <AppointmentModal
+                                open={showModal}
+                                onClose={() => setShowModal(false)}
+                                credit={selectedCredit}
+                                appointments={appointments}
+                                onReservationSuccess={fetchCredits}
+                              />
+                            )}
                           </div>
 
                           {expiring && (
@@ -152,8 +197,8 @@ export default function MisCreditosPage() {
                 </div>
               ))
             )}
-
           </div>
+          
         )}
       </div>
     </DashboardLayout>

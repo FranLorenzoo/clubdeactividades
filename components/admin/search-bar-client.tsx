@@ -19,7 +19,11 @@ type Client = {
   }
 }
 
-export default function SearchBar() {
+type Props = {
+  role: "ADMIN" | "EMPLOYEE";
+};
+
+export default function SearchBar({ role }: Props) {
   const [open, setOpen] = useState(false);
   const [clientes, setClientes]= useState<Client[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
@@ -168,7 +172,7 @@ export default function SearchBar() {
               <div className="flex gap-2 mt-3">
 
                 <Link
-                  href={`/dashboard/client-profile/${cli.id}`}
+                  href={`/dashboard/client-profile/${cli.id}?from=${role.toLowerCase()}`}
                   className="
                     bg-blue-600
                     text-white

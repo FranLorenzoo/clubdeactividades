@@ -98,11 +98,9 @@ async function createAppointmentsHandler(body: Record<string, unknown>[], res: N
 }
 
 async function updateFutureAppointmentsHandler(body: Record<string, unknown>, res: NextApiResponse) {
-  // Mantenemos la validación de formato por seguridad
   const { ok, error } = parseFields({ price: "number" }, body);
   if (!ok) return res.status(400).json({ message: "Bad request en precio: " + error });
 
-  // 🚀 EXTRAEMOS 'price' DIRECTAMENTE DEL BODY
   const { price, professorId, slotsAvailable, activityId, dayOfWeek, hour } = body;
   
   if (price === undefined || !professorId || !slotsAvailable || !activityId || dayOfWeek === undefined || hour === undefined) {
@@ -119,7 +117,6 @@ async function updateFutureAppointmentsHandler(body: Record<string, unknown>, re
       Number(dayOfWeek), 
       Number(hour), 
       {
-        // 🚀 CASTEAMOS EXPLICITAMENTE A NÚMERO NATIVO
         price: Number(price), 
         professorId: Number(professorId),
         slotsAvailable: Number(slotsAvailable),

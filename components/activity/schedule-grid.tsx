@@ -258,20 +258,26 @@ interface ReservePopupProps {
   creditCard: CreditCard | null;
   loadingCard: boolean;
   suspended: boolean;
+  employeeBooking: boolean;
 }
 
 function ReservePopup({
   time, available, waitingList, price, dayOfWeek, alreadyReserved, reservedInWaitingList,
   reserveType, onTypeChange, onClose, onConfirm, confirming,
-  creditCard, loadingCard, suspended,
+  creditCard, loadingCard, suspended,  employeeBooking,
 }: ReservePopupProps) {
   const [payment, setPayment] = useState<number | null>(1);
-  const hasCard = Boolean(creditCard);
-  const selectionBlocked = !hasCard || loadingCard;
-  const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
-  const canConfirm = reserveType !== null && hasCard;
-  const cardBlocked = !hasCard;
+const hasCard = Boolean(creditCard) || employeeBooking;
 
+const selectionBlocked =
+  (!hasCard && !employeeBooking) || loadingCard;
+
+const canConfirm =
+  reserveType !== null && (hasCard || employeeBooking);
+
+const cardBlocked =
+  !employeeBooking && !hasCard;
+const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
   useEffect(() => {
     if (!hasCard && reserveType !== null) {
       onTypeChange(null);
@@ -312,7 +318,7 @@ function ReservePopup({
         </p>
       )}
 
-      {!loadingCard && !hasCard && (
+      {!employeeBooking && !loadingCard && !hasCard && (
         <p className="text-xs text-red-400 font-medium mb-3">
           Necesitás registrar una tarjeta para poder reservar.
         </p>
@@ -348,7 +354,7 @@ function ReservePopup({
         </button>
       </div>
 
-      {reserveType === "unica" && (
+      {reserveType === "unica" && !employeeBooking && (
         <>
           <p className="text-xs text-zinc-400 mb-2">Método de pago</p>
 
@@ -431,9 +437,20 @@ interface AppointmentSlot {
 interface ScheduleGridProps {
   activityDays: string[];
   activityId: string;
+
+  forcedClient?: {
+    id: number;
+    name: string;
+    lastName: string;
+    email: string;
+  };
 }
 
-export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridProps) {
+export default function ScheduleGrid({
+  activityDays,
+  activityId,
+  forcedClient,
+}: ScheduleGridProps) {
   const [reserveType, setReserveType] = useState<ReserveType>(null);
   const [activeSlot, setActiveSlot] = useState<{ day: string; time: string } | null>(null);
   const [appointments, setAppointments] = useState<any[]>([]);
@@ -448,6 +465,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   const [clientEmail, setClientEmail] = useState<string>("");
   const [clientName, setClientName] = useState<string>("");
   const [clientLastName, setClientLastName] = useState<string>("");
+  const employeeBooking = !!forcedClient;
   const [waitingListData, setWaitingListData] = useState<WaitingListData | null>(null);
   const [loadingWaitingList, setLoadingWaitingList] = useState(false);
 
@@ -459,41 +477,87 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   }, []);
 
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) return;
-    const fetchCard = async () => {
-      try {
-        setLoadingCard(true);
-        const clientRes = await fetch(`/api/client/user/${userId}`);
-        if (!clientRes.ok) return;
-        const client = await clientRes.json();
-        setClientId(client.id);
-        setClientEmail(client.user.email);
-        setClientName(client.user.name);
-        setClientLastName(client.user.lastName);
-        const uaRes = await fetch(`/api/user-appointment/client/${client.id}`);
-        if (uaRes.ok) {
-          const uas: any[] = await uaRes.json();
-          const now = new Date();
-          const overdueCount = uas.filter(
-              (ua) =>
-                ua.state === "IMPAGO" &&
-                new Date(ua.appointment.initialDate) < now &&
-                !isInWaitingList(ua)
-          ).length;
-          setSuspended(overdueCount >= 3);
-        }
-        const cardRes = await fetch(`/api/credit-card/client/${client.id}`);
-        if (!cardRes.ok) return;
-        setCreditCard(await cardRes.json());
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoadingCard(false);
+
+  // ===========================
+  // EMPLEADO RESERVANDO
+  // ===========================
+
+if (forcedClient) {
+  setClientId(forcedClient.id);
+  setClientEmail(forcedClient.email);
+  setClientName(forcedClient.name);
+  setClientLastName(forcedClient.lastName);
+
+  setCreditCard({
+    id: -1,
+    cardHolder: "Empleado",
+    cardNumber: "",
+    expireDate: "",
+  });
+
+  setLoadingCard(false);
+  setSuspended(false);
+
+  return;
+}
+
+  // ===========================
+  // CLIENTE NORMAL
+  // ===========================
+
+  const userId = localStorage.getItem("userId");
+  if (!userId) return;
+
+  const fetchCard = async () => {
+    try {
+      setLoadingCard(true);
+
+      const clientRes = await fetch(`/api/client/user/${userId}`);
+
+      if (!clientRes.ok) return;
+
+      const client = await clientRes.json();
+
+      setClientId(client.id);
+      setClientEmail(client.user.email);
+      setClientName(client.user.name);
+      setClientLastName(client.user.lastName);
+
+      const uaRes = await fetch(`/api/user-appointment/client/${client.id}`);
+
+      if (uaRes.ok) {
+
+        const uas = await uaRes.json();
+
+        const now = new Date();
+
+        const overdueCount = uas.filter(
+          (ua: any) =>
+            ua.state === "IMPAGO" &&
+            new Date(ua.appointment.initialDate) < now &&
+            !isInWaitingList(ua)
+        ).length;
+
+        setSuspended(overdueCount >= 3);
+
       }
-    };
-    fetchCard();
-  }, []);
+
+      const cardRes = await fetch(`/api/credit-card/client/${client.id}`);
+
+      if (!cardRes.ok) return;
+
+      setCreditCard(await cardRes.json());
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingCard(false);
+    }
+  };
+
+  fetchCard();
+
+}, [forcedClient]);
 
   useEffect(() => {
     if (!activityId) return;
@@ -501,9 +565,22 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
       try {
         setLoading(true);
         const res = await fetch(`/api/appointment/activity/${activityId}`);
+
+        if (!res.ok) {
+          console.error("API error appointments:", res.status);
+          setAppointments([]);
+          return;
+        }
+
         const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          console.error("Data no es array:", data);
+          setAppointments([]);
+          return;
+        }
+
         setAppointments(data);
-        console.log("Appointments:", data);
         if (Array.isArray(data) && data.length > 0) {
           const now = new Date();
           const upcoming = (data as any[])
@@ -524,13 +601,13 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
   }, [activityId]);
 
   function getAppointment(day: string, time: string): AppointmentSlot | null {
-    const appt = appointments.find((a) => {
+    const appt =  Array.isArray(appointments) ? appointments.find((a) => {
       const date = new Date(a.initialDate);
       if (date < weekStart || date > weekEnd) return false;
       const apptDay = getClubDayLabel(date);
       const apptTime = getClubTimeLabel(date);
       return apptDay === day && apptTime === time;
-    });
+    }) : null;
     if (!appt) return null;
     const count = appt.userAppointments?.length ?? 0;
     const capacity = appt.slotsAvailable ?? 10;
@@ -579,11 +656,15 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         const count = originalAppt.userAppointments?.length ?? 0;
         const capacity = originalAppt.slotsAvailable ?? 10;
         const isWaitlistReservation = count >= capacity;
-        const state = isWaitlistReservation
-          ? "IMPAGO"
-          : paymentMultiplier === 1
-            ? "PAGO_COMPLETO"
-            : "PAGO_PARCIAL";
+const state =
+  employeeBooking
+    ? "PAGO_COMPLETO"
+    : isWaitlistReservation
+      ? "IMPAGO"
+      : paymentMultiplier === 1
+        ? "PAGO_COMPLETO"
+        : "PAGO_PARCIAL";
+  
         const response = await fetch("/api/user-appointment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -598,17 +679,19 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         });
         if(response.ok) {
           reservationSucceeded = true;
-          await fetch("/api/send-email", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              to: clientEmail,
-              subject: "Reserva realizada",
-              text: "",
-            }),
-          });
+            if (!employeeBooking) {
+                await fetch("/api/send-email", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    to: clientEmail,
+                    subject: "Reserva realizada",
+                    text: "",
+                  }),
+                });
+              };
         }
       } else if (selectedReserveType === "mensual") {
         const originalAppt = appointments.find((appt) => appt.id === clickedAppt.id);
@@ -640,7 +723,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                 appointmentId: appt.id,
                 clientId,
                 rejected: false,
-                state: "IMPAGO",
+                state: employeeBooking ? "PAGO_COMPLETO" : "IMPAGO",
                 type: "ABONADO",
                 reservationDate: now.toISOString(),
               }),
@@ -649,7 +732,7 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
         );
         const successful = responses.every(response => response.ok);
         reservationSucceeded = successful;
-        if(successful) {
+        if (successful && !employeeBooking)  {
           await fetch("/api/send-email", {
             method: "POST",
             headers: {
@@ -800,6 +883,43 @@ export default function ScheduleGrid({ activityDays, activityId }: ScheduleGridP
                                 />
                               )
                             )}
+                  {isActive && (
+                    isStaff && !employeeBooking ? (
+                      <DetailPopup
+                        time={time}
+                        available={appt.available}
+                        waitingList={appt.waitingList}
+                        price={appt.price}
+                        professorName={appt.professorName}
+                        onClose={() => {
+                          setActiveSlot(null);
+                          setReserveType(null);
+                        }}
+                      />
+                    ) : (
+                      <ReservePopup
+                        time={time}
+                        available={appt.available}
+                        waitingList={appt.waitingList}
+                        price={appt.price}
+                        dayOfWeek={appt.dayOfWeek}
+                        alreadyReserved={appt.alreadyReserved}
+                        reservedInWaitingList={appt.reservedInWaitingList}
+                        reserveType={reserveType}
+                        onTypeChange={setReserveType}
+                        onClose={() => {
+                          setActiveSlot(null);
+                          setReserveType(null);
+                        }}
+                        onConfirm={handleConfirm}
+                        confirming={confirming}
+                        creditCard={creditCard}
+                        loadingCard={loadingCard}
+                        suspended={suspended}
+                        employeeBooking={employeeBooking}
+                      />
+                    )
+                  )}
                           </div>
                         )}
                       </div>
