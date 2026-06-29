@@ -121,15 +121,19 @@ export async function cancelUserAppointment(userAppointmentId: number) {
   const refundPending =
     !isAbonado && hoursDiff >= 24;
 
-  // 🔄 liberar cupo
-  await prisma.appointment.update({
-    where: { id: ua.appointmentId },
-    data: {
-      currentSlots: {
-        decrement: 1,
-      },
+  // 🔍 Determinar si el cancelado estaba ocupando cupo (no lista de espera)
+  const activeBefore = await prisma.userAppointment.findMany({
+    where: {
+      appointmentId: ua.appointmentId,
+      state: { not: "CANCELLED" },
     },
+    orderBy: [{ reservationDate: "asc" }, { id: "asc" }],
+    select: { id: true, type: true, reservationDate: true },
   });
+
+  const capacity = ua.appointment.slotsAvailable;
+  const cancelledIndex = activeBefore.findIndex((u) => u.id === userAppointmentId);
+  const wasInSlot = cancelledIndex >= 0 && cancelledIndex < capacity;
 
   // ❌ marcar cancelación
   await prisma.userAppointment.update({
@@ -140,9 +144,43 @@ export async function cancelUserAppointment(userAppointmentId: number) {
     },
   });
 
+  // ⬆️ Promover al primero de la lista de espera si el cancelado liberó un cupo.
+  // ABONADO cancelado → prioridad a ABONADO en espera; si no hay, al primero de la espera general.
+  // NO_ABONADO cancelado → al primero de la espera general.
+  let promotedUserAppointmentId: number | null = null;
+
+  if (wasInSlot) {
+    const waitingList = activeBefore.slice(capacity);
+
+    const promoted = isAbonado
+      ? waitingList.find((w) => w.type === "ABONADO") ?? waitingList[0]
+      : waitingList[0];
+
+    if (promoted) {
+      await prisma.userAppointment.update({
+        where: { id: promoted.id },
+        data: { reservationDate: ua.reservationDate },
+      });
+      promotedUserAppointmentId = promoted.id;
+    }
+  }
+
+  // 🔄 liberar cupo sólo si el cancelado lo ocupaba y no se promovió a nadie
+  if (wasInSlot && promotedUserAppointmentId === null) {
+    await prisma.appointment.update({
+      where: { id: ua.appointmentId },
+      data: {
+        currentSlots: {
+          decrement: 1,
+        },
+      },
+    });
+  }
+
   return {
     success: true,
     creditCreated,
     refundPending,
+    promotedUserAppointmentId,
   };
 }
