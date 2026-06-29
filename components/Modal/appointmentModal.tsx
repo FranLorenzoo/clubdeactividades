@@ -70,7 +70,13 @@ export default function AppointmentModal({
                     className="border border-zinc-700 rounded-lg p-4 mb-3"
                 >
                     <p>
-                    {new Date(appointment.initialDate).toLocaleString("es-AR")}
+                    {new Date(appointment.initialDate).toLocaleString("es-AR",{
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                     </p>
 
                     <p>
@@ -78,7 +84,11 @@ export default function AppointmentModal({
                     {appointment.professor.user.lastName}
                     </p>
 
-                    <button className="mt-2 bg-green-600 hover:bg-green-700 px-3 py-2 rounded">
+                    <button onClick={() => {
+                      // Aquí puedes agregar la lógica para reservar el turno
+                      console.log(`Reservando turno con ID: ${appointment.id} usando crédito ID: ${credit.id}`);
+                    }}
+                    className="mt-2 bg-green-600 hover:bg-green-700 px-3 py-2 rounded">
                     Reservar
                     </button>
                 </div>

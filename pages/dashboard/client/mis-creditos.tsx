@@ -171,10 +171,6 @@ export default function MisCreditosPage() {
                           </div>
 
                           <div className="space-y-2 text-sm text-zinc-300">
-                            <div className="flex justify-between">
-                              <span className="text-zinc-500">Otorgado</span>
-                              <span>{formatDate(c.grantedAt)}</span>
-                            </div>
 
                             <div className="flex justify-between">
                               <span className="text-zinc-500">Vence</span>
