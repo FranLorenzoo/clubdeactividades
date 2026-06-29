@@ -47,6 +47,12 @@ export default function ClientProfile({ clientId }: Props) {
   const [showReservationModal, setShowReservationModal] = useState(false);
 
   const router = useRouter();
+const from =
+  (router.query.from as string) ||
+  (typeof window !== "undefined"
+    ? sessionStorage.getItem("fromRole")
+    : null);
+console.log("from:", from);
 
   const [showHistory, setShowHistory] = useState(false);
   const [showDebts, setShowDebts] = useState(false);
@@ -96,6 +102,12 @@ export default function ClientProfile({ clientId }: Props) {
     }
   }
 
+
+    useEffect(() => {
+  if (router.query.from) {
+    sessionStorage.setItem("fromRole", router.query.from as string);
+  }
+}, [router.query.from]);
   useEffect(() => {
     refreshClient();
   }, [clientId]);
@@ -120,11 +132,14 @@ export default function ClientProfile({ clientId }: Props) {
     );
   }
 
+
   return (
     <div className="min-h-screen bg-zinc-950 text-white p-8">
       <div className="mb-6">
         <button
-          onClick={() => router.back()}
+          onClick={() => {
+            router.push(`/dashboard/${from ?? "admin"}/search-client`);
+            }}
           className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition"
         >
           ← Volver a clientes
@@ -278,6 +293,8 @@ export default function ClientProfile({ clientId }: Props) {
                 className="w-full py-3 rounded-xl bg-green-700 hover:bg-green-600"
                 onClick={() => {
 
+                  sessionStorage.setItem("employeeBooking", "true");
+
                   sessionStorage.setItem(
                     "employeeBookingClient",
                     JSON.stringify({
@@ -288,7 +305,7 @@ export default function ClientProfile({ clientId }: Props) {
                     })
                   );
 
-                  router.push("/actividad/1");
+                  router.push(`/actividad/1?from=${from}`);
                 }}
               >
                 ⚽ Fútbol
@@ -298,6 +315,8 @@ export default function ClientProfile({ clientId }: Props) {
                 className="w-full py-3 rounded-xl bg-blue-700 hover:bg-blue-600"
                 onClick={() => {
 
+                  sessionStorage.setItem("employeeBooking", "true");
+
                   sessionStorage.setItem(
                     "employeeBookingClient",
                     JSON.stringify({
@@ -308,7 +327,7 @@ export default function ClientProfile({ clientId }: Props) {
                     })
                   );
 
-                  router.push("/activity/2");
+                  router.push(`/actividad/2?from=${from}`);
                 }}
               >
                 🏐 Vóley
@@ -318,6 +337,8 @@ export default function ClientProfile({ clientId }: Props) {
                 className="w-full py-3 rounded-xl bg-purple-700 hover:bg-purple-600"
                 onClick={() => {
 
+                  sessionStorage.setItem("employeeBooking", "true");
+
                   sessionStorage.setItem(
                     "employeeBookingClient",
                     JSON.stringify({
@@ -328,7 +349,7 @@ export default function ClientProfile({ clientId }: Props) {
                     })
                   );
 
-                  router.push("/activity/3");
+                  router.push(`/actividad/3?from=${from}`);
                 }}
               >
                 🏀 Básquet
@@ -338,6 +359,8 @@ export default function ClientProfile({ clientId }: Props) {
                 className="w-full py-3 rounded-xl bg-orange-700 hover:bg-orange-600"
                 onClick={() => {
 
+                  sessionStorage.setItem("employeeBooking", "true");
+
                   sessionStorage.setItem(
                     "employeeBookingClient",
                     JSON.stringify({
@@ -348,7 +371,7 @@ export default function ClientProfile({ clientId }: Props) {
                     })
                   );
 
-                  router.push("/activity/4");
+                  router.push(`/actividad/4?from=${from}`);
                 }}
               >
                 🎾 Pádel

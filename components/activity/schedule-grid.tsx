@@ -200,20 +200,26 @@ interface ReservePopupProps {
   creditCard: CreditCard | null;
   loadingCard: boolean;
   suspended: boolean;
+  employeeBooking: boolean;
 }
 
 function ReservePopup({
   time, available, waitingList, price, dayOfWeek, alreadyReserved, reservedInWaitingList,
   reserveType, onTypeChange, onClose, onConfirm, confirming,
-  creditCard, loadingCard, suspended,
+  creditCard, loadingCard, suspended,  employeeBooking,
 }: ReservePopupProps) {
   const [payment, setPayment] = useState<number | null>(1);
-  const hasCard = Boolean(creditCard);
-  const selectionBlocked = !hasCard || loadingCard;
-  const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
-  const canConfirm = reserveType !== null && hasCard;
-  const cardBlocked = !hasCard;
+const hasCard = Boolean(creditCard) || employeeBooking;
 
+const selectionBlocked =
+  (!hasCard && !employeeBooking) || loadingCard;
+
+const canConfirm =
+  reserveType !== null && (hasCard || employeeBooking);
+
+const cardBlocked =
+  !employeeBooking && !hasCard;
+const amount = reserveType ? calcAmount(reserveType, price, dayOfWeek) : 0;
   useEffect(() => {
     if (!hasCard && reserveType !== null) {
       onTypeChange(null);
@@ -254,7 +260,7 @@ function ReservePopup({
         </p>
       )}
 
-      {!loadingCard && !hasCard && (
+      {!employeeBooking && !loadingCard && !hasCard && (
         <p className="text-xs text-red-400 font-medium mb-3">
           Necesitás registrar una tarjeta para poder reservar.
         </p>
@@ -290,7 +296,7 @@ function ReservePopup({
         </button>
       </div>
 
-      {reserveType === "unica" && (
+      {reserveType === "unica" && !employeeBooking && (
         <>
           <p className="text-xs text-zinc-400 mb-2">Método de pago</p>
 
@@ -577,13 +583,15 @@ if (forcedClient) {
         const count = originalAppt.userAppointments?.length ?? 0;
         const capacity = originalAppt.slotsAvailable ?? 10;
         const isWaitlistReservation = count >= capacity;
-        const state = employeeBooking
-          ? "IMPAGO"
-          : isWaitlistReservation
-            ? "IMPAGO"
-            : paymentMultiplier === 1
-              ? "PAGO_COMPLETO"
-              : "PAGO_PARCIAL";
+const state =
+  employeeBooking
+    ? "PAGO_COMPLETO"
+    : isWaitlistReservation
+      ? "IMPAGO"
+      : paymentMultiplier === 1
+        ? "PAGO_COMPLETO"
+        : "PAGO_PARCIAL";
+  
         const response = await fetch("/api/user-appointment", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -642,7 +650,7 @@ if (forcedClient) {
                 appointmentId: appt.id,
                 clientId,
                 rejected: false,
-                state: "IMPAGO",
+                state: employeeBooking ? "PAGO_COMPLETO" : "IMPAGO",
                 type: "ABONADO",
                 reservationDate: now.toISOString(),
               }),
@@ -788,6 +796,7 @@ if (forcedClient) {
                         creditCard={creditCard}
                         loadingCard={loadingCard}
                         suspended={suspended}
+                        employeeBooking={employeeBooking}
                       />
                     )
                   )}

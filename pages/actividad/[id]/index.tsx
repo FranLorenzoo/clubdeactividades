@@ -57,6 +57,18 @@ export default function ActividadDetalle() {
   const { id } = router.query;
   const [activity, setActivity] = useState<any>();
   const [loading, setLoading] = useState(true);
+  const [forcedClient, setForcedClient] = useState<any>(null);
+
+const from = router.query.from as string | undefined;
+
+  useEffect(() => {
+  const data = sessionStorage.getItem("employeeBookingClient");
+
+  if (data) {
+    setForcedClient(JSON.parse(data));
+  }
+}, []);
+
   useEffect(() => {
     if (!id) return;
     const activityFromAPI = ()=> {
@@ -84,7 +96,7 @@ export default function ActividadDetalle() {
       ) : (
         <main className="min-h-screen bg-zinc-950 text-white">
           <ActivityHero activity={activity} />
-          <ScheduleGrid activityDays={activity.days} activityId={id as string} />
+          <ScheduleGrid activityDays={activity.days} activityId={id as string} forcedClient={forcedClient}/>
           <ActivityInfo />
         </main>
       )}
