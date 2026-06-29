@@ -505,9 +505,22 @@ if (forcedClient) {
       try {
         setLoading(true);
         const res = await fetch(`/api/appointment/activity/${activityId}`);
+
+        if (!res.ok) {
+          console.error("API error appointments:", res.status);
+          setAppointments([]);
+          return;
+        }
+
         const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          console.error("Data no es array:", data);
+          setAppointments([]);
+          return;
+        }
+
         setAppointments(data);
-        console.log("Appointments:", data);
         if (Array.isArray(data) && data.length > 0) {
           const now = new Date();
           const upcoming = (data as any[])
@@ -528,13 +541,13 @@ if (forcedClient) {
   }, [activityId]);
 
   function getAppointment(day: string, time: string): AppointmentSlot | null {
-    const appt = appointments.find((a) => {
+    const appt =  Array.isArray(appointments) ? appointments.find((a) => {
       const date = new Date(a.initialDate);
       if (date < weekStart || date > weekEnd) return false;
       const apptDay = getClubDayLabel(date);
       const apptTime = getClubTimeLabel(date);
       return apptDay === day && apptTime === time;
-    });
+    }) : null;
     if (!appt) return null;
     const count = appt.userAppointments?.length ?? 0;
     const capacity = appt.slotsAvailable ?? 10;
