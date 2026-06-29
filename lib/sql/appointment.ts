@@ -75,26 +75,47 @@ export async function updateFutureAppointments(
 ) {
   const newMax = data.slotsAvailable;
 
-  const hourString = String(hour).padStart(2, '0');
+  const appointments = await prisma.appointment.findMany({
+  where: {
+    activityId: Number(activityId),
+    initialDate: { gte: startDate }
+  },
+  include: {
+    _count: {
+      select: {
+        userAppointments: {
+          where: { rejected: false }
+        }
+      }
+    }
+  }
+});
 
-  return prisma.$executeRaw`
-    UPDATE "appointment"
-    SET 
-      "price" = ${data.price},
-      "professorId" = ${Number(data.professorId)},
-      "slotsAvailable" = CASE 
-        WHEN ${newMax} >= ("slotsAvailable" - "currentSlots") THEN ${newMax}
-        ELSE ("slotsAvailable" - "currentSlots")
-      END,
-      "currentSlots" = CASE 
-        WHEN ${newMax} >= ("slotsAvailable" - "currentSlots") THEN ${newMax} - ("slotsAvailable" - "currentSlots")
-        ELSE 0
-      END
-    WHERE 
-      "activityId" = ${Number(activityId)} 
-      AND "initialDate" >= ${startDate}
-      -- 🚀 CAMBIAMOS EXTRACT POR FORMATEO DE TEXTO EN POSTGRES (SÚPER ESTABLE):
-      AND EXTRACT(DOW FROM "initialDate" AT TIME ZONE 'UTC' AT TIME ZONE 'America/Argentina/Buenos_Aires')::integer = ${Number(dayOfWeek)}
-      AND TO_CHAR("initialDate" AT TIME ZONE 'UTC' AT TIME ZONE 'America/Argentina/Buenos_Aires', 'HH24') = ${hourString}
-  `;
+const filteredAppointments = appointments.filter((app) => {
+  const dateInArg = new Date(app.initialDate.toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }));
+  const matchesDay = dateInArg.getDay() === Number(dayOfWeek);
+  const matchesHour = dateInArg.getHours() === Number(hour);
+  return matchesDay && matchesHour;
+});
+
+await prisma.$transaction(
+  filteredAppointments.map((app) => {
+    const totalReservas = app._count.userAppointments;
+    const finalSlotsAvailable = Number(newMax) >= totalReservas ? Number(newMax) : totalReservas;
+    const finalCurrentSlots = Number(newMax) >= totalReservas ? Number(newMax) - totalReservas : 0;
+    
+    // Si ya hay reservas, el precio no se toca y se conserva el actual
+    const finalPrice = totalReservas > 0 ? app.price : Number(data.price);
+
+    return prisma.appointment.update({
+      where: { id: app.id },
+      data: {
+        price: finalPrice,
+        professorId: Number(data.professorId),
+        slotsAvailable: finalSlotsAvailable,
+        currentSlots: finalCurrentSlots
+      }
+    });
+  })
+);
 }
