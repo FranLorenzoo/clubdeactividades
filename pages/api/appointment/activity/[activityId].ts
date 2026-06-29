@@ -35,8 +35,11 @@ export default async function handler(
     );
 
 const filteredAppointments = appointments.filter((appointment) => {
-  const hasSlots =
-    appointment.currentSlots < appointment.slotsAvailable;
+const occupied = appointment.userAppointments.filter(
+  (ua) => ua.cancellationDate === null
+).length;
+
+const hasSlots = occupied < appointment.slotsAvailable;
 
   if (clientId === null) {
     return hasSlots;
