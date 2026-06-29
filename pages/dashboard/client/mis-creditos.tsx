@@ -26,7 +26,6 @@ type Credit = {
   endDate: string;
   isValid: boolean;
 };
-
 export default function MisCreditosPage() {
   const [credits, setCredits] = useState<Credit[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,10 +38,11 @@ export default function MisCreditosPage() {
   const handleUseCredit = async (credit: Credit) => {
   setOpeningCreditId(credit.id);
   setLoadingAppointments(true);
-
-  const res = await fetch(`/api/appointment/activity/${credit.activity.id}`);
+  const userId = localStorage.getItem("userId");
+  const res = await fetch(`/api/appointment/activity/${credit.activity.id}?userId=${userId}`
+);
   const data = await res.json();
-
+  console.log("Fetched appointments:", data);
   setAppointments(data);
   setSelectedCredit(credit);
   setShowModal(true);
@@ -57,27 +57,25 @@ export default function MisCreditosPage() {
       month: "2-digit",
       year: "numeric",
     });
+  const fetchCredits = async () => {
+        try {
+          const userId = localStorage.getItem("userId");
+          if (!userId) return;
 
+          const clientRes = await fetch(`/api/client/user/${userId}`);
+          const client = await clientRes.json();
+
+          const creditRes = await fetch(`/api/credit/client/${client.id}`);
+          const data = await creditRes.json();
+
+          setCredits(data);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
   useEffect(() => {
-    const fetchCredits = async () => {
-      try {
-        const userId = localStorage.getItem("userId");
-        if (!userId) return;
-
-        const clientRes = await fetch(`/api/client/user/${userId}`);
-        const client = await clientRes.json();
-
-        const creditRes = await fetch(`/api/credit/client/${client.id}`);
-        const data = await creditRes.json();
-
-        setCredits(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCredits();
   }, []);
 
@@ -182,6 +180,7 @@ export default function MisCreditosPage() {
                                 onClose={() => setShowModal(false)}
                                 credit={selectedCredit}
                                 appointments={appointments}
+                                onReservationSuccess={fetchCredits}
                               />
                             )}
                           </div>
