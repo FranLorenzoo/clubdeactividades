@@ -21,12 +21,6 @@ export default async function handler(
     });
   }
 
-  if (clientId === null) {
-    return res.status(400).json({
-      message: "Invalid clientId",
-    });
-  }
-
   try {
     const from = new Date();
     from.setHours(0, 0, 0, 0);
@@ -40,18 +34,22 @@ export default async function handler(
       to
     );
 
-    const filteredAppointments = appointments.filter((appointment) => {
-      const hasSlots =
-        appointment.currentSlots < appointment.slotsAvailable;
+const filteredAppointments = appointments.filter((appointment) => {
+  const hasSlots =
+    appointment.currentSlots < appointment.slotsAvailable;
 
-      const alreadyReserved = appointment.userAppointments.some(
-        (ua) =>
-          ua.clientId === clientId &&
-          ua.cancellationDate === null
-      );
+  if (clientId === null) {
+    return hasSlots;
+  }
 
-      return hasSlots && !alreadyReserved;
-    });
+  const alreadyReserved = appointment.userAppointments.some(
+    (ua) =>
+      ua.clientId === clientId &&
+      ua.cancellationDate === null
+  );
+
+  return hasSlots && !alreadyReserved;
+});
 
     return res.status(200).json(filteredAppointments);
   } catch (error) {
