@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/lib/generated/prisma/client";
+import { sendWaitingListPromotionEmail } from "@/lib/email/waitingListPromotion";
 
 export async function getAllUserAppointments() {
   return prisma.userAppointment.findMany({
@@ -79,6 +80,39 @@ export async function getOverdueImpagoCountByClientId(clientId: number) {
   }).length;
 }
 
+export async function cancelOverdueAbonadosForClient(clientId: number) {
+  const now = new Date();
+
+  const candidates = await prisma.userAppointment.findMany({
+    where: {
+      clientId,
+      type: "ABONADO",
+      state: "IMPAGO",
+    },
+    select: {
+      id: true,
+      appointment: { select: { initialDate: true } },
+    },
+  });
+
+  const toCancel = candidates
+    .filter((ua) => {
+      const apptDate = new Date(ua.appointment.initialDate);
+      const cutoff = new Date(Date.UTC(apptDate.getUTCFullYear(), apptDate.getUTCMonth(), 11));
+      return now >= cutoff;
+    })
+    .map((ua) => ua.id);
+
+  if (toCancel.length === 0) return { cancelled: 0 };
+
+  const result = await prisma.userAppointment.updateMany({
+    where: { id: { in: toCancel } },
+    data: { state: "CANCELLED", cancellationDate: now },
+  });
+
+  return { cancelled: result.count };
+}
+
 export async function cancelUserAppointment(userAppointmentId: number) {
   const ua = await prisma.userAppointment.findUnique({
     where: { id: userAppointmentId },
@@ -121,15 +155,19 @@ export async function cancelUserAppointment(userAppointmentId: number) {
   const refundPending =
     !isAbonado && hoursDiff >= 24;
 
-  // 🔄 liberar cupo
-  await prisma.appointment.update({
-    where: { id: ua.appointmentId },
-    data: {
-      currentSlots: {
-        decrement: 1,
-      },
+  // 🔍 Determinar si el cancelado estaba ocupando cupo (no lista de espera)
+  const activeBefore = await prisma.userAppointment.findMany({
+    where: {
+      appointmentId: ua.appointmentId,
+      state: { not: "CANCELLED" },
     },
+    orderBy: [{ reservationDate: "asc" }, { id: "asc" }],
+    select: { id: true, type: true, reservationDate: true },
   });
+
+  const capacity = ua.appointment.slotsAvailable;
+  const cancelledIndex = activeBefore.findIndex((u) => u.id === userAppointmentId);
+  const wasInSlot = cancelledIndex >= 0 && cancelledIndex < capacity;
 
   // ❌ marcar cancelación
   await prisma.userAppointment.update({
@@ -140,9 +178,60 @@ export async function cancelUserAppointment(userAppointmentId: number) {
     },
   });
 
+  // ⬆️ Promover al primero de la lista de espera si el cancelado liberó un cupo.
+  // ABONADO cancelado → prioridad a ABONADO en espera; si no hay, al primero de la espera general.
+  // NO_ABONADO cancelado → al primero de la espera general.
+  let promotedUserAppointmentId: number | null = null;
+
+  if (wasInSlot) {
+    const waitingList = activeBefore.slice(capacity);
+
+    const promoted = isAbonado
+      ? waitingList.find((w) => w.type === "ABONADO") ?? waitingList[0]
+      : waitingList[0];
+
+    if (promoted) {
+      await prisma.userAppointment.update({
+        where: { id: promoted.id },
+        data: { reservationDate: ua.reservationDate },
+      });
+      promotedUserAppointmentId = promoted.id;
+
+      const promotedUa = await prisma.userAppointment.findUnique({
+        where: { id: promoted.id },
+        include: {
+          client: { include: { user: true } },
+          appointment: { include: { activity: true } },
+        },
+      });
+
+      if (promotedUa?.client.user.email) {
+        await sendWaitingListPromotionEmail({
+          email: promotedUa.client.user.email,
+          name: promotedUa.client.user.name,
+          activityName: promotedUa.appointment.activity?.name ?? "tu actividad",
+          initialDate: new Date(promotedUa.appointment.initialDate),
+        });
+      }
+    }
+  }
+
+  // 🔄 liberar cupo sólo si el cancelado lo ocupaba y no se promovió a nadie
+  if (wasInSlot && promotedUserAppointmentId === null) {
+    await prisma.appointment.update({
+      where: { id: ua.appointmentId },
+      data: {
+        currentSlots: {
+          decrement: 1,
+        },
+      },
+    });
+  }
+
   return {
     success: true,
     creditCreated,
     refundPending,
+    promotedUserAppointmentId,
   };
 }

@@ -10,6 +10,9 @@ interface QRInfo {
   accepted: boolean;
 }
 
+type TurnoState = "PAGO_COMPLETO" | "PAGO_PARCIAL" | "IMPAGO";
+type TurnoType = "ABONADO" | "NO_ABONADO";
+
 interface TurnoItem {
   userAppointmentId: number;
   activityName: string;
@@ -17,6 +20,8 @@ interface TurnoItem {
   endDate: string;
   qr: QRInfo | null;
   cancellable: boolean;
+  state: TurnoState;
+  type: TurnoType;
 }
 
 export default function MisTurnosPage() {
@@ -48,10 +53,15 @@ export default function MisTurnosPage() {
         const now = new Date();
 
         const pagados: TurnoItem[] = userAppointments
-          .filter((ua) =>
-            ua.state === "PAGO_COMPLETO" ||
-            ua.state === "PAGO_PARCIAL"
-          )
+          .filter((ua) => {
+            const allowedState =
+              ua.state === "PAGO_COMPLETO" ||
+              ua.state === "PAGO_PARCIAL" ||
+              (ua.type === "ABONADO" && ua.state === "IMPAGO");
+            if (!allowedState) return false;
+            const start = new Date(ua.appointment?.initialDate);
+            return start.getTime() >= now.getTime();
+          })
           .map((ua) => {
             const start = new Date(ua.appointment?.initialDate);
 
@@ -65,6 +75,8 @@ export default function MisTurnosPage() {
               endDate: ua.appointment?.endDate ?? "",
               qr: ua.qr ?? null,
               cancellable: diffHours >= 0,
+              state: ua.state,
+              type: ua.type,
             };
           })
           .sort(
@@ -225,9 +237,19 @@ export default function MisTurnosPage() {
                     : "Cancelar"}
                 </button>
 
-                <span className="text-xs px-2 py-1 rounded-full bg-green-600/20 text-green-400">
-                  Pago
-                </span>
+                {turno.state === "PAGO_COMPLETO" ? (
+                  <span className="text-xs px-2 py-1 rounded-full bg-green-600/20 text-green-400">
+                    Pago
+                  </span>
+                ) : turno.state === "PAGO_PARCIAL" ? (
+                  <span className="text-xs px-2 py-1 rounded-full bg-orange-500/20 text-orange-400">
+                    Seña
+                  </span>
+                ) : (
+                  <span className="text-xs px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-400">
+                    Pendiente de pago
+                  </span>
+                )}
               </div>
             </div>
           ))}

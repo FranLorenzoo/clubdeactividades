@@ -1,7 +1,9 @@
 import { getAllUserAppointments, createUserAppointment, getOverdueImpagoCountByClientId } from "@/lib/sql/user-appointment";
 import { Prisma, userAppointmentState, userAppointmentType } from "@/lib/generated/prisma/client";
 import { parseFields } from "@/lib/validators/api";
+import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
+import QRCode from "qrcode";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
@@ -110,6 +112,25 @@ async function createUserAppointmentHandler(
 
   try {
     const userAppointment = await createUserAppointment(createInput);
+
+    if (userAppointment.type === "ABONADO" && userAppointment.state !== "PAGO_COMPLETO") {
+      try {
+        const qrImage = await QRCode.toDataURL(String(userAppointment.id));
+        await prisma.qR.upsert({
+          where: { userAppointmentId: userAppointment.id },
+          update: { qrImage },
+          create: {
+            userAppointmentId: userAppointment.id,
+            qrImage,
+            url: String(userAppointment.id),
+            accepted: false,
+          },
+        });
+      } catch (qrError) {
+        console.error("QR_ERROR:", qrError);
+      }
+    }
+
     return res.status(201).json(userAppointment);
   } catch (error) {
     console.error(error);

@@ -143,18 +143,37 @@ function isInWaitingList(ua: any): boolean {
 
 // ─── Detail popup (admin / employee) ─────────────────────────────────────────
 
+interface WaitingListEntry {
+  id: number;
+  clientId: number;
+  name: string;
+  lastName: string;
+  type: "ABONADO" | "NO_ABONADO";
+  reservationDate: string;
+}
+
+interface WaitingListData {
+  generalWaitingList: WaitingListEntry[];
+  abonadosWaitingList: WaitingListEntry[];
+}
+
 interface DetailPopupProps {
   time: string;
   available: number;
   waitingList: boolean;
   price: number;
   professorName: string;
+  waitingListData: WaitingListData | null;
+  loadingWaitingList: boolean;
   onClose: () => void;
 }
 
-function DetailPopup({ time, available, waitingList, price, professorName, onClose }: DetailPopupProps) {
+function DetailPopup({ time, available, waitingList, price, professorName, waitingListData, loadingWaitingList, onClose }: DetailPopupProps) {
+  const hasAbonadosList = (waitingListData?.abonadosWaitingList.length ?? 0) > 0;
+  const hasGeneralList = (waitingListData?.generalWaitingList.length ?? 0) > 0;
+
   return (
-    <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-60 bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
+    <div className="absolute z-20 bottom-full left-1/2 -translate-x-1/2 mb-3 w-72 bg-zinc-900 border border-zinc-700 rounded-2xl p-4 shadow-2xl text-white pointer-events-auto">
       <div className="flex justify-between items-center mb-3">
         <p className="font-bold text-base">{time}hs</p>
         <button onClick={onClose} className="text-zinc-500 hover:text-white text-sm leading-none">✕</button>
@@ -176,6 +195,45 @@ function DetailPopup({ time, available, waitingList, price, professorName, onClo
           <span className="text-zinc-200 font-medium">${price.toFixed(2)}</span>
         </div>
       </div>
+
+      {loadingWaitingList && (
+        <p className="mt-3 text-xs text-zinc-500">Cargando lista de espera...</p>
+      )}
+
+      {!loadingWaitingList && hasAbonadosList && (
+        <div className="mt-3 border-t border-zinc-700 pt-3">
+          <p className="text-xs font-semibold text-orange-400 mb-1">
+            Lista de espera — Abonados ({waitingListData!.abonadosWaitingList.length})
+          </p>
+          <ul className="max-h-28 overflow-y-auto space-y-0.5">
+            {waitingListData!.abonadosWaitingList.map((entry, i) => (
+              <li key={entry.id} className="text-xs text-zinc-300 flex gap-1">
+                <span className="text-zinc-500 w-4 shrink-0">{i + 1}.</span>
+                <span className="truncate">{entry.name} {entry.lastName}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {!loadingWaitingList && hasGeneralList && (
+        <div className="mt-3 border-t border-zinc-700 pt-3">
+          <p className="text-xs font-semibold text-zinc-300 mb-1">
+            Lista de espera general ({waitingListData!.generalWaitingList.length})
+          </p>
+          <ul className="max-h-28 overflow-y-auto space-y-0.5">
+            {waitingListData!.generalWaitingList.map((entry, i) => (
+              <li key={entry.id} className="text-xs text-zinc-300 flex gap-1 items-center">
+                <span className="text-zinc-500 w-4 shrink-0">{i + 1}.</span>
+                <span className="truncate flex-1">{entry.name} {entry.lastName}</span>
+                <span className={`shrink-0 text-[10px] font-semibold px-1 rounded ${entry.type === "ABONADO" ? "text-orange-400" : "text-zinc-500"}`}>
+                  {entry.type === "ABONADO" ? "Ab" : "Ú"}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-zinc-700" />
     </div>
@@ -408,6 +466,8 @@ export default function ScheduleGrid({
   const [clientName, setClientName] = useState<string>("");
   const [clientLastName, setClientLastName] = useState<string>("");
   const employeeBooking = !!forcedClient;
+  const [waitingListData, setWaitingListData] = useState<WaitingListData | null>(null);
+  const [loadingWaitingList, setLoadingWaitingList] = useState(false);
 
   const { start: weekStart, end: weekEnd } = getWeekRange(weekOffset);
   const weekLabel = formatWeekLabel(weekStart, weekEnd);
@@ -707,9 +767,24 @@ const state =
     if (activeSlot?.day === day && activeSlot?.time === time) {
       setActiveSlot(null);
       setReserveType(null);
+      setWaitingListData(null);
     } else {
       setActiveSlot({ day, time });
       setReserveType(null);
+      setWaitingListData(null);
+
+      const isStaffRole = userRole === "ADMIN" || userRole === "EMPLOYEE" || userRole === "PROFESSOR";
+      if (isStaffRole) {
+        const appt = getAppointment(day, time);
+        if (appt) {
+          setLoadingWaitingList(true);
+          fetch(`/api/appointment/waiting-list/${appt.id}`)
+            .then((r) => r.json())
+            .then((data) => setWaitingListData(data))
+            .catch(console.error)
+            .finally(() => setLoadingWaitingList(false));
+        }
+      }
     }
   }
 
@@ -776,43 +851,39 @@ const state =
                             >
                               {time}
                             </button>
-                  {isActive && (
-                    isStaff && !employeeBooking ? (
-                      <DetailPopup
-                        time={time}
-                        available={appt.available}
-                        waitingList={appt.waitingList}
-                        price={appt.price}
-                        professorName={appt.professorName}
-                        onClose={() => {
-                          setActiveSlot(null);
-                          setReserveType(null);
-                        }}
-                      />
-                    ) : (
-                      <ReservePopup
-                        time={time}
-                        available={appt.available}
-                        waitingList={appt.waitingList}
-                        price={appt.price}
-                        dayOfWeek={appt.dayOfWeek}
-                        alreadyReserved={appt.alreadyReserved}
-                        reservedInWaitingList={appt.reservedInWaitingList}
-                        reserveType={reserveType}
-                        onTypeChange={setReserveType}
-                        onClose={() => {
-                          setActiveSlot(null);
-                          setReserveType(null);
-                        }}
-                        onConfirm={handleConfirm}
-                        confirming={confirming}
-                        creditCard={creditCard}
-                        loadingCard={loadingCard}
-                        suspended={suspended}
-                        employeeBooking={employeeBooking}
-                      />
-                    )
-                  )}
+                            {isActive && (
+                              isStaff && !employeeBooking ? (
+                                <DetailPopup
+                                  time={time}
+                                  available={appt.available}
+                                  waitingList={appt.waitingList}
+                                  price={appt.price}
+                                  professorName={appt.professorName}
+                                  waitingListData={waitingListData}
+                                  loadingWaitingList={loadingWaitingList}
+                                  onClose={() => { setActiveSlot(null); setReserveType(null); setWaitingListData(null); }}
+                                />
+                              ) : (
+                                <ReservePopup
+                                  time={time}
+                                  available={appt.available}
+                                  waitingList={appt.waitingList}
+                                  price={appt.price}
+                                  dayOfWeek={appt.dayOfWeek}
+                                  alreadyReserved={appt.alreadyReserved}
+                                  reservedInWaitingList={appt.reservedInWaitingList}
+                                  reserveType={reserveType}
+                                  onTypeChange={setReserveType}
+                                  onClose={() => { setActiveSlot(null); setReserveType(null); setWaitingListData(null); }}
+                                  onConfirm={handleConfirm}
+                                  confirming={confirming}
+                                  creditCard={creditCard}
+                                  loadingCard={loadingCard}
+                                  suspended={suspended}
+                                  employeeBooking={employeeBooking}
+                                />
+                              )
+                            )}
                           </div>
                         )}
                       </div>
