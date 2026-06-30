@@ -432,6 +432,7 @@ interface AppointmentSlot {
   professorName: string;
   alreadyReserved: boolean;
   reservedInWaitingList: boolean;
+  isSuspended: boolean;
 }
 
 interface ScheduleGridProps {
@@ -609,35 +610,45 @@ if (forcedClient) {
       return apptDay === day && apptTime === time;
     }) : null;
     if (!appt) return null;
-    const count = appt.userAppointments?.length ?? 0;
-    const capacity = appt.slotsAvailable ?? 10;
-    const waitingList = count >= capacity;
-    const available = waitingList ? 0 : capacity - count;
+    const count = appt.userAppointments?.filter((ua: any) => ua.state !== "CANCELLED" && !ua.rejected).length ?? 0;
+
+    const isSuspended = appt.slotsAvailable === 0 && appt.currentSlots === 0;
+    const capacity = isSuspended ? 0 : (appt.slotsAvailable ?? 10); 
+    const waitingList = !isSuspended && count >= capacity;
+    const available = isSuspended ? 0 : (waitingList ? 0 : capacity - count);
+    
     const dayOfWeek = getClubDayIndex(new Date(appt.initialDate));
     const professorName = appt.professor?.user?.name ?? "";
-    const alreadyReserved = clientId !== null && (appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false);
+    
+    const alreadyReserved = clientId !== null && (appt.userAppointments?.some(
+        (ua: any) => ua.clientId === clientId && ua.state !== "CANCELLED" && !ua.rejected
+      ) ?? false);
+
     const sortedReservations = [...(appt.userAppointments ?? [])].sort((a: any, b: any) => {
       const timeDiff = new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime();
       if (timeDiff !== 0) return timeDiff;
       return Number(a.id) - Number(b.id);
     });
+
     const clientReservation =
       clientId !== null ? sortedReservations.find((ua: any) => ua.clientId === clientId) : null;
     const clientIndex = clientReservation
       ? sortedReservations.findIndex((ua: any) => ua.id === clientReservation.id)
       : -1;
     const reservedInWaitingList = clientIndex >= capacity;
+
     return {
       id: appt.id,
       time,
       available,
-      waitingList,
+      waitingList, 
       price: appt.price ?? 0,
       dayOfWeek,
       professorName,
-      alreadyReserved,
+      alreadyReserved: isSuspended ? true : alreadyReserved,
       reservedInWaitingList,
-    };
+      isSuspended, 
+    } as any;
   }
 
   async function handleConfirm(selectedReserveType: ReserveType, paymentMultiplier: number) {
@@ -704,7 +715,12 @@ const state =
 
         const relevantAppointments = appointments.filter((appt) => {
           const apptDate = new Date(appt.initialDate);
-          const alreadyBooked = appt.userAppointments?.some((ua: any) => ua.clientId === clientId) ?? false;
+          
+          // CORRECCIÓN: Solo considerar "ya reservado" si el turno NO está CANCELLED ni rechazado
+          const alreadyBooked = appt.userAppointments?.some(
+            (ua: any) => ua.clientId === clientId && ua.state !== "CANCELLED" && !ua.rejected
+          ) ?? false;
+          
           return (
             apptDate.getUTCMonth() === targetMonth &&
             apptDate.getUTCFullYear() === targetYear &&
@@ -713,6 +729,13 @@ const state =
             !alreadyBooked
           );
         });
+
+        // Si todos los turnos del mes ya estaban reservados de forma activa, avisamos y frenamos
+        if (relevantAppointments.length === 0) {
+          toast.error("Ya tenés estos turnos reservados para este mes");
+          setConfirming(false);
+          return;
+        }
 
         const responses = await Promise.all(
           relevantAppointments.map((appt) => {
@@ -741,7 +764,7 @@ const state =
             body: JSON.stringify({
               to: clientEmail,
               subject: "Reserva realizada",
-              text: "Tu reserva fue registrada correctamente",
+              text: "Tu reserva mensual fue registrada correctamente",
             }),
           });
         }
@@ -833,6 +856,9 @@ const state =
                     const appt = getAppointment(day, time);
                     const isActive = activeSlot?.day === day && activeSlot?.time === time;
 
+                    const isSuspendedSlot = appt?.isSuspended;
+                    const isWaitingListSlot = appt?.waitingList;
+
                     return (
                       <div
                         key={time}
@@ -842,15 +868,22 @@ const state =
                         {appt && (
                           <div className="relative flex items-center justify-center h-full">
                             <button
-                              onClick={() => handleSlotClick(day, time)}
+                              // Si está suspendido no permitimos la acción de clickear
+                              onClick={() => !isSuspendedSlot && handleSlotClick(day, time)}
+                              disabled={isSuspendedSlot} // Bloqueo HTML nativo si está suspendido
                               className={`text-xs font-semibold rounded-lg px-2 py-1 transition border ${
                                 isActive
                                   ? "bg-green-600 border-green-600 text-white"
-                                  : "bg-green-600/20 border-green-600/40 text-green-400 hover:bg-green-600/40"
+                                  : isSuspendedSlot
+                                    ? "bg-red-950 border-red-700/50 text-red-400 cursor-not-allowed opacity-70" 
+                                    : isWaitingListSlot
+                                      ? "bg-amber-600/20 border-amber-500/40 text-amber-400 hover:bg-amber-600/40"
+                                      : "bg-green-600/20 border-green-600/40 text-green-400 hover:bg-green-600/40"
                               }`}
                             >
-                              {time}
+                              {time} {isSuspendedSlot ? "(Susp.)" : isWaitingListSlot ? "(Espera)" : ""}
                             </button>
+                            
                             {isActive && (
                               isStaff && !employeeBooking ? (
                                 <DetailPopup
@@ -894,7 +927,6 @@ const state =
             ))}
           </div>
 
-          {/* Time labels on the left */}
           <div
             className="relative pointer-events-none"
             style={{ marginTop: `-${TIME_SLOTS.length * 52 + 36}px` }}

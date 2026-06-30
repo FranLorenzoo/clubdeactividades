@@ -119,3 +119,121 @@ await prisma.$transaction(
   })
 );
 }
+
+export async function suspendAppointment(id: number) {
+  return prisma.$transaction(async (tx) => {
+    
+    // 1. Obtenemos el turno con todas las inscripciones y sus respectivos pagos
+    const appointment = await tx.appointment.findUnique({
+      where: { id },
+      include: {
+        userAppointments: {
+          include: { payments: true }
+        }
+      }
+    });
+
+    if (!appointment) {
+      throw new Error("El turno a suspender no existe.");
+    }
+
+    const now = new Date();
+    for (const userApp of appointment.userAppointments) {
+      
+      if (userApp.rejected || userApp.state === "CANCELLED") {
+        continue;
+      }
+
+      // 🟢 DEVOLUCIÓN OBLIGATORIA (Sin importar las horas previas a la clase)
+      const mainPayment = userApp.payments[0];
+
+      if (userApp.type === "ABONADO") {
+        // 2. Ahora impactamos la caja/facturación del ABONADO según cómo pagó su inscripción
+        if (mainPayment) {
+          if (mainPayment.paymentMethod === "online") {
+            console.log(`[ABONADO - FACTURA AUTOMÁTICA] Reembolso online procesado por $${mainPayment.amount} al cliente ID ${userApp.clientId}`);
+
+          } else if (mainPayment.paymentMethod === "CASH") {
+            await tx.payment.create({
+              data: {
+                userAppointmentId: userApp.id,
+                paymentDate: now,
+                amount: -mainPayment.amount, // Negativo para la devolución
+                paymentMethod: "CASH",
+                employeeId: null, // Esperando aprobación manual en recepción
+              }
+            });
+            console.log(`[ABONADO - FACTURA PENDIENTE - CASH] Reembolso de $${mainPayment.amount} registrado para aprobación manual.`);
+          }
+        }
+
+      } else {
+        // 3. Caso NO_ABONADO: Evaluamos según sus 3 métodos de pago posibles
+        if (mainPayment) {
+          const method = mainPayment.paymentMethod;
+
+          if (method === "credit") {
+            // Reactivamos el último crédito usado de este cliente para esta actividad
+            const lastUsedCredit = await tx.credit.findFirst({
+              where: {
+                clientId: userApp.clientId,
+                activityId: appointment.activityId,
+                isValid: false
+              },
+              orderBy: { id: 'desc' }
+            });
+
+            if (lastUsedCredit) {
+              await tx.credit.update({
+                where: { id: lastUsedCredit.id },
+                data: { isValid: true }
+              });
+            } else {
+              // Fallback si no se encuentra el registro exacto
+              await tx.credit.create({
+                data: {
+                  clientId: userApp.clientId,
+                  activityId: appointment.activityId,
+                  endDate: new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000),
+                  isValid: true,
+                },
+              });
+            }
+
+          } else if (method === "online") {
+            console.log(`[NO ABONADO - FACTURA AUTOMÁTICA] Reembolso online procesado por $${mainPayment.amount} al cliente ID ${userApp.clientId}`);
+          } else if (method === "CASH") {
+            await tx.payment.create({
+              data: {
+                userAppointmentId: userApp.id,
+                paymentDate: now,
+                amount: -mainPayment.amount,
+                paymentMethod: "CASH",
+                employeeId: null, // Requiere que el recepcionista le dé el efectivo en mano
+              }
+            });
+            console.log(`[NO ABONADO - FACTURA PENDIENTE - CASH] Reembolso de $${mainPayment.amount} registrado para aprobación manual.`);
+          }
+        }
+      }
+
+      await tx.userAppointment.update({
+        where: { id: userApp.id },
+        data: {
+          cancellationDate: now,
+          state: "CANCELLED",
+          rejected: true,
+        },
+      });
+    }
+
+    // 3. Finalmente vaciamos los cupos de la clase dejándolos en 0
+    return tx.appointment.update({
+      where: { id },
+      data: {
+        slotsAvailable: 0,
+        currentSlots: 0,
+      },
+    });
+  });
+}
