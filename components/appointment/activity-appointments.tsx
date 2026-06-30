@@ -169,16 +169,16 @@ export default function ActivityAppointments() {
             onClick={() => setSelectedActivity(activity.id)}
             style={{
               padding: '14px 20px',
-              backgroundColor: selectedActivity === activity.id ? '#16a34a' : '#1f1f1f',
+              backgroundColor: selectedActivity === activity.id ? '#0070f3' : '#1f1f1f',
               color: '#ffffff',
-              border: selectedActivity === activity.id ? '1px solid #15803d' : '1px solid #333',
+              border: selectedActivity === activity.id ? '1px solid #0070f3' : '1px solid #333',
               borderRadius: '8px',
               cursor: 'pointer',
               textAlign: 'left',
               fontSize: '1rem',
               fontWeight: selectedActivity === activity.id ? '600' : '400',
               transition: 'all 0.2s ease',
-              boxShadow: selectedActivity === activity.id ? '0 4px 6px rgba(22,163,74,0.2)' : 'none',
+              boxShadow: selectedActivity === activity.id ? '0 4px 6px rgba(0,112,243,0.2)' : 'none'
             }}
           >
             {activity.name}
@@ -207,7 +207,7 @@ export default function ActivityAppointments() {
       )}
 
       {loadingAppointments && (
-        <p style={{ color: '#16a34a', fontWeight: '600', textAlign: 'center' }}>Buscando turnos actualizados...</p>
+        <p style={{ color: '#0070f3', fontWeight: '600', textAlign: 'center' }}>Buscando turnos actualizados...</p>
       )}
 
       {!loadingAppointments && selectedActivity && appointments.length === 0 && (
@@ -265,7 +265,12 @@ export default function ActivityAppointments() {
                 <div style={{ textAlign: 'right' }}>
                   {isEditing ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'flex-end' }}>
-
+                      <button 
+                        onClick={() => setEditingAppointmentId(null)}
+                        style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer', fontSize: '0.95rem', fontWeight: '600' }}
+                      >
+                        Cancelar
+                      </button>
                       <select 
                         defaultValue=""
                         onChange={(e) => {
@@ -295,18 +300,18 @@ export default function ActivityAppointments() {
                       onClick={() => setEditingAppointmentId(appointment.id)}
                       style={{
                         padding: '9px 16px',
-                        backgroundColor: '#16a34a', // 🚀 Botón azul primario con texto blanco para legibilidad total
+                        backgroundColor: '#0070f3', // 🚀 Botón azul primario con texto blanco para legibilidad total
                         color: '#ffffff',
                         border: 'none',
                         borderRadius: '6px',
                         cursor: 'pointer',
                         fontSize: '0.85rem',
                         fontWeight: '600',
-                        boxShadow: '0 2px 4px rgba(22,163,74,0.15)',
+                        boxShadow: '0 2px 4px rgba(0,112,243,0.15)',
                         transition: 'background-color 0.2s'
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#15803d'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#16a34a'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#005bc5'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0070f3'}
                     >
                       Cambiar Profesor
                     </button>
