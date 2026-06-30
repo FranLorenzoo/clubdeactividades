@@ -38,9 +38,14 @@ export default function MisCreditosPage() {
   const handleUseCredit = async (credit: Credit) => {
   setOpeningCreditId(credit.id);
   setLoadingAppointments(true);
+  
   const userId = localStorage.getItem("userId");
-  const res = await fetch(`/api/appointment/activity/${credit.activity.id}?userId=${userId}`
-);
+  const clientRes = await fetch(`/api/client/user/${userId}`);
+  const client = await clientRes.json();
+
+  const res = await fetch(
+    `/api/appointment/activity/${credit.activity.id}?clientId=${client.id}`
+  );
   const data = await res.json();
   console.log("Fetched appointments:", data);
   setAppointments(data);

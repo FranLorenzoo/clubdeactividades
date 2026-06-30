@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getAppointmentById, updateAppointment } from "@/lib/sql/appointment";
 import { getCreditById, updateCredit } from "@/lib/sql/credit";
 import { createUserAppointment } from "@/lib/sql/user-appointment";
+import { createPayment } from "@/lib/sql/payment";
 
 import {
   userAppointmentState,
@@ -30,13 +31,11 @@ export default async function handler(
         message: "Crédito inexistente",
       });
     }
-
     if (!credit.isValid) {
       return res.status(400).json({
         message: "El crédito ya fue utilizado",
       });
     }
-
     if (new Date(credit.endDate) < new Date()) {
       return res.status(400).json({
         message: "El crédito está vencido",
@@ -45,14 +44,14 @@ export default async function handler(
 
     // Buscar turno
     const appointment = await getAppointmentById(Number(appointmentId));
-
     if (!appointment) {
       return res.status(404).json({
         message: "Turno inexistente",
       });
     }
-
     // Verificar cupo
+    console.log("Current slots:", appointment.currentSlots);
+    console.log("Slots available:", appointment.slotsAvailable);
     if (appointment.currentSlots >= appointment.slotsAvailable) {
       return res.status(400).json({
         message: "No hay cupos disponibles",
@@ -60,7 +59,7 @@ export default async function handler(
     }
 
     // Crear reserva
-    await createUserAppointment({
+    const userAppointment = await createUserAppointment({
       appointment: {
         connect: {
           id: appointment.id,
@@ -77,6 +76,17 @@ export default async function handler(
       state: userAppointmentState.PAGO_COMPLETO,
       type: userAppointmentType.NO_ABONADO,
     });
+
+    await createPayment({
+    userAppointment: {
+        connect: {
+            id: userAppointment.id,
+        },
+    },
+    paymentDate: new Date(),
+    amount: appointment.price,
+    paymentMethod: "credit",
+});
 
     // Incrementar ocupación del turno
     await updateAppointment(appointment.id, {
