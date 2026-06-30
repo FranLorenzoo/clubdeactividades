@@ -17,13 +17,6 @@ interface PendingPaymentItem {
   appointment: AppointmentInfo;
 }
 
-interface CreditItem {
-  id: number;
-  activityId: number;
-  endDate: string;
-  isValid: boolean;
-}
-
 function isInWaitingList(ua: any): boolean {
   const queue = [...(ua.appointment?.userAppointments ?? [])].sort((a: any, b: any) => {
     const timeDiff = new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime();
@@ -40,7 +33,6 @@ export default function MisPagosPage() {
   const [pendingMonthly, setPendingMonthly] = useState<PendingPaymentItem[]>([]);
   const [overdueDebts, setOverdueDebts] = useState<PendingPaymentItem[]>([]);
   const [completed, setCompleted] = useState<PendingPaymentItem[]>([]);
-  const [credits, setCredits] = useState<CreditItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [paying, setPaying] = useState<string | number | null>(null);
 
@@ -52,16 +44,12 @@ export default function MisPagosPage() {
       if (!clientRes.ok) return;
       const client = await clientRes.json();
 
-      const [uaRes, creditsRes] = await Promise.all([
+      const [uaRes] = await Promise.all([
         fetch(`/api/user-appointment/client/${client.id}`),
-        fetch(`/api/credit/client/${client.id}`),
       ]);
 
       if (!uaRes.ok) return;
       const userAppointments: any[] = await uaRes.json();
-      if (creditsRes.ok) {
-        setCredits(await creditsRes.json());
-      }
 
       const now = new Date();
       const currentUTCMonth = now.getUTCMonth();
@@ -117,10 +105,6 @@ export default function MisPagosPage() {
 
   useEffect(() => { fetchPayments(); }, []);
 
-  function creditsForActivity(activityId: number | undefined): number {
-    if (!activityId) return 0;
-    return credits.filter((c) => c.activityId === activityId).length;
-  }
 
   const handlePayPartial = async (userAppointmentId: number, amount: number) => {
     setPaying(userAppointmentId);
@@ -139,29 +123,6 @@ export default function MisPagosPage() {
         toast.success("Pago registrado correctamente");
       } else {
         toast.error("Error al procesar el pago");
-      }
-      await fetchPayments();
-    } catch {
-      toast.error("Error de conexión");
-    } finally {
-      setPaying(null);
-    }
-  };
-
-  const handlePayWithCredit = async (userAppointmentId: number) => {
-    const key = `credit:${userAppointmentId}`;
-    setPaying(key);
-    try {
-      const res = await fetch("/api/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userAppointmentId, paymentMethod: "CREDIT" }),
-      });
-      if (res.ok) {
-        toast.success("Clase pagada con crédito");
-      } else {
-        const data = await res.json();
-        toast.error(data.message || "Error al usar el crédito");
       }
       await fetchPayments();
     } catch {
@@ -271,9 +232,6 @@ export default function MisPagosPage() {
                 <div className="space-y-2 mb-4">
                   {overdueDebts.map((item) => {
                     const date = new Date(item.appointment.initialDate);
-                    const activityId = item.appointment.activity?.id;
-                    const hasCreditForThis = creditsForActivity(activityId) > 0;
-                    const creditKey = `credit:${item.userAppointmentId}`;
                     return (
                       <div key={item.userAppointmentId} className="flex items-center justify-between text-sm gap-3">
                         <span className="text-zinc-300 capitalize">
@@ -282,15 +240,6 @@ export default function MisPagosPage() {
                         </span>
                         <div className="flex items-center gap-2 shrink-0">
                           <span className="text-red-400">${item.appointment.price.toFixed(2)}</span>
-                          {hasCreditForThis && (
-                            <button
-                              onClick={() => handlePayWithCredit(item.userAppointmentId)}
-                              disabled={paying === creditKey}
-                              className="text-xs font-semibold px-2 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:text-zinc-500 text-white transition"
-                            >
-                              {paying === creditKey ? "..." : "Crédito"}
-                            </button>
-                          )}
                         </div>
                       </div>
                     );
@@ -325,9 +274,6 @@ export default function MisPagosPage() {
                     weekday: "long", day: "2-digit", month: "2-digit", year: "numeric",
                   });
                   const pendingAmount = item.appointment.price * 0.5;
-                  const activityId = item.appointment.activity?.id;
-                  const hasCreditForThis = creditsForActivity(activityId) > 0;
-                  const creditKey = `credit:${item.userAppointmentId}`;
                   return (
                     <div
                       key={item.userAppointmentId}
@@ -350,15 +296,6 @@ export default function MisPagosPage() {
                           >
                             {paying === item.userAppointmentId ? "Pagando..." : `Pagar $${pendingAmount.toFixed(2)}`}
                           </button>
-                          {hasCreditForThis && (
-                            <button
-                              onClick={() => handlePayWithCredit(item.userAppointmentId)}
-                              disabled={paying === creditKey}
-                              className="text-xs font-semibold px-3 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:text-zinc-500 text-white transition"
-                            >
-                              {paying === creditKey ? "..." : "Pagar con crédito"}
-                            </button>
-                          )}
                         </div>
                         {(() => {
                           const end = new Date(item.appointment.endDate);
@@ -394,8 +331,6 @@ export default function MisPagosPage() {
                   );
                   const actDeadline = sorted.length > 0 ? new Date(sorted[0].appointment.endDate) : null;
                   const actOverdue = actDeadline !== null && now > actDeadline;
-                  const activityId = items[0]?.appointment.activity?.id;
-                  const availableCredits = creditsForActivity(activityId);
                   return (
                     <div key={activityName} className="bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-4">
                       <div className="flex items-center justify-between mb-3">
@@ -406,11 +341,6 @@ export default function MisPagosPage() {
                               ? `Vence el ${actDeadline.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}${actOverdue ? " — vencido" : ""}`
                               : "Sin vencimiento"}
                           </p>
-                          {availableCredits > 0 && (
-                            <p className="text-xs text-blue-400 mt-0.5">
-                              {availableCredits} crédito{availableCredits !== 1 ? "s" : ""} disponible{availableCredits !== 1 ? "s" : ""}
-                            </p>
-                          )}
                         </div>
                         <div className="text-right">
                           <p className={`font-bold text-lg ${actOverdue ? "text-red-400" : "text-yellow-400"}`}>
@@ -431,8 +361,6 @@ export default function MisPagosPage() {
                       <div className="space-y-2 border-t border-zinc-800 pt-3">
                         {items.map((item) => {
                           const date = new Date(item.appointment.initialDate);
-                          const creditKey = `credit:${item.userAppointmentId}`;
-                          const hasCreditForThis = availableCredits > 0;
                           return (
                             <div key={item.userAppointmentId} className="flex items-center justify-between text-sm">
                               <span className="text-zinc-300">
@@ -440,15 +368,6 @@ export default function MisPagosPage() {
                               </span>
                               <div className="flex items-center gap-2">
                                 <span className="text-zinc-400">${item.appointment.price.toFixed(2)}</span>
-                                {hasCreditForThis && (
-                                  <button
-                                    onClick={() => handlePayWithCredit(item.userAppointmentId)}
-                                    disabled={paying === creditKey}
-                                    className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:text-zinc-500 text-white transition"
-                                  >
-                                    {paying === creditKey ? "..." : "Crédito"}
-                                  </button>
-                                )}
                               </div>
                             </div>
                           );
