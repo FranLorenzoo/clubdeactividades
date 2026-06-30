@@ -852,7 +852,7 @@ const state =
                               {time}
                             </button>
                             {isActive && (
-                              isStaff ? (
+                              isStaff && !employeeBooking ? (
                                 <DetailPopup
                                   time={time}
                                   available={appt.available}
@@ -874,52 +874,16 @@ const state =
                                   reservedInWaitingList={appt.reservedInWaitingList}
                                   reserveType={reserveType}
                                   onTypeChange={setReserveType}
-                                  onClose={() => { setActiveSlot(null); setReserveType(null); }}
+                                  onClose={() => { setActiveSlot(null); setReserveType(null); setWaitingListData(null); }}
                                   onConfirm={handleConfirm}
                                   confirming={confirming}
                                   creditCard={creditCard}
                                   loadingCard={loadingCard}
                                   suspended={suspended}
+                                  employeeBooking={employeeBooking}
                                 />
                               )
                             )}
-                  {isActive && (
-                    isStaff && !employeeBooking ? (
-                      <DetailPopup
-                        time={time}
-                        available={appt.available}
-                        waitingList={appt.waitingList}
-                        price={appt.price}
-                        professorName={appt.professorName}
-                        onClose={() => {
-                          setActiveSlot(null);
-                          setReserveType(null);
-                        }}
-                      />
-                    ) : (
-                      <ReservePopup
-                        time={time}
-                        available={appt.available}
-                        waitingList={appt.waitingList}
-                        price={appt.price}
-                        dayOfWeek={appt.dayOfWeek}
-                        alreadyReserved={appt.alreadyReserved}
-                        reservedInWaitingList={appt.reservedInWaitingList}
-                        reserveType={reserveType}
-                        onTypeChange={setReserveType}
-                        onClose={() => {
-                          setActiveSlot(null);
-                          setReserveType(null);
-                        }}
-                        onConfirm={handleConfirm}
-                        confirming={confirming}
-                        creditCard={creditCard}
-                        loadingCard={loadingCard}
-                        suspended={suspended}
-                        employeeBooking={employeeBooking}
-                      />
-                    )
-                  )}
                           </div>
                         )}
                       </div>

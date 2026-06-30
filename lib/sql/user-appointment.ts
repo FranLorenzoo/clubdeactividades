@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@/lib/generated/prisma/client";
+import { sendWaitingListPromotionEmail } from "@/lib/email/waitingListPromotion";
 
 export async function getAllUserAppointments() {
   return prisma.userAppointment.findMany({
@@ -162,6 +163,23 @@ export async function cancelUserAppointment(userAppointmentId: number) {
         data: { reservationDate: ua.reservationDate },
       });
       promotedUserAppointmentId = promoted.id;
+
+      const promotedUa = await prisma.userAppointment.findUnique({
+        where: { id: promoted.id },
+        include: {
+          client: { include: { user: true } },
+          appointment: { include: { activity: true } },
+        },
+      });
+
+      if (promotedUa?.client.user.email) {
+        await sendWaitingListPromotionEmail({
+          email: promotedUa.client.user.email,
+          name: promotedUa.client.user.name,
+          activityName: promotedUa.appointment.activity?.name ?? "tu actividad",
+          initialDate: new Date(promotedUa.appointment.initialDate),
+        });
+      }
     }
   }
 

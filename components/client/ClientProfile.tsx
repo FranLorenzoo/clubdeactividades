@@ -22,12 +22,14 @@ type ClientProfileData = {
     state: string;
     type: "ABONADO" | "NO_ABONADO";
     rejected: boolean;
+    attended: boolean;
     price?: number;
     totalPaid?: number;
     remainingDebt?: number;
 
     appointment: {
       id: number;
+      initialDate: string;
       activity: {
         id: number;
         name: string;
@@ -99,6 +101,23 @@ console.log("from:", from);
       await refreshClient();
     } catch {
       toast.error("Error al registrar pago");
+    }
+  }
+
+  async function markAttendance(userAppointmentId: number) {
+    try {
+      const res = await fetch(`/api/user-appointment/attend/${userAppointmentId}`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message || "Error al registrar asistencia");
+        return;
+      }
+      toast.success("Asistencia registrada");
+      await refreshClient();
+    } catch {
+      toast.error("Error al registrar asistencia");
     }
   }
 
@@ -203,80 +222,188 @@ console.log("from:", from);
           <div className="bg-zinc-900 p-6 rounded-3xl lg:col-span-2">
             <h2 className="text-xl font-bold mb-4">Historial</h2>
 
-            {client.userAppointments.map((r) => (
-              <div key={r.id} className="p-4 border border-zinc-700 rounded mb-3">
-                <p>⚽ {r.appointment.activity.name}</p>
-                <p>📅 {new Date(r.reservationDate).toLocaleDateString()}</p>
+            {client.userAppointments.map((r) => {
+              const apptStart = new Date(r.appointment.initialDate);
+              const isUpcoming = apptStart.getTime() >= Date.now();
+              return (
+                <div key={r.id} className="p-4 border border-zinc-700 rounded mb-3">
+                  <p>⚽ {r.appointment.activity.name}</p>
+                  <p>📅 {new Date(r.reservationDate).toLocaleDateString()}</p>
 
-                <p
-                  className={`font-bold mt-2 ${
-                    r.state === "PAGO_COMPLETO"
-                      ? "text-green-400"
-                      : r.state === "PAGO_PARCIAL"
-                      ? "text-yellow-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  Estado: {r.state}
-                </p>
+                  <p
+                    className={`font-bold mt-2 ${
+                      r.state === "PAGO_COMPLETO"
+                        ? "text-green-400"
+                        : r.state === "PAGO_PARCIAL"
+                        ? "text-yellow-400"
+                        : "text-red-400"
+                    }`}
+                  >
+                    Estado: {r.state}
+                  </p>
 
-                <p>💰 Total: ${r.price ?? 0}</p>
-                <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
-                <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
-              </div>
-            ))}
-          </div>
-        )}
+                  <p>💰 Total: ${r.price ?? 0}</p>
+                  <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
+                  <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
 
-        {showDebts && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 lg:col-span-2">
-            <h2 className="text-2xl font-bold mb-6">💰 Pagos pendientes</h2>
-
-            {client.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO")
-              .length === 0 ? (
-              <p className="text-zinc-400">No hay pagos pendientes 🎉</p>
-            ) : (
-              <div className="space-y-4">
-                {client.userAppointments
-                  .filter((r) => r.state !== "PAGO_COMPLETO")
-                  .map((r) => (
-                    <div
-                      key={r.id}
-                      className="p-5 rounded-2xl bg-gradient-to-r from-yellow-950 to-zinc-900 border border-yellow-700"
+                  {r.attended ? (
+                    <p className="mt-3 text-green-400 text-sm font-semibold">Asistió ✅</p>
+                  ) : isUpcoming ? (
+                    <button
+                      onClick={() => markAttendance(r.id)}
+                      className="mt-3 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
                     >
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p>⚽ {r.appointment.activity.name}</p>
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-700 text-zinc-300 mt-1 inline-block">
-                            {r.type === "ABONADO" ? "Mensualidad" : "Clase Suelta"}
-                          </span>
-                        </div>
-                        <span className="text-xs px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
-                          {r.state}
-                        </span>
-                      </div>
-
-                      <div className="mt-3 text-sm space-y-1">
-                        <p>💰 Total: ${r.price ?? 0}</p>
-                        <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
-                        <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
-                      </div>
-
-                      <button
-                        onClick={() => {
-                          setSelectedPayment(r);
-                          setShowConfirmPayment(true);
-                        }}
-                        className="mt-4 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition text-sm font-semibold w-full"
-                      >
-                        Cobrar clase
-                      </button>
-                    </div>
-                  ))}
-              </div>
-            )}
+                      Tomar asistencia
+                    </button>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
         )}
+
+        {showDebts && (() => {
+          const pending = client.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO");
+          const monthly = pending.filter((r) => r.type === "ABONADO");
+          const singles = pending.filter((r) => r.type !== "ABONADO");
+
+          const monthlyByActivity = monthly.reduce<Record<string, typeof monthly>>(
+            (acc, item) => {
+              const key = item.appointment.activity?.name ?? "Sin actividad";
+              (acc[key] ??= []).push(item);
+              return acc;
+            },
+            {}
+          );
+
+          return (
+            <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 lg:col-span-2">
+              <h2 className="text-2xl font-bold mb-6">💰 Pagos pendientes</h2>
+
+              {pending.length === 0 ? (
+                <p className="text-zinc-400">No hay pagos pendientes 🎉</p>
+              ) : (
+                <div className="space-y-6">
+                  {Object.keys(monthlyByActivity).length > 0 && (
+                    <div>
+                      <h3 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-3">
+                        Mensualidades
+                      </h3>
+                      <div className="space-y-4">
+                        {Object.entries(monthlyByActivity).map(([activityName, items]) => {
+                          const activityTotal = items.reduce((s, i) => s + (i.price ?? 0), 0);
+                          const activityDebt = items.reduce((s, i) => s + (i.remainingDebt ?? 0), 0);
+                          return (
+                            <div
+                              key={activityName}
+                              className="p-5 rounded-2xl bg-gradient-to-r from-yellow-950 to-zinc-900 border border-yellow-700"
+                            >
+                              <div className="flex justify-between items-start mb-3">
+                                <div>
+                                  <p className="font-semibold capitalize">⚽ {activityName}</p>
+                                  <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-700 text-zinc-300 mt-1 inline-block">
+                                    Mensualidad
+                                  </span>
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-yellow-300 font-bold text-lg">${activityTotal}</p>
+                                  <p className="text-zinc-500 text-xs mt-0.5">
+                                    {items.length} clase{items.length !== 1 ? "s" : ""}
+                                  </p>
+                                  <p className="text-zinc-400 text-xs mt-0.5">Debe: ${activityDebt}</p>
+                                </div>
+                              </div>
+                              <div className="space-y-2 border-t border-zinc-800 pt-3">
+                                {items.map((r) => {
+                                  const date = new Date(r.appointment.initialDate);
+                                  return (
+                                    <div
+                                      key={r.id}
+                                      className="flex items-center justify-between text-sm gap-3"
+                                    >
+                                      <div className="flex flex-col">
+                                        <span className="text-zinc-300">
+                                          {date.toLocaleDateString("es-AR", {
+                                            weekday: "short",
+                                            day: "2-digit",
+                                            month: "2-digit",
+                                          })}
+                                        </span>
+                                        <span className="text-zinc-500 text-xs">
+                                          Pagado ${r.totalPaid ?? 0} / Debe ${r.remainingDebt ?? 0}
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center gap-2 shrink-0">
+                                        <span className="text-zinc-400">${r.price ?? 0}</span>
+                                        <button
+                                          onClick={() => {
+                                            setSelectedPayment(r);
+                                            setShowConfirmPayment(true);
+                                          }}
+                                          className="text-xs font-semibold px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 transition"
+                                        >
+                                          Cobrar clase
+                                        </button>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {singles.length > 0 && (
+                    <div>
+                      <h3 className="text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-3">
+                        Clases sueltas
+                      </h3>
+                      <div className="space-y-4">
+                        {singles.map((r) => (
+                          <div
+                            key={r.id}
+                            className="p-5 rounded-2xl bg-gradient-to-r from-yellow-950 to-zinc-900 border border-yellow-700"
+                          >
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <p>⚽ {r.appointment.activity.name}</p>
+                                <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-700 text-zinc-300 mt-1 inline-block">
+                                  Clase Suelta
+                                </span>
+                              </div>
+                              <span className="text-xs px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
+                                {r.state}
+                              </span>
+                            </div>
+
+                            <div className="mt-3 text-sm space-y-1">
+                              <p>💰 Total: ${r.price ?? 0}</p>
+                              <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
+                              <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
+                            </div>
+
+                            <button
+                              onClick={() => {
+                                setSelectedPayment(r);
+                                setShowConfirmPayment(true);
+                              }}
+                              className="mt-4 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition text-sm font-semibold w-full"
+                            >
+                              Cobrar clase
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })()}
       </div>
       {showReservationModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
