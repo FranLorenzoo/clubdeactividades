@@ -11,7 +11,7 @@ export default function AdminNavbar() {
   }
 
   return (
-    <aside className="sticky top-0 h-screen w-64 shrink-0 border-r border-zinc-800 bg-zinc-900 flex flex-col justify-between">
+    <aside className="sticky top-0 h-screen w-64 bg-zinc-900 border-r border-zinc-800 overflow-y-auto no-scrollbar">
 
       <div>
 
