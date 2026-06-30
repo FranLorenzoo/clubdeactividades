@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type appointments = {
   id: number;
@@ -30,6 +31,7 @@ type AppointmentModalProps = {
   onClose: () => void;
   credit: Credit | null;
   appointments: appointments[];
+  onReservationSuccess: () => Promise<void>;
 };
 
 export default function AppointmentModal({
@@ -37,7 +39,9 @@ export default function AppointmentModal({
   onClose,
   credit,
   appointments,
+  onReservationSuccess,
 }: AppointmentModalProps) {
+  const [reservingId, setReservingId] = useState<number | null>(null);
 
   useEffect(() => {
     if (open) {
@@ -50,10 +54,34 @@ export default function AppointmentModal({
         document.body.style.overflow = "auto";
     };
     }, [open]);
-  
-  const availableAppointments = appointments.filter(
-    appointment => appointment.currentSlots < appointment.slotsAvailable
-  );
+
+  const reserveAppointment = async (appointmentId: number) => {
+  try {
+    setReservingId(appointmentId);
+
+    const response = await fetch("/api/credit/reserve", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        appointmentId,
+        creditId: credit?.id,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error();
+    }
+    await onReservationSuccess();
+    toast.success("Reserva realizada con éxito");
+    onClose();
+  } catch (error) {
+    toast.error("Error al reservar el turno");
+  } finally {
+    setReservingId(null);
+  }
+};
 
   if (!open || !credit) return null;
 
@@ -61,16 +89,22 @@ export default function AppointmentModal({
     <div className="fixed inset-0 z-50 bg-black/15 flex items-center justify-center">
       <div className="bg-zinc-900 rounded-xl p-6 w-[600px] max-h-[80vh] flex flex-col">
         <div className="flex-1 overflow-y-auto">
-            {availableAppointments.length === 0 ? (
+            {appointments.length === 0 ? (
                 <p className="text-zinc-400">No hay turnos disponibles.</p>
             ) : (
-                availableAppointments.map((appointment) => (
+                appointments.map((appointment) => (
                 <div
                     key={appointment.id}
                     className="border border-zinc-700 rounded-lg p-4 mb-3"
                 >
                     <p>
-                    {new Date(appointment.initialDate).toLocaleString("es-AR")}
+                    {new Date(appointment.initialDate).toLocaleString("es-AR",{
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                     </p>
 
                     <p>
@@ -78,8 +112,11 @@ export default function AppointmentModal({
                     {appointment.professor.user.lastName}
                     </p>
 
-                    <button className="mt-2 bg-green-600 hover:bg-green-700 px-3 py-2 rounded">
-                    Reservar
+                    <button onClick={() => {reserveAppointment(appointment.id)}}
+                    className="mt-2 bg-green-600 hover:bg-green-700 px-3 py-2 rounded">
+                    {reservingId === appointment.id
+                      ? "Reservando..."
+                      : "Reservar"}
                     </button>
                 </div>
                 ))

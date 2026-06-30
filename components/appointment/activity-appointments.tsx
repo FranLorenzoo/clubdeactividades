@@ -35,18 +35,14 @@ export default function ActivityAppointments() {
   const [activities, setActivities] = useState<Activity[] | null>(null);
   const [selectedActivity, setSelectedActivity] = useState<number | null>(null);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [professors, setProfessors] = useState<Professor[]>([]); // Para el cambio
-  
+  const [professors, setProfessors] = useState<Professor[]>([]); 
   const [loadingActivities, setLoadingActivities] = useState(true);
   const [loadingAppointments, setLoadingAppointments] = useState(false);
-  
-  // Estado para controlar qué turno se está editando mutuamente
   const [editingAppointmentId, setEditingAppointmentId] = useState<number | null>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => { setIsMounted(true); }, []);
 
-  // 1. Traer las actividades al cargar el componente
   useEffect(() => {
     async function fetchActivities() {
       try {
@@ -63,7 +59,6 @@ export default function ActivityAppointments() {
     fetchActivities();
   }, []);
 
-  // 2. Traer los turnos Y los profesores de la actividad seleccionada
   useEffect(() => {
     if (!selectedActivity) return;
 

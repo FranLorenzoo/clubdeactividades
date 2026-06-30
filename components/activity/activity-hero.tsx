@@ -1,17 +1,52 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function ActivityHero({ activity }: any) {
+  const [employeeBooking, setEmployeeBooking] = useState(false);
+  const [clientId, setClientId] = useState<number | null>(null);
+
+  useEffect(() => {
+    setEmployeeBooking(
+      sessionStorage.getItem("employeeBooking") === "true"
+    );
+
+    const client = sessionStorage.getItem("employeeBookingClient");
+
+    if (client) {
+      try {
+        const parsed = JSON.parse(client);
+        setClientId(parsed.id);
+      } catch {}
+    }
+  }, []);
+
   if (!activity) return null;
+
   return (
     <section className={`bg-gradient-to-r ${activity.color} py-20 px-6`}>
       <div className="max-w-7xl mx-auto">
 
-        <Link href="/" className="text-white/80 hover:text-white text-sm">
-          ← Volver al inicio
-        </Link>
+        {employeeBooking && clientId ? (
+          <Link
+            href={`/dashboard/client-profile/${clientId}`}
+            onClick={() => {
+              sessionStorage.removeItem("employeeBooking");
+              sessionStorage.removeItem("employeeBookingClient");
+            }}
+            className="text-white/80 hover:text-white text-sm"
+          >
+            ← Volver al cliente
+          </Link>
+        ) : (
+          <Link
+            href="/"
+            className="text-white/80 hover:text-white text-sm"
+          >
+            ← Volver al inicio
+          </Link>
+        )}
 
         <div className="mt-10 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-
           <div>
             <p className="text-7xl mb-4">{activity.icon}</p>
 
@@ -23,7 +58,6 @@ export default function ActivityHero({ activity }: any) {
               {activity.description}
             </p>
           </div>
-
         </div>
       </div>
     </section>

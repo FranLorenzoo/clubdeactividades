@@ -87,7 +87,7 @@ export default function UpdateAppointment({ turno, onClose }: UpdateAppointmentP
             {new Date(turno.initialDate).toLocaleTimeString("es-AR", { 
               hour: "2-digit", 
               minute: "2-digit",
-              hour12: false // <-- Esto elimina el p. m. / a. m. y fuerza las 24 hs
+              hour12: false 
             })} hs
           </span>
         </p>

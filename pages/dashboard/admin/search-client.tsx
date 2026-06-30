@@ -7,7 +7,7 @@ export default function SearchClient() {
       <h1 className="text-white text-3xl font-bold mb-6">
         Clientes
       </h1> 
-      <Searchbar />
+      <Searchbar role="ADMIN" />
     </DashboardLayout>
     );
 }
