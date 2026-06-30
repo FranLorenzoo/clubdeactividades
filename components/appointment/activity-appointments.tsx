@@ -69,7 +69,12 @@ export default function ActivityAppointments() {
         const resApp = await fetch(`/api/appointment/activity/${selectedActivity}`);
         if (!resApp.ok) throw new Error('Error al cargar turnos');
         const dataApp = await resApp.json();
-        setAppointments(dataApp);
+        
+        const sortedAppointments = dataApp.sort((a: Appointment, b: Appointment) => {
+          return new Date(a.initialDate).getTime() - new Date(b.initialDate).getTime();
+        });
+
+        setAppointments(sortedAppointments);
 
         const resProf = await fetch(`/api/professor/activity/${selectedActivity}`);
         if (resProf.ok) {
@@ -96,7 +101,7 @@ export default function ActivityAppointments() {
 
     try {
       const res = await fetch(`/api/appointment/${appointmentId}`, {
-        method: 'PUT',
+        method: 'PUT', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           initialDate: currentAppointment.initialDate,
@@ -129,7 +134,10 @@ export default function ActivityAppointments() {
         }
       };
 
-      setAppointments(prev => prev.map(app => app.id === appointmentId ? appointmentWithProfessorRelation : app));
+      setAppointments(prev => {
+        const updated = prev.map(app => app.id === appointmentId ? appointmentWithProfessorRelation : app);
+        return [...updated].sort((a, b) => new Date(a.initialDate).getTime() - new Date(b.initialDate).getTime());
+      });
       setEditingAppointmentId(null); 
     } catch (error) {
       alert("Error al cambiar el profesor");
@@ -144,6 +152,32 @@ export default function ActivityAppointments() {
       </div>
     );
   }
+
+  const handleSuspendAppointment = async (appointmentId: number) => {
+    const confirmar = confirm("¿Estás seguro de que deseas suspender este turno? Esta acción no se puede deshacer.");
+    if (!confirmar) return;
+
+    try {
+      const res = await fetch(`/api/appointment/${appointmentId}`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+
+        }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (!res.ok) {
+        toast.error('No se pudo suspender el turno');
+        return;
+      }
+      toast.success('Turno suspendido correctamente');
+      
+      setAppointments(prev => prev.filter(app => app.id !== appointmentId));
+    } catch (error) {
+      toast.error("Error al suspender el turno");
+      console.error(error);
+    }
+  };
 
   return (
   <div style={{ 
@@ -262,61 +296,95 @@ export default function ActivityAppointments() {
                   </div>
                 </div>
 
-                <div style={{ textAlign: 'right' }}>
-                  {isEditing ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'flex-end' }}>
-                      <button 
-                        onClick={() => setEditingAppointmentId(null)}
-                        style={{ background: 'none', border: 'none', color: '#c62828', cursor: 'pointer', fontSize: '0.95rem', fontWeight: '600' }}
-                      >
-                        Cancelar
-                      </button>
-                      <select 
-                        defaultValue=""
-                        onChange={(e) => {
-                          if (e.target.value) handleAssignProfessor(appointment.id, Number(e.target.value));
-                        }}
-                        style={{ 
-                          padding: '8px 12px', 
-                          borderRadius: '6px', 
-                          border: '1px solid #ccc', 
-                          fontSize: '0.85rem',
-                          backgroundColor: '#ffffff',
-                          color: '#333333',
-                          width: '160px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <option value="" disabled>Seleccionar Profesor...</option>
-                        {professors.map(p => (
-                          <option key={p.id} value={p.id}>
-                            {p.user.name} {p.user.lastName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  ) : (
-                    <button 
-                      onClick={() => setEditingAppointmentId(appointment.id)}
-                      style={{
-                        padding: '9px 16px',
-                        backgroundColor: '#0070f3', // 🚀 Botón azul primario con texto blanco para legibilidad total
-                        color: '#ffffff',
-                        border: 'none',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        fontSize: '0.85rem',
-                        fontWeight: '600',
-                        boxShadow: '0 2px 4px rgba(0,112,243,0.15)',
-                        transition: 'background-color 0.2s'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#005bc5'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0070f3'}
-                    >
-                      Cambiar Profesor
-                    </button>
-                  )}
-                </div>
+                <div style={{ textTransform: 'none' }}>
+      {isEditing ? (
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+          <button
+            onClick={() => setEditingAppointmentId(null)}
+            style={{
+              padding: '6px 8px', 
+              borderRadius: '4px',
+              fontSize: '0.85rem',
+              backgroundColor: '#e91515',
+              color: '#ebe8e8',
+              width: '160px',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#c81212'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#e91515'}
+          >
+            Cancelar
+          </button>
+
+          <select 
+            defaultValue=""
+            onChange={(e) => {
+              if (e.target.value) handleAssignProfessor(appointment.id, Number(e.target.value));
+            }}
+            style={{ 
+              padding: '8px 12px', 
+              borderRadius: '6px', 
+              border: '1px solid #ccc', 
+              fontSize: '0.85rem',
+              backgroundColor: '#ffffff',
+              color: '#333333',
+              width: '160px',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="" disabled>Seleccionar Profesor...</option>
+            {professors.map(p => (
+              <option key={p.id} value={p.id}>
+                {p.user.name} {p.user.lastName}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <button 
+            onClick={() => setEditingAppointmentId(appointment.id)}
+            style={{
+              padding: '9px 16px',
+              backgroundColor: '#0070f3', 
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              boxShadow: '0 2px 4px rgba(0,112,243,0.15)',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#005bc5'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0070f3'}
+          >
+            Cambiar Profesor
+          </button>
+
+          <button 
+            onClick={() => handleSuspendAppointment(appointment.id)}
+            style={{
+              padding: '9px 16px',
+              backgroundColor: '#dfe53e', 
+              color: '#2a2a2a',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              boxShadow: '0 2px 4px rgba(229,62,62,0.15)',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#bdc234'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#dfe53e'}
+          >
+            Suspender
+          </button>
+        </div>
+      )}
+    </div>
               </li>
             );
           })}

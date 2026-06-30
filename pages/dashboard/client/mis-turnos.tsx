@@ -20,6 +20,7 @@ interface TurnoItem {
   endDate: string;
   qr: QRInfo | null;
   cancellable: boolean;
+  fueraDeTermino: boolean;
   state: TurnoState;
   type: TurnoType;
 }
@@ -68,13 +69,22 @@ export default function MisTurnosPage() {
             const diffHours =
               (start.getTime() - now.getTime()) / (1000 * 60 * 60);
 
+            // ⏱️ CALCULAMOS SI ESTÁ FUERA DE TÉRMINO SEGÚN LAS REGLAS DEL REPOSITORIO
+            let isFueraDeTermino = false;
+            if (ua.type === "ABONADO") {
+              isFueraDeTermino = diffHours < 48; // Es abonado y falta menos de 48hs
+            } else {
+              isFueraDeTermino = diffHours < 24; // No es abonado y falta menos de 24hs
+            }
+
             return {
               userAppointmentId: ua.id,
               activityName: ua.appointment?.activity?.name ?? "—",
               initialDate: ua.appointment?.initialDate ?? "",
               endDate: ua.appointment?.endDate ?? "",
               qr: ua.qr ?? null,
-              cancellable: diffHours >= 0,
+              cancellable: diffHours >= 0, // Sigue siendo cancelable si está en el futuro
+              fueraDeTermino: isFueraDeTermino, // 👈 Inyectamos el valor calculado
               state: ua.state,
               type: ua.type,
             };
@@ -101,41 +111,48 @@ export default function MisTurnosPage() {
       CANCELAR TURNO
   ========================= */
   const handleCancel = async (id: number) => {
-    setCancelLoadingId(id);
+    const turno = turnos.find(t => t.userAppointmentId === id);
+    if (!turno) return;
 
+    // Mensaje base
+    let mensajeConfirmacion = "¿Estás seguro de que querés cancelar este turno?";
+    
+    // Si cancela tarde, le advertimos explícitamente
+    if (turno.fueraDeTermino) {
+      mensajeConfirmacion = "⚠️ ¡Atención! Estás cancelando fuera del plazo permitido (48hs para abonados / 24hs para pases sueltos). Podés liberar el cupo, pero NO recibirás reembolsos ni devoluciones de créditos. ¿Querés continuar?";
+    }
+
+    if (!confirm(mensajeConfirmacion)) return;
+
+    setCancelLoadingId(id);
     const loadingToast = toast.loading("Cancelando turno...");
 
     try {
       const res = await fetch(`/api/user-appointment/cancel/${id}`, {
-        method: "POST",
+        method: "DELETE",
       });
 
       const data = await res.json();
 
       if (!res.ok || !data?.success) {
-        toast.error("No se pudo cancelar el turno", {
-          id: loadingToast,
-        });
+        toast.error(data?.message || "No se pudo cancelar el turno", { id: loadingToast });
         return;
       }
 
+      // El backend procesará la cancelación sin beneficio, y acá mostramos el toast correspondiente
       toast.success(
         data.creditCreated
-          ? "Turno cancelado y crédito generado 🎁"
-          : "Turno cancelado correctamente",
+          ? "Turno cancelado y crédito devuelto 🎁"
+          : "Turno cancelado. ¡Gracias por liberar el cupo!",
         { id: loadingToast }
       );
 
-      // 🔥 update UI optimista
-      setTurnos((prev) =>
-        prev.filter((t) => t.userAppointmentId !== id)
-      );
+      // Update UI optimista
+      setTurnos((prev) => prev.filter((t) => t.userAppointmentId !== id));
 
     } catch (err) {
       console.error(err);
-      toast.error("Error inesperado al cancelar", {
-        id: loadingToast,
-      });
+      toast.error("Error inesperado al cancelar", { id: loadingToast });
     } finally {
       setCancelLoadingId(null);
     }
@@ -220,7 +237,6 @@ export default function MisTurnosPage() {
                   {formatTime(turno.endDate)}
                 </p>
 
-                {/* 🔥 BOTÓN NUEVO */}
                 <p className="text-xs mt-2 text-green-400 hover:underline">
                   Ver QR
                 </p>
@@ -230,7 +246,7 @@ export default function MisTurnosPage() {
                 <button
                   onClick={() => handleCancel(turno.userAppointmentId)}
                   disabled={cancelLoadingId === turno.userAppointmentId}
-                  className="text-xs px-3 py-1 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 transition"
+                  className="text-xs px-3 py-1 rounded-xl border border-red-500/30 text-red-400 hover:bg-red-500/10 transition disabled:opacity-40"
                 >
                   {cancelLoadingId === turno.userAppointmentId
                     ? "Cancelando..."

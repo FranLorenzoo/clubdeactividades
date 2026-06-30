@@ -1,5 +1,5 @@
 import { getAllUserAppointments, createUserAppointment, getOverdueImpagoCountByClientId } from "@/lib/sql/user-appointment";
-import { Prisma, userAppointmentState, userAppointmentType } from "@/lib/generated/prisma/client";
+import { Prisma } from "@/lib/generated/prisma/client";
 import { parseFields } from "@/lib/validators/api";
 import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -47,7 +47,7 @@ async function createUserAppointmentHandler(
     rejected,
     state,
     type,
-    employeeBooking, // 👈 NUEVO
+    employeeBooking,
   } = body;
 
   if (!appointmentId || !clientId || rejected === undefined || !state) {
@@ -72,7 +72,6 @@ async function createUserAppointmentHandler(
     });
   }
 
-  // ❗ control de impagos (lo dejamos igual)
   const overdueCount = await getOverdueImpagoCountByClientId(
     Number(clientId)
   );
@@ -80,38 +79,75 @@ async function createUserAppointmentHandler(
   if (overdueCount >= 3) {
     return res.status(403).json({
       message:
-        "Tu cuenta está suspendida por 3 o más turnos impagos vencidos. Regularizá tu situación en Mis pagos.",
+        "Tu cuenta está suspendida por 3 o más turnos impagos vencidos. Regularizá tu situation en Mis pagos.",
       suspended: true,
     });
   }
 
-  // 🔥 REGLA NUEVA: EMPLEADO = PAGO AUTOMÁTICO
   const isEmployeeBooking = employeeBooking === true;
 
-  const finalState: userAppointmentState = isEmployeeBooking
+  const finalState = isEmployeeBooking
     ? "PAGO_COMPLETO"
-    : (state as userAppointmentState);
-
-  const createInput: Prisma.userAppointmentCreateInput = {
-    reservationDate: values.reservationDate as Date,
-    rejected: Boolean(rejected),
-
-    state: finalState,
-
-    type: type as userAppointmentType,
-
-    appointment: { connect: { id: Number(appointmentId) } },
-    client: { connect: { id: Number(clientId) } },
-
-    // 💰 si es empleado, se marca como pago total automático
-    ...(isEmployeeBooking && {
-      totalPaid: body.price ?? 0,
-      remainingDebt: 0,
-    }),
-  };
+    : (state as any);
 
   try {
-    const userAppointment = await createUserAppointment(createInput);
+    const cleanAppointmentId = Number(appointmentId);
+    const cleanClientId = Number(clientId);
+
+    const existingAppointment = await prisma.userAppointment.findFirst({
+      where: {
+        appointmentId: cleanAppointmentId,
+        clientId: cleanClientId,
+      },
+    });
+
+    let userAppointment;
+
+    if (existingAppointment) {
+      userAppointment = await prisma.userAppointment.update({
+        where: { id: existingAppointment.id },
+        data: {
+          reservationDate: values.reservationDate as Date,
+          cancellationDate: null, 
+          rejected: false,
+          state: finalState,
+          type: type as any, 
+        },
+      });
+    } else {
+      const createInput: Prisma.userAppointmentCreateInput = {
+        reservationDate: values.reservationDate as Date,
+        rejected: Boolean(rejected),
+        state: finalState,
+        type: type as any,
+        appointment: { connect: { id: cleanAppointmentId } },
+        client: { connect: { id: cleanClientId } },
+      };
+
+      try {
+        userAppointment = await createUserAppointment(createInput);
+      } catch (createError) {
+        const fallbackAppointment = await prisma.userAppointment.findFirst({
+          where: {
+            appointmentId: cleanAppointmentId,
+            clientId: cleanClientId,
+          },
+        });
+
+        if (!fallbackAppointment) throw createError;
+
+        userAppointment = await prisma.userAppointment.update({
+          where: { id: fallbackAppointment.id },
+          data: {
+            reservationDate: values.reservationDate as Date,
+            cancellationDate: null, 
+            rejected: false,
+            state: finalState,
+            type: type as any,
+          },
+        });
+      }
+    }
 
     if (userAppointment.type === "ABONADO" && userAppointment.state !== "PAGO_COMPLETO") {
       try {
@@ -127,11 +163,12 @@ async function createUserAppointmentHandler(
           },
         });
       } catch (qrError) {
-        console.error("QR_ERROR:", qrError);
+        console.error(qrError);
       }
     }
 
-    return res.status(201).json(userAppointment);
+    return res.status(200).json(userAppointment);
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });

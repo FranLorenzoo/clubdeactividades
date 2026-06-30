@@ -82,7 +82,7 @@ export default function AdminNavbar() {
             href="/dashboard/admin/replacement"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
           >
-            Suplencia
+            Turnos
           </Link>
         </nav>
       </div>

@@ -34,25 +34,18 @@ export default async function handler(
       to
     );
 
-const filteredAppointments = appointments.filter((appointment) => {
-const occupied = appointment.userAppointments.filter(
-  (ua) => ua.cancellationDate === null
-).length;
+    const filteredAppointments = appointments.filter((appointment) => {
+      if (clientId === null) {
+        return true;
+      }
 
-const hasSlots = occupied < appointment.slotsAvailable;
-
-  if (clientId === null) {
-    return hasSlots;
-  }
-
-  const alreadyReserved = appointment.userAppointments.some(
-    (ua) =>
-      ua.clientId === clientId &&
-      ua.cancellationDate === null
-  );
-
-  return hasSlots && !alreadyReserved;
-});
+      const alreadyReserved = appointment.userAppointments.some(
+        (ua) =>
+          ua.clientId === clientId &&
+          ua.cancellationDate === null
+      );
+      return !alreadyReserved;
+    });
 
     return res.status(200).json(filteredAppointments);
   } catch (error) {
