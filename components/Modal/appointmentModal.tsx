@@ -69,10 +69,12 @@ export default function AppointmentModal({
         creditId: credit?.id,
       }),
     });
-
     if (!response.ok) {
-      throw new Error();
+      const error = await response.json();
+      toast.error(error.message);
+      return;
     }
+
     await onReservationSuccess();
     toast.success("Reserva realizada con éxito");
     onClose();
@@ -83,16 +85,18 @@ export default function AppointmentModal({
   }
 };
 
+  const appointmentsValid = appointments.filter((appointment) => { return appointment.currentSlots < appointment.slotsAvailable });
+
   if (!open || !credit) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/15 flex items-center justify-center">
       <div className="bg-zinc-900 rounded-xl p-6 w-[600px] max-h-[80vh] flex flex-col">
         <div className="flex-1 overflow-y-auto">
-            {appointments.length === 0 ? (
+            {appointmentsValid.length === 0 ? (
                 <p className="text-zinc-400">No hay turnos disponibles.</p>
             ) : (
-                appointments.map((appointment) => (
+                appointmentsValid.map((appointment) => (
                 <div
                     key={appointment.id}
                     className="border border-zinc-700 rounded-lg p-4 mb-3"
