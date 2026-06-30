@@ -80,6 +80,39 @@ export async function getOverdueImpagoCountByClientId(clientId: number) {
   }).length;
 }
 
+export async function cancelOverdueAbonadosForClient(clientId: number) {
+  const now = new Date();
+
+  const candidates = await prisma.userAppointment.findMany({
+    where: {
+      clientId,
+      type: "ABONADO",
+      state: "IMPAGO",
+    },
+    select: {
+      id: true,
+      appointment: { select: { initialDate: true } },
+    },
+  });
+
+  const toCancel = candidates
+    .filter((ua) => {
+      const apptDate = new Date(ua.appointment.initialDate);
+      const cutoff = new Date(Date.UTC(apptDate.getUTCFullYear(), apptDate.getUTCMonth(), 11));
+      return now >= cutoff;
+    })
+    .map((ua) => ua.id);
+
+  if (toCancel.length === 0) return { cancelled: 0 };
+
+  const result = await prisma.userAppointment.updateMany({
+    where: { id: { in: toCancel } },
+    data: { state: "CANCELLED", cancellationDate: now },
+  });
+
+  return { cancelled: result.count };
+}
+
 export async function cancelUserAppointment(userAppointmentId: number) {
   const ua = await prisma.userAppointment.findUnique({
     where: { id: userAppointmentId },

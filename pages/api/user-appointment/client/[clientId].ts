@@ -1,4 +1,7 @@
-import { getUserAppointmentsByClientId } from "@/lib/sql/user-appointment";
+import {
+  cancelOverdueAbonadosForClient,
+  getUserAppointmentsByClientId,
+} from "@/lib/sql/user-appointment";
 import { parseId } from "@/lib/validators/api";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -9,6 +12,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (clientId === null) return res.status(400).json({ message: "Invalid clientId" });
 
   try {
+    try {
+      await cancelOverdueAbonadosForClient(clientId);
+    } catch (cleanupError) {
+      console.error("OVERDUE_ABONADO_CLEANUP_ERROR:", cleanupError);
+    }
+
     const userAppointments = await getUserAppointmentsByClientId(clientId);
     return res.status(200).json(userAppointments);
   } catch (error) {
