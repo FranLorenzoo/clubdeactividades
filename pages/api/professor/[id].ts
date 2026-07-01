@@ -2,6 +2,7 @@ import { getProfessorById, updateProfessor, deleteProfessor } from "@/lib/sql/pr
 import { parseId } from "@/lib/validators/api";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from "@/lib/prisma";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const parsedId = parseId(req.query.id);
@@ -35,6 +36,14 @@ async function updateProfessorByIdHandler(id: number, body: Record<string, unkno
     const data: Prisma.professorUpdateInput = {};
     if (body.activityId) data.activity = { connect: { id: Number(body.activityId) } };
 
+    if (typeof body.isDeleted === "boolean") {
+    data.user = {
+    update: {
+      isDeleted: body.isDeleted,
+    },
+  };
+}
+
     const professor = await updateProfessor(id, data);
     res.status(200).json(professor);
   } catch (error) {
@@ -48,6 +57,20 @@ async function updateProfessorByIdHandler(id: number, body: Record<string, unkno
 
 async function deleteProfessorByIdHandler(id: number, res: NextApiResponse) {
   try {
+    const professor = await prisma.professor.findUnique({
+  where: { id },
+  include: {
+    appointments: true,
+  },
+});
+
+if (!professor) {
+  throw new Error("Profesor no encontrado");
+}
+
+if (professor.appointments.length > 0) {
+  throw new Error("No se puede eliminar: tiene clases asignadas");
+}
     await deleteProfessor(id);
     res.status(200).json({ message: "Professor deleted" });
   } catch (error) {
