@@ -138,7 +138,8 @@ export async function cancelUserAppointment(userAppointmentId: number) {
     let creditCreated = false;
 
     // 🟢 CASO ABONADO + 48HS → CREA CRÉDITO
-    if (isAbonado && hoursDiff >= 48) {
+    if (
+  isAbonado && ua.state === "PAGO_COMPLETO" && hoursDiff >= 48) {
       await tx.credit.create({
         data: {
           clientId: ua.clientId,

@@ -31,6 +31,7 @@ export default function MisTurnosPage() {
   const [selectedQR, setSelectedQR] = useState<{ turno: TurnoItem; qrImage: string } | null>(null);
   const [loadingQR, setLoadingQR] = useState(false);
   const [cancelLoadingId, setCancelLoadingId] = useState<number | null>(null);
+  const [turnoAConfirmar, setTurnoAConfirmar] = useState<TurnoItem | null>(null);
 
   useEffect(() => {
     const fetchTurnos = async () => {
@@ -110,55 +111,63 @@ export default function MisTurnosPage() {
   /* =========================
       CANCELAR TURNO
   ========================= */
-  const handleCancel = async (id: number) => {
-    const turno = turnos.find(t => t.userAppointmentId === id);
-    if (!turno) return;
+  const handleCancel = (id: number) => {
+  const turno = turnos.find((t) => t.userAppointmentId === id);
+  if (!turno) return;
 
-    // Mensaje base
-    let mensajeConfirmacion = "¿Estás seguro de que querés cancelar este turno?";
-    
-    // Si cancela tarde, le advertimos explícitamente
-    if (turno.fueraDeTermino) {
-      mensajeConfirmacion = "⚠️ ¡Atención! Estás cancelando fuera del plazo permitido (48hs para abonados / 24hs para pases sueltos). Podés liberar el cupo, pero NO recibirás reembolsos ni devoluciones de créditos. ¿Querés continuar?";
-    }
+  setTurnoAConfirmar(turno);
+};
 
-    if (!confirm(mensajeConfirmacion)) return;
 
-    setCancelLoadingId(id);
-    const loadingToast = toast.loading("Cancelando turno...");
+const handleConfirmCancel = async () => {
+  if (!turnoAConfirmar) return;
 
-    try {
-      const res = await fetch(`/api/user-appointment/cancel/${id}`, {
-        method: "DELETE",
+  const id = turnoAConfirmar.userAppointmentId;
+
+  setCancelLoadingId(id);
+  const loadingToast = toast.loading("Cancelando turno...");
+
+  try {
+    const res = await fetch(`/api/user-appointment/cancel/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data?.success) {
+      toast.error(data?.message || "No se pudo cancelar el turno", {
+        id: loadingToast,
       });
-
-      const data = await res.json();
-
-      if (!res.ok || !data?.success) {
-        toast.error(data?.message || "No se pudo cancelar el turno", { id: loadingToast });
-        return;
-      }
-
-      // El backend procesará la cancelación sin beneficio, y acá mostramos el toast correspondiente
-      toast.success(
-        data.creditCreated
-          ? "Turno cancelado y crédito devuelto 🎁"
-          : "Turno cancelado. ¡Gracias por liberar el cupo!",
-        { id: loadingToast }
-      );
-
-      // Update UI optimista
-      setTurnos((prev) => prev.filter((t) => t.userAppointmentId !== id));
-
-    } catch (err) {
-      console.error(err);
-      toast.error("Error inesperado al cancelar", { id: loadingToast });
-    } finally {
-      setCancelLoadingId(null);
+      return;
     }
-  };
 
-  /* =========================
+    toast.success(
+      data.creditCreated
+        ? "Turno cancelado y crédito devuelto 🎁"
+        : "Turno cancelado. ¡Gracias por liberar el cupo!",
+      {
+        id: loadingToast,
+      }
+    );
+
+    setTurnos((prev) =>
+      prev.filter((t) => t.userAppointmentId !== id)
+    );
+
+    setTurnoAConfirmar(null);
+
+  } catch (err) {
+    console.error(err);
+
+    toast.error("Error inesperado al cancelar", {
+      id: loadingToast,
+    });
+
+  } finally {
+    setCancelLoadingId(null);
+  }
+};
+/* =========================
       QR
   ========================= */
   const handleOpenQR = async (turno: TurnoItem) => {
@@ -313,6 +322,57 @@ export default function MisTurnosPage() {
             >
               Cerrar
             </button>
+          </div>
+        </div>
+      )}
+
+      {turnoAConfirmar && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+    onClick={() => setTurnoAConfirmar(null)}
+  >
+    <div
+      className="bg-zinc-900 border border-zinc-700 rounded-3xl w-full max-w-md p-6"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h2 className="text-xl font-bold mb-4">
+        Confirmar cancelación
+      </h2>
+
+            {turnoAConfirmar.fueraDeTermino ? (
+              <p className="text-sm text-yellow-400 leading-6">
+                ⚠️ Estás cancelando fuera del plazo permitido.
+                <br />
+                <br />
+                Podrás liberar el cupo para otro socio, pero <b>no recibirás reembolso ni devolución del crédito.</b>
+                <br />
+                <br />
+                ¿Deseás continuar?
+              </p>
+            ) : (
+              <p className="text-sm text-zinc-300 leading-6">
+                ¿Estás seguro de que querés cancelar este turno?
+              </p>
+            )}
+
+            <div className="flex justify-end gap-3 mt-8">
+              <button
+                onClick={() => setTurnoAConfirmar(null)}
+                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition"
+              >
+                Volver
+              </button>
+
+              <button
+                onClick={handleConfirmCancel}
+                disabled={cancelLoadingId === turnoAConfirmar.userAppointmentId}
+                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 transition disabled:opacity-50"
+              >
+                {cancelLoadingId === turnoAConfirmar.userAppointmentId
+                  ? "Cancelando..."
+                  : "Sí, cancelar"}
+              </button>
+            </div>
           </div>
         </div>
       )}
