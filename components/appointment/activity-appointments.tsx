@@ -234,7 +234,7 @@ export default function ActivityAppointments() {
 
             {!selectedActivity && (
               <div className="rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/70 px-8 py-20 text-center">
-                <p className="font-medium text-zinc-400">Seleccioná una actividad.</p>
+                
 
                 <p className="mt-2 text-sm text-zinc-600">
                   Los turnos aparecerán aquí automáticamente.
@@ -432,7 +432,7 @@ export default function ActivityAppointments() {
               </p>
 
               <p className="text-sm leading-6 text-zinc-400">
-                Esta acción va a eliminar el turno de la grilla. No se puede deshacer.
+                Esta acción no se puede deshacer.
               </p>
             </div>
 
