@@ -172,9 +172,9 @@ export async function suspendAppointment(id: number) {
               data: {
                 userAppointmentId: userApp.id,
                 paymentDate: now,
-                amount: -mainPayment.amount, // Negativo para la devolución
+                amount: -mainPayment.amount,
                 paymentMethod: "CASH",
-                employeeId: null, // Esperando aprobación manual en recepción
+                employeeId: null,
               }
             });
             console.log(`[ABONADO - FACTURA PENDIENTE - CASH] Reembolso de $${mainPayment.amount} registrado para aprobación manual.`);
