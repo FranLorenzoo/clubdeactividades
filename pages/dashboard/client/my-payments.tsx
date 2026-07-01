@@ -116,11 +116,15 @@ export default function MisPagosPage() {
           userAppointmentId,
           paymentDate: new Date().toISOString(),
           amount,
-          paymentMethod: "online",
+          paymentMethod: "creditCard",
         }),
       });
       if (res.ok) {
         toast.success("Pago registrado correctamente");
+      } else if (res.status === 402) {
+        toast.error("Dinero insuficiente");
+      } else if (res.status === 410) {
+        toast.error("La tarjeta está vencida");
       } else {
         toast.error("Error al procesar el pago");
       }
@@ -144,13 +148,17 @@ export default function MisPagosPage() {
               userAppointmentId: item.userAppointmentId,
               paymentDate: new Date().toISOString(),
               amount: item.appointment.price,
-              paymentMethod: "online",
+              paymentMethod: "creditCard",
             }),
           })
         )
       );
       if (results.every((r) => r.ok)) {
         toast.success("Deudas saldadas. Ya podés reservar turnos.");
+      } else if (results.some((r) => r.status === 402)) {
+        toast.error("Dinero insuficiente");
+      } else if (results.some((r) => r.status === 410)) {
+        toast.error("La tarjeta está vencida");
       } else {
         toast.error("Algunos pagos fallaron");
       }
@@ -175,13 +183,17 @@ export default function MisPagosPage() {
               userAppointmentId: item.userAppointmentId,
               paymentDate: new Date().toISOString(),
               amount: item.appointment.price,
-              paymentMethod: "online",
+              paymentMethod: "creditCard",
             }),
           })
         )
       );
       if (results.every((r) => r.ok)) {
         toast.success(`Pago de ${activityName} registrado`);
+      } else if (results.some((r) => r.status === 402)) {
+        toast.error("Dinero insuficiente");
+      } else if (results.some((r) => r.status === 410)) {
+        toast.error("La tarjeta está vencida");
       } else {
         toast.error("Algunos pagos fallaron");
       }
