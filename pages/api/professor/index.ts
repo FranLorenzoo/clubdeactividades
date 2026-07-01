@@ -1,4 +1,4 @@
-import { getAllProfessors, createProfessor, getProfessorsNamesByActivityId, getProfessorByUserDni } from "@/lib/sql/professor";
+import { getAllProfessors, createProfessor, getProfessorsNamesByActivityId, getProfessorByUserDni, getAllProfessorsDeleted } from "@/lib/sql/professor";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -13,6 +13,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.query.deleted === "true") {
+    return getAllProfessorDeletedsHandler(res);
+  }
   const keys = Object.keys(req.query);
 
   switch(keys.length) {
@@ -46,6 +49,18 @@ async function getAllProfessorsHandler(res: NextApiResponse) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+
+async function getAllProfessorDeletedsHandler(res: NextApiResponse) {
+  try {
+    const professors = await getAllProfessorsDeleted();
+    res.status(200).json(professors);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+
 
 async function createProfessorHandler(body: Record<string, unknown>, res: NextApiResponse) {
   const { userId, activityId } = body;

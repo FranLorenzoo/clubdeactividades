@@ -12,6 +12,17 @@ export async function getAllProfessors() {
   });
 }
 
+export async function getAllProfessorsDeleted() {
+  return prisma.professor.findMany({
+    where: {
+      user: {
+        isDeleted: true
+      }
+    },
+    include: { user: true, activity: true, appointments: true },
+  });
+}
+
 export async function getProfessorById(id: number) {
   return prisma.professor.findFirst({
     where: { 
