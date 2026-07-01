@@ -27,6 +27,13 @@ type ClientProfileData = {
     totalPaid?: number;
     remainingDebt?: number;
 
+    payments?: {
+      id: number;
+      amount: number;
+      paymentMethod: string;
+      paymentDate: string;
+    }[];
+
     appointment: {
       id: number;
       initialDate: string;
@@ -45,8 +52,10 @@ type Props = {
 export default function ClientProfile({ clientId }: Props) {
   const [client, setClient] = useState<ClientProfileData | null>(null);
   const [loading, setLoading] = useState(true);
-  
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [showRefunds, setShowRefunds] = useState(false);
+  const [selectedRefund, setSelectedRefund] = useState<any | null>(null);
+  const [showConfirmRefund, setShowConfirmRefund] = useState(false);
 
   const router = useRouter();
 const from =
@@ -68,7 +77,13 @@ console.log("from:", from);
     try {
       setLoading(true);
 
-      const res = await fetch(`/api/client/${clientId}`, { cache: "no-store" });
+      const res = await fetch(`/api/client/${clientId}`, { 
+        cache: "no-store",
+        headers: {
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache'
+        }
+      });
       const data = await res.json();
 
       setClient(data);
@@ -151,6 +166,36 @@ console.log("from:", from);
     );
   }
 
+  const pendingRefunds = client?.userAppointments.flatMap((r) => {
+    // 1. Si el backend determinó que la reserva ya está saldada o en PAGO_COMPLETO,
+    // significa que el reembolso en efectivo ya fue entregado y balanceado a cero.
+    if (r.state === "PAGO_COMPLETO") {
+      return [];
+    }
+
+    // 2. Filtramos todos los movimientos CASH de esta reserva
+    const cashPayments = r.payments?.filter(p => p.paymentMethod === "CASH") || [];
+    
+    // 3. Sumamos los montos CASH para comprobar si hay saldo negativo pendiente
+    const netCashAmount = cashPayments.reduce((sum, p) => sum + p.amount, 0);
+
+    if (netCashAmount < 0) {
+      const originalNegative = cashPayments.find(p => p.amount < 0);
+      if (originalNegative) {
+        return [{
+          id: originalNegative.id, // ID del pago para la API de confirmación
+          amount: originalNegative.amount,
+          userAppointmentId: r.id,
+          activityName: r.appointment.activity.name,
+          initialDate: r.appointment.initialDate,
+        }];
+      }
+    }
+    return [];
+  }) ?? [];
+
+  const pendingRefundsCount = pendingRefunds.length;
+
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white p-8">
@@ -207,6 +252,15 @@ console.log("from:", from);
               {showDebts
                 ? "Ocultar pagos pendientes"
                 : `Ver pagos pendientes (${pendingPaymentsCount})`}
+            </button>
+
+            <button
+              onClick={() => setShowRefunds(!showRefunds)}
+              className="px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 transition font-semibold w-full"
+            >
+              {showRefunds
+                ? "Ocultar dinero a devolver"
+                : `Ver dinero a devolver (${pendingRefundsCount})`}
             </button>
 
           <button
@@ -404,6 +458,52 @@ console.log("from:", from);
             </div>
           );
         })()}
+
+        {showRefunds && (
+          <div className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 lg:col-span-2">
+            <h2 className="text-2xl font-bold mb-6">💵 Dinero a devolver (Reembolsos CASH)</h2>
+
+            {pendingRefunds.length === 0 ? (
+              <p className="text-zinc-400">No hay dinero pendiente de devolución 🎉</p>
+            ) : (
+              <div className="space-y-4">
+                {pendingRefunds.map((refund) => {
+                  const date = new Date(refund.initialDate);
+                  return (
+                    <div
+                      key={refund.id}
+                      className="p-5 rounded-2xl bg-gradient-to-r from-red-950 to-zinc-900 border border-red-700 flex justify-between items-center"
+                    >
+                      <div>
+                        <p className="font-semibold">⚽ Clase Suspendida: {refund.activityName}</p>
+                        <span className="text-zinc-400 text-sm">
+                          Fecha clase: {date.toLocaleDateString("es-AR")}
+                        </span>
+                        <p className="text-zinc-500 text-xs mt-1">
+                          ID Pago original afectado: #{refund.id}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        {/* Se muestra en positivo el monto absoluto a entregar en mano */}
+                        <p className="text-red-400 font-bold text-2xl">${Math.abs(refund.amount)}</p>
+                        <button
+                          onClick={() => {
+                            setSelectedRefund(refund);
+                            setShowConfirmRefund(true);
+                          }}
+                          className="mt-2 text-xs font-semibold px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition block text-center"
+                        >
+                          Entregar Efectivo
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
       </div>
       {showReservationModal && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
@@ -553,6 +653,54 @@ console.log("from:", from);
                 className="flex-1 py-3 rounded-xl bg-green-600 hover:bg-green-700 font-semibold"
               >
                 Confirmar cobro
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showConfirmRefund && selectedRefund && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4 text-red-400">Confirmar Devolución</h2>
+
+            <p className="mb-2">¿Confirmas que le has entregado el dinero físico en mano al cliente?</p>
+
+            <div className="mt-4 p-4 rounded-xl bg-zinc-800 space-y-2">
+              <p><strong>Actividad:</strong> {selectedRefund.activityName}</p>
+              <p><strong>Monto a Devolver:</strong> ${Math.abs(selectedRefund.amount)}</p>
+              <p><strong>Método:</strong> CASH (Efectivo)</p>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowConfirmRefund(false);
+                  setSelectedRefund(null);
+                }}
+                className="flex-1 py-3 rounded-xl bg-zinc-700 hover:bg-zinc-600"
+              >
+                Cancelar
+              </button>
+
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await fetch(`/api/payment/refund/${selectedRefund.id}`, {
+                      method: "POST"
+                    });
+                    if (res.ok) {
+                      toast.success("Reembolso entregado correctamente");
+                      await refreshClient();
+                    }
+                  } catch {
+                    toast.error("Error al procesar devolución");
+                  }
+                  setShowConfirmRefund(false);
+                  setSelectedRefund(null);
+                }}
+                className="flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold"
+              >
+                Confirmar Entrega
               </button>
             </div>
           </div>

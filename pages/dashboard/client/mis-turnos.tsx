@@ -56,6 +56,9 @@ export default function MisTurnosPage() {
 
         const pagados: TurnoItem[] = userAppointments
           .filter((ua) => {
+            if (ua.cancellationDate || ua.rejected) {
+              return false;
+            }
             const allowedState =
               ua.state === "PAGO_COMPLETO" ||
               ua.state === "PAGO_PARCIAL" ||
