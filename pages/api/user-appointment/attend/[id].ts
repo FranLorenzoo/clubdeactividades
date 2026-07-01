@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const ua = await prisma.userAppointment.findUnique({
       where: { id },
-      include: { qr: true },
+      include: { qr: true, appointment: true },
     });
 
     if (!ua) {
@@ -24,6 +24,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (ua.attended) {
       return res.status(409).json({ message: "Ya se tomó asistencia" });
+    }
+
+    if (ua.appointment.endDate.getTime() < Date.now()) {
+      return res.status(409).json({ message: "No se puede tomar asistencia de un turno finalizado" });
     }
 
     const ops: Prisma.PrismaPromise<unknown>[] = [

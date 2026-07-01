@@ -37,6 +37,7 @@ type ClientProfileData = {
     appointment: {
       id: number;
       initialDate: string;
+      endDate: string;
       activity: {
         id: number;
         name: string;
@@ -72,6 +73,17 @@ console.log("from:", from);
     useState<ClientProfileData["userAppointments"][0] | null>(null);
 
   const [showConfirmPayment, setShowConfirmPayment] = useState(false);
+
+  const [selectedActivity, setSelectedActivity] = useState<{
+    name: string;
+    items: ClientProfileData["userAppointments"];
+    total: number;
+    debt: number;
+  } | null>(null);
+
+  const [showConfirmActivityPayment, setShowConfirmActivityPayment] = useState(false);
+
+  const [payingKey, setPayingKey] = useState<string | null>(null);
 
   async function refreshClient() {
     try {
@@ -116,6 +128,38 @@ console.log("from:", from);
       await refreshClient();
     } catch {
       toast.error("Error al registrar pago");
+    }
+  }
+
+  async function registerActivityPayment(
+    activityName: string,
+    items: ClientProfileData["userAppointments"]
+  ) {
+    const key = `activity:${activityName}`;
+    setPayingKey(key);
+    try {
+      const results = await Promise.all(
+        items.map((it) =>
+          fetch("/api/payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userAppointmentId: it.id,
+              paymentMethod: "CASH",
+            }),
+          })
+        )
+      );
+      if (results.every((r) => r.ok)) {
+        toast.success("Mensualidad cobrada");
+      } else {
+        toast.error("Algunos pagos fallaron");
+      }
+      await refreshClient();
+    } catch {
+      toast.error("Error al registrar el pago");
+    } finally {
+      setPayingKey(null);
     }
   }
 
@@ -277,8 +321,8 @@ console.log("from:", from);
             <h2 className="text-xl font-bold mb-4">Historial</h2>
 
             {client.userAppointments.map((r) => {
-              const apptStart = new Date(r.appointment.initialDate);
-              const isUpcoming = apptStart.getTime() >= Date.now();
+              const apptEnd = new Date(r.appointment.endDate);
+              const canAttend = apptEnd.getTime() >= Date.now();
               return (
                 <div key={r.id} className="p-4 border border-zinc-700 rounded mb-3">
                   <p>⚽ {r.appointment.activity.name}</p>
@@ -302,7 +346,7 @@ console.log("from:", from);
 
                   {r.attended ? (
                     <p className="mt-3 text-green-400 text-sm font-semibold">Asistió ✅</p>
-                  ) : isUpcoming ? (
+                  ) : canAttend ? (
                     <button
                       onClick={() => markAttendance(r.id)}
                       className="mt-3 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
@@ -347,6 +391,8 @@ console.log("from:", from);
                         {Object.entries(monthlyByActivity).map(([activityName, items]) => {
                           const activityTotal = items.reduce((s, i) => s + (i.price ?? 0), 0);
                           const activityDebt = items.reduce((s, i) => s + (i.remainingDebt ?? 0), 0);
+                          const key = `activity:${activityName}`;
+                          const isPaying = payingKey === key;
                           return (
                             <div
                               key={activityName}
@@ -365,6 +411,21 @@ console.log("from:", from);
                                     {items.length} clase{items.length !== 1 ? "s" : ""}
                                   </p>
                                   <p className="text-zinc-400 text-xs mt-0.5">Debe: ${activityDebt}</p>
+                                  <button
+                                    disabled={isPaying}
+                                    onClick={() => {
+                                      setSelectedActivity({
+                                        name: activityName,
+                                        items,
+                                        total: activityTotal,
+                                        debt: activityDebt,
+                                      });
+                                      setShowConfirmActivityPayment(true);
+                                    }}
+                                    className="mt-2 text-xs font-semibold px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 disabled:bg-zinc-700 disabled:text-zinc-500 transition"
+                                  >
+                                    {isPaying ? "Cobrando..." : `Cobrar mensualidad $${activityDebt}`}
+                                  </button>
                                 </div>
                               </div>
                               <div className="space-y-2 border-t border-zinc-800 pt-3">
@@ -386,18 +447,6 @@ console.log("from:", from);
                                         <span className="text-zinc-500 text-xs">
                                           Pagado ${r.totalPaid ?? 0} / Debe ${r.remainingDebt ?? 0}
                                         </span>
-                                      </div>
-                                      <div className="flex items-center gap-2 shrink-0">
-                                        <span className="text-zinc-400">${r.price ?? 0}</span>
-                                        <button
-                                          onClick={() => {
-                                            setSelectedPayment(r);
-                                            setShowConfirmPayment(true);
-                                          }}
-                                          className="text-xs font-semibold px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 transition"
-                                        >
-                                          Cobrar clase
-                                        </button>
                                       </div>
                                     </div>
                                   );
@@ -618,6 +667,49 @@ console.log("from:", from);
         </div>
       )}
 
+
+      {showConfirmActivityPayment && selectedActivity && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 w-full max-w-md">
+            <h2 className="text-2xl font-bold mb-4">Confirmar cobro de mensualidad</h2>
+
+            <p className="mb-2">
+              ¿Estás seguro de cobrar la mensualidad completa de esta actividad?
+            </p>
+
+            <div className="mt-4 p-4 rounded-xl bg-zinc-800 space-y-2">
+              <p><strong>Actividad:</strong> {selectedActivity.name}</p>
+              <p><strong>Clases:</strong> {selectedActivity.items.length}</p>
+              <p><strong>Total mensualidad:</strong> ${selectedActivity.total}</p>
+              <p><strong>Saldo pendiente:</strong> ${selectedActivity.debt}</p>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowConfirmActivityPayment(false);
+                  setSelectedActivity(null);
+                }}
+                className="flex-1 py-3 rounded-xl bg-zinc-700 hover:bg-zinc-600"
+              >
+                Cancelar
+              </button>
+
+              <button
+                onClick={async () => {
+                  const activity = selectedActivity;
+                  setShowConfirmActivityPayment(false);
+                  setSelectedActivity(null);
+                  await registerActivityPayment(activity.name, activity.items);
+                }}
+                className="flex-1 py-3 rounded-xl bg-green-600 hover:bg-green-700 font-semibold"
+              >
+                Confirmar cobro
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showConfirmPayment && selectedPayment && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">

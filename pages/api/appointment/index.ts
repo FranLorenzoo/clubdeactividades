@@ -67,6 +67,7 @@ async function createAppointmentsHandler(body: Record<string, unknown>[], res: N
         price: values.price as number,
         currentSlots: Number(currentSlots),
         slotsAvailable: Number(slotsAvailable),
+        isDeleted: false,
 
         activity: {
           connect: {

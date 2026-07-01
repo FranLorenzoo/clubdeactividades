@@ -34,6 +34,20 @@ export async function deleteAppointment(id: number) {
   return prisma.appointment.delete({ where: { id:Number(id) } });
 }
 
+export async function softDeleteAppointment(id: number) {
+  return prisma.appointment.update({
+    where: { id: Number(id) },
+    data: { isDeleted: true },
+  });
+}
+
+export async function reactivateAppointment(id: number) {
+  return prisma.appointment.update({
+    where: { id: Number(id) },
+    data: { isDeleted: false },
+  });
+}
+
 export async function getAppointmentsByActivityId(
   activityId: number,
   from?: Date,
