@@ -118,6 +118,8 @@ model appointment {
   currentSlots    Int
   slotsAvailable  Int
 
+  isDeleted       Boolean   @default(false)
+
   userAppointments userAppointment[]
 }
 

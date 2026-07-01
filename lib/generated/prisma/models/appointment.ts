@@ -53,6 +53,7 @@ export type AppointmentMinAggregateOutputType = {
   professorId: number | null
   currentSlots: number | null
   slotsAvailable: number | null
+  isDeleted: boolean | null
 }
 
 export type AppointmentMaxAggregateOutputType = {
@@ -64,6 +65,7 @@ export type AppointmentMaxAggregateOutputType = {
   professorId: number | null
   currentSlots: number | null
   slotsAvailable: number | null
+  isDeleted: boolean | null
 }
 
 export type AppointmentCountAggregateOutputType = {
@@ -75,6 +77,7 @@ export type AppointmentCountAggregateOutputType = {
   professorId: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted: number
   _all: number
 }
 
@@ -106,6 +109,7 @@ export type AppointmentMinAggregateInputType = {
   professorId?: true
   currentSlots?: true
   slotsAvailable?: true
+  isDeleted?: true
 }
 
 export type AppointmentMaxAggregateInputType = {
@@ -117,6 +121,7 @@ export type AppointmentMaxAggregateInputType = {
   professorId?: true
   currentSlots?: true
   slotsAvailable?: true
+  isDeleted?: true
 }
 
 export type AppointmentCountAggregateInputType = {
@@ -128,6 +133,7 @@ export type AppointmentCountAggregateInputType = {
   professorId?: true
   currentSlots?: true
   slotsAvailable?: true
+  isDeleted?: true
   _all?: true
 }
 
@@ -226,6 +232,7 @@ export type AppointmentGroupByOutputType = {
   professorId: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted: boolean
   _count: AppointmentCountAggregateOutputType | null
   _avg: AppointmentAvgAggregateOutputType | null
   _sum: AppointmentSumAggregateOutputType | null
@@ -260,6 +267,7 @@ export type appointmentWhereInput = {
   professorId?: Prisma.IntFilter<"appointment"> | number
   currentSlots?: Prisma.IntFilter<"appointment"> | number
   slotsAvailable?: Prisma.IntFilter<"appointment"> | number
+  isDeleted?: Prisma.BoolFilter<"appointment"> | boolean
   activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.activityWhereInput>
   professor?: Prisma.XOR<Prisma.ProfessorScalarRelationFilter, Prisma.professorWhereInput>
   userAppointments?: Prisma.UserAppointmentListRelationFilter
@@ -274,6 +282,7 @@ export type appointmentOrderByWithRelationInput = {
   professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   activity?: Prisma.activityOrderByWithRelationInput
   professor?: Prisma.professorOrderByWithRelationInput
   userAppointments?: Prisma.userAppointmentOrderByRelationAggregateInput
@@ -291,6 +300,7 @@ export type appointmentWhereUniqueInput = Prisma.AtLeast<{
   professorId?: Prisma.IntFilter<"appointment"> | number
   currentSlots?: Prisma.IntFilter<"appointment"> | number
   slotsAvailable?: Prisma.IntFilter<"appointment"> | number
+  isDeleted?: Prisma.BoolFilter<"appointment"> | boolean
   activity?: Prisma.XOR<Prisma.ActivityScalarRelationFilter, Prisma.activityWhereInput>
   professor?: Prisma.XOR<Prisma.ProfessorScalarRelationFilter, Prisma.professorWhereInput>
   userAppointments?: Prisma.UserAppointmentListRelationFilter
@@ -305,6 +315,7 @@ export type appointmentOrderByWithAggregationInput = {
   professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   _count?: Prisma.appointmentCountOrderByAggregateInput
   _avg?: Prisma.appointmentAvgOrderByAggregateInput
   _max?: Prisma.appointmentMaxOrderByAggregateInput
@@ -324,6 +335,7 @@ export type appointmentScalarWhereWithAggregatesInput = {
   professorId?: Prisma.IntWithAggregatesFilter<"appointment"> | number
   currentSlots?: Prisma.IntWithAggregatesFilter<"appointment"> | number
   slotsAvailable?: Prisma.IntWithAggregatesFilter<"appointment"> | number
+  isDeleted?: Prisma.BoolWithAggregatesFilter<"appointment"> | boolean
 }
 
 export type appointmentCreateInput = {
@@ -332,6 +344,7 @@ export type appointmentCreateInput = {
   price: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
   activity: Prisma.activityCreateNestedOneWithoutAppointmentsInput
   professor: Prisma.professorCreateNestedOneWithoutAppointmentsInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutAppointmentInput
@@ -346,6 +359,7 @@ export type appointmentUncheckedCreateInput = {
   professorId: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
@@ -355,6 +369,7 @@ export type appointmentUpdateInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   activity?: Prisma.activityUpdateOneRequiredWithoutAppointmentsNestedInput
   professor?: Prisma.professorUpdateOneRequiredWithoutAppointmentsNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutAppointmentNestedInput
@@ -369,6 +384,7 @@ export type appointmentUncheckedUpdateInput = {
   professorId?: Prisma.IntFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
 }
 
@@ -381,6 +397,7 @@ export type appointmentCreateManyInput = {
   professorId: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
 }
 
 export type appointmentUpdateManyMutationInput = {
@@ -389,6 +406,7 @@ export type appointmentUpdateManyMutationInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type appointmentUncheckedUpdateManyInput = {
@@ -400,6 +418,7 @@ export type appointmentUncheckedUpdateManyInput = {
   professorId?: Prisma.IntFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type AppointmentListRelationFilter = {
@@ -421,6 +440,7 @@ export type appointmentCountOrderByAggregateInput = {
   professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
 }
 
 export type appointmentAvgOrderByAggregateInput = {
@@ -441,6 +461,7 @@ export type appointmentMaxOrderByAggregateInput = {
   professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
 }
 
 export type appointmentMinOrderByAggregateInput = {
@@ -452,6 +473,7 @@ export type appointmentMinOrderByAggregateInput = {
   professorId?: Prisma.SortOrder
   currentSlots?: Prisma.SortOrder
   slotsAvailable?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
 }
 
 export type appointmentSumOrderByAggregateInput = {
@@ -580,6 +602,7 @@ export type appointmentCreateWithoutProfessorInput = {
   price: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
   activity: Prisma.activityCreateNestedOneWithoutAppointmentsInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutAppointmentInput
 }
@@ -592,6 +615,7 @@ export type appointmentUncheckedCreateWithoutProfessorInput = {
   price: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
@@ -633,6 +657,7 @@ export type appointmentScalarWhereInput = {
   professorId?: Prisma.IntFilter<"appointment"> | number
   currentSlots?: Prisma.IntFilter<"appointment"> | number
   slotsAvailable?: Prisma.IntFilter<"appointment"> | number
+  isDeleted?: Prisma.BoolFilter<"appointment"> | boolean
 }
 
 export type appointmentCreateWithoutActivityInput = {
@@ -641,6 +666,7 @@ export type appointmentCreateWithoutActivityInput = {
   price: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
   professor: Prisma.professorCreateNestedOneWithoutAppointmentsInput
   userAppointments?: Prisma.userAppointmentCreateNestedManyWithoutAppointmentInput
 }
@@ -653,6 +679,7 @@ export type appointmentUncheckedCreateWithoutActivityInput = {
   professorId: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
   userAppointments?: Prisma.userAppointmentUncheckedCreateNestedManyWithoutAppointmentInput
 }
 
@@ -688,6 +715,7 @@ export type appointmentCreateWithoutUserAppointmentsInput = {
   price: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
   activity: Prisma.activityCreateNestedOneWithoutAppointmentsInput
   professor: Prisma.professorCreateNestedOneWithoutAppointmentsInput
 }
@@ -701,6 +729,7 @@ export type appointmentUncheckedCreateWithoutUserAppointmentsInput = {
   professorId: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
 }
 
 export type appointmentCreateOrConnectWithoutUserAppointmentsInput = {
@@ -725,6 +754,7 @@ export type appointmentUpdateWithoutUserAppointmentsInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   activity?: Prisma.activityUpdateOneRequiredWithoutAppointmentsNestedInput
   professor?: Prisma.professorUpdateOneRequiredWithoutAppointmentsNestedInput
 }
@@ -738,6 +768,7 @@ export type appointmentUncheckedUpdateWithoutUserAppointmentsInput = {
   professorId?: Prisma.IntFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type appointmentCreateManyProfessorInput = {
@@ -748,6 +779,7 @@ export type appointmentCreateManyProfessorInput = {
   price: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
 }
 
 export type appointmentUpdateWithoutProfessorInput = {
@@ -756,6 +788,7 @@ export type appointmentUpdateWithoutProfessorInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   activity?: Prisma.activityUpdateOneRequiredWithoutAppointmentsNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutAppointmentNestedInput
 }
@@ -768,6 +801,7 @@ export type appointmentUncheckedUpdateWithoutProfessorInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
 }
 
@@ -779,6 +813,7 @@ export type appointmentUncheckedUpdateManyWithoutProfessorInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type appointmentCreateManyActivityInput = {
@@ -789,6 +824,7 @@ export type appointmentCreateManyActivityInput = {
   professorId: number
   currentSlots: number
   slotsAvailable: number
+  isDeleted?: boolean
 }
 
 export type appointmentUpdateWithoutActivityInput = {
@@ -797,6 +833,7 @@ export type appointmentUpdateWithoutActivityInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   professor?: Prisma.professorUpdateOneRequiredWithoutAppointmentsNestedInput
   userAppointments?: Prisma.userAppointmentUpdateManyWithoutAppointmentNestedInput
 }
@@ -809,6 +846,7 @@ export type appointmentUncheckedUpdateWithoutActivityInput = {
   professorId?: Prisma.IntFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAppointments?: Prisma.userAppointmentUncheckedUpdateManyWithoutAppointmentNestedInput
 }
 
@@ -820,6 +858,7 @@ export type appointmentUncheckedUpdateManyWithoutActivityInput = {
   professorId?: Prisma.IntFieldUpdateOperationsInput | number
   currentSlots?: Prisma.IntFieldUpdateOperationsInput | number
   slotsAvailable?: Prisma.IntFieldUpdateOperationsInput | number
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -862,6 +901,7 @@ export type appointmentSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   professorId?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
+  isDeleted?: boolean
   activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
   professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
   userAppointments?: boolean | Prisma.appointment$userAppointmentsArgs<ExtArgs>
@@ -877,6 +917,7 @@ export type appointmentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   professorId?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
+  isDeleted?: boolean
   activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
   professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointment"]>
@@ -890,6 +931,7 @@ export type appointmentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   professorId?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
+  isDeleted?: boolean
   activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
   professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["appointment"]>
@@ -903,9 +945,10 @@ export type appointmentSelectScalar = {
   professorId?: boolean
   currentSlots?: boolean
   slotsAvailable?: boolean
+  isDeleted?: boolean
 }
 
-export type appointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "activityId" | "initialDate" | "endDate" | "price" | "professorId" | "currentSlots" | "slotsAvailable", ExtArgs["result"]["appointment"]>
+export type appointmentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "activityId" | "initialDate" | "endDate" | "price" | "professorId" | "currentSlots" | "slotsAvailable" | "isDeleted", ExtArgs["result"]["appointment"]>
 export type appointmentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   activity?: boolean | Prisma.activityDefaultArgs<ExtArgs>
   professor?: boolean | Prisma.professorDefaultArgs<ExtArgs>
@@ -937,6 +980,7 @@ export type $appointmentPayload<ExtArgs extends runtime.Types.Extensions.Interna
     professorId: number
     currentSlots: number
     slotsAvailable: number
+    isDeleted: boolean
   }, ExtArgs["result"]["appointment"]>
   composites: {}
 }
@@ -1371,6 +1415,7 @@ export interface appointmentFieldRefs {
   readonly professorId: Prisma.FieldRef<"appointment", 'Int'>
   readonly currentSlots: Prisma.FieldRef<"appointment", 'Int'>
   readonly slotsAvailable: Prisma.FieldRef<"appointment", 'Int'>
+  readonly isDeleted: Prisma.FieldRef<"appointment", 'Boolean'>
 }
     
 
