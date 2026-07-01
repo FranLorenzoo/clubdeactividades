@@ -3,6 +3,26 @@ import { Prisma } from "@/lib/generated/prisma/client";
 
 export async function getAllAppointments() {
   return prisma.appointment.findMany({
+    where: {
+      isDeleted: false,
+    },
+    include: { activity: true, 
+      professor: {
+        include: {
+          user: true, 
+        }, 
+      },userAppointments: true},
+    orderBy: {
+      initialDate: "asc"
+    }
+  });
+}
+
+export async function getAllDeleteAppointments() {
+  return prisma.appointment.findMany({
+    where: {
+      isDeleted: true,
+    },
     include: { activity: true, 
       professor: {
         include: {

@@ -1,4 +1,4 @@
-import { createAppointment, getAllAppointments, updateFutureAppointments } from "@/lib/sql/appointment";
+import { createAppointment, getAllAppointments, getAllDeleteAppointments, updateFutureAppointments } from "@/lib/sql/appointment";
 import { parseFields } from "@/lib/validators/api";
 import { Prisma } from "@/lib/generated/prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -7,7 +7,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   switch(req.method) {
     case "GET":
-      return getAllAppointmentsHandler(req.query, res);
+      if (req.query.deleted === "true") {
+        return getAllAppointmentsDeleteHandler(req.query, res);
+      }
+    return getAllAppointmentsHandler(req.query, res);
     case "POST":
       return createAppointmentsHandler(req.body, res);
     case "PUT":
@@ -21,6 +24,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 async function getAllAppointmentsHandler(query: Record<string, unknown>, res: NextApiResponse) {
   try {
     const appointments = await getAllAppointments();
+    const { professorId } = query;
+
+    if (professorId) {
+      const appointment = await appointments.filter((a) => a.professorId === Number(professorId));
+      return res.status(200).json(appointment);
+    }
+    return res.status(200).json(appointments);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function getAllAppointmentsDeleteHandler(query: Record<string, unknown>, res: NextApiResponse) {
+  try {
+    const appointments = await getAllDeleteAppointments();
     const { professorId } = query;
 
     if (professorId) {
