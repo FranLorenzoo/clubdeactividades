@@ -39,6 +39,7 @@ export default function ActivityAppointments() {
   const [loadingActivities, setLoadingActivities] = useState(true);
   const [loadingAppointments, setLoadingAppointments] = useState(false);
   const [editingAppointmentId, setEditingAppointmentId] = useState<number | null>(null);
+  const [appointmentToSuspend, setAppointmentToSuspend] = useState<Appointment | null>(null);
 
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => { setIsMounted(true); }, []);
@@ -153,12 +154,20 @@ export default function ActivityAppointments() {
     );
   }
 
-  const handleSuspendAppointment = async (appointmentId: number) => {
-    const confirmar = confirm("¿Estás seguro de que deseas suspender este turno? Esta acción no se puede deshacer.");
-    if (!confirmar) return;
+  const openSuspendModal = (appointment: Appointment) => {
+    setEditingAppointmentId(null);
+    setAppointmentToSuspend(appointment);
+  };
+
+  const closeSuspendModal = () => {
+    setAppointmentToSuspend(null);
+  };
+
+  const confirmSuspendAppointment = async () => {
+    if (!appointmentToSuspend) return;
 
     try {
-      const res = await fetch(`/api/appointment/${appointmentId}`, {
+      const res = await fetch(`/api/appointment/${appointmentToSuspend.id}`, {
         method: 'DELETE',
         body: JSON.stringify({
 
@@ -172,7 +181,8 @@ export default function ActivityAppointments() {
       }
       toast.success('Turno suspendido correctamente');
       
-      setAppointments(prev => prev.filter(app => app.id !== appointmentId));
+      setAppointments(prev => prev.filter(app => app.id !== appointmentToSuspend.id));
+      setAppointmentToSuspend(null);
     } catch (error) {
       toast.error("Error al suspender el turno");
       console.error(error);
@@ -180,216 +190,272 @@ export default function ActivityAppointments() {
   };
 
   return (
-  <div style={{ 
-    display: 'flex', 
-    gap: '2.5rem', 
-    padding: '2rem', 
-    fontFamily: 'sans-serif',
-    maxWidth: '1200px',
-    margin: '0 auto'
-  }}>
-    
-    <div style={{ flex: '1', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <h2 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: '#fff' }}>
-        Actividades
-      </h2>
-      
-      {activities === null ? (
-        <p style={{ color: '#aaa', fontSize: '0.9rem' }}>No se encontraron actividades disponibles.</p>
-      ) : (
-        activities.map((activity) => (
-          <button
-            key={activity.id}
-            onClick={() => setSelectedActivity(activity.id)}
-            style={{
-              padding: '14px 20px',
-              backgroundColor: selectedActivity === activity.id ? '#0070f3' : '#1f1f1f',
-              color: '#ffffff',
-              border: selectedActivity === activity.id ? '1px solid #0070f3' : '1px solid #333',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              textAlign: 'left',
-              fontSize: '1rem',
-              fontWeight: selectedActivity === activity.id ? '600' : '400',
-              transition: 'all 0.2s ease',
-              boxShadow: selectedActivity === activity.id ? '0 4px 6px rgba(0,112,243,0.2)' : 'none'
-            }}
-          >
-            {activity.name}
-          </button>
-        ))
-      )}
-    </div>
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        {/* ACTIVIDADES */}
+        <div className="lg:col-span-1">
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6 shadow-xl shadow-black/20">
+            <h2 className="mb-6 text-2xl font-bold text-white">Actividades</h2>
 
-    <div style={{ 
-      flex: '2', 
-      backgroundColor: '#b9b9b9',
-      border: '1px solid #e0e0e0',
-      borderRadius: '12px',
-      padding: '2rem',
-      minHeight: '400px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
-    }}>
-      <h2 style={{ fontSize: '1.35rem', marginBottom: '1.5rem', color: '#1a1a1a', fontWeight: '700' }}>
-        Turnos Disponibles
-      </h2>
-      
-      {!selectedActivity && (
-        <div style={{ padding: '3rem 0', color: '#666', textAlign: 'center', border: '2px dashed #ccc', borderRadius: '8px', backgroundColor: '#ffffff' }}>
-          <p>Por favor, seleccione una actividad de la izquierda para ver los turnos vigentes.</p>
+            {activities === null ? (
+              <div className="rounded-2xl border border-dashed border-zinc-700 bg-zinc-950 p-6 text-center text-zinc-500">
+                No se encontraron actividades disponibles.
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {activities.map((activity) => (
+                  <button
+                    key={activity.id}
+                    onClick={() => setSelectedActivity(activity.id)}
+                    className={`w-full rounded-2xl border px-5 py-4 text-left font-medium transition-all duration-200 ${
+                      selectedActivity === activity.id
+                        ? 'border-green-500 bg-green-600 text-white shadow-lg shadow-green-600/20'
+                        : 'border-zinc-700 bg-zinc-800 text-zinc-300 hover:border-green-500 hover:bg-zinc-700'
+                    }`}
+                  >
+                    {activity.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      )}
 
-      {loadingAppointments && (
-        <p style={{ color: '#0070f3', fontWeight: '600', textAlign: 'center' }}>Buscando turnos actualizados...</p>
-      )}
+        {/* PANEL DERECHO */}
+        <div className="lg:col-span-2">
+          <div className="min-h-[550px] rounded-3xl border border-zinc-700 bg-zinc-800/90 p-6 shadow-xl shadow-black/20">
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-white">Turnos disponibles</h2>
 
-      {!loadingAppointments && selectedActivity && appointments.length === 0 && (
-        <div style={{ padding: '3rem 0', color: '#666', textAlign: 'center', backgroundColor: '#ffffff', borderRadius: '8px', border: '1px solid #e0e0e0' }}>
-          <p>No hay turnos programados para esta actividad desde la fecha actual en adelante.</p>
-        </div>
-      )}
+              <p className="mt-1 text-sm text-zinc-400">
+                Seleccioná una actividad para administrar sus turnos.
+              </p>
+            </div>
 
-      {!loadingAppointments && appointments.length > 0 && (
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          {appointments.map((appointment) => {
-            const startDate = new Date(appointment.initialDate);
-            const endDate = new Date(appointment.endDate);
-            const profName = appointment.professor?.user?.name;
-            const profLastName = appointment.professor?.user?.lastName;
-            const isEditing = editingAppointmentId === appointment.id;
+            {!selectedActivity && (
+              <div className="rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/70 px-8 py-20 text-center">
+                <p className="font-medium text-zinc-400">Seleccioná una actividad.</p>
 
-            const dateString = isMounted 
-              ? startDate.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })
-              : 'Cargando fecha...';
+                <p className="mt-2 text-sm text-zinc-600">
+                  Los turnos aparecerán aquí automáticamente.
+                </p>
+              </div>
+            )}
 
-            const timeString = isMounted
-              ? `${startDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })} a ${endDate.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })} hs`
-              : '--:-- a --:-- hs';
-
-            return (
-              <li 
-                key={appointment.id} 
-                style={{ 
-                  padding: '18px', 
-                  border: '1px solid #eef0f2',
-                  borderRadius: '8px',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.33)',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  transition: 'transform 0.2s, boxShadow 0.2s'
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#111', marginBottom: '6px', textTransform: 'capitalize' }}>
-                    {dateString}
-                  </div>
-                  
-                  <div style={{ fontSize: '0.9rem', color: '#444', marginBottom: '4px' }}>
-                    ⏱️ <strong style={{ color: '#222' }}>Horario:</strong> {timeString}
-                  </div>
-
-                  <div style={{ fontSize: '0.9rem', color: '#444' }}>
-                    👤 <strong style={{ color: '#222' }}>Profesor:</strong> {profName ? `${profName} ${profLastName}` : 'Por asignar'}
-                  </div>
+            {loadingAppointments && (
+              <div className="flex justify-center py-16">
+                <div className="flex items-center gap-3 font-medium text-green-400">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-green-500 border-t-transparent" />
+                  Buscando turnos actualizados...
                 </div>
+              </div>
+            )}
 
-                <div style={{ textTransform: 'none' }}>
-      {isEditing ? (
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
-          <button
-            onClick={() => setEditingAppointmentId(null)}
-            style={{
-              padding: '6px 8px', 
-              borderRadius: '4px',
-              fontSize: '0.85rem',
-              backgroundColor: '#e91515',
-              color: '#ebe8e8',
-              width: '160px',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#c81212'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#e91515'}
-          >
-            Cancelar
-          </button>
+            {!loadingAppointments && selectedActivity && appointments.length === 0 && (
+              <div className="rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/70 py-16 text-center">
+                <p className="font-medium text-zinc-300">
+                  No hay turnos programados para esta actividad.
+                </p>
 
-          <select 
-            defaultValue=""
-            onChange={(e) => {
-              if (e.target.value) handleAssignProfessor(appointment.id, Number(e.target.value));
-            }}
-            style={{ 
-              padding: '8px 12px', 
-              borderRadius: '6px', 
-              border: '1px solid #ccc', 
-              fontSize: '0.85rem',
-              backgroundColor: '#ffffff',
-              color: '#333333',
-              width: '160px',
-              cursor: 'pointer'
-            }}
-          >
-            <option value="" disabled>Seleccionar Profesor...</option>
-            {professors.map(p => (
-              <option key={p.id} value={p.id}>
-                {p.user.name} {p.user.lastName}
-              </option>
-            ))}
-          </select>
+                <p className="mt-2 text-sm text-zinc-500">
+                  Cuando existan nuevos turnos aparecerán aquí.
+                </p>
+              </div>
+            )}
+
+            {!loadingAppointments && appointments.length > 0 && (
+              <ul className="flex flex-col gap-4">
+                {appointments.map((appointment) => {
+                  const startDate = new Date(appointment.initialDate);
+                  const endDate = new Date(appointment.endDate);
+                  const profName = appointment.professor?.user?.name;
+                  const profLastName = appointment.professor?.user?.lastName;
+                  const isEditing = editingAppointmentId === appointment.id;
+
+                  const dateString = isMounted
+                    ? startDate.toLocaleDateString('es-AR', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                      })
+                    : 'Cargando fecha...';
+
+                  const timeString = isMounted
+                    ? `${startDate.toLocaleTimeString('es-AR', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })} a ${endDate.toLocaleTimeString('es-AR', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                      })} hs`
+                    : '--:-- a --:-- hs';
+
+                  return (
+                    <li
+                      key={appointment.id}
+                      className="rounded-2xl border border-zinc-700 bg-zinc-800/90 shadow-lg transition-all duration-200 hover:border-green-500/80"
+                    >
+                      <div className="flex flex-col gap-5 p-5 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="space-y-2">
+                          <h3 className="text-lg font-bold capitalize text-white">
+                            {dateString}
+                          </h3>
+
+                          <p className="text-sm text-zinc-400">
+                            <span className="text-zinc-500">⏱ Horario:</span>{' '}
+                            {timeString}
+                          </p>
+
+                          <p className="text-sm text-zinc-400">
+                            <span className="text-zinc-500">👨‍🏫 Profesor:</span>{' '}
+                            {profName ? `${profName} ${profLastName}` : 'Por asignar'}
+                          </p>
+
+                        </div>
+
+                        <div className="flex w-full flex-col gap-3 lg:w-auto lg:min-w-[18rem]">
+                          {isEditing ? (
+                            <>
+                              <select
+                                defaultValue=""
+                                onChange={(e) => {
+                                  if (e.target.value) {
+                                    handleAssignProfessor(
+                                      appointment.id,
+                                      Number(e.target.value)
+                                    );
+                                  }
+                                }}
+                                className="w-full rounded-xl border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-white outline-none transition focus:border-green-500"
+                              >
+                                <option value="" disabled>
+                                  Seleccionar profesor...
+                                </option>
+
+                                {professors.map((p) => (
+                                  <option key={p.id} value={p.id}>
+                                    {p.user.name} {p.user.lastName}
+                                  </option>
+                                ))}
+                              </select>
+
+                              <button
+                                onClick={() => setEditingAppointmentId(null)}
+                                className="w-full rounded-xl border border-zinc-700 bg-zinc-800 py-2 text-sm text-zinc-300 transition hover:bg-zinc-700"
+                              >
+                                Cancelar
+                              </button>
+                            </>
+                          ) : (
+                            <div className="flex flex-col gap-3 sm:flex-row">
+                              <button
+                                onClick={() => setEditingAppointmentId(appointment.id)}
+                                className="rounded-xl bg-green-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-700"
+                              >
+                                Cambiar profesor
+                              </button>
+
+                              <button
+                                onClick={() => openSuspendModal(appointment)}
+                                className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-2 text-sm font-medium text-yellow-300 transition hover:bg-yellow-500/20"
+                              >
+                                Suspender
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </div>
-      ) : (
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <button 
-            onClick={() => setEditingAppointmentId(appointment.id)}
-            style={{
-              padding: '9px 16px',
-              backgroundColor: '#0070f3', 
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-              fontWeight: '600',
-              boxShadow: '0 2px 4px rgba(0,112,243,0.15)',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#005bc5'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0070f3'}
-          >
-            Cambiar Profesor
-          </button>
+      </div>
 
-          <button 
-            onClick={() => handleSuspendAppointment(appointment.id)}
-            style={{
-              padding: '9px 16px',
-              backgroundColor: '#dfe53e', 
-              color: '#2a2a2a',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              fontSize: '0.85rem',
-              fontWeight: '600',
-              boxShadow: '0 2px 4px rgba(229,62,62,0.15)',
-              transition: 'background-color 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#bdc234'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#dfe53e'}
+      {appointmentToSuspend && (
+        (() => {
+          const suspendActivityName = activities?.find(
+            (activity) => activity.id === appointmentToSuspend.activityId
+          )?.name;
+
+          return (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          onClick={closeSuspendModal}
+        >
+          <div
+            className="w-full max-w-md rounded-3xl border border-zinc-700 bg-zinc-800/95 p-6 shadow-2xl shadow-black/40"
+            onClick={(e) => e.stopPropagation()}
           >
-            Suspender
-          </button>
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.24em] text-yellow-400/90">
+                  Suspender turno
+                </p>
+                <h3 className="mt-2 text-2xl font-bold text-white">
+                  ¿Confirmás la suspensión?
+                </h3>
+              </div>
+
+              <button
+                onClick={closeSuspendModal}
+                className="rounded-full border border-zinc-700 bg-zinc-800 px-3 py-1 text-sm text-zinc-300 transition hover:bg-zinc-700"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-zinc-700 bg-zinc-900/80 p-4">
+              <p className="text-sm text-zinc-300 capitalize">
+                <span className="text-zinc-500">Actividad:</span>{' '}
+                {suspendActivityName ?? 'Turno seleccionado'}
+              </p>
+
+              <p className="text-sm text-zinc-300">
+                <span className="text-zinc-500">Horario:</span>{' '}
+                {new Date(appointmentToSuspend.initialDate).toLocaleTimeString('es-AR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                })}{' '}
+                a{' '}
+                {new Date(appointmentToSuspend.endDate).toLocaleTimeString('es-AR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                })}{' '}
+                hs
+              </p>
+
+              <p className="text-sm leading-6 text-zinc-400">
+                Esta acción va a eliminar el turno de la grilla. No se puede deshacer.
+              </p>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <button
+                onClick={closeSuspendModal}
+                className="rounded-2xl border border-zinc-700 bg-zinc-800 px-5 py-3 text-sm font-medium text-zinc-300 transition hover:bg-zinc-700"
+              >
+                Cancelar
+              </button>
+
+              <button
+                onClick={confirmSuspendAppointment}
+                className="rounded-2xl border border-yellow-500/40 bg-yellow-500/10 px-5 py-3 text-sm font-semibold text-yellow-300 transition hover:bg-yellow-500/20"
+              >
+                Suspender turno
+              </button>
+            </div>
+          </div>
         </div>
+          );
+        })()
       )}
     </div>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
-  </div>
-)};
+  );
+}

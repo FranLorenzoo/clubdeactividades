@@ -71,6 +71,13 @@ export default function AdminNavbar() {
             Escanear QR
           </Link>
 
+                    <Link
+            href="/dashboard/admin/replacement"
+            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
+          >
+            Turnos
+          </Link>
+
           <Link
             href="/dashboard/profile"
             className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
@@ -78,12 +85,6 @@ export default function AdminNavbar() {
             Mi Perfil
           </Link>
 
-          <Link
-            href="/dashboard/admin/replacement"
-            className="text-left px-5 py-4 rounded-2xl border border-[#4a5568] text-[#fdfdfd] hover:bg-zinc-800 transition"
-          >
-            Turnos
-          </Link>
         </nav>
       </div>
 
