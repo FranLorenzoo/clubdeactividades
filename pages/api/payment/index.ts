@@ -1,5 +1,6 @@
 import { getAllPayments } from "@/lib/sql/payment";
 import { getValidCreditForClientAndActivity } from "@/lib/sql/credit";
+import { getCreditCardByClientId } from "@/lib/sql/creditCard";
 import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import QRCode from "qrcode";
@@ -106,14 +107,24 @@ async function createPaymentHandler(body: Record<string, unknown>, res: NextApiR
     }
   }
 
-  // ── Standard payment path ─────────────────────────────────────────────────
-
-
-
-
+  // ── CREDIT CARD insufficient-funds check ────────────────────────────────
+  if (body.paymentMethod === "creditCard") {
+    const ua = await prisma.userAppointment.findUnique({
+      where: { id: uaId },
+      select: { clientId: true },
+    });
+    if (ua) {
+      const card = await getCreditCardByClientId(ua.clientId);
+      if (card && card.securityCode === "122") {
+        return res.status(402).json({ message: "Fondos insuficientes en la tarjeta" });
+      }
+      if (card && new Date(card.expireDate) < new Date()) {
+        return res.status(410).json({ message: "La tarjeta está vencida" });
+      }
+    }
+  }
 
   try {
-
     const { paymentDate, paymentMethod, userAppointmentId, employeeId } = body;
 
     if (!userAppointmentId || !paymentMethod) {
