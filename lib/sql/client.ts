@@ -66,8 +66,12 @@ export async function getClientById(id: number) {
 
       const remainingDebt = price - totalPaid;
 
+      // Preservamos el estado real si la reserva ya fue cancelada,
+      // sino lo derivamos de los pagos acumulados.
       const state =
-        totalPaid >= price
+        ua.state === "CANCELLED"
+          ? "CANCELLED"
+          : totalPaid >= price
           ? "PAGO_COMPLETO"
           : totalPaid > 0
           ? "PAGO_PARCIAL"

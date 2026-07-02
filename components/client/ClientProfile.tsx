@@ -191,8 +191,9 @@ console.log("from:", from);
   }, [clientId]);
 
   const pendingPaymentsCount =
-    client?.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO")
-      .length ?? 0;
+    client?.userAppointments.filter(
+      (r) => r.state !== "PAGO_COMPLETO" && r.state !== "CANCELLED"
+    ).length ?? 0;
 
   if (loading) {
     return (
@@ -211,31 +212,45 @@ console.log("from:", from);
   }
 
   const pendingRefunds = client?.userAppointments.flatMap((r) => {
-    // 1. Si el backend determinó que la reserva ya está saldada o en PAGO_COMPLETO,
-    // significa que el reembolso en efectivo ya fue entregado y balanceado a cero.
-    if (r.state === "PAGO_COMPLETO") {
+    // Solo consideramos reembolsos sobre reservas que ya no están activas.
+    if (r.state !== "CANCELLED") {
       return [];
     }
 
-    // 2. Filtramos todos los movimientos CASH de esta reserva
-    const cashPayments = r.payments?.filter(p => p.paymentMethod === "CASH") || [];
-    
-    // 3. Sumamos los montos CASH para comprobar si hay saldo negativo pendiente
-    const netCashAmount = cashPayments.reduce((sum, p) => sum + p.amount, 0);
+    // Ordenamos los pagos CASH cronológicamente para separar el pago inicial
+    // del asiento negativo de cancelación y de los positivos de "entrega en mano".
+    const cashPayments = (r.payments?.filter((p) => p.paymentMethod === "CASH") ?? [])
+      .slice()
+      .sort(
+        (a, b) =>
+          new Date(a.paymentDate).getTime() - new Date(b.paymentDate).getTime() ||
+          a.id - b.id
+      );
 
-    if (netCashAmount < 0) {
-      const originalNegative = cashPayments.find(p => p.amount < 0);
-      if (originalNegative) {
-        return [{
-          id: originalNegative.id, // ID del pago para la API de confirmación
-          amount: originalNegative.amount,
-          userAppointmentId: r.id,
-          activityName: r.appointment.activity.name,
-          initialDate: r.appointment.initialDate,
-        }];
-      }
-    }
-    return [];
+    const firstNegative = cashPayments.find((p) => p.amount < 0);
+    if (!firstNegative) return [];
+
+    // Positivos posteriores al asiento negativo = devoluciones ya entregadas.
+    const alreadyRefunded = cashPayments
+      .filter(
+        (p) =>
+          p.amount > 0 &&
+          (new Date(p.paymentDate).getTime() > new Date(firstNegative.paymentDate).getTime() ||
+            (new Date(p.paymentDate).getTime() === new Date(firstNegative.paymentDate).getTime() &&
+              p.id > firstNegative.id))
+      )
+      .reduce((sum, p) => sum + p.amount, 0);
+
+    const stillOwed = Math.abs(firstNegative.amount) - alreadyRefunded;
+    if (stillOwed <= 0) return [];
+
+    return [{
+      id: firstNegative.id,
+      amount: -stillOwed,
+      userAppointmentId: r.id,
+      activityName: r.appointment.activity.name,
+      initialDate: r.appointment.initialDate,
+    }];
   }) ?? [];
 
   const pendingRefundsCount = pendingRefunds.length;
@@ -361,7 +376,9 @@ console.log("from:", from);
         )}
 
         {showDebts && (() => {
-          const pending = client.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO");
+          const pending = client.userAppointments.filter(
+            (r) => r.state !== "PAGO_COMPLETO" && r.state !== "CANCELLED"
+          );
           const monthly = pending.filter((r) => r.type === "ABONADO");
           const singles = pending.filter((r) => r.type !== "ABONADO");
 
