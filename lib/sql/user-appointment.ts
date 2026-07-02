@@ -207,8 +207,13 @@ export async function cancelUserAppointment(userAppointmentId: number) {
       where: { id: userAppointmentId },
       data: {
         cancellationDate: now,
-        state: "CANCELLED",
-        rejected: true, // Crucial para la consistencia del negocio
+        state:
+          isAbonado &&
+          ua.state === "IMPAGO" &&
+          hoursDiff < 48
+            ? "IMPAGO"
+            : "CANCELLED",
+        rejected: true,
       },
     });
 
