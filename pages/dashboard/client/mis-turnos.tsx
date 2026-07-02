@@ -147,7 +147,7 @@ const handleConfirmCancel = async () => {
     toast.success(
       data.creditCreated
         ? "Turno cancelado y crédito devuelto 🎁"
-        : "Turno cancelado. ¡Gracias por liberar el cupo!🎁 ¡Se hará tu reembolso!",
+        : "Turno cancelado. ¡Gracias por liberar el cupo!🎁",
       {
         id: loadingToast,
       }
