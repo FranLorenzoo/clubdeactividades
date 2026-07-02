@@ -49,6 +49,14 @@ export default async function handler(
         message: "Turno inexistente",
       });
     }
+    // Verificar cupo
+    console.log("Current slots:", appointment.currentSlots);
+    console.log("Slots available:", appointment.slotsAvailable);
+    if (appointment.currentSlots >= appointment.slotsAvailable) {
+      return res.status(400).json({
+        message: "No hay cupos disponibles",
+      });
+    }
 
     // Crear reserva
     const userAppointment = await createUserAppointment({
@@ -83,7 +91,7 @@ export default async function handler(
     // Incrementar ocupación del turno
     await updateAppointment(appointment.id, {
       currentSlots: {
-        decrement: 1,
+        increment: 1,
       },
     });
 

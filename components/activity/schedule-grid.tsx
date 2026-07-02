@@ -686,6 +686,7 @@ const state =
             state,
             type: "NO_ABONADO",
             reservationDate: now.toISOString(),
+            employeeBooking,
           }),
         });
         if(response.ok) {
@@ -749,6 +750,7 @@ const state =
                 state: employeeBooking ? "PAGO_COMPLETO" : "IMPAGO",
                 type: "ABONADO",
                 reservationDate: now.toISOString(),
+                employeeBooking,
               }),
             });
           })
