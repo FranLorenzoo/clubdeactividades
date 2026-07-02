@@ -108,7 +108,7 @@ async function createPaymentHandler(body: Record<string, unknown>, res: NextApiR
   }
 
   // ── CREDIT CARD insufficient-funds check ────────────────────────────────
-  if (body.paymentMethod === "creditCard") {
+  if (body.paymentMethod === "online") {
     const ua = await prisma.userAppointment.findUnique({
       where: { id: uaId },
       select: { clientId: true },

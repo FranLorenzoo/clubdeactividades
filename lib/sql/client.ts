@@ -57,28 +57,39 @@ export async function getClientById(id: number) {
   return {
     ...client,
     userAppointments: client.userAppointments.map((ua) => {
-      const price = ua.appointment.price ?? 0;
+      const rawPrice = ua.appointment.price ?? 0;
 
-      const totalPaid = ua.payments.reduce(
-        (sum, p) => sum + p.amount,
+      const recordedPaid = ua.payments.reduce(
+        (sum, p) => sum + Math.max(p.amount, 0),
         0
       );
 
-      const remainingDebt = price - totalPaid;
+      const isUniquePartialWithoutPayments =
+        ua.type === "NO_ABONADO" &&
+        ua.state === "PAGO_PARCIAL" &&
+        recordedPaid === 0;
 
-      const state =
-        totalPaid >= price
-          ? "PAGO_COMPLETO"
-          : totalPaid > 0
-          ? "PAGO_PARCIAL"
-          : "IMPAGO";
+      const price = isUniquePartialWithoutPayments ? rawPrice / 2 : rawPrice;
+
+      const impliedPaid =
+        recordedPaid === 0 && ua.type === "NO_ABONADO"
+          ? ua.state === "PAGO_COMPLETO"
+            ? price
+            : ua.state === "PAGO_PARCIAL"
+            ? price * 0.5
+            : 0
+          : 0;
+
+      const totalPaid = recordedPaid + impliedPaid;
+      const isCancelled = ua.state === "CANCELLED" || ua.cancellationDate !== null || ua.rejected;
+      const remainingDebt = isCancelled ? 0 : Math.max(price - totalPaid, 0);
 
       return {
         ...ua,
         price,
         totalPaid,
         remainingDebt,
-        state,
+        state: isCancelled ? "CANCELLED" : ua.state,
       };
     }),
   };

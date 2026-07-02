@@ -46,9 +46,11 @@ export default function MyTurnsPage() {
   const [filteredTurnos, setFilteredTurnos] = useState<Turno[]>([]);
   const [loadingTurnos, setLoadingTurnos] = useState(true);
   const [loadingTurnoId, setLoadingTurnoId] = useState<number | null>(null);
+  const [requestedReplacements, setRequestedReplacements] = useState<number[]>([]);
 
   const handleRequestReplacement = async (turno: Turno) => {
     setLoadingTurnoId(turno.id);
+    
     try {
       const response = await fetch("/api/send-replacement-email", {
         method: "POST",
@@ -63,7 +65,7 @@ export default function MyTurnsPage() {
       if (!response.ok) {
         throw new Error();
       }
-
+      setRequestedReplacements((prev) => [...prev, turno.id]);
       toast.success("Solicitud enviada");
     } catch {
       toast.error("No se pudo enviar la solicitud");
@@ -197,15 +199,23 @@ export default function MyTurnsPage() {
                             })}
                           </div>
                           <button
-                            onClick={() => handleRequestReplacement(turno)}
-                            className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-lg transition"
-                          >
-                            {
-                              loadingTurnoId === turno.id
-                                ? "Solicitando..."
-                                : "Solicitar reemplazo"
+                            disabled={
+                              loadingTurnoId === turno.id ||
+                              requestedReplacements.includes(turno.id)
                             }
-                          </button>
+                            onClick={() => handleRequestReplacement(turno)}
+                            className={`mt-3 w-full text-white text-sm py-2 rounded-lg transition ${
+                              requestedReplacements.includes(turno.id)
+                                ? "bg-zinc-600 cursor-not-allowed"
+                                : "bg-green-600 hover:bg-green-700"
+                            }`}
+                          >
+                            {loadingTurnoId === turno.id
+                              ? "Solicitando..."
+                              : requestedReplacements.includes(turno.id)
+                                ? "Reemplazo solicitado"
+                                : "Solicitar reemplazo"}
+                        </button>
                         </div>
                       ))
                     )}
