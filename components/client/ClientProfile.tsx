@@ -323,39 +323,66 @@ console.log("from:", from);
             {client.userAppointments.map((r) => {
               const apptEnd = new Date(r.appointment.endDate);
               const canAttend = apptEnd.getTime() >= Date.now();
-              return (
-                <div key={r.id} className="p-4 border border-zinc-700 rounded mb-3">
-                  <p>⚽ {r.appointment.activity.name}</p>
-                  <p>📅 {new Date(r.reservationDate).toLocaleDateString()}</p>
+return (
+  <div key={r.id} className="p-4 border border-zinc-700 rounded mb-3">
+    <p>⚽ {r.appointment.activity.name}</p>
 
-                  <p
-                    className={`font-bold mt-2 ${
-                      r.state === "PAGO_COMPLETO"
-                        ? "text-green-400"
-                        : r.state === "PAGO_PARCIAL"
-                        ? "text-yellow-400"
-                        : "text-red-400"
-                    }`}
-                  >
-                    Estado: {r.state}
-                  </p>
+    <p>
+      📅{" "}
+      {new Date(r.appointment.initialDate).toLocaleDateString("es-AR", {
+        weekday: "long",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })}
+    </p>
 
-                  <p>💰 Total: ${r.price ?? 0}</p>
-                  <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
-                  <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
+    <p>
+      🕒{" "}
+      {new Date(r.appointment.initialDate).toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })}{" "}
+      -{" "}
+      {new Date(r.appointment.endDate).toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })}{" "}
+      hs
+    </p>
 
-                  {r.attended ? (
-                    <p className="mt-3 text-green-400 text-sm font-semibold">Asistió ✅</p>
-                  ) : canAttend ? (
-                    <button
-                      onClick={() => markAttendance(r.id)}
-                      className="mt-3 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
-                    >
-                      Tomar asistencia
-                    </button>
-                  ) : null}
-                </div>
-              );
+    <p
+      className={`font-bold mt-2 ${
+        r.state === "PAGO_COMPLETO"
+          ? "text-green-400"
+          : r.state === "PAGO_PARCIAL"
+          ? "text-yellow-400"
+          : "text-red-400"
+      }`}
+    >
+      Estado: {r.state}
+    </p>
+
+    <p>💰 Total: ${r.price ?? 0}</p>
+    <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
+    <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
+
+    {r.attended ? (
+      <p className="mt-3 text-green-400 text-sm font-semibold">
+        Asistió ✅
+      </p>
+    ) : canAttend ? (
+      <button
+        onClick={() => markAttendance(r.id)}
+        className="mt-3 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
+      >
+        Tomar asistencia
+      </button>
+    ) : null}
+  </div>
+);
             })}
           </div>
         )}
@@ -753,7 +780,7 @@ console.log("from:", from);
           <div className="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 w-full max-w-md">
             <h2 className="text-2xl font-bold mb-4">Confirmar cobro</h2>
 
-            <p className="mb-2">¿Estás seguro de cobrar esta clase?</p>
+            <p className="mb-2">¿Estás seguro que deseas cobrar este turno?</p>
 
             <div className="mt-4 p-4 rounded-xl bg-zinc-800 space-y-2">
               <p><strong>Actividad:</strong> {selectedPayment.appointment.activity.name}</p>
