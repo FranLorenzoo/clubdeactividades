@@ -227,25 +227,26 @@ console.log("from:", from);
           a.id - b.id
       );
 
-    const firstNegative = cashPayments.find((p) => p.amount < 0);
-    if (!firstNegative) return [];
+    // Tomamos el ÚLTIMO asiento negativo (última cancelación) por si hubo rebook + cancel.
+    const lastNegative = [...cashPayments].reverse().find((p) => p.amount < 0);
+    if (!lastNegative) return [];
 
-    // Positivos posteriores al asiento negativo = devoluciones ya entregadas.
+    // Positivos posteriores al último negativo = devoluciones ya entregadas.
     const alreadyRefunded = cashPayments
       .filter(
         (p) =>
           p.amount > 0 &&
-          (new Date(p.paymentDate).getTime() > new Date(firstNegative.paymentDate).getTime() ||
-            (new Date(p.paymentDate).getTime() === new Date(firstNegative.paymentDate).getTime() &&
-              p.id > firstNegative.id))
+          (new Date(p.paymentDate).getTime() > new Date(lastNegative.paymentDate).getTime() ||
+            (new Date(p.paymentDate).getTime() === new Date(lastNegative.paymentDate).getTime() &&
+              p.id > lastNegative.id))
       )
       .reduce((sum, p) => sum + p.amount, 0);
 
-    const stillOwed = Math.abs(firstNegative.amount) - alreadyRefunded;
+    const stillOwed = Math.abs(lastNegative.amount) - alreadyRefunded;
     if (stillOwed <= 0) return [];
 
     return [{
-      id: firstNegative.id,
+      id: lastNegative.id,
       amount: -stillOwed,
       userAppointmentId: r.id,
       activityName: r.appointment.activity.name,

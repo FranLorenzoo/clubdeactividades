@@ -154,26 +154,35 @@ export async function cancelUserAppointment(userAppointmentId: number) {
     // 🟡 CASO NO ABONADO + 24HS → Devolución manual flag
     const refundPending = !isAbonado && hoursDiff >= 24;
 
-    // 🟢 NO_ABONADO pagado en CASH → generar asiento negativo para "Dinero a devolver"
-    if (!isAbonado) {
+    // 🟢 NO_ABONADO en PAGO_COMPLETO → generar asiento negativo para "Dinero a devolver"
+    // (asumimos efectivo si no hay pago online registrado; cubre también las reservas viejas
+    // hechas por admin/empleado que no dejaron payment record).
+    if (!isAbonado && ua.state === "PAGO_COMPLETO") {
       const payments = await tx.payment.findMany({
         where: { userAppointmentId: userAppointmentId },
       });
-      const mainPayment = payments[0];
-      const netoCash = payments
-        .filter((p) => p.paymentMethod === "CASH")
-        .reduce((s, p) => s + p.amount, 0);
 
-      if (mainPayment?.paymentMethod === "CASH" && netoCash > 0) {
-        await tx.payment.create({
-          data: {
-            userAppointmentId: userAppointmentId,
-            paymentDate: now,
-            amount: -netoCash,
-            paymentMethod: "CASH",
-            employeeId: null,
-          },
-        });
+      const hasOnlinePayment = payments.some((p) => p.paymentMethod === "online");
+      const hasCreditPayment = payments.some((p) => p.paymentMethod === "CREDIT" || p.paymentMethod === "credit");
+
+      if (!hasOnlinePayment && !hasCreditPayment) {
+        const netoCash = payments
+          .filter((p) => p.paymentMethod === "CASH")
+          .reduce((s, p) => s + p.amount, 0);
+
+        const amountToRefund = netoCash > 0 ? netoCash : ua.appointment.price ?? 0;
+
+        if (amountToRefund > 0) {
+          await tx.payment.create({
+            data: {
+              userAppointmentId: userAppointmentId,
+              paymentDate: now,
+              amount: -amountToRefund,
+              paymentMethod: "CASH",
+              employeeId: null,
+            },
+          });
+        }
       }
     }
 
