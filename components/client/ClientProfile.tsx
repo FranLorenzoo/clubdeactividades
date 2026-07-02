@@ -50,6 +50,13 @@ type Props = {
   clientId: number;
 };
 
+const formatTime = (iso: string) =>
+  new Date(iso).toLocaleTimeString("es-AR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
 export default function ClientProfile({ clientId }: Props) {
   const [client, setClient] = useState<ClientProfileData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -338,11 +345,16 @@ console.log("from:", from);
 
             {client.userAppointments.map((r) => {
               const apptEnd = new Date(r.appointment.endDate);
-              const canAttend = apptEnd.getTime() >= Date.now();
+              const canAttend =
+                r.state !== "CANCELLED" && apptEnd.getTime() >= Date.now();
               return (
                 <div key={r.id} className="p-4 border border-zinc-700 rounded mb-3">
                   <p>⚽ {r.appointment.activity.name}</p>
-                  <p>📅 {new Date(r.reservationDate).toLocaleDateString()}</p>
+                  <p>
+                    📅 {new Date(r.appointment.initialDate).toLocaleDateString("es-AR")}
+                    {" · "}
+                    {formatTime(r.appointment.initialDate)} — {formatTime(r.appointment.endDate)}
+                  </p>
 
                   <p
                     className={`font-bold mt-2 ${
@@ -350,6 +362,8 @@ console.log("from:", from);
                         ? "text-green-400"
                         : r.state === "PAGO_PARCIAL"
                         ? "text-yellow-400"
+                        : r.state === "CANCELLED"
+                        ? "text-zinc-400"
                         : "text-red-400"
                     }`}
                   >
@@ -360,7 +374,9 @@ console.log("from:", from);
                   <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
                   <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
 
-                  {r.attended ? (
+                  {r.state === "CANCELLED" ? (
+                    <p className="mt-3 text-zinc-400 text-sm font-semibold">Turno cancelado</p>
+                  ) : r.attended ? (
                     <p className="mt-3 text-green-400 text-sm font-semibold">Asistió ✅</p>
                   ) : canAttend ? (
                     <button
@@ -408,7 +424,7 @@ console.log("from:", from);
                       <div className="space-y-4">
                         {Object.entries(monthlyByActivity).map(([activityName, items]) => {
                           const activityTotal = items.reduce((s, i) => s + (i.price ?? 0), 0);
-                         const activityDebt = items.reduce((s, i) => s + (i.price ?? 0), 0);
+                          const activityDebt = items.reduce((s, i) => s + (i.remainingDebt ?? 0), 0);
                           const key = `activity:${activityName}`;
                           const isPaying = payingKey === key;
                           return (
@@ -461,6 +477,8 @@ console.log("from:", from);
                                             day: "2-digit",
                                             month: "2-digit",
                                           })}
+                                          {" · "}
+                                          {formatTime(r.appointment.initialDate)} — {formatTime(r.appointment.endDate)}
                                         </span>
                                         <span className="text-zinc-500 text-xs">
                                           Pagado ${r.totalPaid ?? 0} / Debe ${r.remainingDebt ?? 0}
@@ -494,6 +512,11 @@ console.log("from:", from);
                                 <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-700 text-zinc-300 mt-1 inline-block">
                                   Clase Suelta
                                 </span>
+                                <p className="text-zinc-400 text-xs mt-2">
+                                  📅 {new Date(r.appointment.initialDate).toLocaleDateString("es-AR")}
+                                  {" · "}
+                                  {formatTime(r.appointment.initialDate)} — {formatTime(r.appointment.endDate)}
+                                </p>
                               </div>
                               <span className="text-xs px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300">
                                 {r.state}
