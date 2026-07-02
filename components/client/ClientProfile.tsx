@@ -191,7 +191,7 @@ console.log("from:", from);
   }, [clientId]);
 
   const pendingPaymentsCount =
-    client?.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO")
+    client?.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO" && r.state !== "CANCELLED" && !r.rejected)
       .length ?? 0;
 
   if (loading) {
@@ -323,45 +323,72 @@ console.log("from:", from);
             {client.userAppointments.map((r) => {
               const apptEnd = new Date(r.appointment.endDate);
               const canAttend = apptEnd.getTime() >= Date.now();
-              return (
-                <div key={r.id} className="p-4 border border-zinc-700 rounded mb-3">
-                  <p>⚽ {r.appointment.activity.name}</p>
-                  <p>📅 {new Date(r.reservationDate).toLocaleDateString()}</p>
+return (
+  <div key={r.id} className="p-4 border border-zinc-700 rounded mb-3">
+    <p>⚽ {r.appointment.activity.name}</p>
 
-                  <p
-                    className={`font-bold mt-2 ${
-                      r.state === "PAGO_COMPLETO"
-                        ? "text-green-400"
-                        : r.state === "PAGO_PARCIAL"
-                        ? "text-yellow-400"
-                        : "text-red-400"
-                    }`}
-                  >
-                    Estado: {r.state}
-                  </p>
+    <p>
+      📅{" "}
+      {new Date(r.appointment.initialDate).toLocaleDateString("es-AR", {
+        weekday: "long",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })}
+    </p>
 
-                  <p>💰 Total: ${r.price ?? 0}</p>
-                  <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
-                  <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
+    <p>
+      🕒{" "}
+      {new Date(r.appointment.initialDate).toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })}{" "}
+      -{" "}
+      {new Date(r.appointment.endDate).toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })}{" "}
+      hs
+    </p>
 
-                  {r.attended ? (
-                    <p className="mt-3 text-green-400 text-sm font-semibold">Asistió ✅</p>
-                  ) : canAttend ? (
-                    <button
-                      onClick={() => markAttendance(r.id)}
-                      className="mt-3 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
-                    >
-                      Tomar asistencia
-                    </button>
-                  ) : null}
-                </div>
-              );
+    <p
+      className={`font-bold mt-2 ${
+        r.state === "PAGO_COMPLETO"
+          ? "text-green-400"
+          : r.state === "PAGO_PARCIAL"
+          ? "text-yellow-400"
+          : "text-red-400"
+      }`}
+    >
+      Estado: {r.state}
+    </p>
+
+    <p>💰 Total: ${r.price ?? 0}</p>
+    <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
+    <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
+
+    {r.attended ? (
+      <p className="mt-3 text-green-400 text-sm font-semibold">
+        Asistió ✅
+      </p>
+    ) : canAttend ? (
+      <button
+        onClick={() => markAttendance(r.id)}
+        className="mt-3 px-4 py-2 rounded-xl bg-green-600 hover:bg-green-700 transition text-sm font-semibold"
+      >
+        Tomar asistencia
+      </button>
+    ) : null}
+  </div>
+);
             })}
           </div>
         )}
 
         {showDebts && (() => {
-          const pending = client.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO");
+          const pending = client.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO" && r.state !== "CANCELLED" && !r.rejected);
           const monthly = pending.filter((r) => r.type === "ABONADO");
           const singles = pending.filter((r) => r.type !== "ABONADO");
 
@@ -400,7 +427,7 @@ console.log("from:", from);
                             >
                               <div className="flex justify-between items-start mb-3">
                                 <div>
-                                  <p className="font-semibold capitalize">⚽ {activityName}</p>
+                                  <p className="font-semibold capitalize"> {activityName}</p>
                                   <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-700 text-zinc-300 mt-1 inline-block">
                                     Mensualidad
                                   </span>
@@ -436,18 +463,28 @@ console.log("from:", from);
                                       key={r.id}
                                       className="flex items-center justify-between text-sm gap-3"
                                     >
-                                      <div className="flex flex-col">
-                                        <span className="text-zinc-300">
-                                          {date.toLocaleDateString("es-AR", {
-                                            weekday: "short",
-                                            day: "2-digit",
-                                            month: "2-digit",
-                                          })}
-                                        </span>
-                                        <span className="text-zinc-500 text-xs">
-                                          Pagado ${r.totalPaid ?? 0} / Debe ${r.remainingDebt ?? 0}
-                                        </span>
-                                      </div>
+<div className="flex flex-col gap-1">
+  <span className="font-medium text-zinc-200">
+    {date.toLocaleDateString("es-AR", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    })}
+  </span>
+
+  <span className="text-zinc-400 text-sm">
+    🕒 {date.toLocaleTimeString("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })} hs
+  </span>
+
+  <span className="text-zinc-500 text-xs">
+    Pagado ${r.totalPaid ?? 0} / Debe ${r.remainingDebt ?? 0}
+  </span>
+</div>
                                     </div>
                                   );
                                 })}
@@ -472,7 +509,7 @@ console.log("from:", from);
                           >
                             <div className="flex justify-between items-start">
                               <div>
-                                <p>⚽ {r.appointment.activity.name}</p>
+                                <p> {r.appointment.activity.name}</p>
                                 <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-700 text-zinc-300 mt-1 inline-block">
                                   Clase Suelta
                                 </span>
@@ -481,12 +518,39 @@ console.log("from:", from);
                                 {r.state}
                               </span>
                             </div>
+<div className="mt-3 text-sm space-y-1">
+  <p>
+    📅{" "}
+    {new Date(r.appointment.initialDate).toLocaleDateString("es-AR", {
+      weekday: "long",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })}
+  </p>
 
-                            <div className="mt-3 text-sm space-y-1">
-                              <p>💰 Total: ${r.price ?? 0}</p>
-                              <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
-                              <p>🧾 Debe: ${r.remainingDebt ?? 0}</p>
-                            </div>
+  <p>
+    🕒{" "}
+    {new Date(r.appointment.initialDate).toLocaleTimeString("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })}{" "}
+    -{" "}
+    {new Date(r.appointment.endDate).toLocaleTimeString("es-AR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })}{" "}
+    hs
+  </p>
+
+  <p>🏷️ Valor clase: ${r.price ?? 0}</p>
+  <p>💳 Pagado: ${r.totalPaid ?? 0}</p>
+  <p className="font-semibold text-yellow-300">
+    💰 Pendiente: ${r.remainingDebt ?? 0}
+  </p>
+</div>
 
                             <button
                               onClick={() => {
@@ -716,7 +780,7 @@ console.log("from:", from);
           <div className="bg-zinc-900 border border-zinc-700 rounded-3xl p-8 w-full max-w-md">
             <h2 className="text-2xl font-bold mb-4">Confirmar cobro</h2>
 
-            <p className="mb-2">¿Estás seguro de cobrar esta clase?</p>
+            <p className="mb-2">¿Estás seguro que deseas cobrar este turno?</p>
 
             <div className="mt-4 p-4 rounded-xl bg-zinc-800 space-y-2">
               <p><strong>Actividad:</strong> {selectedPayment.appointment.activity.name}</p>

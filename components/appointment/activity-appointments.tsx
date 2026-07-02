@@ -318,6 +318,13 @@ export default function ActivityAppointments() {
                         <div className="flex w-full flex-col gap-3 lg:w-auto lg:min-w-[18rem]">
                           {isEditing ? (
                             <>
+
+                               <button
+                                onClick={() => setEditingAppointmentId(null)}
+                                className="w-full rounded-xl border border-zinc-700 bg-zinc-800 py-2 text-sm text-zinc-300 transition hover:bg-zinc-700"
+                              >
+                                Cancelar
+                              </button>
                               <select
                                 defaultValue=""
                                 onChange={(e) => {
@@ -341,12 +348,7 @@ export default function ActivityAppointments() {
                                 ))}
                               </select>
 
-                              <button
-                                onClick={() => setEditingAppointmentId(null)}
-                                className="w-full rounded-xl border border-zinc-700 bg-zinc-800 py-2 text-sm text-zinc-300 transition hover:bg-zinc-700"
-                              >
-                                Cancelar
-                              </button>
+
                             </>
                           ) : (
                             <div className="flex flex-col gap-3 sm:flex-row">

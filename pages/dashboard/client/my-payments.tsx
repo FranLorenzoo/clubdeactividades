@@ -116,7 +116,7 @@ export default function MisPagosPage() {
           userAppointmentId,
           paymentDate: new Date().toISOString(),
           amount,
-          paymentMethod: "creditCard",
+          paymentMethod: "online",
         }),
       });
       if (res.ok) {
@@ -148,7 +148,7 @@ export default function MisPagosPage() {
               userAppointmentId: item.userAppointmentId,
               paymentDate: new Date().toISOString(),
               amount: item.appointment.price,
-              paymentMethod: "creditCard",
+              paymentMethod: "online",
             }),
           })
         )
@@ -183,7 +183,7 @@ export default function MisPagosPage() {
               userAppointmentId: item.userAppointmentId,
               paymentDate: new Date().toISOString(),
               amount: item.appointment.price,
-              paymentMethod: "creditCard",
+              paymentMethod: "online",
             }),
           })
         )
