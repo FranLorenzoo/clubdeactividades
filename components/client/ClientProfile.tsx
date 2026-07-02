@@ -424,7 +424,7 @@ console.log("from:", from);
                       <div className="space-y-4">
                         {Object.entries(monthlyByActivity).map(([activityName, items]) => {
                           const activityTotal = items.reduce((s, i) => s + (i.price ?? 0), 0);
-                         const activityDebt = items.reduce((s, i) => s + (i.price ?? 0), 0);
+                          const activityDebt = items.reduce((s, i) => s + (i.remainingDebt ?? 0), 0);
                           const key = `activity:${activityName}`;
                           const isPaying = payingKey === key;
                           return (
