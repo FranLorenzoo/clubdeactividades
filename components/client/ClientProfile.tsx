@@ -417,7 +417,7 @@ return (
                       <div className="space-y-4">
                         {Object.entries(monthlyByActivity).map(([activityName, items]) => {
                           const activityTotal = items.reduce((s, i) => s + (i.price ?? 0), 0);
-                          const activityDebt = items.reduce((s, i) => s + (i.remainingDebt ?? 0), 0);
+                         const activityDebt = items.reduce((s, i) => s + (i.price ?? 0), 0);
                           const key = `activity:${activityName}`;
                           const isPaying = payingKey === key;
                           return (
@@ -474,15 +474,19 @@ return (
   </span>
 
   <span className="text-zinc-400 text-sm">
-    🕒 {date.toLocaleTimeString("es-AR", {
+    🕒{" "}
+    {date.toLocaleTimeString("es-AR", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
-    })} hs
+    })}{" "}
+    hs
   </span>
 
   <span className="text-zinc-500 text-xs">
-    Pagado ${r.totalPaid ?? 0} / Debe ${r.remainingDebt ?? 0}
+    {activityDebt > 0
+      ? `Pagado $0 / Debe $${r.price ?? 0}`
+      : `Pagado $${r.price ?? 0} / Debe $0`}
   </span>
 </div>
                                     </div>
