@@ -85,7 +85,7 @@ export default function AppointmentModal({
   }
 };
 
-  const appointmentsValid = appointments.filter((appointment) => { return appointment.currentSlots < appointment.slotsAvailable });
+  const appointmentsValid = appointments.filter((appointment) => { return appointment.currentSlots > 0; });
 
   if (!open || !credit) return null;
 
