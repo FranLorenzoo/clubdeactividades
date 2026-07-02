@@ -76,6 +76,7 @@ export async function getAppointmentsByActivityId(
   return prisma.appointment.findMany({
     where: {
       activityId,
+      isDeleted: false,
       ...(from || to
         ? { initialDate: { ...(from ? { gte: from } : {}), ...(to ? { lte: to } : {}) } }
         : {}),
