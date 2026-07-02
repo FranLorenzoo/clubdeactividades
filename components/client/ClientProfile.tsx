@@ -191,8 +191,9 @@ console.log("from:", from);
   }, [clientId]);
 
   const pendingPaymentsCount =
-    client?.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO")
-      .length ?? 0;
+  client?.userAppointments.filter(
+    (r) => r.state !== "PAGO_COMPLETO" && !r.rejected
+  ).length ?? 0;
 
   if (loading) {
     return (
@@ -211,29 +212,32 @@ console.log("from:", from);
   }
 
   const pendingRefunds = client?.userAppointments.flatMap((r) => {
-    // 1. Si el backend determinó que la reserva ya está saldada o en PAGO_COMPLETO,
-    // significa que el reembolso en efectivo ya fue entregado y balanceado a cero.
-    if (r.state === "PAGO_COMPLETO") {
-      return [];
-    }
+    // 1. Buscamos si existe la transacción de cancelación (el valor negativo)
+    const negativeCashPayment = r.payments?.find(
+      (p) => p.paymentMethod === "CASH" && p.amount < 0
+    );
 
-    // 2. Filtramos todos los movimientos CASH de esta reserva
-    const cashPayments = r.payments?.filter(p => p.paymentMethod === "CASH") || [];
-    
-    // 3. Sumamos los montos CASH para comprobar si hay saldo negativo pendiente
-    const netCashAmount = cashPayments.reduce((sum, p) => sum + p.amount, 0);
+    // 2. Si la reserva está rechazada y tiene un pago negativo, evaluamos el balance total real
+    if (negativeCashPayment && r.rejected) {
+      // Sumamos todos los movimientos de pago de la cita (+33 del inicio - 33 de la cancelación) = 0
+      const totalPaymentsSum = r.payments?.reduce((sum, p) => sum + p.amount, 0) ?? 0;
 
-    if (netCashAmount < 0) {
-      const originalNegative = cashPayments.find(p => p.amount < 0);
-      if (originalNegative) {
-        return [{
-          id: originalNegative.id, // ID del pago para la API de confirmación
-          amount: originalNegative.amount,
-          userAppointmentId: r.id,
-          activityName: r.appointment.activity.name,
-          initialDate: r.appointment.initialDate,
-        }];
+      // Si ya le entregaste el efectivo en mano, el backend habrá agregado otro pago positivo (+33)
+      // Por ende, si totalPaymentsSum sigue siendo 0 (o menor), significa que falta entregarle el billete físico.
+      // Si ya se le entregó, totalPaymentsSum será mayor a 0 (específicamente igual al valor de la clase).
+      const alreadyRefundedInHand = totalPaymentsSum > 0;
+
+      if (alreadyRefundedInHand) {
+        return [];
       }
+
+      return [{
+        id: negativeCashPayment.id, 
+        amount: negativeCashPayment.amount,
+        userAppointmentId: r.id,
+        activityName: r.appointment.activity.name,
+        initialDate: r.appointment.initialDate,
+      }];
     }
     return [];
   }) ?? [];
@@ -361,7 +365,8 @@ console.log("from:", from);
         )}
 
         {showDebts && (() => {
-          const pending = client.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO");
+          // ✨ CORRECCIÓN: Filtrar para que las canceladas no entren al flujo de cobros pendientes
+          const pending = client.userAppointments.filter((r) => r.state !== "PAGO_COMPLETO" && !r.rejected);
           const monthly = pending.filter((r) => r.type === "ABONADO");
           const singles = pending.filter((r) => r.type !== "ABONADO");
 

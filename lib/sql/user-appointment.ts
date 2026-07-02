@@ -194,7 +194,7 @@ export async function cancelUserAppointment(userAppointmentId: number) {
       where: { id: userAppointmentId },
       data: {
         cancellationDate: now,
-        state: "CANCELLED",
+        state: refundPending ? "PAGO_COMPLETO" : "CANCELLED",
         rejected: true, // Crucial para la consistencia del negocio
       },
     });
