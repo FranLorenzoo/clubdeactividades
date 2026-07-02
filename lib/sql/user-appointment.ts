@@ -123,6 +123,7 @@ export async function cancelUserAppointment(userAppointmentId: number) {
       include: {
         appointment: true,  
         client: true,
+        payments: true,
       },
     });
 
@@ -153,6 +154,24 @@ export async function cancelUserAppointment(userAppointmentId: number) {
 
     // 🟡 CASO NO ABONADO + 24HS → Devolución manual flag
     const refundPending = !isAbonado && hoursDiff >= 24;
+
+    if (refundPending) {
+      // Buscamos el pago original en efectivo efectuado por el cliente
+      const mainPayment = ua.payments.find(p => p.paymentMethod === "CASH");
+      
+      // Si existe un pago previo en efectivo, registramos su contrapartida en negativo
+      if (mainPayment && mainPayment.amount > 0) {
+        await tx.payment.create({
+          data: {
+            userAppointmentId: ua.id,
+            paymentDate: now,
+            amount: -mainPayment.amount, // Almacenamos el monto en negativo (ej: -10000)
+            paymentMethod: "CASH",
+            employeeId: null, // Esperará a que el administrador lo apruebe y entregue en mano
+          }
+        });
+      }
+    }
 
     // 🔍 Obtener todas las inscripciones vigentes ordenadas para validar cupo real vs lista de espera
     const activeBefore = await tx.userAppointment.findMany({
