@@ -57,39 +57,32 @@ export async function getClientById(id: number) {
   return {
     ...client,
     userAppointments: client.userAppointments.map((ua) => {
-      const rawPrice = ua.appointment.price ?? 0;
+      const price = ua.appointment.price ?? 0;
 
-      const recordedPaid = ua.payments.reduce(
-        (sum, p) => sum + Math.max(p.amount, 0),
+      const totalPaid = ua.payments.reduce(
+        (sum, p) => sum + p.amount,
         0
       );
 
-      const isUniquePartialWithoutPayments =
-        ua.type === "NO_ABONADO" &&
-        ua.state === "PAGO_PARCIAL" &&
-        recordedPaid === 0;
+      const remainingDebt = price - totalPaid;
 
-      const price = isUniquePartialWithoutPayments ? rawPrice / 2 : rawPrice;
-
-      const impliedPaid =
-        recordedPaid === 0 && ua.type === "NO_ABONADO"
-          ? ua.state === "PAGO_COMPLETO"
-            ? price
-            : ua.state === "PAGO_PARCIAL"
-            ? price * 0.5
-            : 0
-          : 0;
-
-      const totalPaid = recordedPaid + impliedPaid;
-      const isCancelled = ua.state === "CANCELLED" || ua.cancellationDate !== null || ua.rejected;
-      const remainingDebt = isCancelled ? 0 : Math.max(price - totalPaid, 0);
+      // Preservamos el estado real si la reserva ya fue cancelada,
+      // sino lo derivamos de los pagos acumulados.
+      const state =
+        ua.state === "CANCELLED"
+          ? "CANCELLED"
+          : totalPaid >= price
+          ? "PAGO_COMPLETO"
+          : totalPaid > 0
+          ? "PAGO_PARCIAL"
+          : "IMPAGO";
 
       return {
         ...ua,
         price,
         totalPaid,
         remainingDebt,
-        state: isCancelled ? "CANCELLED" : ua.state,
+        state,
       };
     }),
   };

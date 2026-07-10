@@ -155,21 +155,35 @@ export async function cancelUserAppointment(userAppointmentId: number) {
     // 🟡 CASO NO ABONADO + 24HS → Devolución manual flag
     const refundPending = !isAbonado && hoursDiff >= 24;
 
-    if (refundPending) {
-      // Buscamos el pago original en efectivo efectuado por el cliente
-      const mainPayment = ua.payments.find(p => p.paymentMethod === "CASH");
-      
-      // Si existe un pago previo en efectivo, registramos su contrapartida en negativo
-      if (mainPayment && mainPayment.amount > 0) {
-        await tx.payment.create({
-          data: {
-            userAppointmentId: ua.id,
-            paymentDate: now,
-            amount: -mainPayment.amount, // Almacenamos el monto en negativo (ej: -10000)
-            paymentMethod: "CASH",
-            employeeId: null, // Esperará a que el administrador lo apruebe y entregue en mano
-          }
-        });
+    // 🟢 NO_ABONADO en PAGO_COMPLETO → generar asiento negativo para "Dinero a devolver"
+    // (asumimos efectivo si no hay pago online registrado; cubre también las reservas viejas
+    // hechas por admin/empleado que no dejaron payment record).
+    if (!isAbonado && ua.state === "PAGO_COMPLETO") {
+      const payments = await tx.payment.findMany({
+        where: { userAppointmentId: userAppointmentId },
+      });
+
+      const hasOnlinePayment = payments.some((p) => p.paymentMethod === "online");
+      const hasCreditPayment = payments.some((p) => p.paymentMethod === "CREDIT" || p.paymentMethod === "credit");
+
+      if (!hasOnlinePayment && !hasCreditPayment) {
+        const netoCash = payments
+          .filter((p) => p.paymentMethod === "CASH")
+          .reduce((s, p) => s + p.amount, 0);
+
+        const amountToRefund = netoCash > 0 ? netoCash : ua.appointment.price ?? 0;
+
+        if (amountToRefund > 0) {
+          await tx.payment.create({
+            data: {
+              userAppointmentId: userAppointmentId,
+              paymentDate: now,
+              amount: -amountToRefund,
+              paymentMethod: "CASH",
+              employeeId: null,
+            },
+          });
+        }
       }
     }
 
@@ -194,8 +208,13 @@ export async function cancelUserAppointment(userAppointmentId: number) {
       where: { id: userAppointmentId },
       data: {
         cancellationDate: now,
-        state: "CANCELLED",
-        rejected: true, // Crucial para la consistencia del negocio
+        state:
+          isAbonado &&
+          ua.state === "IMPAGO" &&
+          hoursDiff < 48
+            ? "IMPAGO"
+            : "CANCELLED",
+        rejected: true,
       },
     });
 
