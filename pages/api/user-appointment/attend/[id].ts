@@ -26,10 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(409).json({ message: "Ya se tomó asistencia" });
     }
 
-    if (ua.state === "CANCELLED") {
-      return res.status(409).json({ message: "No se puede tomar asistencia de un turno cancelado" });
-    }
-
     if (ua.appointment.endDate.getTime() < Date.now()) {
       return res.status(409).json({ message: "No se puede tomar asistencia de un turno finalizado" });
     }

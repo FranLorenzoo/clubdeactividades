@@ -1,4 +1,5 @@
-import { getAllUserAppointments, getOverdueImpagoCountByClientId } from "@/lib/sql/user-appointment";
+import { getAllUserAppointments, createUserAppointment, getOverdueImpagoCountByClientId } from "@/lib/sql/user-appointment";
+import { Prisma } from "@/lib/generated/prisma/client";
 import { parseFields } from "@/lib/validators/api";
 import { prisma } from "@/lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -93,70 +94,60 @@ async function createUserAppointmentHandler(
     const cleanAppointmentId = Number(appointmentId);
     const cleanClientId = Number(clientId);
 
-    const userAppointment = await prisma.$transaction(async (tx) => {
-      const existingAppointment = await tx.userAppointment.findFirst({
-        where: {
-          appointmentId: cleanAppointmentId,
-          clientId: cleanClientId,
+    const existingAppointment = await prisma.userAppointment.findFirst({
+      where: {
+        appointmentId: cleanAppointmentId,
+        clientId: cleanClientId,
+      },
+    });
+
+    let userAppointment;
+
+    if (existingAppointment) {
+      userAppointment = await prisma.userAppointment.update({
+        where: { id: existingAppointment.id },
+        data: {
+          reservationDate: values.reservationDate as Date,
+          cancellationDate: null, 
+          rejected: false,
+          state: finalState,
+          type: type as any, 
         },
       });
+    } else {
+      const createInput: Prisma.userAppointmentCreateInput = {
+        reservationDate: values.reservationDate as Date,
+        rejected: Boolean(rejected),
+        state: finalState,
+        type: type as any,
+        appointment: { connect: { id: cleanAppointmentId } },
+        client: { connect: { id: cleanClientId } },
+      };
 
-      let ua;
+      try {
+        userAppointment = await createUserAppointment(createInput);
+      } catch (createError) {
+        const fallbackAppointment = await prisma.userAppointment.findFirst({
+          where: {
+            appointmentId: cleanAppointmentId,
+            clientId: cleanClientId,
+          },
+        });
 
-      if (existingAppointment) {
-        ua = await tx.userAppointment.update({
-          where: { id: existingAppointment.id },
+        if (!fallbackAppointment) throw createError;
+
+        userAppointment = await prisma.userAppointment.update({
+          where: { id: fallbackAppointment.id },
           data: {
             reservationDate: values.reservationDate as Date,
-            cancellationDate: null,
+            cancellationDate: null, 
             rejected: false,
             state: finalState,
             type: type as any,
           },
         });
-      } else {
-        ua = await tx.userAppointment.create({
-          data: {
-            reservationDate: values.reservationDate as Date,
-            rejected: Boolean(rejected),
-            state: finalState,
-            type: type as any,
-            appointment: { connect: { id: cleanAppointmentId } },
-            client: { connect: { id: cleanClientId } },
-          },
-        });
       }
-
-      if (isEmployeeBooking) {
-        const appt = await tx.appointment.findUnique({
-          where: { id: cleanAppointmentId },
-          select: { price: true },
-        });
-        const price = appt?.price ?? 0;
-
-        const { _sum } = await tx.payment.aggregate({
-          where: { userAppointmentId: ua.id },
-          _sum: { amount: true },
-        });
-        const previousTotal = _sum.amount ?? 0;
-
-        const amount = Math.max(0, price - previousTotal);
-
-        if (amount > 0) {
-          await tx.payment.create({
-            data: {
-              userAppointmentId: ua.id,
-              paymentDate: new Date(),
-              amount,
-              paymentMethod: "CASH",
-              employeeId: null,
-            },
-          });
-        }
-      }
-
-      return ua;
-    });
+    }
 
     if (userAppointment.type === "ABONADO" && userAppointment.state !== "PAGO_COMPLETO") {
       try {
